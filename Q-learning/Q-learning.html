@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-learning Demo1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .row {
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+
+        .littleBox {
+            width: 40px;
+            height: 40px;
+            font-size: 10px;
+            line-height: 60px;
+            text-align: center;
+            border-right: 1px solid black;
+            border-bottom: 1px solid black;
+            box-sizing: border-box;
+            float: left;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app"></div>
+
+    <div>
+        <p id="totalCount"></p>
+        <div>
+            <label for="count">本次循环次数：</label>
+            <input type="number" id="count">
+        </div>
+        <button id="startBtn">开始循环</button>
+        <button id="printQ">打印Q表</button>
+    </div>
+
+
+
+    <script>
+        //1、生成地图
+        var rowLen = 10; //地图有多少行
+        var columnLen = 10; //地图有多少列
+        //生成数组
+        var rowArr = [];
+        for (let i = 0; i < rowLen; i++) {
+            let columnArr = [];
+            for (let j = 0; j < columnLen; j++) {
+                columnArr.push(i + ',' + j);
+            }
+            rowArr.push(columnArr);
+        }
+        console.log("rowArr", rowArr);
+        //渲染小方格到页面
+        var app = document.getElementById('app');
+        for (let i = 0; i < rowArr.length; i++) {
+            var row = document.createElement('div');
+            row.className = "row"
+            for (let j = 0; j < rowArr[i].length; j++) {
+                var littleBox = document.createElement('div');
+                littleBox.className = "littleBox littleBox-" + i + "-" + j;
+                row.appendChild(littleBox);
+            }
+            app.appendChild(row);
+        }
+
+
+        //2、设置目标点，地图内的障碍物
+        var target = [4, 8]; //目标点
+        var obstacleArr = [
+            [1, 7],
+            [2, 7],
+            [3, 7],
+            [4, 7],
+            [5, 7],
+            [6, 7],
+            [7, 7],
+            [8, 7]
+        ]; //障碍物数组
+        //在地图上渲染目标点和障碍物
+        document.getElementsByClassName("littleBox-" + target[0] + "-" + target[1])[0].style.background = "red"; //渲染目标点
+        //渲染障碍物
+        for (let i = 0; i < obstacleArr.length; i++) {
+            document.getElementsByClassName("littleBox-" + obstacleArr[i][0] + "-" + obstacleArr[i][1])[0].style.background = "#DB4F43";
+        }
+
+
+
+        //3、构建，R表（奖励表，状态的行为的奖励），Q表（结果表，多次循环后的成果表）。R表，Q表结构是一样的，行代表状态，列表代表状态的行为
+        //这里，一个小格子就是一个状态。这个小格子，有四个行为：往上走，往下走，往左走，往右走
+        var R = [];
+        var Q = [];
+        for (let i = 0; i < rowArr.length; i++) {
+            for (let j = 0; j < rowArr[i].length; j++) {
+
+                //遍历每一个状态（小格子）
+                let RActionArr = []; //当前状态的行为数组，R表的
+                let QactionArr = []; //当前状态的行为数组，Q表的
+                //一个状态有4个行为，上，下，左，右
+
+                //当前状态的坐标，i,j
+
+                //当前状态，往上走的行为，i-1
+
+                //当前状态，往下走的行为，i+1
+
+                //当前状态，往左走的行为，j-1
+
+                //当前状态，往右走的行为，j+1
+
+                let toTopPoint = [i - 1, j]; //当前状态点，往上走时，到达的位置
+                let toTopValue = 0; //当前状态点，往上走的行为的分值，-1不可走，0可走，100可走且是目标点
+                if (i - 1 > 0) {
+                    //可以往上走
+                    if (isObstacle(toTopPoint[0], toTopPoint[1]) == false) {
+                        //该行为的点不是障碍物
+                        if (isTarget(toTopPoint[0], toTopPoint[1]) == true) {
+                            //该行为的点是目标点
+                            toTopValue = 1;
+                        } else {
+                            //该行为的点不是目标点
+                            toTopValue = 0;
+                        }
+                    } else {
+                        //该行为的点是障碍物
+                        toTopValue = -1;
+                    }
+                } else {
+                    //超出地图边界，不可以往上走
+                    toTopValue = -1;
+                }
+                RActionArr[0] = {
+                    "point": toTopPoint,
+                    "value": toTopValue
+                };
+                QactionArr[0] = {
+                    "point": toTopPoint,
+                    "value": 0
+                };
+
+
+
+                let toBottomPoint = [i + 1, j]; //当前状态点，往下走时，到达的位置
+                let toBottomValue = 0;
+                if (i + 1 < rowLen) {
+                    //可以往下走
+                    if (isObstacle(toBottomPoint[0], toBottomPoint[1]) == false) {
+                        //该行为的点不是障碍物
+                        if (isTarget(toBottomPoint[0], toBottomPoint[1]) == true) {
+                            //该行为的点是目标点
+                            toBottomValue = 1;
+                        } else {
+                            //该行为的点不是目标点
+                            toBottomValue = 0;
+                        }
+                    } else {
+                        //该行为的点是障碍物
+                        toBottomValue = -1;
+                    }
+                } else {
+                    //超出地图边界，不可以往下走
+                    toBottomValue = -1;
+                }
+                RActionArr[1] = {
+                    "point": toBottomPoint,
+                    "value": toBottomValue
+                };
+                QactionArr[1] = {
+                    "point": toBottomPoint,
+                    "value": 0
+                };
+
+
+                let toLeftPoint = [i, j - 1]; //当前状态点，往左走时，到达的位置
+                let toLeftValue = 0;
+                if (j - 1 > 0) {
+                    //可以往左走
+                    if (isObstacle(toLeftPoint[0], toLeftPoint[1]) == false) {
+                        //该行为的点不是障碍物
+                        if (isTarget(toLeftPoint[0], toLeftPoint[1]) == true) {
+                            //该行为的点是目标点
+                            toLeftValue = 1;
+                        } else {
+                            //该行为的点不是目标点
+                            toLeftValue = 0;
+                        }
+                    } else {
+                        //该行为的点是障碍物
+                        toLeftValue = -1;
+                    }
+                } else {
+                    //超出地图边界，不可以往左走
+                    toLeftValue = -1;
+                }
+                RActionArr[2] = {
+                    "point": toLeftPoint,
+                    "value": toLeftValue
+                };
+                QactionArr[2] = {
+                    "point": toLeftPoint,
+                    "value": 0
+                };
+
+
+
+                let toRightPoint = [i, j + 1]; //当前状态点，往右走时，到达的位置
+                let toRightValue = 0;
+                if (j + 1 < columnLen) {
+                    //可以往右走
+                    if (isObstacle(toRightPoint[0], toRightPoint[1]) == false) {
+                        //该行为的点不是障碍物
+                        if (isTarget(toRightPoint[0], toRightPoint[1]) == true) {
+                            //该行为的点是目标点
+                            toRightValue = 1;
+                        } else {
+                            //该行为的点不是目标点
+                            toRightValue = 0;
+                        }
+                    } else {
+                        //该行为的点是障碍物
+                        toRightValue = -1;
+                    }
+                } else {
+                    //超出地图边界，不可以往右走
+                    toRightValue = -1;
+                }
+                RActionArr[3] = {
+                    "point": toRightPoint,
+                    "value": toRightValue
+                };
+                QactionArr[3] = {
+                    "point": toRightPoint,
+                    "value": 0
+                };
+
+
+                //将状态放到R表，Q表
+                R.push({
+                    "point": [i, j],
+                    "action": RActionArr
+                })
+                Q.push({
+                    "point": [i, j],
+                    "action": QactionArr
+                })
+            }
+        }
+        console.log("R", R);
+        console.log("Q", Q);
+        //检测某个点，是否是，障碍物的点
+        function isObstacle(row, column) {
+            let newObstacleArr = obstacleArr.map((item, index) => {
+                return item.join(',');
+            })
+            let point = [row, column].join(',');
+            return newObstacleArr.indexOf(point) == -1 ? false : true
+        }
+        //检测某个点，是否是，目标点
+        function isTarget(row, column) {
+            let point = [row, column].join(',');
+            let targetStr = target.join(',')
+            return point == targetStr ? true : false
+        }
+
+
+
+
+        //4、构建Q-learning算法需要的方法
+        //算法主体
+        async function learn(point) {
+            //point 当前状态（小格子坐标）
+
+            //开始运算：
+            //1、获取point的行为数组
+            let actionArr = await getActionArrInR(point);
+
+            //2、在获取到的行为中，随机获取，一个可行的行为（下一个位置,或下一个状态）
+            let nextPointObj = await getAnActionInActionArr(actionArr);
+            let nextPoint = nextPointObj.point;
+            let nextPointValue = nextPointObj.value; //随机获取的这个行为，在R表中的奖励分数
+
+            //3、获取nextPoint状态（小格子），在Q表中，得分最高的行为，的分数
+            let nextPointActionMaxValue = await getAMaxValueInQ(nextPoint);
+
+            //4、计算point使用（或者是去）nextPoint这个行为的分数
+            let score = nextPointValue + 0.8 * nextPointActionMaxValue;
+
+            //5、在Q表中，更新point去nextPoint这个行为的分数
+            await updateScoreInQ(point, nextPoint, score);
+
+            return nextPoint; //返回，下一步将要切换到的状态（位置）
+        }
+        //在R表中，获取某个状态的行为数组
+        function getActionArrInR(point) {
+            //console.log(1);
+            return new Promise((resolve, reject) => {
+                for (let i = 0; i < R.length; i++) {
+                    if (R[i].point.join(',') == point.join(',')) {
+                        //return R[i].action;
+                        resolve(R[i].action)
+                    }
+                }
+            })
+        }
+        //在某个状态的行为中，随机获取一个，可行（value不为-1的）的行为
+        function getAnActionInActionArr(actionArr) {
+            //console.log(2)
+            return new Promise((resolve, reject) => {
+                let arr = [];
+                for (let i = 0; i < actionArr.length; i++) {
+                    if (actionArr[i].value != -1) {
+                        arr.push(actionArr[i])
+                    }
+                }
+                let maxValue = arr.length - 1;
+                let randomIndex = Math.floor(Math.random() * (maxValue + 1)); //获取0-maxValue之间的随机数
+                //return arr[randomIndex];
+                resolve(arr[randomIndex]);
+            })
+
+        }
+        //获取Q表中某个状态，所有行为中最大分数
+        function getAMaxValueInQ(point) {
+            //console.log(3);
+            return new Promise((resolve, reject) => {
+                for (let i = 0; i < Q.length; i++) {
+                    if (Q[i].point.join(',') == point.join(',')) {
+                        let actionArr = Q[i].action;
+                        let maxValue = 0;
+                        for (let j = 0; j < actionArr.length; j++) {
+                            if (actionArr[j].value > maxValue) {
+                                maxValue = actionArr[j].value;
+                            }
+                        }
+                        //return maxValue;
+                        resolve(maxValue);
+                    }
+                }
+            })
+        }
+        //在Q表中更新，某个状态中，某个行为的分数
+        function updateScoreInQ(point, action, score) {
+            //console.log(4);
+            return new Promise((resolve, reject) => {
+                //point 数组
+                //action 数组
+                //score 数值
+                for (let i = 0; i < Q.length; i++) {
+                    if (Q[i].point.join(',') == point.join(',')) {
+                        let actionArr = Q[i].action;
+                        for (let j = 0; j < actionArr.length; j++) {
+                            if (actionArr[j].point.join(',') == action.join(',')) {
+                                Q[i].action[j].value += score;
+                                if (score != 0) {
+                                    console.log('更新Q数据：', point, action, score);
+                                }
+                                resolve();
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+
+            })
+
+        }
+
+
+
+        //5、定义变量，编写代码开始运算
+        let totalCount = 0;//总循环次数
+        let totalCountDom = document.getElementById('totalCount');
+
+        let count = 0;//本次循环次数
+        let countDom = document.getElementById('count');//循环次数input
+
+        let startBtnDom = document.getElementById('startBtn');//开始循环按钮
+
+        //程序运行方法，传入一个开始点，直到到达目标，本次方法运行才结束
+        function run(startPoint) {
+            //startPoint 数组
+            let currentPoint = startPoint;//当前点
+            learn(currentPoint).then((nextPoint) => {
+                if (nextPoint.join(',') != target.join(',')) {
+                    run(nextPoint)
+                } else {
+                    console.log('已找到目标点');
+                }
+            });
+            totalCount += 1;
+            totalCountDom.innerHTML = totalCount;
+        }
+
+        //点击开始按钮，开始运行
+        startBtnDom.onclick = function () {
+            run([0, 0]);
+        }
+
+        //打印Q表不等于0的结果
+        let stateScoreArr = {};
+        let printQDom = document.getElementById("printQ");
+        printQDom.onclick = function () {
+            for (let i = 0; i < Q.length; i++) {
+                for (let j = 0; j < Q[i].action.length; j++) {
+                    if (Q[i].action[j].value != 0) {
+                        if(Boolean(stateScoreArr[Q[i].action[j].point.join(',')])){
+                            stateScoreArr[Q[i].action[j].point.join(',')] += Q[i].action[j].value;
+                        }else{
+                            stateScoreArr[Q[i].action[j].point.join(',')] = Q[i].action[j].value || 0;
+                        }
+                    }
+                }
+            }
+            console.log(stateScoreArr);
+            console.log('点击打印Q表按钮');
+        }
+
+
+        
+
+
+        //读取Q表，在页面上渲染，去目标点的路径
+        let renderIndex = 0;
+        function renderDom(startPoint) {
+            // let littleBoxDom = document.getElementsByClassName("littleBox-" + startPoint[0] + "-" + startPoint[1])[0];
+            // littleBoxDom.style.background = 'green';
+            // littleBoxDom.innerHTML = renderIndex;
+            console.log(renderIndex,startPoint);
+            getMaxActionInQ(startPoint).then((maxPoint)=>{
+                console.log("maxPoint",maxPoint);
+                if(maxPoint.join(',')!=target.join(',')){
+                    renderIndex++;
+                    renderDom(maxPoint);
+
+                }
+                
+            });
+        }
+        //获取Q表中，某个状态的，得分最高的，行为
+        function getMaxActionInQ(point){
+            return new Promise((resolve, reject) => {
+                for (let i = 0; i < Q.length; i++) {
+                    if (Q[i].point.join(',') == point.join(',')) {
+                        let actionArr = Q[i].action;
+                        let maxValue = 0;
+                        let maxIndex = 0;
+                        for (let j = 0; j < actionArr.length; j++) {
+                            if (actionArr[j].value > maxValue) {
+                                maxValue = actionArr[j].value;
+                                maxIndex = j;
+                            }
+                        }
+                        resolve(actionArr[maxIndex].point);
+                    }
+                }
+            })
+        }
+
+
+    </script>
+
+</body>
+
+</html>
