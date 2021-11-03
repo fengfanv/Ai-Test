@@ -11,13 +11,13 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .row {
             width: 100%;
             height: auto;
             overflow: hidden;
         }
-        
+
         .littleBox {
             width: 40px;
             height: 40px;
@@ -37,11 +37,6 @@
     <div id="app"></div>
 
     <div>
-        <p id="totalCount"></p>
-        <div>
-            <label for="count">本次循环次数：</label>
-            <input type="number" id="count">
-        </div>
         <button id="startBtn">开始循环</button>
         <button id="printQ">打印Q表</button>
     </div>
@@ -70,6 +65,10 @@
             for (let j = 0; j < rowArr[i].length; j++) {
                 var littleBox = document.createElement('div');
                 littleBox.className = "littleBox littleBox-" + i + "-" + j;
+                littleBox.onclick = function(row,column){
+                    console.log('从状态：',[row,column],'开始渲染到达目标点的路径！');
+                    renderRoute([row,column])
+                }.bind(null,i,j)
                 row.appendChild(littleBox);
             }
             app.appendChild(row);
@@ -444,13 +443,13 @@
         }
 
         //点击开始按钮，开始运行
-        startBtnDom.onclick = function() {
+        startBtnDom.onclick = function () {
             run();
         }
 
         //打印Q表不等于0的结果
         let printQDom = document.getElementById("printQ");
-        printQDom.onclick = function() {
+        printQDom.onclick = function () {
             console.log('点击打印Q表按钮');
             for (let i = 0; i < Q.length; i++) {
                 for (let j = 0; j < Q[i].action.length; j++) {
@@ -463,27 +462,26 @@
         }
 
 
-
-
-
-        //读取Q表，在页面上渲染，去目标点的路径
-        let renderIndex = 0;
-
-        function renderDom(startPoint) {
-            // let littleBoxDom = document.getElementsByClassName("littleBox-" + startPoint[0] + "-" + startPoint[1])[0];
-            // littleBoxDom.style.background = 'green';
-            // littleBoxDom.innerHTML = renderIndex;
-            // console.log(renderIndex, startPoint);
-            getMaxActionInQ(startPoint).then((maxPoint) => {
-                // console.log("maxPoint", maxPoint);
-                if (maxPoint.join(',') != target.join(',')) {
-                    renderIndex++;
-                    renderDom(maxPoint);
-
-                }
-
-            });
+        //点击某个点，在页面上渲染，到达目标点的路径
+        function renderRoute(point) {
+            if (point.join(',') != target.join(',')) {
+                let dom = document.getElementsByClassName("littleBox-" + point[0] + "-" + point[1])[0];
+                console.log("dom",dom);
+                //渲染路径时，报找不到元素错误，多训练几次就行了。如点击0，0坐标，这个坐标的行为有四个，上下左右，如果这四个行为的得分都是0，则默认选择第一个“上”，这个动作。但是这个元素的往上走，是没有元素的。所以会报错
+                // return false;
+                dom.style.background = "green";
+                setTimeout(function(dom) {
+                    dom.style.background = "";
+                }.bind(null,dom), 2000)
+                getMaxActionInQ(point).then((nextPoint)=>{
+                    renderRoute(nextPoint)
+                })
+            } else {
+                console.log('到达目标点!');
+            }
         }
+
+
         //获取Q表中，某个状态的，得分最高的，行为
         function getMaxActionInQ(point) {
             return new Promise((resolve, reject) => {
