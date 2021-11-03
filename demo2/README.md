@@ -1,4 +1,6 @@
-# 强化学习算法讲解2
+# 强化学习算法，讲解2
+
+* 这篇文章讲的算法逻辑好理解，但是“Q表更新公式”不好用，算法公式看Demo3。
 
 原文地址：[https://blog.csdn.net/itplus/article/details/9361915](https://blog.csdn.net/itplus/article/details/9361915)
 
