@@ -97,8 +97,9 @@
 
 
 
-        //3、构建，R表（奖励表，状态的行为的奖励），Q表（结果表，多次循环后的成果表）。R表，Q表结构是一样的，行代表状态，列表代表状态的行为
-        //这里，一个小格子就是一个状态。这个小格子，有四个行为：往上走，往下走，往左走，往右走
+        //3、构建，R表（奖励表，每个状态的每个行为的奖励），Q表（结果表，多次循环学习后的成果表）。
+        //R表，Q表结构是一样的，行代表状态，列表代表状态的行为，这是概念。不要把地图的行列误认为是这个。
+        //地图里的每个小方格都是一个状态。每个小格子，有四个行为：往上走，往下走，往左走，往右走
         var R = [];
         var Q = [];
         for (let i = 0; i < rowArr.length; i++) {
@@ -120,7 +121,7 @@
                 //当前状态，往右走的行为，j+1
 
                 let toTopPoint = [i - 1, j]; //当前状态点，往上走时，到达的位置
-                let toTopValue = 0; //当前状态点，往上走的行为的分值，-1不可走，0可走，100可走且是目标点
+                let toTopValue = 0; //当前状态点，往上走的行为的分值，-1不可走，0可走，1可走且是目标点
                 if (i - 1 > 0) {
                     //可以往上走
                     if (isObstacle(toTopPoint[0], toTopPoint[1]) == false) {
@@ -279,36 +280,36 @@
         //4、构建Q-learning算法需要的方法
         //算法主体
         async function learn(point) {
-            //point 当前状态（小格子坐标）
+            //point “当前”机器人所在的这个状态（地图坐标）
 
             //开始运算：
-            //1、获取point的行为数组
+            //1、获取“当前”机器人所在的这个point状态，的行为数组。就是机器人在这个状态的都能干啥的数组
             let actionArr = await getActionArrInR(point);
 
-            //2、在获取到的行为中，随机获取，一个可行的行为（下一个位置,或下一个状态）
+            //2、在获取到的行为数组中，随机获取，一个可行的行为，这个可行的行为，就是机器人“下次”将要切换到的新状态（机器人“下次”将要去的新位置）
             let nextPointObj = await getAnActionInActionArr(actionArr);
             let nextPoint = nextPointObj.point;
-            let nextPointValue = nextPointObj.value; //随机获取的这个行为，在R表中的奖励分数
+            let nextPointValue = nextPointObj.value; //这个行为，在R表中的奖励分数
 
-            //3、获取nextPoint状态（小格子），在Q表中，得分最高的行为，的分数
+            //3、获取机器人“下次”将要去的这个nextPoint新状态（或新位置），在Q表，这个新状态的所有行为中，得分最高的行为，的分数
             let nextPointActionMaxValue = await getAMaxValueInQ(nextPoint);
 
-            //3.1、在Q表中，获取这个状态的这个行为的分数
+            //3.1、在Q表，获取“当前”机器人所在的这个状态，“当前”这个行为，的分数
             let nextPointActionValue = await getScoreInQ(point, nextPoint);
 
-            //4、计算分数，这部最重要。计算point使用（或者是去）nextPoint这个行为的分数
+            //4、计算分数，这步最重要，计算“当前”状态point使用（或者是去）新状态nextPoint，这个行为，的分数
             //let newScore = Number((nextPointActionValue + (nextPointValue + 0.8 * nextPointActionMaxValue)).toFixed(2)); //demo2的公式，不好用
             //demo3公式 start
-            //currentActionScore 当前状态的这个行为分数。getScoreInQ获取的分数，是这之前的分数
+            //currentActionScore 计算“当前”状态使用的这个行为的分数。这个和getScoreInQ获取的分数有区别，getScoreInQ获取的是Q表中“当前”状态，使用这个行为，之前得的分数
             let currentActionScore = nextPointValue + 0.8 * nextPointActionMaxValue - nextPointActionValue;
-            //新分数
+            //新分数，公式不明白，可以看Demo3文章
             let newScore = Number((nextPointActionValue + 0.2 * currentActionScore).toFixed(2));
             //demo3公式 end
 
-            //5、在Q表中，更新point去nextPoint这个行为的分数
+            //5、在Q表中，更新“当前”状态point使用（或是去）新状态nextPoint这个行为的分数
             await updateScoreInQ(point, nextPoint, newScore);
 
-            return nextPoint; //返回，下一步将要切换到的状态（位置）
+            return nextPoint; //返回，下次将要切换到的状态（位置）
         }
         //在R表中，获取某个状态的行为数组
         function getActionArrInR(point) {
@@ -338,7 +339,7 @@
                 resolve(arr[randomIndex]);
             })
         }
-        //获取Q表中某个状态，所有行为中最大分数
+        //获取Q表中某个状态，所有行为中，得分最高行为，的分数
         function getAMaxValueInQ(point) {
             //console.log(3);
             return new Promise((resolve, reject) => {
@@ -357,7 +358,7 @@
                 }
             })
         }
-        //在Q表中，查找某个状态，的某个动作的分数
+        //在Q表中，查找某个状态，的某个行为的分数
         function getScoreInQ(point, action) {
             return new Promise((resolve, reject) => {
                 //point 数组
@@ -376,7 +377,7 @@
 
             })
         }
-        //在Q表中更新，某个状态中，某个行为的分数
+        //在Q表中更新，某个状态中，的某个行为的分数
         function updateScoreInQ(point, action, newScore) {
             //console.log(4);
             return new Promise((resolve, reject) => {
@@ -407,13 +408,13 @@
 
 
 
-        //5、定义变量，编写代码开始运算
-        let count = 0; //共学习了，多少轮，次数
-        let countDom = document.getElementById('count'); //显示学习多少轮次数input
+        //5、定义变量，编写代码，开始运算
+        let count = 0; //共学习了，多少轮，一轮就是，地图内所有小格子，都学习一次
+        let countDom = document.getElementById('count'); //显示学习多少轮input
 
-        let startBtnDom = document.getElementById('startBtn'); //开始循环按钮
+        let startBtnDom = document.getElementById('startBtn'); //开始学习按钮
 
-        //程序循环方法，传入一个开始点，直到到达目标，本次方法运行才结束
+        //程序学习方法，传入一个开始点，直到到达目标，本方法循环运行才会结束
         function each(point, callback) {
             learn(point).then((nextPoint) => {
                 if (nextPoint.join(',') != target.join(',')) {
@@ -424,7 +425,7 @@
             });
         }
 
-        //方格内所有状态，都学习一次
+        //地图内所有状态，都学习一次
         function run() {
             let rowCount = 0;
             let columnCount = 0;
@@ -448,7 +449,6 @@
         }
 
         //点击开始按钮，开始学习一轮
-
         startBtnDom.onclick = function() {
             count++;
             countDom.value = count;
@@ -470,7 +470,7 @@
         }
 
 
-        //点击某个点，在页面上渲染，到达目标点的路径
+        //点击某个点，在页面上渲染，到达目标点要走的路径
         function renderRoute(point) {
             if (point.join(',') != target.join(',')) {
                 let dom = document.getElementsByClassName("littleBox-" + point[0] + "-" + point[1])[0];
