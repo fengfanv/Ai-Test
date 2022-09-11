@@ -1,3 +1,5 @@
+#损失函数
+
 #均方误差
 import numpy as np
 def mean_squared_error(y,t):
@@ -17,6 +19,14 @@ print(mean_squared_error(np.array(y2),np.array(t)))#0.5975
 
 #实验显示，第一个例子y的损失函数数值更小，和监督数据之间的误差更小，也就是说均方误差显示第一个例子y的输出结果与监督数据更加吻合
 
+
+#交叉熵误差
+def cross_entropy_error(y,t):
+    delta = 1e-7
+    return -np.sum(t*np.log(y+delta))
+
+print(cross_entropy_error(np.array(y),np.array(t)))#0.510825457099338 这个意思和上面那个方法所表达的意思是一样的
+print(cross_entropy_error(np.array(y2),np.array(t)))#2.302584092994546
 
 
 
