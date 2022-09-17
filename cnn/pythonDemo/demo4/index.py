@@ -1,5 +1,8 @@
 #损失函数
 
+#损失函数干啥用？
+#神经网络的学习，通过某个指标表示现在的状态。然后已这个指标为基准，寻找最优权重参数。这个指标就是 损失函数
+
 #均方误差
 import numpy as np
 def mean_squared_error(y,t):
@@ -25,8 +28,10 @@ def cross_entropy_error(y,t):
     delta = 1e-7
     return -np.sum(t*np.log(y+delta))
 
-print(cross_entropy_error(np.array(y),np.array(t)))#0.510825457099338 这个意思和上面那个方法所表达的意思是一样的
+print(cross_entropy_error(np.array(y),np.array(t)))#0.510825457099338 这个意思和上面那个方法所表达的意思是一样的。给损失函数输入的值越大，损失函数输出的值越小。不懂就重新看书，看一遍不明白，就多看几遍
 print(cross_entropy_error(np.array(y2),np.array(t)))#2.302584092994546
+
+
 
 
 
