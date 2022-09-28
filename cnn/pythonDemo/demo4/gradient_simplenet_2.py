@@ -22,9 +22,7 @@ def cross_entropy_error(y, t):
     batch_size = y.shape[0]
     return -np.sum(np.log(y[np.arange(batch_size), t] + 1e-7)) / batch_size
 
-
 #----------------------------------------------------------------------------------------------------------
-
 
 def numerical_gradient(f, x):
     h = 1e-4 # 0.0001
