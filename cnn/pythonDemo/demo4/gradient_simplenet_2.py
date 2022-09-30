@@ -1,5 +1,7 @@
+# 如果有什么不明白的，可以重新在看一下本章，神经网络的学习，看一下把，画不了多长时间
 import numpy as np
 
+# 输出层激活函数softmax
 def softmax(x):
     if x.ndim == 2:
         x = x.T
@@ -10,6 +12,7 @@ def softmax(x):
     x = x - np.max(x) # 溢出对策
     return np.exp(x) / np.sum(np.exp(x))
 
+# 求损失函数
 def cross_entropy_error(y, t):
     if y.ndim == 1:
         t = t.reshape(1, t.size)
@@ -24,6 +27,7 @@ def cross_entropy_error(y, t):
 
 #----------------------------------------------------------------------------------------------------------
 
+# 求梯度（求损失函数关于权重参数的梯度（或导数，或数值微分））
 def numerical_gradient(f, x):
     h = 1e-4 # 0.0001
     grad = np.zeros_like(x)
@@ -45,6 +49,8 @@ class simpleNet:
     def __init__(self):
         self.W = np.array([[0.47355232,0.9977393,0.84668094],
                            [0.85557411,0.03563661,0.69422093]])#这self.W是引用值，类型js里的array和object类型，在上边numerical_gradient方法内变了后，这里也跟着变
+        print(self.W.shape)#(2, 3)   要把自己练成那种，一看W权重的形状，就知道这层神经元，有几个输入，会产生几个输出（几个输出，就是这层有几个神经元）。
+                            #这里权重形状时，两行三列，根据np.dot的计算逻辑，两行说明有两个输入，三列说明会输出三个输出（3个神经元）
 
     def predict(self, x):
         return np.dot(x, self.W)
