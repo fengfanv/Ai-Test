@@ -1,8 +1,5 @@
 import numpy as np
 
-#激活函数sigmoid
-def sigmoid(x):
-    return 1/(1+np.exp(-x))
 
 #输出层激活函数softmax
 def softmax(x):
@@ -45,12 +42,83 @@ def numerical_gradient(f, x):
         it.iternext()
     return grad
 
+#---------------------------------------------------------------------------------------------------
+
+# Relu层
+class Relu:
+    def __init__(self):
+        self.mask = None
+
+    def forward(self, x):
+        self.mask = (x <= 0)
+        out = x.copy()
+        out[self.mask] = 0
+        return out
+    def backward(self, dout):
+        dout[self.mask] = 0
+        dx = dout
+
+        return dx
+
+# Affine层
+class Affine:
+    def __init__(self, W, b):
+        self.W =W
+        self.b = b
+        
+        self.x = None
+        self.original_x_shape = None
+        # 权重和偏置参数的导数
+        self.dW = None
+        self.db = None
+
+    def forward(self, x):
+        # 对应张量
+        self.original_x_shape = x.shape
+        x = x.reshape(x.shape[0], -1)
+        self.x = x
+
+        out = np.dot(self.x, self.W) + self.b
+
+        return out
+
+    def backward(self, dout):
+        dx = np.dot(dout, self.W.T)
+        self.dW = np.dot(self.x.T, dout)
+        self.db = np.sum(dout, axis=0)
+        
+        dx = dx.reshape(*self.original_x_shape)  # 还原输入数据的形状（对应张量）
+        return dx
+
+# Softmax-with-Loss层
+class SoftmaxWithLoss:
+    def __init__(self):
+        self.loss = None
+        self.y = None # softmax的输出
+        self.t = None # 监督数据
+
+    def forward(self, x, t):
+        self.t = t
+        self.y = softmax(x)
+        self.loss = cross_entropy_error(self.y, self.t)
+        
+        return self.loss
+
+    def backward(self, dout=1):
+        batch_size = self.t.shape[0]
+        if self.t.size == self.y.size: # 监督数据是one-hot-vector的情况
+            dx = (self.y - self.t) / batch_size
+        else:
+            dx = self.y.copy()
+            dx[np.arange(batch_size), self.t] -= 1
+            dx = dx / batch_size
+        
+        return dx
 
 #---------------------------------------------------------------------------------------------------
 
 
 class TwoLayerNet:
-
     def __init__(self, input_size, hidden_size, output_size, weight_init_std=0.01):
         # 初始化权重
         self.params = {}
@@ -59,26 +127,27 @@ class TwoLayerNet:
         self.params['W2'] = weight_init_std * np.random.randn(hidden_size, output_size)#权重使用高斯分布的随机数进行初始化
         self.params['b2'] = np.zeros(output_size)#偏置使用0初始化
 
+        # 初始化层
+        self.layers = {}
+        self.layers['Affine1'] = Affine(self.params['W1'],self.params['b1'])
+        self.layers['Relu1'] = Relu()
+        self.layers['Affine2'] = Affine(self.params['W2'],self.params['b2'])
+        self.lastLayer = SoftmaxWithLoss()
+
     def predict(self, x):
-        W1, W2 = self.params['W1'], self.params['W2']
-        b1, b2 = self.params['b1'], self.params['b2']
-    
-        a1 = np.dot(x, W1) + b1
-        z1 = sigmoid(a1)
-        a2 = np.dot(z1, W2) + b2
-        y = softmax(a2)
-        
-        return y
+        a1 = self.layers['Affine1'].forward(x)
+        z1 = self.layers['Relu1'].forward(a1)
+        a2 = self.layers['Affine2'].forward(z1)
+        # 这里与数值微分有点不一样，数值微分版本的，这里还有个，输出层激活函数，softmax方法
+        # 误差反向传播法方式的，因为softmax 和 loss集成到一起了，所以softmax就和求损失函数的方法loss，一起放到下面的loss方法里了
+        return a2
         
     # （求损失函数）x:输入数据, t:监督数据
     def loss(self, x, t):
         y = self.predict(x)
-
-        #print(y.shape)#(100, 10)
-
-        return cross_entropy_error(y, t)
+        return self.lastLayer.forward(y, t)
         
-    # （求梯度，求W1，b1，W2，b2内参数 相对于 损失函数的梯度）x:输入数据, t:监督数据
+    # 数值微分求梯度，这个版本的 还存在数值微分求梯度，是为了梯度确认，什么是梯度确认，详细看书
     def numerical_gradient(self, x, t):
 
         def loss_W(value):
@@ -93,34 +162,34 @@ class TwoLayerNet:
         
         return grads
     
+    # 误差反向传播法求梯度
+    def gradient(self, x, t):
+        # forward
+        self.loss(x, t)
+
+        # backward
+        dout = 1 #损失函数关于损失函数的导函数是1
+        lastLayer_dout = self.lastLayer.backward(dout)
+        Affine2_dout = self.layers['Affine2'].backward(lastLayer_dout)
+        Relu1_dout = self.layers['Relu1'].backward(Affine2_dout)
+        Affine1_dout = self.layers['Affine1'].backward(Relu1_dout)
+
+        grads = {}
+        grads['W1'] = self.layers['Affine1'].dW
+        grads['b1'] = self.layers['Affine1'].db
+        grads['W2'] = self.layers['Affine2'].dW
+        grads['b2'] = self.layers['Affine2'].db
+
+        return grads
+
     # 用于获取，这个神经网络，对于x,t数据的识别精度
     def accuracy(self, x, t):
         y = self.predict(x)
+        # self.predict这方法里没有 输出层激活函数softmax ，省一几个softmax计算
         y = np.argmax(y, axis=1)
         t = np.argmax(t, axis=1)
         accuracy = np.sum(y == t) / float(x.shape[0])
         return accuracy
-
-#---------------------------------------------------------------------------------------------------
-
-'''
-net = TwoLayerNet(input_size=784, hidden_size=100, output_size=10)
-test_x = np.random.rand(100, 784) # 伪输入数据（100个）
-test_t = np.random.rand(100, 10)
-
-print(test_x.shape,test_t.shape)#(100, 784) (100, 10)
-
-#模拟求上面这100个数据的损失函数
-print(net.loss(test_x,test_t))#2.3107403079216486
-
-#模拟求梯度
-test_grads = net.numerical_gradient(test_x, test_t)#求这100数据，关于W1，b1，W2，b2的梯度，用时30秒左右
-print(test_grads['W1'].shape)#(784, 100)
-print(test_grads['b1'].shape)#(100,)
-print(test_grads['W2'].shape)#(100, 10)
-print(test_grads['b2'].shape)#(10,)
-#数据形状和params里相关数据的形状，是一样的
-'''
 
 #---------------------------------------------------------------------------------------------------
 
@@ -142,7 +211,7 @@ matplotlib.rc("font", family='Microsoft YaHei')
 
 network = TwoLayerNet(input_size=784, hidden_size=50, output_size=10)
 
-iters_num = 10  # 循环次数（梯度法的更新次数）,书上这里写的是10000次，一万次时间有点长，我改成一千次了
+iters_num = 1000  # 循环次数（梯度法的更新次数）,书上这里写的是10000次，一万次时间有点长，我改成一千次了
 train_loss_list = [] #用于记录，每次循环（每次梯度数据把权重偏置参数更新后，新损失函数的值）
 train_size = x_train.shape[0] #一共有多少条图像数据
 batch_size = 100 #循环每次mini-batch学习时，从全部数据中，随机抽取出多少条数据，作为mini-batch数据
@@ -159,7 +228,7 @@ for i in range(iters_num):
     x_batch = x_train[batch_mask]
     t_batch = t_train[batch_mask]
     # 计算梯度
-    grad = network.numerical_gradient(x_batch, t_batch)
+    grad = network.gradient(x_batch, t_batch)
     # 更新参数
     for key in ('W1', 'b1', 'W2', 'b2'):
         #network.params[key] -= learning_rate * grad[key]
@@ -176,7 +245,7 @@ for i in range(iters_num):
         test_acc = network.accuracy(x_test, t_test)
         train_acc_list.append(train_acc)
         test_acc_list.append(test_acc)
-        print("对于训练数据的精度, 对于测试数据的精度 | " + str(train_acc) + ", " + str(test_acc))
+        # print("对于训练数据的精度, 对于测试数据的精度 | " + str(train_acc) + ", " + str(test_acc))
 
 
 # 绘制学习过程中损失函数值的变化图表
@@ -186,3 +255,13 @@ plt.ylabel("每次循环时，记录的损失函数的值")
 plt.plot(chart_x,train_loss_list)
 plt.show()
 
+# 绘制识别精度变化表
+# chart_x_2 = np.arange(len(train_acc_list))#[1.0,2.0,3.0,4.0...]
+# plt.xlabel("第几次统计识别精度")
+# plt.ylabel("识别精度")
+# plt.plot(chart_x_2,train_acc_list)
+# plt.show()
+
+# 总结：误差反向传播法确实是快，误差反向传播法训练 2轮（10000次/每轮）的训练所耗费的时间，数值微分方式，才训练10次
+
+# 梯度确认，也是一个用来给人看的数据，看误差多少，这个代码里没写，以后再说了

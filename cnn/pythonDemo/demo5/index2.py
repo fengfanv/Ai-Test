@@ -9,15 +9,18 @@ import numpy as np
 class Relu:
     def __init__(self):
         self.mask = None
-    def forward(self,x):
-        self.mask = (x<=0)
-        out = x.copy            #因为是numpy数组，所以这个copy类似于js里的深拷贝
+
+    def forward(self, x):
+        self.mask = (x <= 0)
+        out = x.copy()  #因为是numpy数组，所以这个copy类似于js里的深拷贝
         out[self.mask] = 0
         return out
-    def backward(self,dout):
+    def backward(self, dout):
         dout[self.mask] = 0
         dx = dout
+
         return dx
+
 x = np.array([[1.0,-0.5],[-2.0,3.0]])
 print(x)
 '''
