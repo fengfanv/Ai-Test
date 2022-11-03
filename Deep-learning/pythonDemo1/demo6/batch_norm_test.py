@@ -58,7 +58,28 @@ def __train(weight_init_std):
 
 # 3.绘制图形==========
 weight_scale_list = np.logspace(0, -4, num=16)
+print(weight_scale_list)
+'''
+array([1.00000000e+00, 5.41169527e-01, 2.92864456e-01, 1.58489319e-01,
+       8.57695899e-02, 4.64158883e-02, 2.51188643e-02, 1.35935639e-02,
+       7.35642254e-03, 3.98107171e-03, 2.15443469e-03, 1.16591440e-03,
+       6.30957344e-04, 3.41454887e-04, 1.84784980e-04, 1.00000000e-04])
+'''
 x = np.arange(max_epochs)
+print(x)
+'''
+array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
+'''
+'''
+Python内置函数enumerate()
+testArr = ['one', 'two', 'three']
+for i, element in enumerate(testArr):
+    print (i, element)
+# --------------------------------------------
+0 one
+1 two
+2 three
+'''
 
 for i, w in enumerate(weight_scale_list):
     print( "============== " + str(i+1) + "/16" + " ==============")

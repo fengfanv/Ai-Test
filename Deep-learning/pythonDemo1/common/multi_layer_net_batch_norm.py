@@ -22,9 +22,6 @@ class MultiLayerNetExtend:
         指定'sigmoid'或'xavier'的情况下设定“Xavier的初始值”
 
     use_batchNorm: 是否使用Batch Normalization
-
-
-    
     """
     def __init__(self, input_size, hidden_size_list, output_size, activation='relu', weight_init_std='relu', use_batchnorm=False):
         self.input_size = input_size
