@@ -12,7 +12,7 @@ from common.gradient import numerical_gradient
 class MultiLayerNet:
     """全连接的多层神经网络
 
-    仅具备 batch-norm 功能
+    仅具有 dropout 功能
 
     Parameters
     ----------
@@ -23,17 +23,18 @@ class MultiLayerNet:
     weight_init_std : 指定权重的标准差（e.g. 0.01）
         指定'relu'或'he'的情况下设定“He的初始值”
         指定'sigmoid'或'xavier'的情况下设定“Xavier的初始值”
-    use_batchNorm: 是否使用Batch Normalization
+    use_dropout: 是否使用Dropout
+    dropout_ration : Dropout的比例
     """
-    def __init__(self, input_size, hidden_size_list, output_size, activation='relu', weight_init_std='relu', use_batchnorm=False):
+    def __init__(self, input_size, hidden_size_list, output_size, activation='relu', weight_init_std='relu',use_dropout = False, dropout_ration = 0.5):
         self.input_size = input_size
         self.output_size = output_size
         self.hidden_size_list = hidden_size_list
         self.hidden_layer_num = len(hidden_size_list)
-
-        self.use_batchnorm = use_batchnorm
-
         self.params = {}
+
+        #dropout
+        self.use_dropout = use_dropout
 
         # 初始化权重
         self.__init_weight(weight_init_std)
@@ -57,13 +58,10 @@ class MultiLayerNet:
             for循环时循环到3就结束了，还少一层，所以要+1，要是range(0,4)0到4，会输出0,1,2,3这四个，反正就是哪个意思，你肯定懂
             '''
             self.layers['Affine' + str(idx)] = Affine(self.params['W' + str(idx)],self.params['b' + str(idx)])
-
-            if self.use_batchnorm:
-                self.params['gamma' + str(idx)] = np.ones(hidden_size_list[idx-1])
-                self.params['beta' + str(idx)] = np.zeros(hidden_size_list[idx-1])
-                self.layers['BatchNorm' + str(idx)] = BatchNormalization(self.params['gamma' + str(idx)], self.params['beta' + str(idx)])
-
             self.layers['Activation_function' + str(idx)] = activation_layer[activation]()
+
+            if self.use_dropout:
+                self.layers['Dropout' + str(idx)] = Dropout(dropout_ration)
 
         #下面是输出层的Affine层，和，SoftmaxWithLoss层
         idx = self.hidden_layer_num + 1
@@ -100,14 +98,14 @@ class MultiLayerNet:
             self.params['b' + str(idx)] = np.zeros(all_size_list[idx])
     
     def predict(self, x, train_flg=False):
-        #这里的train_flg是和Dropout层类似，需要分，训练时，和测试时，如果不明白，请看/demo6/index4.py
+        # train_flg dropout是否是训练阶段，详细看/demo6/index4.py
         for key, layer in self.layers.items():
-            if "BatchNorm" in key:
+            if "Dropout" in key:
                 x = layer.forward(x, train_flg)
             else:
                 x = layer.forward(x)
-
         return x
+
     
     def loss(self, x, t, train_flg=False):
         """求损失函数
@@ -116,18 +114,18 @@ class MultiLayerNet:
         ----------
         x : 输入数据
         t : 教师标签
-        train_flg : 是和Dropout层类似，需要分，训练时，和测试时，如果不明白，请看/demo6/index4.py
+        train_flg : 是dropout需要的参数
 
         Returns
         -------
         损失函数的值
         """
-        y = self.predict(x,train_flg)
+        y = self.predict(x, train_flg)
         return self.last_layer.forward(y, t)
 
     # 用于获取，这个神经网络，对于x,t数据的识别精度
     def accuracy(self, x, t):
-        y = self.predict(x,train_flg=False)
+        y = self.predict(x, train_flg=False)#train_flg是dropout需要的参数，这里是测试模型阶段，所以是train_flg=false，详细看/demo6/index4.py
         y = np.argmax(y, axis=1)
         if t.ndim != 1 : t = np.argmax(t, axis=1)
 
@@ -149,7 +147,7 @@ class MultiLayerNet:
             grads['b1']、grads['b2']、...是各层的偏置
         """
         def loss_W(value):
-            lossValue = self.loss(x, t, train_flg=True)
+            lossValue = self.loss(x, t ,train_flg=True)#train_flg是dropout需要的参数
             return lossValue
 
         grads = {}
@@ -157,11 +155,6 @@ class MultiLayerNet:
             #加2，是为了把，输出层的权重也算上
             grads['W' + str(idx)] = numerical_gradient(loss_W, self.params['W' + str(idx)])
             grads['b' + str(idx)] = numerical_gradient(loss_W, self.params['b' + str(idx)])
-
-            #更新batchnorm的参数
-            if self.use_batchnorm and idx != self.hidden_layer_num+1:
-                grads['gamma' + str(idx)] = numerical_gradient(loss_W, self.params['gamma' + str(idx)])
-                grads['beta' + str(idx)] = numerical_gradient(loss_W, self.params['beta' + str(idx)])
 
         return grads
     
@@ -180,7 +173,7 @@ class MultiLayerNet:
             grads['b1']、grads['b2']、...是各层的偏置
         """
         # forward
-        self.loss(x, t, train_flg=True)
+        self.loss(x, t, train_flg=True)#train_flg是dropout需要的参数，这里是训练模型阶段，所以是train_flg=True，详细看/demo6/index4.py
 
         # backward
         dout = 1
@@ -196,10 +189,5 @@ class MultiLayerNet:
         for idx in range(1, self.hidden_layer_num+2):
             grads['W' + str(idx)] = self.layers['Affine' + str(idx)].dW
             grads['b' + str(idx)] = self.layers['Affine' + str(idx)].db
-            
-            #更新batchnorm的参数
-            if self.use_batchnorm and idx != self.hidden_layer_num+1:
-                grads['gamma' + str(idx)] = self.layers['BatchNorm' + str(idx)].dgamma
-                grads['beta' + str(idx)] = self.layers['BatchNorm' + str(idx)].dbeta
 
         return grads

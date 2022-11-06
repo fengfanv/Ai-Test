@@ -12,7 +12,7 @@ from common.gradient import numerical_gradient
 class MultiLayerNet:
     """全连接的多层神经网络
 
-    仅具备 batch-norm 功能
+    这个是源代码的删减版，是专为 weight decay（权值衰减）改造的
 
     Parameters
     ----------
@@ -23,17 +23,16 @@ class MultiLayerNet:
     weight_init_std : 指定权重的标准差（e.g. 0.01）
         指定'relu'或'he'的情况下设定“He的初始值”
         指定'sigmoid'或'xavier'的情况下设定“Xavier的初始值”
-    use_batchNorm: 是否使用Batch Normalization
+    weight_decay_lambda : Weight Decay（L2范数）的强度（0是不使用权值衰减。大于0，设置得越大，则对 大的权重 施加的惩罚就越重）
     """
-    def __init__(self, input_size, hidden_size_list, output_size, activation='relu', weight_init_std='relu', use_batchnorm=False):
+    def __init__(self, input_size, hidden_size_list, output_size, activation='relu', weight_init_std='relu',weight_decay_lambda=0):
         self.input_size = input_size
         self.output_size = output_size
         self.hidden_size_list = hidden_size_list
         self.hidden_layer_num = len(hidden_size_list)
-
-        self.use_batchnorm = use_batchnorm
-
         self.params = {}
+        #保存控制权值衰减强度的超参数
+        self.weight_decay_lambda = weight_decay_lambda
 
         # 初始化权重
         self.__init_weight(weight_init_std)
@@ -57,12 +56,6 @@ class MultiLayerNet:
             for循环时循环到3就结束了，还少一层，所以要+1，要是range(0,4)0到4，会输出0,1,2,3这四个，反正就是哪个意思，你肯定懂
             '''
             self.layers['Affine' + str(idx)] = Affine(self.params['W' + str(idx)],self.params['b' + str(idx)])
-
-            if self.use_batchnorm:
-                self.params['gamma' + str(idx)] = np.ones(hidden_size_list[idx-1])
-                self.params['beta' + str(idx)] = np.zeros(hidden_size_list[idx-1])
-                self.layers['BatchNorm' + str(idx)] = BatchNormalization(self.params['gamma' + str(idx)], self.params['beta' + str(idx)])
-
             self.layers['Activation_function' + str(idx)] = activation_layer[activation]()
 
         #下面是输出层的Affine层，和，SoftmaxWithLoss层
@@ -99,35 +92,38 @@ class MultiLayerNet:
             self.params['W' + str(idx)] = scale * np.random.randn(all_size_list[idx-1], all_size_list[idx])
             self.params['b' + str(idx)] = np.zeros(all_size_list[idx])
     
-    def predict(self, x, train_flg=False):
-        #这里的train_flg是和Dropout层类似，需要分，训练时，和测试时，如果不明白，请看/demo6/index4.py
-        for key, layer in self.layers.items():
-            if "BatchNorm" in key:
-                x = layer.forward(x, train_flg)
-            else:
-                x = layer.forward(x)
+    def predict(self, x):
+        for layer in self.layers.values():
+            x = layer.forward(x)
 
         return x
     
-    def loss(self, x, t, train_flg=False):
+    def loss(self, x, t):
         """求损失函数
 
         Parameters
         ----------
         x : 输入数据
         t : 教师标签
-        train_flg : 是和Dropout层类似，需要分，训练时，和测试时，如果不明白，请看/demo6/index4.py
 
         Returns
         -------
         损失函数的值
         """
-        y = self.predict(x,train_flg)
-        return self.last_layer.forward(y, t)
+        y = self.predict(x)
+
+        # 权重衰减 start
+        weight_decay = 0
+        for idx in range(1, self.hidden_layer_num + 2):
+            W = self.params['W' + str(idx)]
+            weight_decay += 0.5 * self.weight_decay_lambda * np.sum(W ** 2)
+        # 权重衰减 end
+        # 权值衰减，为损失函数，加上权重的平方范数，来抑制权重变大
+        return self.last_layer.forward(y, t) + weight_decay
 
     # 用于获取，这个神经网络，对于x,t数据的识别精度
     def accuracy(self, x, t):
-        y = self.predict(x,train_flg=False)
+        y = self.predict(x)
         y = np.argmax(y, axis=1)
         if t.ndim != 1 : t = np.argmax(t, axis=1)
 
@@ -149,7 +145,7 @@ class MultiLayerNet:
             grads['b1']、grads['b2']、...是各层的偏置
         """
         def loss_W(value):
-            lossValue = self.loss(x, t, train_flg=True)
+            lossValue = self.loss(x, t)
             return lossValue
 
         grads = {}
@@ -157,11 +153,6 @@ class MultiLayerNet:
             #加2，是为了把，输出层的权重也算上
             grads['W' + str(idx)] = numerical_gradient(loss_W, self.params['W' + str(idx)])
             grads['b' + str(idx)] = numerical_gradient(loss_W, self.params['b' + str(idx)])
-
-            #更新batchnorm的参数
-            if self.use_batchnorm and idx != self.hidden_layer_num+1:
-                grads['gamma' + str(idx)] = numerical_gradient(loss_W, self.params['gamma' + str(idx)])
-                grads['beta' + str(idx)] = numerical_gradient(loss_W, self.params['beta' + str(idx)])
 
         return grads
     
@@ -180,7 +171,7 @@ class MultiLayerNet:
             grads['b1']、grads['b2']、...是各层的偏置
         """
         # forward
-        self.loss(x, t, train_flg=True)
+        self.loss(x, t)
 
         # backward
         dout = 1
@@ -194,12 +185,9 @@ class MultiLayerNet:
         # 设定
         grads = {}
         for idx in range(1, self.hidden_layer_num+2):
-            grads['W' + str(idx)] = self.layers['Affine' + str(idx)].dW
+            #-----------------------------------------------------------权值衰减第二处：
+            #对于所有权重，权值衰减方法都会为损失函数加上 权重的平方范数。因此，在求权重梯度的计算中，要为之前的 误差反向传播法的结果 加上 正则化项的导数λW
+            grads['W' + str(idx)] = self.layers['Affine' + str(idx)].dW + (self.weight_decay_lambda * self.layers['Affine' + str(idx)].W)
             grads['b' + str(idx)] = self.layers['Affine' + str(idx)].db
-            
-            #更新batchnorm的参数
-            if self.use_batchnorm and idx != self.hidden_layer_num+1:
-                grads['gamma' + str(idx)] = self.layers['BatchNorm' + str(idx)].dgamma
-                grads['beta' + str(idx)] = self.layers['BatchNorm' + str(idx)].dbeta
 
         return grads

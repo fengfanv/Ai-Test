@@ -4,7 +4,7 @@ sys.path.append(os.pardir)  # 为了导入父目录的文件而进行的设定
 import numpy as np
 import matplotlib.pyplot as plt
 from dataset.mnist import load_mnist
-from common.multi_layer_net_batch_norm import MultiLayerNetExtend
+from common.multi_layer_net_batch_norm import MultiLayerNet
 from common.optimizer import SGD
 
 (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True)
@@ -20,9 +20,9 @@ learning_rate = 0.01
 
 
 def __train(weight_init_std):
-    bn_network = MultiLayerNetExtend(input_size=784, hidden_size_list=[100, 100, 100, 100, 100], output_size=10, 
+    bn_network = MultiLayerNet(input_size=784, hidden_size_list=[100, 100, 100, 100, 100], output_size=10, 
                                     weight_init_std=weight_init_std, use_batchnorm=True)
-    network = MultiLayerNetExtend(input_size=784, hidden_size_list=[100, 100, 100, 100, 100], output_size=10,
+    network = MultiLayerNet(input_size=784, hidden_size_list=[100, 100, 100, 100, 100], output_size=10,
                                 weight_init_std=weight_init_std)
     optimizer = SGD(lr=learning_rate)
     
