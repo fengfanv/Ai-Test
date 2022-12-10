@@ -1,4 +1,5 @@
 # 卷积层和池化层的实现（7.4 - 7.4.4）
+# 卷积层实现
 import sys
 import os
 sys.path.append(os.pardir)
