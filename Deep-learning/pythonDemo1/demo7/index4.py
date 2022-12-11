@@ -174,22 +174,6 @@ def backward(self, dout):
 
 
     # 2、给正向传播时，输入进来的图片，图片里每处池化的区域，区域的最大值位置，附上dout值，其它位置赋值为0
-    pool_size = self.pool_h * self.pool_w # 2*2=4
-    print(dout.size) # 12     (1*2*2*3)=12
-    dmax = np.zeros((dout.size, pool_size))
-    print(dmax.shape) # (12, 4)
-
-    print(dout.shape) # (1, 2, 2, 3)
-    # dout.flatten() 将dout数据展开
-    print(dout.flatten().shape) # (12,)
-
-    print(self.arg_max.size) # 12
-    print(self.arg_max.flatten())
-    '''
-    [3 3 3 3 3 3 3 3 3 3 3 3]
-    '''
-    # np.arange()函数返回一个有终点和起点的固定步长的排列
-    # np.arange(12) array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
     # 下面是，图片正向传播时，图片里每一处被池化区域 里 最大的那个值得位置，赋dout值。每处池化区域不是最大值的位置（除最大值得位置，其它位置），设置成0，这点确实和relu一样
     '''
     如一张一个通道的4*4图片
@@ -210,6 +194,24 @@ def backward(self, dout):
     第一处池化区域里26是最大的，则在反向传播时，26那个位置返回dout值，除26那个位置的其它位置，反向传播时，返回0
     第二处池化区域里28是最大的，则在反向传播时，28那个位置返回dout值，除28那个位置的其它位置，反向传播时，返回0
     '''
+    
+    pool_size = self.pool_h * self.pool_w # 2*2=4
+    print(dout.size) # 12     (1*2*2*3)=12
+    dmax = np.zeros((dout.size, pool_size))
+    print(dmax.shape) # (12, 4)
+
+    print(dout.shape) # (1, 2, 2, 3)
+    # dout.flatten() 将dout数据展开
+    print(dout.flatten().shape) # (12,)
+
+    print(self.arg_max.size) # 12
+    print(self.arg_max.flatten())
+    '''
+    [3 3 3 3 3 3 3 3 3 3 3 3]
+    '''
+    # np.arange()函数返回一个有终点和起点的固定步长的排列
+    # np.arange(12) array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])
+    
     dmax[np.arange(self.arg_max.size), self.arg_max.flatten()] = dout.flatten()
     print(dmax[np.arange(self.arg_max.size), self.arg_max.flatten()].shape) # (12,)
     print(dmax.shape) # (12, 4)
