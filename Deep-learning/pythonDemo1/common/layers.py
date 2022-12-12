@@ -63,21 +63,32 @@ class Sigmoid:
 # 书上讲的也不是特别的细，也就讲了一下大概的计算流程，然后就代码实现，如果以后，对这里有疑问，重新看一下也行，
 # 下面是，批版本的Affine层
 class Affine:
-    def __init__(self,W,b):
-        self.W = W
+    def __init__(self, W, b):
+        self.W =W
         self.b = b
+        
         self.x = None
+        self.original_x_shape = None
+        # 权重和偏置参数的导数
         self.dW = None
         self.db = None
-    
-    def forward(self,x):
+
+    def forward(self, x):
+        # 对应张量
+        self.original_x_shape = x.shape
+        x = x.reshape(x.shape[0], -1)
         self.x = x
-        out = np.dot(x,self.W)+self.b
+
+        out = np.dot(self.x, self.W) + self.b
+
         return out
-    def backward(self,dout):
-        dx = np.dot(dout,self.W.T)
-        self.dW = np.dot(self.x.T,dout)
-        self.db = np.sum(dout,axis=0)
+
+    def backward(self, dout):
+        dx = np.dot(dout, self.W.T)
+        self.dW = np.dot(self.x.T, dout)
+        self.db = np.sum(dout, axis=0)
+        
+        dx = dx.reshape(*self.original_x_shape)  # 还原输入数据的形状（对应张量）
         return dx
 
 # Softmax-with-Loss层，是softmax()和cross_entropy_error() 输出层激活函数softmax 和 交叉熵误差损失函数 的层
@@ -116,7 +127,6 @@ class Affine:
 # 此时Softmax层的反向传播传递的是(0.01, −0.01, 0)这样一个小的误差
 # 这个小的误差也会向前面的层传播，但因为误差很小，所以Softmax层 前面的层 学到的内容也很“小（少）”
 
-
 class SoftmaxWithLoss:
     def __init__(self):
         self.loss = None
@@ -127,6 +137,7 @@ class SoftmaxWithLoss:
         self.t = t
         self.y = softmax(x)
         self.loss = cross_entropy_error(self.y, self.t)
+        
         return self.loss
 
     def backward(self, dout=1):
@@ -287,15 +298,6 @@ class Convolution:
         dx = col2im(dcol, self.x.shape, FH, FW, self.stride, self.pad)
 
         return dx
-
-        '''
-        下面是 Affine 反向传播
-        dx = np.dot(dout,self.W.T)
-        self.dW = np.dot(self.x.T,dout)
-        self.db = np.sum(dout,axis=0)
-        return dx
-
-        '''
 
 class Pooling:
     def __init__(self, pool_h, pool_w, stride=1, pad=0):
