@@ -3,6 +3,7 @@ import sys
 import os
 sys.path.append(os.pardir)  # 为了导入父目录的文件而进行的设定
 
+import pickle
 from common.layers import *
 from common.optimizer import *
 from collections import OrderedDict
@@ -116,6 +117,23 @@ class SimpleConvNet:
 
         return grads
 
+    def save_params(self, file_name="params.pkl"):
+        params = {}
+        for key, val in self.params.items():
+            params[key] = val
+        with open(file_name, 'wb') as f:
+            pickle.dump(params, f)
+
+    def load_params(self, file_name="params.pkl"):
+        with open(file_name, 'rb') as f:
+            params = pickle.load(f)
+        for key, val in params.items():
+            self.params[key] = val
+
+        for i, key in enumerate(['Conv1', 'Affine1', 'Affine2']):
+            self.layers[key].W = self.params['W' + str(i+1)]
+            self.layers[key].b = self.params['b' + str(i+1)]
+
 
 
 #---------------------------------------------------------------------------------------------------
@@ -171,7 +189,7 @@ for i in range(1000000000):
             break
 
 
-# 3.绘制图形==========
+# 绘制图形==========
 markers = {'train': 'o', 'test': 's'}
 x = np.arange(max_epochs)
 plt.plot(x, train_acc_list, marker='o', label='train', markevery=10)
@@ -181,3 +199,13 @@ plt.ylabel("accuracy")
 plt.ylim(0, 1.0)
 plt.legend(loc='lower right')
 plt.show()
+
+# ------------------------------------------------------------------------------------------
+
+# 询问是否保存训练成果
+sys.stdout.write("是否保存训练结果？【y/n】")
+choice = input().lower()
+if choice in 'y':
+    network.save_params()
+else:
+    exit()
