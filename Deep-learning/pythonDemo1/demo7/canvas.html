@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #myCanvas {
+            display: block;
+            border: 4px solid #777777;
+            margin: 0 auto;
+            margin-top: 30vh;
+            /* transform: scale(20); */
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas"></canvas>
+
+    <script>
+        var canvasSize = 200;
+        var c = document.getElementById("myCanvas");
+        c.width = canvasSize;
+        c.height = canvasSize;
+        var ctx = c.getContext("2d");
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+        //随便花个东西
+        ctx.fillStyle = "black";
+        ctx.fillRect(2, 0, 100, 100);
+
+        //获取图像信息
+        var mnistSize = 28;//mnist数据集大小，宽28，高28
+        //将200px的图，缩小到mnist数据集的大小28px
+        let tempCanvas = document.createElement('canvas');
+        tempCanvas.width = mnistSize;
+        tempCanvas.height = mnistSize;
+        let tempCtx = tempCanvas.getContext('2d');
+
+        var tempImg = new Image();
+        tempImg.src = c.toDataURL();
+        tempImg.onload = function () {
+            tempCtx.drawImage(tempImg, 0, 0, canvasSize, canvasSize, 0, 0, mnistSize, mnistSize)
+
+            let imgData = tempCtx.getImageData(0, 0, mnistSize, mnistSize);
+            console.log(imgData);
+
+            var imgRgbaData = Array.from(imgData.data);// 36 = 3*3*4，4是有四个通道，r(红)，g(绿)，b(蓝)，a(透明度)
+            console.log(imgRgbaData);
+
+            getPixelData(imgRgbaData, mnistSize, mnistSize)
+            
+        }
+
+
+        //提取图像像素信息
+        function getPixelData(data, h, w) {
+            let t_size = h * w;
+            let imgPixelArr = [];
+            for (let i = 0; i < t_size; i++) {
+                let start = i * 4
+                let end = start + 4
+                imgPixelArr.push(data.slice(start, end))
+            }
+            console.log(imgPixelArr)
+            // for(let i=0;i<imgPixelArr.length;i++){
+            //     console.log(imgPixelArr[i]); //[255, 0, 0, 255]  //[red,green,blue,alpha]
+            // }
+
+            let imgGreyColorArr = [];
+            for (let i = 0; i < imgPixelArr.length; i++) {
+                let item = imgPixelArr[i];
+                let red = item[0];
+                let green = item[1];
+                let blue = item[2];
+                let gray = red * 0.299 + green * 0.587 + blue * 0.114;
+                // let gray = (red+green+blue)/3;
+                imgGreyColorArr.push(gray)
+            }
+            console.log(imgGreyColorArr);
+
+            let mnistArr = [];
+            for (let i = 0; i < imgGreyColorArr.length; i++) {
+                // 前端这里为了观感，是白底黑字，而mnist数据集是黑底白字，所以这里需要给转换一下子
+                let item = 255 - imgGreyColorArr[i]
+                // cnn的训练数据还进行了“正规化处理” 正规化处理就是把像素数据从0-255变成从0-1
+                item = item / 255;
+                mnistArr.push(item)
+            }
+            console.log(mnistArr);
+
+            let imgArr = [
+                // [255,255,255],
+                // [255,255 ...],
+                // ...
+            ];
+            for (let i = 0; i < h; i++) {
+                let start = i * w
+                let end = start + w
+                imgArr.push(mnistArr.slice(start, end))
+            }
+            console.log(imgArr);
+
+            return imgArr;
+
+        }
+
+        
+    </script>
+</body>
+
+</html>

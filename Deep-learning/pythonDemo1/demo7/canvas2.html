@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #myCanvas {
+            display: block;
+            border: 4px solid #777777;
+            margin: 0 auto;
+            margin-top: 30vh;
+            /* transform: scale(20); */
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas"></canvas>
+
+
+    <script>
+        var canvasSize = 200;
+        var c = document.getElementById("myCanvas");
+        c.width = canvasSize;
+        c.height = canvasSize;
+        var ctx = c.getContext("2d");
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+        //绑定鼠标按下，移动，松开事件
+        let hasTouched = false;
+        let extraX = 0;//额外的x值，这个是点击在飞机内部时,当前,点击,点,距离飞机边缘的距离
+        let extraY = 0;
+        c.onmousedown = function (e) {
+
+            hasTouched = true
+            e.stopPropagation();
+            e.preventDefault();
+        };
+        c.onmousemove = function (e) {
+            if (hasTouched) {
+                let offsetX = e.offsetX;
+                let offsetY = e.offsetY;
+
+                ctx.fillStyle="black";
+                ctx.fillRect(offsetX-5,offsetY-5,10,10);
+
+            }
+            e.stopPropagation();
+            e.preventDefault();
+        };
+        c.onmouseup = function (e) {
+            hasTouched = false;
+            e.stopPropagation();
+            e.preventDefault();
+        };
+    </script>
+</body>
+
+</html>

@@ -150,6 +150,8 @@ import matplotlib.pyplot as plt
 x_train = x_train[:1000]
 t_train = t_train[:1000]
 
+# print(x_train[0])
+
 network = SimpleConvNet(input_dim=(1,28,28),
                         conv_param = {'filter_num': 30, 'filter_size': 5, 'pad': 0, 'stride': 1},
                         hidden_size=100,
