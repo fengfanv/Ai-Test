@@ -2,11 +2,8 @@ import sys
 import os
 sys.path.append(os.pardir)  # 为了导入父目录的文件而进行的设定
 
-import json
-import numpy as np
 
 from cnn.simple_convnet import SimpleConvNet
-
 network = SimpleConvNet(input_dim=(1, 28, 28),
                         conv_param={'filter_num': 30,
                                     'filter_size': 5, 'pad': 0, 'stride': 1},
@@ -45,16 +42,25 @@ network.load_params()
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 #     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 # ]
-# network.api(img)
+# network.api(img) # 1
 
+# 创建一个web接口服务
 
-def main():
-    # 读取node.js传来的数据
-    lines = sys.stdin.readlines()
-    print(111)
-    # print(lines)
+import json
+from flask import Flask,request
+from flask_cors import CORS
 
+app = Flask(__name__)
+CORS(app, supports_credentials=True)#解决跨域问题
+
+@app.route('/getNumber',methods = ['POST'])
+def getNumber():
+    data = request.get_data()
+    data = json.loads(data)
+    img = data['img']
+    result = network.api(img)
+    print('result：',result)
+    return str(result)
 
 if __name__ == '__main__':
-    main()
-    sys.stdout.flush()
+    app.run(host='127.0.0.1',port=5000)

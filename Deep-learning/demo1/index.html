@@ -21,6 +21,12 @@
             justify-content: center;
             align-items: center;
         }
+
+        .result {
+            width: 100%;
+            height: auto;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -30,8 +36,10 @@
         <button onclick="distinguish()">识别</button>
         <button onclick="clearCanvas()">重置画布</button>
     </div>
+    <h2 class="result">识别结果：<span id="result"></span></h2>
 
     <script>
+        //初始化canvas
         var canvasSize = 200;
         var c = document.getElementById("myCanvas");
         c.width = canvasSize;
@@ -42,10 +50,7 @@
 
         //绑定鼠标按下，移动，松开事件
         let hasTouched = false;
-        let extraX = 0;//额外的x值，这个是点击在飞机内部时,当前,点击,点,距离飞机边缘的距离
-        let extraY = 0;
         c.onmousedown = function (e) {
-
             hasTouched = true
             e.stopPropagation();
             e.preventDefault();
@@ -71,7 +76,6 @@
         //清除画布
         function clearCanvas() {
             ctx.clearRect(0, 0, canvasSize, canvasSize);
-
             ctx.fillStyle = "white";
             ctx.fillRect(0, 0, canvasSize, canvasSize);
         }
@@ -94,32 +98,32 @@
                 let imgData = tempCtx.getImageData(0, 0, mnistSize, mnistSize);
                 console.log(imgData);
 
-                let imgRgbaData = Array.from(imgData.data);// 36 = 3*3*4，4是有四个通道，r(红)，g(绿)，b(蓝)，a(透明度)
+                let imgRgbaData = Array.from(imgData.data);// 3*3大小的图输出36 36=3*3*4，4是有四个通道，r(红)，g(绿)，b(蓝)，a(透明度)
                 console.log(imgRgbaData);
 
                 let img_data = getPixelData(imgRgbaData, mnistSize, mnistSize)
 
-                //请求request
+                //请求api接口
                 var xhr = new XMLHttpRequest();
-                xhr.open('post', 'http://localhost:8080/api/getNumber', true)
+                xhr.open('post', 'http://localhost:5000/getNumber', true)
                 // 接收返回值
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4) {
                         if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
                             console.log(xhr.responseText);
+                            let resultDom = document.getElementById('result');
+                            resultDom.innerText = xhr.responseText;
                         }
                     }
                 }
-                // 处理请求参数
-                postData = { "img": img_data};
                 // 设置请求头
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 // 异常处理
                 xhr.onerror = function () {
                     console.log('Network request failed')
                 }
-                // 跨域携带cookie
-                xhr.withCredentials = true;
+                // 请求参数
+                postData = { "img": img_data };
                 // 发出请求
                 xhr.send(JSON.stringify(postData));
 
