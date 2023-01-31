@@ -1,4 +1,4 @@
-# 手写数字识别项目
+# Python版手写数字识别
 
 ## 运行环境
 ```
@@ -18,7 +18,7 @@ cd cnn
 python api.py
 ```
 
-# 训练模型
+## 训练模型
 ```
 cd cnn
 python train_convnet.py
