@@ -4,7 +4,7 @@
 class Man:
     def __init__(self,name):            #__init__就是js里constructor
         self.name = name
-        print('已初始化！')
+        print('初始化类！')
     
     def hello(self):
         print(self.name + ' said hello to you.')
@@ -12,7 +12,7 @@ class Man:
     def goodbye(self):
         print(self.name + ' said good-bye to you.')
 
-m = Man('XiaoKang')
+m = Man('XiaoKang') #类Man生成一个实例（对象）m
 m.hello()
 m.goodbye()
 
@@ -69,7 +69,7 @@ import matplotlib.pyplot as plt         #使用matplotlib库的pyplot模块，�
 
 from matplotlib.image import imread     #从matplotlib库的image模块内导出imread方法并使用
 
-# img = imread('lena.png')
-# plt.imshow(img)
+img = imread('lena.png')
+plt.imshow(img)
 
-# plt.show()
+plt.show()
