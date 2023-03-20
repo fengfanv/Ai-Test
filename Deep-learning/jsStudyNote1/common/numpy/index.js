@@ -88,6 +88,7 @@ function allItemSum(arr) {
 }
 
 /*
+下面是关于获取数据形状(numpy.shape)的功能实现
 
 [
     [1]
@@ -160,16 +161,16 @@ let arr =
 1、获取数据的形状
 准备一个数组用来存放形状数据
 let shapeArr = [];
-第一层直接获取arr的长度，这里arr.length是2，所以将2放进形状数组
+第一层（第一维），直接获取arr的长度，这里arr.length是2，所以将2放进形状数组
 现在的shapeArr形状数组是[2]
 
-第二层，获取arr[0].length，这里arr[0].length是3，将3放进形状数组
+第二层（第二维），获取arr[0].length，这里arr[0].length是3，将3放进形状数组
 现在的shapeArr形状数组是[2,3]
 
-第三层，获取arr[0][0].length，这里arr[0][0].length是2，将2放进形状数组
+第三层（第三维），获取arr[0][0].length，这里arr[0][0].length是2，将2放进形状数组
 现在的shapeArr形状数组是[2,3,2]
 
-第四层，获取arr[0][0][0].length，这里arr[0][0][0].length是2，将2放进形状数组
+第四层（第四维），获取arr[0][0][0].length，这里arr[0][0][0].length是2，将2放进形状数组
 现在的shapeArr形状数组是[2,3,2,2]
 
 2、根据获取到的数据的形状，检查数据是否符合标准
@@ -177,24 +178,24 @@ let shapeArr = [];
 下面利用这个数据，使用递归方法，检查数据的所有节点是否都是符合上面这个形状，如果检查过程中，如果有某个节点数据形状不对，则报错
 
 //下面是检查方法
-function shapeCheck(arr,shape,dim){
-    arr是数据
-    shape形状数组
-    dim 默认为0，表示当前检查的是shape数组的第几个，假如形状数据是[4,3,2,2]，当前检查的是第0层，也就是数组里下标为0的那个数据，也就是4
+function shapeCheck(arr,shape,ndim){
+    arr 是数据
+    shape 形状数组
+    ndim 数据形状维度的下标，这里为了兼容形状数组下标为0，所以默认为0开始。表示当前检查的是shape数组里的第几个。如形状数据是[4,3,2,2]，假如当前检查的是数据的第1层（数据的第一维），也就是数组里下标为0的那个数据，也就是4
 
     let arrLen = arr.length;
-    if(arrLen == shape[dim]){
+    if(arrLen == shape[ndim]){
         //正确，则继续往里面，检查
-        if(shape.length-1 == dim){
+        if(shape.length-1 == ndim){
             //这是最后一层了，在往里面没有东西了
             return true
         }else{
             //不是最后一层，里面还有东西
-            let newDim = dim++;
+            let newNdim = ndim++;
             for(let i=0;i<arrLen;i++){
                 let itemArr = arr[i];
                 if(Array.isArray(itemArr)){
-                    shapeCheck(itemArr,shape,newDim)
+                    shapeCheck(itemArr,shape,newNdim)
                 }else{
                     //不是数组，抛错
                     throw new Error('检查过程中发现非数组类型！')
@@ -203,8 +204,32 @@ function shapeCheck(arr,shape,dim){
         }
     }else{
         //形状不正确，抛错
-        throw new Error('检查发现，数据形状在，'+shape+'：'+dim+'，处不正确！')
+        throw new Error('检查发现，数据形状在，'+shape+'：'+ndim+'，处不正确！')
     }
 }
+*/
+
+
+/*
+下面是关于获取数据维度(numpy.ndim)的功能实现（获取数据是几维数据，维度的数量）
+
+实现方法，先使用上面的numpy.shape获取数据形状数组，返回返回数据形状数组的长度，就得到了数据的维度
+*/
+
+
+/*
+下面是关于，根据形状数组，生成数据的方法(numpy.create_array)
+
+这个方法接受，两个参数，一个是shape数组，另一个是，初始化的数据，使用什么数据进行初始化（初始化的数据，目前仅支持，纯数字，以后会支持funtion）
+
+首先准备一个空数组，用来装待会生成的数据
+let arr = [];
+
+
+
+
+
 
 */
+
+
