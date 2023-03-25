@@ -1,94 +1,6 @@
-// 获取数组(矩阵)的维度(形状)
-// 实现要求，至少支持4维数据的识别，也就是[2,2,3,4]
-function shape(arr) {
-
-    isArray(arr);//检查是否是数组
-
-    let shapeArr = [];//形状数组
-
-    //检查数组所有的item是否有array类型的数据
-    if (itemIsArray(arr) == false) {
-        //没有array类型的数据，所以是一维数组，直接返回数组长度
-        shapeArr[0] = arr.length;
-        return shapeArr;
-    } else {
-        shapeArr.push(arr.length);//插入一维的长度
-        //arr数据的列表项里有元素是数组
-        if (allItemIsArray(arr) == false) {
-            throw new Error('此数据具有不均匀的形状！')
-        } else {
-            let itemLen = arr.length;
-            let firstItemLen = arr[0].length;
-            let allItemValue = allItemSum(getItemArrayLength(arr));
-            if (allItemValue / itemLen !== firstItemLen) {
-                throw new Error('此数据具有不均匀的形状！')
-            } else {
-                shapeArr.push(firstItemLen);
-
-
-
-            }
-        }
-    }
-
-    return shapeArr;//返回数组形状
-}
-exports.shape = shape;
-
-//检查数组所有的item是否有array类型的数据
-function itemIsArray(arr) {
-    let arrLen = arr.length;
-    for (let i = 0; i < arrLen; i++) {
-        let item = arr[i];
-        if (Array.isArray(item)) {
-            return true;
-        }
-    }
-    return false;
-}
-
-//检查数据是否是数组
-function isArray(arr) {
-    if (!Array.isArray(arr)) {
-        throw new Error('此数据不是数组！')
-    }
-    return true
-}
-
-//检查数组所有的item是否都是array类型的数据
-function allItemIsArray(arr) {
-    let arrLen = arr.length;
-    for (let i = 0; i < arrLen; i++) {
-        let item = arr[i];
-        if (Array.isArray(item) == false) {
-            return false;
-        }
-    }
-    return true;
-}
-
-//获取数组所有的item(item是array类型)的长度
-function getItemArrayLength(arr) {
-    let arrLen = arr.length;
-    let lenArr = [];
-    for (let i = 0; i < arrLen; i++) {
-        lenArr.push(arr[i].length);
-    }
-    return lenArr;
-}
-
-//将数组所有数据项相加
-function allItemSum(arr) {
-    let arrLen = arr.length;
-    let result = 0;
-    for (let i = 0; i < arrLen; i++) {
-        result = result + arr[i];
-    }
-    return result;
-}
 
 /*
-下面是关于获取数据形状(numpy.shape)的功能实现
+下面是关于获取数据形状(numpy.shape)的功能实现描述
 
 [
     [1]
@@ -209,12 +121,63 @@ function shapeCheck(arr,shape,ndim){
 }
 */
 
+//获取数组形状的方法
+function getArrShape(arr, shape) {
+    if (Array.isArray(arr)) {
+        shape.push(arr.length);
+        if (arr.length > 0) {
+            return getArrShape(arr[0], shape)
+        } else {
+            return shape
+        }
+    } else {
+        return shape
+    }
+}
+
+//检查数组形状是否符合规则
+function checkShape(arr, shape, ndim) {
+    let arrLen = arr.length;
+    if (arrLen == shape[ndim]) {
+        if (shape.length - 1 == ndim) {
+            return true
+        } else {
+            let newNdim = ndim + 1;
+            for (let i = 0; i < arrLen; i++) {
+                let itemArr = arr[i];
+                if (Array.isArray(itemArr)) {
+                    checkShape(itemArr, shape, newNdim)
+                } else {
+                    throw new Error('错误：检查过程中发现非数组类型数据；此处获取的标准形状：' + shape + '；数据形状在：ndim' + ndim + '处发现非数据组类型;')
+                }
+            }
+        }
+    } else {
+        throw new Error('错误：数据形状不规整；此处获取的标准形状：' + shape + '；数据形状在：ndim' + ndim + '处不规整;')
+    }
+}
+
+function shape(arr) {
+    let shapeArr = [];
+    shapeArr = getArrShape(arr, shapeArr);
+    checkShape(arr, shapeArr, 0)
+    return shapeArr;
+}
+
+exports.shape = shape;
 
 /*
 下面是关于获取数据维度(numpy.ndim)的功能实现（获取数据是几维数据，维度的数量）
 
 实现方法，先使用上面的numpy.shape获取数据形状数组，返回返回数据形状数组的长度，就得到了数据的维度
 */
+
+function ndim(arr) {
+    let shapeArr = shape(arr);
+    return shapeArr.length
+}
+
+exports.ndim = ndim
 
 
 /*
@@ -254,6 +217,8 @@ function create_array(shape,value){
 然后按照上面的顺序，直到创建到数据形状数组的4的那个数据，最后返回生成的数据
 
 */
+
+
 
 
 /*
