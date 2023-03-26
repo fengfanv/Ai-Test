@@ -218,8 +218,25 @@ function create_array(shape,value){
 
 */
 
+function createArr(shape, ndim, data) {
+    let arr = [];
+    data = typeof data == 'Number' ? data : JSON.parse(JSON.stringify(data));
+    if (ndim < 0) {
+        return data;//最后一层了，直接返回数据
+    } else {
+        //不是最后一层，继续循环构建数据
+        for (let i = 0; i < shape[ndim]; i++) {
+            arr.push(data)
+        }
+        return createArr(shape, ndim - 1, arr)
+    }
+}
 
+function create_array(shape, value) {
+    return createArr(shape, shape.length - 1, value)
+}
 
+exports.create_array = create_array;
 
 /*
 下面是关于，获取数组（矩阵）的元素的总个数的功能实现(numpy.size)
@@ -228,40 +245,93 @@ function create_array(shape,value){
 
 */
 
+function size(arr) {
+    //乘法
+    var multiply = function (value, shapeArr, index) {
+        if (index >= shapeArr.length) {
+            return value
+        } else {
+            let newValue = value * shapeArr[index];
+            let newIndex = index + 1;
+            return multiply(newValue, shapeArr, newIndex)
+        }
+    }
+    let shapeArr = [];
+    shapeArr = shape(arr);
+    let value = multiply(shapeArr[0], shapeArr, 1) || 0;
+    return value
+}
+
+exports.size = size;
+
 /*
 下面是关于，根据数值范围创建数组(numpy.arange)的方法
 
-function arange(start,stop,step){
-    //start起始值，默认为0
-    //stop终止值（不包含）
-    //step步长，默认为1
+function arange(start, stop, step) {
+    //start起始值，默认为0，可选
+    //stop终止值，必选
+    //step步长，默认为1，可选
 
-    let arr = [];
-    let value = start;
-    for(let i=start;i<stop;i++){
-        arr.push(value);
-        value=value+1;
+    if (typeof start != 'undefined' && typeof stop == 'undefined' && typeof step == 'undefined') {
+        //第一种情况，仅传stop值
+        stop = start;
+        start = 0;
+        step = 1;
+    } else if (typeof start != 'undefined' && typeof stop != 'undefined' && typeof step == 'undefined') {
+        //第二种情况，传start，stop值
+        // start = start;
+        // stop = stop;
+        step = 1;
+    } else if (typeof start != 'undefined' && typeof stop != 'undefined' && typeof step != 'undefined') {
+        //第三种情况，三个参数都传
+        // start = start;
+        // stop = stop;
+        // step = step;
     }
-
-    return arr
+    let arr = [];
+    for (let i = start; i < stop; i=i+step) {
+        arr.push(i);
+    }
+    return arr;
 }
 */
+
+function arange(start, stop, step) {
+    if (typeof start != 'undefined' && typeof stop == 'undefined' && typeof step == 'undefined') {
+        stop = start;
+        start = 0;
+        step = 1;
+    } else if (typeof start != 'undefined' && typeof stop != 'undefined' && typeof step == 'undefined') {
+        // start = start;
+        // stop = stop;
+        step = 1;
+    } else if (typeof start != 'undefined' && typeof stop != 'undefined' && typeof step != 'undefined') {
+        // start = start;
+        // stop = stop;
+        // step = step;
+    }
+    let arr = [];
+    for (let i = start; i < stop; i=i+step) {
+        arr.push(i);
+    }
+    return arr;
+}
+
+exports.arange = arange;
 
 
 /*
 下面是关于，修改数据形状的方法（numpy.reshape）
-
-
-
-
 */
-
 
 
 
 /*
-下面是关于，
+下面是关于，对换数组的维度的方法（numpy.transpose）
 */
+
+
+
 
 
 
