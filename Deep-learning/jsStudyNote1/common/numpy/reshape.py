@@ -1,8 +1,57 @@
 import numpy as np
 
-a = np.arange(0,16,1)
+a = np.arange(0, 16, 1)
 print(a)
 # [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15]
+
+# 关于 reshape 的 order 属性的描述
+'''
+order，C、F、A，默认C
+
+参数C：横着读，横着写，优先读/写一行。
+
+参数F：竖着读，竖着写，优先读/写一列。
+
+参数A：所生成的数组的效果与 原数组 的数据存储方式有关，如果数据是按照Fortran存储的话，它的生成效果与 F 相同，否则与 C 相同。
+'''
+
+x = np.arange(6).reshape((3, 2))
+c = np.reshape(x, (2, 3), order='C')  # C-like index ordering 这是原始文档中的注释
+f = np.reshape(x, (2, 3), order='F')  # Fortran-like index ordering 这是原始文档中的注释
+a = np.reshape(x, (2, 3), order='A')  # A没有举例也没有注释
+print('x：')
+print(x)
+'''
+[[0 1]
+ [2 3]
+ [4 5]]
+'''
+print('c：')
+print(c)
+'''
+[[0 1 2]
+ [3 4 5]]
+'''
+print('f：')
+print(f)
+'''
+[[0 4 3]
+ [2 1 5]]
+
+ 上面f输出，[[0,4,3],[2,1,5]] 这种奇怪的顺序，原因在于 order='F' 。
+ 它在执行 np.reshape(x, (2, 3), order='F') 时，
+ 先把 数组x，按 列 竖着 读取 成了一个一维数组，数组x 被竖着拉成了这样 [0,2,4,1,3,5]。
+ 然后在对这个 一维数组 里的元素，按顺序，竖着放进 f 这个数组里。
+ 所以 也就是 为什么 出现了上面那种奇怪的数据顺序。
+'''
+print('a：')
+print(a)
+'''
+[[0 1 2]
+ [3 4 5]]
+'''
+
+
 
 # 关于reshape 里 -1 的相关操作
 
@@ -38,7 +87,7 @@ print(a)
 
 # print(a.reshape(10,-1)) #将数组变成10行的格式，列数自动计算的(c=10, d=16/10=1.6)，这里计算出来的 d 不是整数，是小数，所以报错
 
-print(a.reshape(4,-1))
+# print(a.reshape(4,-1))
 '''
 [[ 0  1  2  3]
  [ 4  5  6  7]
@@ -46,7 +95,7 @@ print(a.reshape(4,-1))
  [12 13 14 15]]
 '''
 
-print(a.reshape(-1,4))
+# print(a.reshape(-1,4))
 '''
 [[ 0  1  2  3]
  [ 4  5  6  7]
@@ -54,7 +103,7 @@ print(a.reshape(-1,4))
  [12 13 14 15]]
 '''
 
-print(a.reshape(2,-1,4))
+# print(a.reshape(2,-1,4))
 '''
 [[[ 0  1  2  3]
   [ 4  5  6  7]]
@@ -63,7 +112,7 @@ print(a.reshape(2,-1,4))
   [12 13 14 15]]]
 '''
 
-print(a.reshape(-1,2,4))
+# print(a.reshape(-1,2,4))
 '''
 [[[ 0  1  2  3]
   [ 4  5  6  7]]
@@ -71,9 +120,3 @@ print(a.reshape(-1,2,4))
  [[ 8  9 10 11]
   [12 13 14 15]]]
 '''
-
-
-
-
-
-
