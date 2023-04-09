@@ -126,6 +126,10 @@ a4 = np.array([
 # print(np.reshape(a4, (2, 2, 2, 2, -1), order='C'))
 # print("np.reshape(a4, (2, 2, 2, 2, 1, -1), order='C')")
 # print(np.reshape(a4, (2, 2, 2, 2, 1, -1), order='C'))
+# a41 = np.reshape(a4, (2, 2, 2, 2, 1, -1), order='C')
+# print(a41.shape,a41.size,a4.size)
+print(np.reshape(a4, (48), order='C'))
+
 
 # print(np.reshape(a4, (8, -1), order='F'))
 # print(np.reshape(a4, (-1), order='F'))
