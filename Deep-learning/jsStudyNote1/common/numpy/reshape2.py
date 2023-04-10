@@ -1,6 +1,5 @@
 import numpy as np
 
-# def printArr(arr,indexArr=[],callback):
 
 
 a1 = np.array([
