@@ -5,6 +5,7 @@ var size = Main.size;
 
 const Common = require('./common.js');
 var multiply = Common.multiply;
+var printArr = Common.printArr;
 
 /*
 
@@ -56,52 +57,52 @@ function ravel_C(arr) {
     return newArr;
 }
 
-let a = [
-    [
-        [
-            [
-                [1, 2, 3],
-                [4, 5, 6]
-            ],
-            [
-                [7, 8, 9],
-                [10, 11, 12]
-            ]
-        ],
-        [
-            [
-                [13, 14, 15],
-                [16, 17, 18]
-            ],
-            [
-                [19, 20, 21],
-                [22, 23, 24]
-            ]
-        ]
-    ],
-    [
-        [
-            [
-                [1, 2, 3],
-                [4, 5, 6]
-            ],
-            [
-                [7, 8, 9],
-                [10, 11, 12]
-            ]
-        ],
-        [
-            [
-                [13, 14, 15],
-                [16, 17, 18]
-            ],
-            [
-                [19, 20, 21],
-                [22, 23, 24]
-            ]
-        ]
-    ]
-]
+// let a = [
+//     [
+//         [
+//             [
+//                 [1, 2, 3],
+//                 [4, 5, 6]
+//             ],
+//             [
+//                 [7, 8, 9],
+//                 [10, 11, 12]
+//             ]
+//         ],
+//         [
+//             [
+//                 [13, 14, 15],
+//                 [16, 17, 18]
+//             ],
+//             [
+//                 [19, 20, 21],
+//                 [22, 23, 24]
+//             ]
+//         ]
+//     ],
+//     [
+//         [
+//             [
+//                 [1, 2, 3],
+//                 [4, 5, 6]
+//             ],
+//             [
+//                 [7, 8, 9],
+//                 [10, 11, 12]
+//             ]
+//         ],
+//         [
+//             [
+//                 [13, 14, 15],
+//                 [16, 17, 18]
+//             ],
+//             [
+//                 [19, 20, 21],
+//                 [22, 23, 24]
+//             ]
+//         ]
+//     ]
+// ]
 // console.log(ravel_C(a))
 
 //获取某个数据在数组中出现的次数
@@ -115,46 +116,6 @@ function getDataCount(arr, data) {
     }
     return indexArr;
 }
-
-//将数组里的数据读取出来并打印出坐标（支持给数据赋值）
-function printArr(arr, indexArr, callback) {
-    if (Array.isArray(arr) == false || arr.length < 1) {
-        throw new Error('printArr:error arr不能是空数组！');
-    }
-    if (typeof indexArr == 'undefined') {
-        indexArr = []
-    }
-    for (let i = 0; i < arr.length; i++) {
-        let item = arr[i];
-        let newIndexArr = JSON.parse(JSON.stringify(indexArr));
-        newIndexArr.push(i);
-        if (Array.isArray(item)) {
-            printArr(item, newIndexArr, callback);
-        } else {
-            callback && callback({ index: newIndexArr, value: item, childArr: arr, childIndex: i })
-        }
-    }
-}
-
-// let aSize = size(a);
-// let aIndex = 0
-// printArr(a, [], (res) => {
-//     //打印矩阵里的每一个元素
-//     // console.log(res.index,res.value)
-//     //重新赋值
-//     // res.childArr[res.childIndex] = aIndex;
-//     // aIndex = aIndex + 1;
-//     //遍历完所有子元素
-//     // if (aIndex == aSize) {
-//     //     console.log('aSize', aSize);
-//     //     console.log('a：');
-//     //     printArr(a, [], (res) => {
-//     //         console.log(res.index,res.value)
-//     //     })
-//     // }
-// })
-// console.log('shape(a)', shape(a))
-
 
 //改变数据形状C
 function reshape_C(arr, newShape) {
@@ -229,17 +190,17 @@ exports.reshape = reshape;
 
 //实验，reshape方法c
 
-a = a;
-console.log('a.shape', shape(a));
-console.log('a.size', size(a));
-console.log('a：')
-printArr(a, [], (res) => {
-    console.log(res.index, res.value)
-})
+// a = a;
+// console.log('a.shape', shape(a));
+// console.log('a.size', size(a));
+// console.log('a：')
+// printArr(a, [], (res) => {
+//     console.log(res.index, res.value)
+// })
 
-console.log()
-console.log('-------------------------------------')
-console.log()
+// console.log()
+// console.log('-------------------------------------')
+// console.log()
 
 // let b = null;
 // b = reshape(a,[-1]);//仅有一个-1，展开数据

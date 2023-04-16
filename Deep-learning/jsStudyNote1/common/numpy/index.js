@@ -1,5 +1,6 @@
 const Main = require('./main.js')
 const Reshape = require('./reshape.js')
+const Transpose = require('./transpose.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -20,3 +21,6 @@ exports.arange = Main.arange;
 exports.reshape = Reshape.reshape;
 
 //下面是关于，对换数组的维度的方法（numpy.transpose）
+exports.transpose = Transpose.transpose;
+
+//下面是关于，两个数组的点积运算方法（numpy.dot）
