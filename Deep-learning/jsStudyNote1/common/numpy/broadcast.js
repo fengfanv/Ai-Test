@@ -28,7 +28,7 @@ function broadcast(a1, a2) {
 
     let arr1ShapeReverse = arr1Shape.reverse();
     let arr2ShapeReverse = arr2Shape.reverse();
-    let len = arr1ShapeReverse.length>arr2ShapeReverse.length?arr1ShapeReverse.length:arr2ShapeReverse.length;
+    let len = arr1ShapeReverse.length > arr2ShapeReverse.length ? arr1ShapeReverse.length : arr2ShapeReverse.length;
     for (let i = 0; i < len; i++) {
         let arr1Item = arr1ShapeReverse[i] || 1;
         let arr2Item = arr2ShapeReverse[i] || 1;
@@ -66,38 +66,38 @@ function broadcast(a1, a2) {
 
     //是否可以循环
     let isLoop = true;
-    while(isLoop){
+    while (isLoop) {
         arr1Shape = shape(arr1);
         arr2Shape = shape(arr2);
-        if(arr1Shape.join()==arr2Shape.join()){
+        if (arr1Shape.join() == arr2Shape.join()) {
             //数据处理完毕，关闭循环
             isLoop = false;
             //返回处理好的数据
-            return [arr1,arr2]
-        }else{
+            return [arr1, arr2]
+        } else {
             let arr1ShapeReverse = arr1Shape.reverse();
             let arr2ShapeReverse = arr2Shape.reverse();
-            let len = arr1ShapeReverse.length>arr2ShapeReverse.length?arr1ShapeReverse.length:arr2ShapeReverse.length;
-            for(let i=0;i<len;i++){
+            let len = arr1ShapeReverse.length > arr2ShapeReverse.length ? arr1ShapeReverse.length : arr2ShapeReverse.length;
+            for (let i = 0; i < len; i++) {
                 let arr1Item = arr1ShapeReverse[i] || -1;
                 let arr2Item = arr2ShapeReverse[i] || -1;
                 if (arr1Item != arr2Item) {
                     //判断是不是，维度维度缺失
-                    if(arr1Item==-1){
+                    if (arr1Item == -1) {
                         arr1 = addDim(arr1);
                         break;
-                    }else if(arr2Item == -1){
+                    } else if (arr2Item == -1) {
                         arr2 = addDim(arr2);
                         break;
                     }
                     //判断那方是1
-                    if(arr1Item==1){
-                        let shapeIndex = (arr1Shape.length-1)-i;
-                        printArr2(arr1,[],shapeIndex,arr2Item);
+                    if (arr1Item == 1) {
+                        let shapeIndex = (arr1Shape.length - 1) - i;
+                        printArr2(arr1, [], shapeIndex, arr2Item);
                         break;
-                    }else if(arr2Item==1){
-                        let shapeIndex = (arr2Shape.length-1)-i;
-                        printArr2(arr2,[],shapeIndex,arr1Item);
+                    } else if (arr2Item == 1) {
+                        let shapeIndex = (arr2Shape.length - 1) - i;
+                        printArr2(arr2, [], shapeIndex, arr1Item);
                         break;
                     }
                 }
@@ -408,3 +408,48 @@ let b6 = [1]
 // console.log('after：b6',res6[1]);
 // console.log('after：shape(a6)',shape(res6[0]))
 // console.log('after：shape(b6)',shape(res6[1]))
+
+let a7 = [1]
+let b7 = [
+    [
+        [
+            [1,2,3]
+        ]
+    ],
+    [
+        [
+            [4,5,6]
+        ]
+    ],
+]
+// console.log('before：shape(a7)', shape(a7))
+// console.log('before：shape(b7)', shape(b7))
+// let res7 = broadcast(a7, b7)
+// console.log('after：a7', JSON.stringify(res7[0]));
+// console.log('after：b7', JSON.stringify(res7[1]));
+// console.log('after：shape(a7)', shape(res7[0]))
+// console.log('after：shape(b7)', shape(res7[1]))
+// [
+//     [
+//         [
+//             [1,1,1]
+//         ]
+//     ],
+//     [
+//         [
+//             [1,1,1]
+//         ]
+//     ]
+// ]
+// [
+//     [
+//         [
+//             [1,2,3]
+//         ]
+//     ],
+//     [
+//         [
+//             [4,5,6]
+//         ]
+//     ]
+// ]
