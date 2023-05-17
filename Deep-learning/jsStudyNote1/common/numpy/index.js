@@ -1,6 +1,7 @@
 const Main = require('./main.js')
 const Reshape = require('./reshape.js')
 const Transpose = require('./transpose.js')
+const Broadcast = require('./broadcast.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -20,7 +21,39 @@ exports.arange = Main.arange;
 //修改数据形状的方法（numpy.reshape）
 exports.reshape = Reshape.reshape;
 
-//下面是关于，对换数组的维度的方法（numpy.transpose）
+//对换数组的维度的方法（numpy.transpose）
 exports.transpose = Transpose.transpose;
 
-//下面是关于，两个数组的点积运算方法（numpy.dot）
+//对数据应用广播机制（使用广播机制处理数据）（numpy.broadcast)
+exports.broadcast = Broadcast.broadcast;
+
+
+
+// numpy a+b 加法（基于广播机制）
+// numpy a-b 减法（基于广播机制）
+// numpy a*b 乘法（基于广播机制）
+// numpy a/b 除法（基于广播机制）
+
+// numpy.dot 两个数组的点积运算方法（numpy.dot）
+
+// numpy a>10 a<10 这种操作
+
+// numpy.sin
+// numpy.cos
+// numpy.tan
+// numpy.exp
+// numpy.log
+
+// numpy.max
+// numpy.argmax
+// numpy.min
+// numpy.argmin
+// numpy.sqrt
+// numpy.maximum
+// numpy.random.randn
+// numpy.random.choice
+// 下边可以不实现，到时候看情况
+// numpy.frombuffer
+
+// numpy.kaiser
+// numpy.convolve
