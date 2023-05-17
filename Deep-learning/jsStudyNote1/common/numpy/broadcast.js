@@ -453,3 +453,60 @@ let b7 = [
 //         ]
 //     ]
 // ]
+
+let a8 = [1,2,3]
+let b8 = [
+    [
+        [
+            [0],
+            [0],
+            [0]
+        ]
+    ],
+    [
+        [
+            [0],
+            [0],
+            [0]
+        ]
+    ],
+]
+// console.log('before：shape(a8)', shape(a8))
+// console.log('before：shape(b8)', shape(b8))
+// let res8 = broadcast(a8, b8)
+// console.log('after：a8', JSON.stringify(res8[0]));
+// console.log('after：b8', JSON.stringify(res8[1]));
+// console.log('after：shape(a8)', shape(res8[0]))
+// console.log('after：shape(b8)', shape(res8[1]))
+// [
+//     [
+//         [
+//             [1,2,3],
+//             [1,2,3],
+//             [1,2,3],
+//         ]
+//     ],
+//     [
+//         [
+//             [1,2,3],
+//             [1,2,3],
+//             [1,2,3],
+//         ]
+//     ],
+// ]
+// [
+//     [
+//         [
+//             [0,0,0],
+//             [0,0,0],
+//             [0,0,0],
+//         ]
+//     ],
+//     [
+//         [
+//             [0,0,0],
+//             [0,0,0],
+//             [0,0,0],
+//         ]
+//     ],
+// ]
