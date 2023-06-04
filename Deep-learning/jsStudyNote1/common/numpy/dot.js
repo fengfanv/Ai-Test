@@ -1,5 +1,9 @@
 const Main = require('./main.js');
 var shape = Main.shape;
+var arange = Main.arange;
+
+const Reshape = require('./reshape.js')
+var reshape = Reshape.reshape;
 
 const Common = require('./common.js');
 var printArr = Common.printArr;
@@ -52,10 +56,113 @@ a.shape = [2,3]，b.shape = [3]，dot(a,b).shape = [2]
 
 如何完成 重写dot方法 这样的任务？
 第一（目标）设目标（或目的），（如，我要使用js重写dot方法）
-
 第二（观察）找资料，写demo案例，进行大量实验，观察原始numpy是怎么运行的
-
 第三（总结）根据上面实验，资料，获取到的信息，使用文字描述出 将要实现的功能，是干啥的，怎么运行，运行条件，运行注意事项等
-
 第四（实现）根据上面的文字描述，使用代码实现功能
 */
+
+
+
+function dot(a, b) {
+    let arrInfo = {
+        aShape: shape(a),
+        bShape: shape(b),
+    }
+    //1、检查两数组形状是否支持dot运算
+    //2、生成结果数组形状
+    if ((arrInfo.aShape.length == 0 && arrInfo.bShape.length != 0) || (arrInfo.aShape.length != 0 && arrInfo.bShape.length == 0)) {
+        //a和b有一边是数字，一边是数组
+        let resultShape = [];
+        if (arrInfo.aShape.length > 0) {
+            resultShape = arrInfo.aShape;
+        } else {
+            resultShape = arrInfo.bShape;
+        }
+        console.log('a', resultShape);
+    } else if (arrInfo.aShape.length == 0 && arrInfo.bShape.length == 0) {
+        //a和b都是数字
+        console.log('b', '两边都是数字，结果输出，纯数字', a * b)
+    } else if (arrInfo.aShape.length == 1 && arrInfo.bShape.length == 1) {
+        //a和b都是一维
+        if (arrInfo.aShape[0] != arrInfo.bShape[0]) {
+            throw new Error(`dot:error a和b都是一维，两个一维数组长度不一样，a：${arrInfo.aShape[0]}，b：${arrInfo.bShape[0]}，无法进行dot运算`)
+        }
+        let resultShape = [];
+        console.log('c', '两边都是一维，结果输出，纯数字')
+    } else if (arrInfo.aShape.length == 1 && arrInfo.bShape.length > 1) {
+        //a是一维，b是二维及以上
+        if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
+            throw new Error(`dot:error a是一维 b是二维及以上，左边一维的数量与右边倒数第二维数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
+        }
+        let resultShape = [].concat(arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(-1));
+        console.log('d', resultShape)
+    } else if (arrInfo.aShape.length > 1 && arrInfo.bShape.length == 1) {
+        //a是二维及以上，b是一维
+        if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-1)[0]) {
+            throw new Error(`dot:error a是二维及以上 b是一维，左边最后一维的数量与右边一维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-1)}，无法进行dot运算`)
+        }
+        let resultShape = [].concat(arrInfo.aShape.slice(0, -1));
+        console.log('e', resultShape)
+    } else if (arrInfo.aShape.length == 2 && arrInfo.bShape.length == 2) {
+        //a和b 都是2维
+        if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(0, 1)[0]) {
+            throw new Error(`dot:error a和b都是二维，左边最后一维的数量与右边第一维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(0, 1)}，无法进行dot运算`)
+        }
+        let resultShape = [].concat(arrInfo.aShape.slice(0, 1), arrInfo.bShape.slice(-1));
+        console.log('f', resultShape)
+    } else if (arrInfo.aShape.length == 2 && arrInfo.bShape.length > 2) {
+        //a是二维，b是三维及以上
+        if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
+            throw new Error(`dot:error a是二维 b是三维及以上，左边最后一维的数量与右边倒数第二维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
+        }
+        let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(1));
+        console.log('g', resultShape)
+    } else if (arrInfo.aShape.length > 2 && arrInfo.bShape.length == 2) {
+        //a是三维及以上，b是二维
+        if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
+            throw new Error(`dot:error a是三维及以上 b是二维，左边最后一维的数量与右边倒数第二维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
+        }
+        let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(1));
+        console.log('h', resultShape)
+    } else if (arrInfo.aShape.length > 2 && arrInfo.bShape.length > 2) {
+        //a和b都是三维及以上
+        if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
+            throw new Error(`dot:error a和b都是三维及以上，左边最后一维的数量与右边倒数第二维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
+        }
+        let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(1));
+        console.log('i', resultShape)
+    }
+
+
+
+
+
+
+
+}
+exports.dot = dot;
+
+
+
+// dot(1,2) //纯数字
+
+// let a = reshape(arange(1 * 2 * 3 * 4), [1, 2, 3, 4])
+// console.log("shape(a)", shape(a))
+// dot(a,2) //[1, 2, 3, 4]
+// dot(2,a) //[1, 2, 3, 4]
+
+// dot([1,2,3],[4,5,6]) //纯数字
+
+// dot([1,2,3],[1,2]) //报错，正常的
+
+let a = [1, 2, 3, 4];
+let b = reshape(arange(1*2*4*5),[1,2,4,5]);
+let b1 = reshape(arange(1*2*3*4),[1,2,3,4]);
+// console.log("shape(a)",shape(a)) //[ 4 ]
+// console.log("shape(b)",shape(b)) //[ 1, 2, 4, 5 ]
+// dot(a,b) //[ 1, 2, 5 ]
+
+// console.log("shape(b1)",shape(b1)) //[ 1, 2, 3, 4 ]
+// dot(a,b1) //报错，说明是正常的
+
+//这里，没有测试完毕。。。
