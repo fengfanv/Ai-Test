@@ -85,7 +85,7 @@ function dot(a, b) {
     } else if (arrInfo.aShape.length == 1 && arrInfo.bShape.length == 1) {
         //a和b都是一维
         if (arrInfo.aShape[0] != arrInfo.bShape[0]) {
-            throw new Error(`dot:error a和b都是一维，两个一维数组长度不一样，a：${arrInfo.aShape[0]}，b：${arrInfo.bShape[0]}，无法进行dot运算`)
+            throw new Error(`dot:error a和b都是一维，两个一维数组长度不一样，a：${arrInfo.aShape}，b：${arrInfo.bShape}，无法进行dot运算`)
         }
         let resultShape = [];
         console.log('c', '两边都是一维，结果输出，纯数字')
@@ -115,21 +115,21 @@ function dot(a, b) {
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
             throw new Error(`dot:error a是二维 b是三维及以上，左边最后一维的数量与右边倒数第二维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
         }
-        let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(1));
+        let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(-1));
         console.log('g', resultShape)
     } else if (arrInfo.aShape.length > 2 && arrInfo.bShape.length == 2) {
         //a是三维及以上，b是二维
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
             throw new Error(`dot:error a是三维及以上 b是二维，左边最后一维的数量与右边倒数第二维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
         }
-        let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(1));
+        let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(-1));
         console.log('h', resultShape)
     } else if (arrInfo.aShape.length > 2 && arrInfo.bShape.length > 2) {
         //a和b都是三维及以上
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
             throw new Error(`dot:error a和b都是三维及以上，左边最后一维的数量与右边倒数第二维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
         }
-        let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(1));
+        let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(-1));
         console.log('i', resultShape)
     }
 
@@ -155,14 +155,61 @@ exports.dot = dot;
 
 // dot([1,2,3],[1,2]) //报错，正常的
 
-let a = [1, 2, 3, 4];
-let b = reshape(arange(1*2*4*5),[1,2,4,5]);
-let b1 = reshape(arange(1*2*3*4),[1,2,3,4]);
+// let a = [1, 2, 3, 4];
+// let b = reshape(arange(1*2*4*5),[1,2,4,5]);
+// let b1 = reshape(arange(1*2*3*4),[1,2,3,4]);
+// let c = reshape(arange(1*2*3*4),[1,2,3,4]);
+// let d = [1,2,3,4];
 // console.log("shape(a)",shape(a)) //[ 4 ]
 // console.log("shape(b)",shape(b)) //[ 1, 2, 4, 5 ]
 // dot(a,b) //[ 1, 2, 5 ]
 
 // console.log("shape(b1)",shape(b1)) //[ 1, 2, 3, 4 ]
 // dot(a,b1) //报错，说明是正常的
+
+// console.log("shape(c)",shape(c)) //[ 1, 2, 3, 4 ]
+// console.log("shape(d)",shape(d)) //[ 4 ]
+// dot(c,d) //[ 1, 2, 3 ]
+
+// dot(b,d) //报错，说明是正常的
+
+// let a = reshape(arange(1 * 2), [1, 2])
+// let b = reshape(arange(2*6), [2,6])
+// let c = reshape(arange(2*8), [2,8])
+// console.log("shape(a)",shape(a))//[ 1, 2 ]
+// console.log("shape(b)",shape(b))//[ 2, 6 ]
+// console.log("shape(c)",shape(c))//[ 2, 8 ]
+// dot(a,b)// [ 1, 6 ]
+
+// dot(b,c) //报错，说明是正常的
+
+// let a = reshape(arange(1 * 2), [1, 2])
+// let b = reshape(arange(1 * 2 * 3 * 4 * 5 * 6 * 2 * 1), [1, 2, 3, 4, 5, 6, 2, 1])
+// let c = reshape(arange(1 * 2 * 3 * 4), [1, 2, 3, 4])
+// console.log("shape(a)", shape(a)) // [ 1, 2 ]
+// console.log("shape(b)", shape(b)) //[1, 2, 3, 4, 5, 6, 2, 1]
+// console.log("shape(c)", shape(c)) //[ 1, 2, 3, 4 ]
+// dot(a, b) //[1, 1, 2, 3,4, 5, 6, 1]
+
+// dot(a,c)//报错，是正常的
+
+// let a = reshape(arange(1 * 2 * 3 * 4 * 5 * 6 * 2 * 1), [1, 2, 3, 4, 5, 6, 2, 1])
+// let b = reshape(arange(1 * 1), [1,1])
+// let c = reshape(arange(2 * 1), [2,1])
+// console.log("shape(a)",shape(a)) //[1, 2, 3, 4,5, 6, 2, 1]
+// console.log("shape(b)",shape(b)) //[ 1, 1 ]
+// console.log("shape(c)",shape(c)) //[ 2, 1 ]
+// dot(a,b)//[1, 2, 3, 4,5, 6, 2, 1]
+
+// dot(a,c)//报错，说明是正常的
+
+// let a = reshape(arange(1*2*3), [1,2,3])
+// let b = reshape(arange(1*3*5), [1,3,5])
+// let c = reshape(arange(1*4*5), [1,4,5])
+// console.log("shape(a)",shape(a))//[ 1, 2, 3 ]
+// console.log("shape(b)",shape(b))//[ 1, 3, 5 ]
+// console.log("shape(c)",shape(c))//[ 1, 4, 5 ]
+// dot(a,b)//[ 1, 2, 1, 5 ]
+// dot(a,c)//报错，说明是正常的
 
 //这里，没有测试完毕。。。
