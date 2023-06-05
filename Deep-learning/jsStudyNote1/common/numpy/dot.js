@@ -61,6 +61,17 @@ a.shape = [2,3]，b.shape = [3]，dot(a,b).shape = [2]
 第四（实现）根据上面的文字描述，使用代码实现功能
 */
 
+//点积运算
+function dotProduct(arr1, arr2) {
+    let result = 0;
+    for (let i = 0; i < arr1.length; i++) {
+        let arr1Item = arr1[i];
+        let arr2Item = arr2[i];
+        result = result + (arr1Item * arr2Item);
+    }
+    return result;
+}
+
 
 
 function dot(a, b) {
@@ -71,24 +82,29 @@ function dot(a, b) {
     //1、检查两数组形状是否支持dot运算
     //2、生成结果数组形状
     if ((arrInfo.aShape.length == 0 && arrInfo.bShape.length != 0) || (arrInfo.aShape.length != 0 && arrInfo.bShape.length == 0)) {
-        //a和b有一边是数字，一边是数组
-        let resultShape = [];
+        //a和b有一边是数字，一边是数组，执行乘法
+        let arr = null;
+        let value = null;
         if (arrInfo.aShape.length > 0) {
-            resultShape = arrInfo.aShape;
+            arr = JSON.parse(JSON.stringify(a));
+            value = b;
         } else {
-            resultShape = arrInfo.bShape;
+            arr = JSON.parse(JSON.stringify(b));
+            value = a;
         }
-        console.log('a', resultShape);
+        printArr(arr, [], (res) => {
+            res.childArr[res.childIndex] = res.value * value;
+        })
+        return arr;
     } else if (arrInfo.aShape.length == 0 && arrInfo.bShape.length == 0) {
-        //a和b都是数字
-        console.log('b', '两边都是数字，结果输出，纯数字', a * b)
+        //a和b都是数字，执行乘法
+        return a * b;
     } else if (arrInfo.aShape.length == 1 && arrInfo.bShape.length == 1) {
         //a和b都是一维
         if (arrInfo.aShape[0] != arrInfo.bShape[0]) {
             throw new Error(`dot:error a和b都是一维，两个一维数组长度不一样，a：${arrInfo.aShape}，b：${arrInfo.bShape}，无法进行dot运算`)
         }
-        let resultShape = [];
-        console.log('c', '两边都是一维，结果输出，纯数字')
+        return dotProduct(a,b)
     } else if (arrInfo.aShape.length == 1 && arrInfo.bShape.length > 1) {
         //a是一维，b是二维及以上
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
@@ -143,7 +159,7 @@ function dot(a, b) {
 exports.dot = dot;
 
 
-
+// 测试1，测试是否符合dot运算，测试结果数组形状是否正确
 // dot(1,2) //纯数字
 
 // let a = reshape(arange(1 * 2 * 3 * 4), [1, 2, 3, 4])
@@ -212,4 +228,28 @@ exports.dot = dot;
 // dot(a,b)//[ 1, 2, 1, 5 ]
 // dot(a,c)//报错，说明是正常的
 
-//这里，没有测试完毕。。。
+//------------------------------
+
+//测试2，测试算数
+// console.log(dot(1,2)) //纯数字
+
+// let a = reshape(arange(1*2*3*4),[1,2,3,4])
+// printArr(a,[],(res)=>{
+//     console.log(res.index,res.value)
+// })
+// console.log("shape(a)",shape(a))//[ 1, 2, 3, 4 ]
+// let result = dot(a,2);
+// console.log("shape(result)",shape(result))//[ 1, 2, 3, 4 ]
+// printArr(result,[],(res)=>{
+//     console.log(res.index,res.value)
+// })
+// let result2 = dot(4,a);
+// console.log("shape(result2)",shape(result2))//[ 1, 2, 3, 4 ]
+// printArr(result2,[],(res)=>{
+//     console.log(res.index,res.value)
+// })
+
+
+// let a = arange(1*2*3*4)
+// console.log(dot(a,a)) //4324
+
