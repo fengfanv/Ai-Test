@@ -1,12 +1,19 @@
 const Main = require('./main.js');
 var shape = Main.shape;
 var arange = Main.arange;
+var create_array = Main.create_array;
 
 const Reshape = require('./reshape.js')
 var reshape = Reshape.reshape;
 
 const Common = require('./common.js');
 var printArr = Common.printArr;
+
+const Transpose = require('./transpose.js');
+var transpose = Transpose.transpose;
+
+const Broadcast = require('./broadcast.js')
+var broadcast = Broadcast.broadcast;
 
 /*
 
@@ -72,6 +79,16 @@ function dotProduct(arr1, arr2) {
     return result;
 }
 
+//乘法
+function multiply(value, shapeArr, index) {
+    if (index >= shapeArr.length) {
+        return value
+    } else {
+        let newValue = value * shapeArr[index];
+        let newIndex = index + 1;
+        return multiply(newValue, shapeArr, newIndex)
+    }
+}
 
 
 function dot(a, b) {
@@ -104,28 +121,99 @@ function dot(a, b) {
         if (arrInfo.aShape[0] != arrInfo.bShape[0]) {
             throw new Error(`dot:error a和b都是一维，两个一维数组长度不一样，a：${arrInfo.aShape}，b：${arrInfo.bShape}，无法进行dot运算`)
         }
-        return dotProduct(a,b)
+        return dotProduct(a, b)
     } else if (arrInfo.aShape.length == 1 && arrInfo.bShape.length > 1) {
         //a是一维，b是二维及以上
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
             throw new Error(`dot:error a是一维 b是二维及以上，左边一维的数量与右边倒数第二维数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
         }
+        //生成结果数组形状
         let resultShape = [].concat(arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(-1));
-        console.log('d', resultShape)
+
+        //行乘列，提取b数组里所有的列
+        //提取方法，第一步，将数组里的列变成行，行变成列
+        let bShapeLen = arrInfo.bShape.length;
+        let bAxes = arange(bShapeLen);
+        let column = bAxes.slice(-1)[0];//倒数第一个元素（列）
+        let row = bAxes.slice(-2, -1)[0];//倒数第二个元素（行）
+        bAxes[bShapeLen - 1] = row;//颠倒行列
+        bAxes[bShapeLen - 2] = column;//颠倒行列
+        let bNewArr = transpose(b, bAxes);//执行数组的列变行，行变列
+        let bNewShape = shape(bNewArr);//transpose后，获取数组新形状
+        //第二步，数组里的列变成行后，获取数组所有的行
+        let bAllRowNum = multiply(bNewShape[0], bNewShape.slice(0, -1), 0);//计算数组一共有多少行
+        let bNewArr2 = reshape(bNewArr, [bAllRowNum, bNewShape.slice(-1)[0]]);//获取新数组里所有的行
+        let aNewArr2 = broadcast(a, bNewArr2)[0];//根据b新数组形状，生成一个a新数组
+        //第三步，开始计算
+        let resultValue = [];
+        for (let i = 0; i < aNewArr2.length; i++) {
+            let a_arr_item = aNewArr2[i];
+            let b_arr_item = bNewArr2[i];
+            let result = dotProduct(a_arr_item, b_arr_item);
+            resultValue.push(result)
+        }
+        //计算完毕，返回运算结果
+        let resultArr = reshape(resultValue,resultShape)
+        return resultArr;
     } else if (arrInfo.aShape.length > 1 && arrInfo.bShape.length == 1) {
         //a是二维及以上，b是一维
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-1)[0]) {
             throw new Error(`dot:error a是二维及以上 b是一维，左边最后一维的数量与右边一维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-1)}，无法进行dot运算`)
         }
         let resultShape = [].concat(arrInfo.aShape.slice(0, -1));
-        console.log('e', resultShape)
+
+        //行乘列，提取a数组里所有的行
+        let aAllRowNum = multiply(arrInfo.aShape[0], arrInfo.aShape.slice(0, -1), 0);//计算数组一共有多少行
+        let aNewArr2 = reshape(a, [aAllRowNum, arrInfo.aShape.slice(-1)[0]]);//获取新数组里所有的行
+        let bNewArr2 = broadcast(aNewArr2, b)[1];//根据a新数组形状，生成一个b新数组
+        //开始计算
+        let resultValue = [];
+        for (let i = 0; i < aNewArr2.length; i++) {
+            let a_arr_item = aNewArr2[i];
+            let b_arr_item = bNewArr2[i];
+            let result = dotProduct(a_arr_item, b_arr_item);
+            resultValue.push(result)
+        }
+        //计算完毕，返回运算结果
+        let resultArr = reshape(resultValue,resultShape)
+        return resultArr;
     } else if (arrInfo.aShape.length == 2 && arrInfo.bShape.length == 2) {
         //a和b 都是2维
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(0, 1)[0]) {
             throw new Error(`dot:error a和b都是二维，左边最后一维的数量与右边第一维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(0, 1)}，无法进行dot运算`)
         }
         let resultShape = [].concat(arrInfo.aShape.slice(0, 1), arrInfo.bShape.slice(-1));
-        console.log('f', resultShape)
+        
+        //行乘列，提取a的所有行，取b的所有列
+        let aNewArr = a;//二维数组，所有不用提取，直接赋值就行
+        let bNewArr = transpose(b,[1,0]);//让b的，列变成行，行变成列
+        let aNewArrLen = aNewArr.length;
+        let bNewArrLen = bNewArr.length;
+        //根据b的行数，复制拓展扩充a的行
+        //根据a的行数，复制b数组
+        //（为啥要这么做，请在大脑中思考dot行乘列时的运算过程，你就明白为啥要这么做了）
+        let aNewArr2 = [];
+        let bNewArr2 = [];
+        for(let i=0;i<aNewArrLen;i++){
+            //根据b的行数，复制拓展扩充a的行
+            let aRowItem = aNewArr[i].concat();
+            for(let j=0;j<bNewArrLen;j++){
+                aNewArr2.push(aRowItem)
+            }
+            //根据a的行数，复制b数组
+            bNewArr2 = bNewArr2.concat(bNewArr)
+        }
+        //开始计算
+        let resultValue = [];
+        for (let i = 0; i < aNewArr2.length; i++) {
+            let a_arr_item = aNewArr2[i];
+            let b_arr_item = bNewArr2[i];
+            let result = dotProduct(a_arr_item, b_arr_item);
+            resultValue.push(result)
+        }
+        //计算完毕，返回运算结果
+        let resultArr = reshape(resultValue,resultShape)
+        return resultArr;
     } else if (arrInfo.aShape.length == 2 && arrInfo.bShape.length > 2) {
         //a是二维，b是三维及以上
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
@@ -253,3 +341,22 @@ exports.dot = dot;
 // let a = arange(1*2*3*4)
 // console.log(dot(a,a)) //4324
 
+
+// let a = [1, 2, 3];
+// let b = reshape(arange(1 * 2 * 3 * 4), [1, 2, 3, 4]);
+// console.log(dot(a, b))//[ [ [ 32, 38, 44, 50 ], [ 104, 110, 116, 122 ] ] ]
+
+// let a = reshape(arange(1 * 2 * 3 * 4), [1, 2, 3, 4]);
+// let b = [1,2,3,4]
+// console.log(dot(a, b))//[ [ [ 20, 60, 100 ], [ 140, 180, 220 ] ] ]
+
+// let a = reshape(arange(3 * 4), [3, 4]);
+// let b = reshape(arange(4 * 5), [4, 5]);
+// console.log(dot(a,b))
+/*
+[
+  [ 70, 76, 82, 88, 94 ],
+  [ 190, 212, 234, 256, 278 ],
+  [ 310, 348, 386, 424, 462 ]
+]
+*/
