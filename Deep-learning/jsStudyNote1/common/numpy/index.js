@@ -45,12 +45,12 @@ exports.dot = Dot.dot;
 // numpy.tan
 // numpy.exp
 // numpy.log
+// numpy.sqrt
 
 // numpy.max
 // numpy.argmax
 // numpy.min
 // numpy.argmin
-// numpy.sqrt
 // numpy.maximum
 // numpy.random.randn
 // numpy.random.choice
