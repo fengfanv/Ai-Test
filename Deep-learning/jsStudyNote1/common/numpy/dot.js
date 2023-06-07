@@ -1,7 +1,6 @@
 const Main = require('./main.js');
 var shape = Main.shape;
 var arange = Main.arange;
-var create_array = Main.create_array;
 
 const Reshape = require('./reshape.js')
 var reshape = Reshape.reshape;
@@ -66,6 +65,8 @@ a.shape = [2,3]，b.shape = [3]，dot(a,b).shape = [2]
 第二（观察）找资料，写demo案例，进行大量实验，观察原始numpy是怎么运行的
 第三（总结）根据上面实验，资料，获取到的信息，使用文字描述出 将要实现的功能，是干啥的，怎么运行，运行条件，运行注意事项等
 第四（实现）根据上面的文字描述，使用代码实现功能
+
+最后说一句，写完代码后，测试千万不要懒，一定要趁代码刚出炉，还有热乎劲，多测测，要不以后出问题了，不好修改。
 */
 
 //点积运算
@@ -93,16 +94,22 @@ function multiply(value, shapeArr, index) {
 
 function dot(a, b) {
     let arrInfo = {
-        aShape: shape(a),
-        bShape: shape(b),
-    }
+        aShape: shape(a),//a的形状
+        bShape: shape(b),//b的形状
+        aNdim:0,//a的维度
+        bNdim:0,//b的维度
+    };
+    arrInfo['aNdim'] = arrInfo.aShape.length;
+    arrInfo['bNdim'] = arrInfo.bShape.length;
+
     //1、检查两数组形状是否支持dot运算
     //2、生成结果数组形状
-    if ((arrInfo.aShape.length == 0 && arrInfo.bShape.length != 0) || (arrInfo.aShape.length != 0 && arrInfo.bShape.length == 0)) {
+    //3、处理两个数组，然后计算，最后返回结果
+    if ((arrInfo.aNdim == 0 && arrInfo.bNdim != 0) || (arrInfo.aNdim != 0 && arrInfo.bNdim == 0)) {
         //a和b有一边是数字，一边是数组，执行乘法
         let arr = null;
         let value = null;
-        if (arrInfo.aShape.length > 0) {
+        if (arrInfo.aNdim > 0) {
             arr = JSON.parse(JSON.stringify(a));
             value = b;
         } else {
@@ -113,16 +120,16 @@ function dot(a, b) {
             res.childArr[res.childIndex] = res.value * value;
         })
         return arr;
-    } else if (arrInfo.aShape.length == 0 && arrInfo.bShape.length == 0) {
+    } else if (arrInfo.aNdim == 0 && arrInfo.bNdim == 0) {
         //a和b都是数字，执行乘法
         return a * b;
-    } else if (arrInfo.aShape.length == 1 && arrInfo.bShape.length == 1) {
+    } else if (arrInfo.aNdim == 1 && arrInfo.bNdim == 1) {
         //a和b都是一维
         if (arrInfo.aShape[0] != arrInfo.bShape[0]) {
             throw new Error(`dot:error a和b都是一维，两个一维数组长度不一样，a：${arrInfo.aShape}，b：${arrInfo.bShape}，无法进行dot运算`)
         }
         return dotProduct(a, b)
-    } else if (arrInfo.aShape.length == 1 && arrInfo.bShape.length > 1) {
+    } else if (arrInfo.aNdim == 1 && arrInfo.bNdim > 1) {
         //a是一维，b是二维及以上
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
             throw new Error(`dot:error a是一维 b是二维及以上，左边一维的数量与右边倒数第二维数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
@@ -131,20 +138,20 @@ function dot(a, b) {
         let resultShape = [].concat(arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(-1));
 
         //行乘列，提取b数组里所有的列
-        //提取方法，第一步，将数组里的列变成行，行变成列
+        //提取方法，第一步，将数组里的，列变成行，行变成列
         let bShapeLen = arrInfo.bShape.length;
         let bAxes = arange(bShapeLen);
         let column = bAxes.slice(-1)[0];//倒数第一个元素（列）
         let row = bAxes.slice(-2, -1)[0];//倒数第二个元素（行）
         bAxes[bShapeLen - 1] = row;//颠倒行列
         bAxes[bShapeLen - 2] = column;//颠倒行列
-        let bNewArr = transpose(b, bAxes);//执行数组的列变行，行变列
+        let bNewArr = transpose(b, bAxes);//执行数组，列变行，行变列，的操作
         let bNewShape = shape(bNewArr);//transpose后，获取数组新形状
         //第二步，数组里的列变成行后，获取数组所有的行
-        let bAllRowNum = multiply(bNewShape[0], bNewShape.slice(0, -1), 0);//计算数组一共有多少行
+        let bAllRowNum = multiply(bNewShape[0], bNewShape.slice(0, -1), 1);//计算数组一共有多少行
         let bNewArr2 = reshape(bNewArr, [bAllRowNum, bNewShape.slice(-1)[0]]);//获取新数组里所有的行
         let aNewArr2 = broadcast(a, bNewArr2)[0];//根据b新数组形状，生成一个a新数组
-        //第三步，开始计算
+        //开始计算
         let resultValue = [];
         for (let i = 0; i < aNewArr2.length; i++) {
             let a_arr_item = aNewArr2[i];
@@ -153,9 +160,9 @@ function dot(a, b) {
             resultValue.push(result)
         }
         //计算完毕，返回运算结果
-        let resultArr = reshape(resultValue,resultShape)
+        let resultArr = reshape(resultValue, resultShape)
         return resultArr;
-    } else if (arrInfo.aShape.length > 1 && arrInfo.bShape.length == 1) {
+    } else if (arrInfo.aNdim > 1 && arrInfo.bNdim == 1) {
         //a是二维及以上，b是一维
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-1)[0]) {
             throw new Error(`dot:error a是二维及以上 b是一维，左边最后一维的数量与右边一维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-1)}，无法进行dot运算`)
@@ -163,7 +170,7 @@ function dot(a, b) {
         let resultShape = [].concat(arrInfo.aShape.slice(0, -1));
 
         //行乘列，提取a数组里所有的行
-        let aAllRowNum = multiply(arrInfo.aShape[0], arrInfo.aShape.slice(0, -1), 0);//计算数组一共有多少行
+        let aAllRowNum = multiply(arrInfo.aShape[0], arrInfo.aShape.slice(0, -1), 1);//计算数组一共有多少行
         let aNewArr2 = reshape(a, [aAllRowNum, arrInfo.aShape.slice(-1)[0]]);//获取新数组里所有的行
         let bNewArr2 = broadcast(aNewArr2, b)[1];//根据a新数组形状，生成一个b新数组
         //开始计算
@@ -175,18 +182,18 @@ function dot(a, b) {
             resultValue.push(result)
         }
         //计算完毕，返回运算结果
-        let resultArr = reshape(resultValue,resultShape)
+        let resultArr = reshape(resultValue, resultShape)
         return resultArr;
-    } else if (arrInfo.aShape.length == 2 && arrInfo.bShape.length == 2) {
+    } else if (arrInfo.aNdim == 2 && arrInfo.bNdim == 2) {
         //a和b 都是2维
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(0, 1)[0]) {
             throw new Error(`dot:error a和b都是二维，左边最后一维的数量与右边第一维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(0, 1)}，无法进行dot运算`)
         }
         let resultShape = [].concat(arrInfo.aShape.slice(0, 1), arrInfo.bShape.slice(-1));
-        
-        //行乘列，提取a的所有行，取b的所有列
+
+        //行乘列，提取a的所有行，提取b的所有列
         let aNewArr = a;//二维数组，所有不用提取，直接赋值就行
-        let bNewArr = transpose(b,[1,0]);//让b的，列变成行，行变成列
+        let bNewArr = transpose(b, [1, 0]);//让b的，列变成行，行变成列
         let aNewArrLen = aNewArr.length;
         let bNewArrLen = bNewArr.length;
         //根据b的行数，复制拓展扩充a的行
@@ -194,10 +201,10 @@ function dot(a, b) {
         //（为啥要这么做，请在大脑中思考dot行乘列时的运算过程，你就明白为啥要这么做了）
         let aNewArr2 = [];
         let bNewArr2 = [];
-        for(let i=0;i<aNewArrLen;i++){
+        for (let i = 0; i < aNewArrLen; i++) {
             //根据b的行数，复制拓展扩充a的行
             let aRowItem = aNewArr[i].concat();
-            for(let j=0;j<bNewArrLen;j++){
+            for (let j = 0; j < bNewArrLen; j++) {
                 aNewArr2.push(aRowItem)
             }
             //根据a的行数，复制b数组
@@ -212,61 +219,182 @@ function dot(a, b) {
             resultValue.push(result)
         }
         //计算完毕，返回运算结果
-        let resultArr = reshape(resultValue,resultShape)
+        let resultArr = reshape(resultValue, resultShape)
         return resultArr;
-    } else if (arrInfo.aShape.length == 2 && arrInfo.bShape.length > 2) {
+    } else if (arrInfo.aNdim == 2 && arrInfo.bNdim > 2) {
         //a是二维，b是三维及以上
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
             throw new Error(`dot:error a是二维 b是三维及以上，左边最后一维的数量与右边倒数第二维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
         }
         let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(-1));
-        console.log('g', resultShape)
-    } else if (arrInfo.aShape.length > 2 && arrInfo.bShape.length == 2) {
+
+        //行乘列，取a的所有的行，取b的所有的列
+        let aNewArr = a;//二维数组，所有不用提取，直接赋值就行
+        let bNewArr = [];
+        //取b的所有的列
+        let bShapeLen = arrInfo.bShape.length;
+        let bAxes = arange(bShapeLen);
+        let column = bAxes.slice(-1)[0];//倒数第一个元素（列）
+        let row = bAxes.slice(-2, -1)[0];//倒数第二个元素（行）
+        bAxes[bShapeLen - 1] = row;//颠倒行列
+        bAxes[bShapeLen - 2] = column;//颠倒行列
+        bNewArr = transpose(b, bAxes);//执行数组的列变行，行变列
+        let bNewShape = shape(bNewArr);//transpose后，获取数组新形状
+        //b数组里的列变成行后，获取数组所有的行
+        let bAllRowNum = multiply(bNewShape[0], bNewShape.slice(0, -1), 1);//计算数组一共有多少行
+        bNewArr = reshape(bNewArr, [bAllRowNum, bNewShape.slice(-1)[0]]);//获取新数组里所有的行
+        let aNewArrLen = aNewArr.length;
+        let bNewArrLen = bNewArr.length;
+        //根据b的行数，复制拓展扩充a的行
+        //根据a的行数，复制b数组
+        //（为啥要这么做，请在大脑中思考dot行乘列时的运算过程，你就明白为啥要这么做了）
+        let aNewArr2 = [];
+        let bNewArr2 = [];
+        for (let i = 0; i < aNewArrLen; i++) {
+            //根据b的行数，复制拓展扩充a的行
+            let aRowItem = aNewArr[i].concat();
+            for (let j = 0; j < bNewArrLen; j++) {
+                aNewArr2.push(aRowItem)
+            }
+            //根据a的行数，复制b数组
+            bNewArr2 = bNewArr2.concat(bNewArr)
+        }
+        //开始计算
+        let resultValue = [];
+        for (let i = 0; i < aNewArr2.length; i++) {
+            let a_arr_item = aNewArr2[i];
+            let b_arr_item = bNewArr2[i];
+            let result = dotProduct(a_arr_item, b_arr_item);
+            resultValue.push(result)
+        }
+        //计算完毕，返回运算结果
+        let resultArr = reshape(resultValue, resultShape)
+        return resultArr;
+    } else if (arrInfo.aNdim > 2 && arrInfo.bNdim == 2) {
         //a是三维及以上，b是二维
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
             throw new Error(`dot:error a是三维及以上 b是二维，左边最后一维的数量与右边倒数第二维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
         }
         let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(-1));
-        console.log('h', resultShape)
-    } else if (arrInfo.aShape.length > 2 && arrInfo.bShape.length > 2) {
+
+        //行乘列，取a的所有的行，取b的所有的列
+        let aNewArr = [];
+        let bNewArr = [];
+        //取a所有的行
+        let aAllRowNum = multiply(arrInfo.aShape[0], arrInfo.aShape.slice(0, -1), 1);//计算数组一共有多少行
+        aNewArr = reshape(a, [aAllRowNum, arrInfo.aShape.slice(-1)[0]]);//获取a数组里所有的行
+        //取b所有的列
+        bNewArr = transpose(b, [1, 0]);//b是二维数组，列变行，行变列
+        let aNewArrLen = aNewArr.length;
+        let bNewArrLen = bNewArr.length;
+        //根据b的行数，复制拓展扩充a的行
+        //根据a的行数，复制b数组
+        //（为啥要这么做，请在大脑中思考dot行乘列时的运算过程，你就明白为啥要这么做了）
+        let aNewArr2 = [];
+        let bNewArr2 = [];
+        for (let i = 0; i < aNewArrLen; i++) {
+            //根据b的行数，复制拓展扩充a的行
+            let aRowItem = aNewArr[i].concat();
+            for (let j = 0; j < bNewArrLen; j++) {
+                aNewArr2.push(aRowItem)
+            }
+            //根据a的行数，复制b数组
+            bNewArr2 = bNewArr2.concat(bNewArr)
+        }
+        //开始计算
+        let resultValue = [];
+        for (let i = 0; i < aNewArr2.length; i++) {
+            let a_arr_item = aNewArr2[i];
+            let b_arr_item = bNewArr2[i];
+            let result = dotProduct(a_arr_item, b_arr_item);
+            resultValue.push(result)
+        }
+        //计算完毕，返回运算结果
+        let resultArr = reshape(resultValue, resultShape)
+        return resultArr;
+    } else if (arrInfo.aNdim > 2 && arrInfo.bNdim > 2) {
         //a和b都是三维及以上
         if (arrInfo.aShape.slice(-1)[0] != arrInfo.bShape.slice(-2, -1)[0]) {
             throw new Error(`dot:error a和b都是三维及以上，左边最后一维的数量与右边倒数第二维的数量不一致，a：${arrInfo.aShape.slice(-1)}，b：${arrInfo.bShape.slice(-2, -1)}，无法进行dot运算`)
         }
         let resultShape = [].concat(arrInfo.aShape.slice(0, -1), arrInfo.bShape.slice(0, -2), arrInfo.bShape.slice(-1));
-        console.log('i', resultShape)
+
+        //行乘列，取a的所有的行，取b的所有的列
+        let aNewArr = [];
+        let bNewArr = [];
+        //取a所有的行
+        let aAllRowNum = multiply(arrInfo.aShape[0], arrInfo.aShape.slice(0, -1), 1);//计算数组一共有多少行
+        aNewArr = reshape(a, [aAllRowNum, arrInfo.aShape.slice(-1)[0]]);//获取a数组里所有的行
+        //取b所有的列
+        let bShapeLen = arrInfo.bShape.length;
+        let bAxes = arange(bShapeLen);
+        let column = bAxes.slice(-1)[0];//倒数第一个元素（列）
+        let row = bAxes.slice(-2, -1)[0];//倒数第二个元素（行）
+        bAxes[bShapeLen - 1] = row;//颠倒行列
+        bAxes[bShapeLen - 2] = column;//颠倒行列
+        bNewArr = transpose(b, bAxes);//执行数组的列变行，行变列
+        let bNewShape = shape(bNewArr);//transpose后，获取数组新形状
+        //b数组里的列变成行后，获取数组所有的行
+        let bAllRowNum = multiply(bNewShape[0], bNewShape.slice(0, -1), 1);//计算数组一共有多少行
+        bNewArr = reshape(bNewArr, [bAllRowNum, bNewShape.slice(-1)[0]]);//获取新数组里所有的行
+        let aNewArrLen = aNewArr.length;
+        let bNewArrLen = bNewArr.length;
+        //根据b的行数，复制拓展扩充a的行
+        //根据a的行数，复制b数组
+        //（为啥要这么做，请在大脑中思考dot行乘列时的运算过程，你就明白为啥要这么做了）
+        let aNewArr2 = [];
+        let bNewArr2 = [];
+        for (let i = 0; i < aNewArrLen; i++) {
+            //根据b的行数，复制拓展扩充a的行
+            let aRowItem = aNewArr[i].concat();
+            for (let j = 0; j < bNewArrLen; j++) {
+                aNewArr2.push(aRowItem)
+            }
+            //根据a的行数，复制b数组
+            bNewArr2 = bNewArr2.concat(bNewArr)
+        }
+        //开始计算
+        let resultValue = [];
+        for (let i = 0; i < aNewArr2.length; i++) {
+            let a_arr_item = aNewArr2[i];
+            let b_arr_item = bNewArr2[i];
+            let result = dotProduct(a_arr_item, b_arr_item);
+            resultValue.push(result)
+        }
+        //计算完毕，返回运算结果
+        let resultArr = reshape(resultValue, resultShape)
+        return resultArr;
     }
-
-
-
-
-
-
 
 }
 exports.dot = dot;
 
 
 // 测试1，测试是否符合dot运算，测试结果数组形状是否正确
-// dot(1,2) //纯数字
+
+// dot(1,2) //结果是纯数字
+
 
 // let a = reshape(arange(1 * 2 * 3 * 4), [1, 2, 3, 4])
 // console.log("shape(a)", shape(a))
 // dot(a,2) //[1, 2, 3, 4]
 // dot(2,a) //[1, 2, 3, 4]
 
-// dot([1,2,3],[4,5,6]) //纯数字
+
+// dot([1,2,3],[4,5,6]) //结果是纯数字
 
 // dot([1,2,3],[1,2]) //报错，正常的
+
 
 // let a = [1, 2, 3, 4];
 // let b = reshape(arange(1*2*4*5),[1,2,4,5]);
 // let b1 = reshape(arange(1*2*3*4),[1,2,3,4]);
 // let c = reshape(arange(1*2*3*4),[1,2,3,4]);
 // let d = [1,2,3,4];
+// let e = reshape(arange(2*3*4*5),[2,3,4,5]);
 // console.log("shape(a)",shape(a)) //[ 4 ]
 // console.log("shape(b)",shape(b)) //[ 1, 2, 4, 5 ]
-// dot(a,b) //[ 1, 2, 5 ]
+// console.log(dot(a,b)) //[ 1, 2, 5 ]
 
 // console.log("shape(b1)",shape(b1)) //[ 1, 2, 3, 4 ]
 // dot(a,b1) //报错，说明是正常的
@@ -276,6 +404,8 @@ exports.dot = dot;
 // dot(c,d) //[ 1, 2, 3 ]
 
 // dot(b,d) //报错，说明是正常的
+
+// console.log(dot(a,e))
 
 // let a = reshape(arange(1 * 2), [1, 2])
 // let b = reshape(arange(2*6), [2,6])
@@ -316,26 +446,21 @@ exports.dot = dot;
 // dot(a,b)//[ 1, 2, 1, 5 ]
 // dot(a,c)//报错，说明是正常的
 
+
 //------------------------------
 
+
 //测试2，测试算数
-// console.log(dot(1,2)) //纯数字
+// console.log(dot(1,2)) //2
+
 
 // let a = reshape(arange(1*2*3*4),[1,2,3,4])
-// printArr(a,[],(res)=>{
-//     console.log(res.index,res.value)
-// })
 // console.log("shape(a)",shape(a))//[ 1, 2, 3, 4 ]
 // let result = dot(a,2);
 // console.log("shape(result)",shape(result))//[ 1, 2, 3, 4 ]
-// printArr(result,[],(res)=>{
-//     console.log(res.index,res.value)
-// })
+
 // let result2 = dot(4,a);
 // console.log("shape(result2)",shape(result2))//[ 1, 2, 3, 4 ]
-// printArr(result2,[],(res)=>{
-//     console.log(res.index,res.value)
-// })
 
 
 // let a = arange(1*2*3*4)
@@ -343,15 +468,42 @@ exports.dot = dot;
 
 
 // let a = [1, 2, 3];
+// let a2 = [1];
 // let b = reshape(arange(1 * 2 * 3 * 4), [1, 2, 3, 4]);
+// let b2 = reshape(arange(1 * 2 * 1 * 4), [1, 2, 1, 4]);
+// let b3 = reshape(arange(2 * 1 * 3 * 4), [2, 1, 3, 4]);
 // console.log(dot(a, b))//[ [ [ 32, 38, 44, 50 ], [ 104, 110, 116, 122 ] ] ]
+// console.log(dot(a2, b2))
+/*
+[ [ [ 0, 1, 2, 3 ], [ 4, 5, 6, 7 ] ] ]
+*/
+// console.log(dot(a, b3))
+/*
+[ [ [ 32, 38, 44, 50 ] ], [ [ 104, 110, 116, 122 ] ] ]
+*/
+
+
+
 
 // let a = reshape(arange(1 * 2 * 3 * 4), [1, 2, 3, 4]);
 // let b = [1,2,3,4]
+// let a1 = reshape(arange(2*2 * 3 * 4), [2, 2, 3, 4]);
 // console.log(dot(a, b))//[ [ [ 20, 60, 100 ], [ 140, 180, 220 ] ] ]
+// console.log(dot(a1, b))
+/*
+[
+  [ [ 20, 60, 100 ], [ 140, 180, 220 ] ],
+  [ [ 260, 300, 340 ], [ 380, 420, 460 ] ]
+]
+*/
 
+
+
+//a和b都是二维
 // let a = reshape(arange(3 * 4), [3, 4]);
+// let a1 = reshape(arange(1 * 4), [1, 4]);
 // let b = reshape(arange(4 * 5), [4, 5]);
+// let b1 = reshape(arange(4 * 1), [4, 1]);
 // console.log(dot(a,b))
 /*
 [
@@ -359,4 +511,155 @@ exports.dot = dot;
   [ 190, 212, 234, 256, 278 ],
   [ 310, 348, 386, 424, 462 ]
 ]
+*/
+// console.log(dot(a1,b))
+/*
+[ [ 70, 76, 82, 88, 94 ] ]
+*/
+// console.log(dot(a,b1))
+/*
+[ [ 14 ], [ 38 ], [ 62 ] ]
+*/
+// console.log(dot(a1,b1))
+/*
+[ [ 14 ] ]
+*/
+
+
+
+//a是二维，b是三维及以上
+// let a = reshape(arange(3 * 4), [3, 4]);
+// let a1 = reshape(arange(1 * 4), [1, 4]);
+// let a2 = reshape(arange(4 * 1), [4, 1]);
+// let b = reshape(arange(3 * 4 * 5), [3, 4, 5]);
+// let b1 = reshape(arange(1 * 4 * 5), [1, 4, 5]);
+// let b2 = reshape(arange(1 * 1 * 4), [1, 1, 4]);
+// console.log(dot(a,b))
+/*
+[
+  [
+    [ 70, 76, 82, 88, 94 ],
+    [ 190, 196, 202, 208, 214 ],
+    [ 310, 316, 322, 328, 334 ]
+  ],
+  [
+    [ 190, 212, 234, 256, 278 ],
+    [ 630, 652, 674, 696, 718 ],
+    [ 1070, 1092, 1114, 1136, 1158 ]
+  ],
+  [
+    [ 310, 348, 386, 424, 462 ],
+    [ 1070, 1108, 1146, 1184, 1222 ],
+    [ 1830, 1868, 1906, 1944, 1982 ]
+  ]
+]
+*/
+// console.log(dot(a,b1))
+/*
+[
+  [ [ 70, 76, 82, 88, 94 ] ],
+  [ [ 190, 212, 234, 256, 278 ] ],
+  [ [ 310, 348, 386, 424, 462 ] ]
+]
+*/
+// console.log(dot(a1,b))
+/*
+[
+  [
+    [ 70, 76, 82, 88, 94 ],
+    [ 190, 196, 202, 208, 214 ],
+    [ 310, 316, 322, 328, 334 ]
+  ]
+]
+*/
+// console.log(dot(a1,b1))
+/*
+[ [ [ 70, 76, 82, 88, 94 ] ] ]
+*/
+// console.log(dot(a2,b2))
+/*
+[
+  [ [ 0, 0, 0, 0 ] ],
+  [ [ 0, 1, 2, 3 ] ],
+  [ [ 0, 2, 4, 6 ] ],
+  [ [ 0, 3, 6, 9 ] ]
+]
+*/
+
+
+
+//a是三维及以上，b是二维
+// let a = reshape(arange(3 * 4 * 5), [3, 4, 5]);
+// let a1 = reshape(arange(1 * 3 * 4 * 5), [1, 3, 4, 5]);
+// let a2 = reshape(arange(1 * 3 * 4 * 1), [1, 3, 4, 1]);
+// let b = reshape(arange(5*4), [5,4])
+// let b1 = reshape(arange(5*1), [5,1])
+// let b2 = reshape(arange(1*2), [1,2])
+// console.log(dot(a, b));
+/*
+[
+  [
+    [ 120, 130, 140, 150 ],
+    [ 320, 355, 390, 425 ],
+    [ 520, 580, 640, 700 ],
+    [ 720, 805, 890, 975 ]
+  ],
+  [
+    [ 920, 1030, 1140, 1250 ],
+    [ 1120, 1255, 1390, 1525 ],
+    [ 1320, 1480, 1640, 1800 ],
+    [ 1520, 1705, 1890, 2075 ]
+  ],
+  [
+    [ 1720, 1930, 2140, 2350 ],
+    [ 1920, 2155, 2390, 2625 ],
+    [ 2120, 2380, 2640, 2900 ],
+    [ 2320, 2605, 2890, 3175 ]
+  ]
+]
+*/
+// console.log(JSON.stringify(dot(a1, b)));
+/*
+[[[[120,130,140,150],[320,355,390,425],[520,580,640,700],[720,805,890,975]],[[920,1030,1140,1250],[1120,1255,1390,1525],[1320,1480,1640,1800],[1520,1705,1890,2075]],[[1720,1930,2140,2350],[1920,2155,2390,2625],[2120,2380,2640,2900],[2320,2605,2890,3175]]]]
+*/
+// console.log(JSON.stringify(dot(a, b1)));
+/*
+[[[30],[80],[130],[180]],[[230],[280],[330],[380]],[[430],[480],[530],[580]]]
+*/
+// console.log(JSON.stringify(dot(a1, b1)));
+/*
+[[[[30],[80],[130],[180]],[[230],[280],[330],[380]],[[430],[480],[530],[580]]]]
+*/
+// console.log(JSON.stringify(dot(a2, b2)));
+/*
+[[[[0,0],[0,1],[0,2],[0,3]],[[0,4],[0,5],[0,6],[0,7]],[[0,8],[0,9],[0,10],[0,11]]]]
+*/
+
+
+//a和b都是三维及以上
+// let a = reshape(arange(3 * 4 * 5), [3, 4, 5]);
+// let a1 = reshape(arange(1 * 4 * 5), [1, 4, 5]);
+// let a2 = reshape(arange(1 * 4 * 1), [1, 4, 1]);
+// let b = reshape(arange(4 * 5 * 6), [4, 5, 6]);
+// let b1 = reshape(arange(1 * 5 * 6), [1, 5, 6]);
+// let b2 = reshape(arange(1 * 1 * 6), [1, 1, 6]);
+// console.log(JSON.stringify(dot(a,b)));
+/*
+[[[[180,190,200,210,220,230],[480,490,500,510,520,530],[780,790,800,810,820,830],[1080,1090,1100,1110,1120,1130]],[[480,515,550,585,620,655],[1530,1565,1600,1635,1670,1705],[2580,2615,2650,2685,2720,2755],[3630,3665,3700,3735,3770,3805]],[[780,840,900,960,1020,1080],[2580,2640,2700,2760,2820,2880],[4380,4440,4500,4560,4620,4680],[6180,6240,6300,6360,6420,6480]],[[1080,1165,1250,1335,1420,1505],[3630,3715,3800,3885,3970,4055],[6180,6265,6350,6435,6520,6605],[8730,8815,8900,8985,9070,9155]]],[[[1380,1490,1600,1710,1820,1930],[4680,4790,4900,5010,5120,5230],[7980,8090,8200,8310,8420,8530],[11280,11390,11500,11610,11720,11830]],[[1680,1815,1950,2085,2220,2355],[5730,5865,6000,6135,6270,6405],[9780,9915,10050,10185,10320,10455],[13830,13965,14100,14235,14370,14505]],[[1980,2140,2300,2460,2620,2780],[6780,6940,7100,7260,7420,7580],[11580,11740,11900,12060,12220,12380],[16380,16540,16700,16860,17020,17180]],[[2280,2465,2650,2835,3020,3205],[7830,8015,8200,8385,8570,8755],[13380,13565,13750,13935,14120,14305],[18930,19115,19300,19485,19670,19855]]],[[[2580,2790,3000,3210,3420,3630],[8880,9090,9300,9510,9720,9930],[15180,15390,15600,15810,16020,16230],[21480,21690,21900,22110,22320,22530]],[[2880,3115,3350,3585,3820,4055],[9930,10165,10400,10635,10870,11105],[16980,17215,17450,17685,17920,18155],[24030,24265,24500,24735,24970,25205]],[[3180,3440,3700,3960,4220,4480],[10980,11240,11500,11760,12020,12280],[18780,19040,19300,19560,19820,20080],[26580,26840,27100,27360,27620,27880]],[[3480,3765,4050,4335,4620,4905],[12030,12315,12600,12885,13170,13455],[20580,20865,21150,21435,21720,22005],[29130,29415,29700,29985,30270,30555]]]]
+*/
+// console.log(JSON.stringify(dot(a1,b)));
+/*
+[[[[180,190,200,210,220,230],[480,490,500,510,520,530],[780,790,800,810,820,830],[1080,1090,1100,1110,1120,1130]],[[480,515,550,585,620,655],[1530,1565,1600,1635,1670,1705],[2580,2615,2650,2685,2720,2755],[3630,3665,3700,3735,3770,3805]],[[780,840,900,960,1020,1080],[2580,2640,2700,2760,2820,2880],[4380,4440,4500,4560,4620,4680],[6180,6240,6300,6360,6420,6480]],[[1080,1165,1250,1335,1420,1505],[3630,3715,3800,3885,3970,4055],[6180,6265,6350,6435,6520,6605],[8730,8815,8900,8985,9070,9155]]]]
+*/
+// console.log(JSON.stringify(dot(a,b1)));
+/*
+[[[[180,190,200,210,220,230]],[[480,515,550,585,620,655]],[[780,840,900,960,1020,1080]],[[1080,1165,1250,1335,1420,1505]]],[[[1380,1490,1600,1710,1820,1930]],[[1680,1815,1950,2085,2220,2355]],[[1980,2140,2300,2460,2620,2780]],[[2280,2465,2650,2835,3020,3205]]],[[[2580,2790,3000,3210,3420,3630]],[[2880,3115,3350,3585,3820,4055]],[[3180,3440,3700,3960,4220,4480]],[[3480,3765,4050,4335,4620,4905]]]]
+*/
+// console.log(JSON.stringify(dot(a1,b1)));
+/*
+[[[[180,190,200,210,220,230]],[[480,515,550,585,620,655]],[[780,840,900,960,1020,1080]],[[1080,1165,1250,1335,1420,1505]]]]
+*/
+// console.log(JSON.stringify(dot(a2,b2)));
+/*
+[[[[0,0,0,0,0,0]],[[0,1,2,3,4,5]],[[0,2,4,6,8,10]],[[0,3,6,9,12,15]]]]
 */

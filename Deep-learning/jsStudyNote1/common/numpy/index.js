@@ -2,6 +2,7 @@ const Main = require('./main.js')
 const Reshape = require('./reshape.js')
 const Transpose = require('./transpose.js')
 const Broadcast = require('./broadcast.js')
+const Dot = require('./dot.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -27,7 +28,8 @@ exports.transpose = Transpose.transpose;
 //对数据应用广播机制（使用广播机制处理数据）（numpy.broadcast)
 exports.broadcast = Broadcast.broadcast;
 
-
+//数组点积运算（numpy.dot）
+exports.dot = Dot.dot;
 
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
