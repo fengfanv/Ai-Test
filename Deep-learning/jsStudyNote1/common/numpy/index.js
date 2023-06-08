@@ -36,9 +36,19 @@ exports.dot = Dot.dot;
 // numpy a*b 乘法（基于广播机制）
 // numpy a/b 除法（基于广播机制）
 
-// numpy.dot 两个数组的点积运算方法（numpy.dot）
-
 // numpy a>10 a<10 这种操作
+
+//numpy.sum
+
+//numpy.zeros_like
+
+//numpy.zeros
+
+//numpy.ones
+
+//numpy.mean
+
+//numpy.flatten
 
 // numpy.sin
 // numpy.cos
@@ -51,11 +61,19 @@ exports.dot = Dot.dot;
 // numpy.argmax
 // numpy.min
 // numpy.argmin
+
 // numpy.maximum
+
 // numpy.random.randn
 // numpy.random.choice
-// 下边可以不实现，到时候看情况
-// numpy.frombuffer
+// numpy.random.permutation
+// numpy.random.uniform
 
+// numpy.meshgrid
+
+//numpy.logspace
+
+// numpy.frombuffer
+// numpy.pad
 // numpy.kaiser
 // numpy.convolve
