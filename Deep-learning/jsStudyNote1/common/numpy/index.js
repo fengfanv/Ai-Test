@@ -3,6 +3,7 @@ const Reshape = require('./reshape.js')
 const Transpose = require('./transpose.js')
 const Broadcast = require('./broadcast.js')
 const Dot = require('./dot.js')
+const Axis = require('./axis.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -30,6 +31,10 @@ exports.broadcast = Broadcast.broadcast;
 
 //数组点积运算（numpy.dot）
 exports.dot = Dot.dot;
+
+//获取数据的某个轴（numpy.get_axis）
+exports.get_axis = Axis.get_axis;
+
 
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）

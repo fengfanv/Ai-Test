@@ -1,6 +1,7 @@
+const Common = require('./common.js');
+var multiply = Common.multiply;
+
 //关于numpy的主要（main）方法
-
-
 
 /*
 
@@ -325,16 +326,6 @@ exports.create_array = create_array;
 */
 
 function size(arr) {
-    //乘法
-    var multiply = function (value, shapeArr, index) {
-        if (index >= shapeArr.length) {
-            return value
-        } else {
-            let newValue = value * shapeArr[index];
-            let newIndex = index + 1;
-            return multiply(newValue, shapeArr, newIndex)
-        }
-    }
     let shapeArr = [];
     shapeArr = shape(arr);
     let value = multiply(shapeArr[0], shapeArr, 1) || 0;
