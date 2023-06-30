@@ -366,6 +366,7 @@ function arange(start, stop, step) {
 }
 */
 
+//2023年6月30日15:53:30 发现问题，arange方法step不支持负数(如-1)
 function arange(start, stop, step) {
     if (typeof start != 'undefined' && typeof stop == 'undefined' && typeof step == 'undefined') {
         stop = start;
