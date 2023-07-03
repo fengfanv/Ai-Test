@@ -366,7 +366,6 @@ function arange(start, stop, step) {
 }
 */
 
-//2023年6月30日15:53:30 发现问题，arange方法step不支持负数(如-1)
 function arange(start, stop, step) {
     if (typeof start != 'undefined' && typeof stop == 'undefined' && typeof step == 'undefined') {
         stop = start;
@@ -381,9 +380,18 @@ function arange(start, stop, step) {
         // stop = stop;
         // step = step;
     }
+
     let arr = [];
-    for (let i = start; i < stop; i=i+step) {
-        arr.push(i);
+    if (step > 0) {
+        for (let i = start; i < stop; i = i + step) {
+            arr.push(i);
+        }
+    } else if (step < 0) {
+        for (let i = start; i > stop; i = i + step) {
+            arr.push(i);
+        }
+    } else {
+        throw new Error('arange 的step不能是0')
     }
     return arr;
 }
