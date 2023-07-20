@@ -301,7 +301,7 @@
     }
 
     .MathJax_SVG .noError {
-      vertical-align: ;
+      /* vertical-align: ; */
       font-size: 90%;
       text-align: left;
       color: black;
@@ -590,7 +590,7 @@
     }
 
     .MathJax_PHTML .noError {
-      vertical-align: ;
+      /* vertical-align: ; */
       font-size: 90%;
       text-align: left;
       color: black;
@@ -928,7 +928,7 @@
                         class="headerlink"
                         href="https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding"
                         title="Permalink to this heading" mt_node="origin_leaf">#</a></h3>
-                    <h3 mt_node="trans"><!--volctrans extension anchor for patchId=336-->切片和大步前进<a class="headerlink"
+                    <h3 mt_node="trans"><!--volctrans extension anchor for patchId=336-->切片和步幅<a class="headerlink"
                         href="https://numpy.org/doc/stable/user/basics.indexing.html#slicing-and-striding"
                         title="Permalink to this heading" mt_node="trans">#</a></h3>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=339-->Basic slicing extends
@@ -953,193 +953,165 @@
                           mt_node="origin_leaf"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=352-->
                       objects can be interspersed with these as
                       well.</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=339-->基本切片将Python的基本切片概念扩展到N
-                      基本切片发生在<em mt_node="trans">obj</em><!--volctrans extension anchor for patchId=341-->是<a
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=339-->基本切片将Python的基本切片概念扩展到了N维。
+                      当<em mt_node="trans">obj</em><!--volctrans extension anchor for patchId=341-->是<a
                         class="reference external" href="https://docs.python.org/3/library/functions.html#slice"
                         title="(in Python v3.11)" mt_node="trans"><code
                           class="xref py py-class docutils literal notranslate"
-                          mt_node="trans"><span class="pre">slice</span></code></a><!--volctrans extension anchor for patchId=344-->对象时
-                      （由<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">start:stop:step</span></code><!--volctrans extension anchor for patchId=346-->括号内的符号构造），一个
-                      整数，或切片对象和整数的元组。<a class="reference external"
+                          mt_node="trans"><span class="pre">slice</span></code></a><!--volctrans extension anchor for patchId=344-->对象（由括号内的
+
+                      <code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">start:stop:step</span></code><!--volctrans extension anchor for patchId=346-->符号构造）、一个整数，或切片对象元组和切片整数元组，就会发生基本切片。<a class="reference external"
                         href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.11)"
                         mt_node="trans"><code class="xref py py-data docutils literal notranslate"
                           mt_node="trans"><span class="pre">Ellipsis</span></code></a><!--volctrans extension anchor for patchId=349-->
                       和<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="numpy.newaxis"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
-                          mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=352-->对象可以穿插这些作为
-                      很好。</p>
-                    <p id="index-1" mt_node="origin"><!--volctrans extension anchor for patchId=354-->The simplest case
-                      of indexing with <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">最简单的索引案例
-                      </font><em mt_node="origin_leaf">N</em><em
-                        mt_node="trans">N</em><!--volctrans extension anchor for patchId=356--> integers returns an
-                      <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">整数返回一个</font><a
-                        class="reference internal"
-                        href="https://numpy.org/doc/stable/reference/arrays.scalars.html#arrays-scalars"
-                        mt_node="origin_leaf"><span class="std std-ref" mt_node="origin_leaf">array
-                          scalar</span></a><a class="reference internal"
-                        href="https://numpy.org/doc/stable/reference/arrays.scalars.html#arrays-scalars"
-                        mt_node="trans">数组标量</a><!--volctrans extension anchor for patchId=359--> representing the
-                      corresponding item. As in
-                      Python, all indices are zero-based: for the <font mt_node="trans"
-                        style="vertical-align: inherit; margin: 0px 5px;">代表相应的项目。如在
-                        Python，所有索引都是从零开始的：对于</font><em mt_node="origin_leaf">i</em><em
-                        mt_node="trans">我</em><!--volctrans extension anchor for patchId=361-->-th index <font
-                        mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">指数</font><span
-                        class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
-                          style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
-                          id="MathJax-Element-1-Frame" tabindex="0"
-                          style="font-size: 100%; display: inline-block; position: relative;"
-                          data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
-                          role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                            width="2.194ex" height="1.76ex" viewBox="0 -504.6 944.8 757.9" role="img" focusable="false"
-                            style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
-                            <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                              transform="matrix(1 0 0 -1 0 0)">
-                              <use href="#MJMATHI-6E" x="0" y="0"></use>
-                              <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
-                            </g>
-                          </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                              xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                              <msub>
-                                <mi>n</mi>
-                                <mi>i</mi>
-                              </msub>
-                            </math></span></span>
-                        <script type="math/tex" id="MathJax-Element-1" mt_node="origin">n_i</script>
-                      </span><!--volctrans extension anchor for patchId=369-->,
-                      the valid range is <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">，
-                        有效范围是</font><span class="math notranslate nohighlight" mt_node="origin"><span
-                          class="MathJax_Preview" style="color: inherit; display: none;" mt_node="origin"></span><span
-                          class="MathJax_SVG" id="MathJax-Element-2-Frame" tabindex="0"
-                          style="font-size: 100%; display: inline-block; position: relative;"
-                          data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;&amp;#x2264;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
-                          role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                            width="11.562ex" height="2.344ex" viewBox="0 -755.9 4978.2 1009.2" role="img"
-                            focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
-                            <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                              transform="matrix(1 0 0 -1 0 0)">
-                              <use href="#MJMAIN-30" x="0" y="0"></use>
-                              <use href="#MJMAIN-2264" x="778" y="0"></use>
-                              <g transform="translate(1834,0)">
-                                <use href="#MJMATHI-6E" x="0" y="0"></use>
-                                <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
-                              </g>
-                              <use href="#MJMAIN-3C" x="3057" y="0"></use>
-                              <g transform="translate(4113,0)">
-                                <use href="#MJMATHI-64" x="0" y="0"></use>
-                                <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
-                              </g>
-                            </g>
-                          </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                              xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                              <mn>0</mn>
-                              <mo>≤</mo>
-                              <msub>
-                                <mi>n</mi>
-                                <mi>i</mi>
-                              </msub>
-                              <mo>&lt;</mo>
-                              <msub>
-                                <mi>d</mi>
-                                <mi>i</mi>
-                              </msub>
-                            </math></span></span>
-                        <script type="math/tex" id="MathJax-Element-2" mt_node="origin">0 \le n_i < d_i</script>
-                      </span><!--volctrans extension anchor for patchId=377--> where <font mt_node="trans"
-                        style="vertical-align: inherit; margin: 0px 5px;">哪里</font><span
-                        class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
-                          style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
-                          id="MathJax-Element-3-Frame" tabindex="0"
-                          style="font-size: 100%; display: inline-block; position: relative;"
-                          data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
-                          role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                            width="2.009ex" height="2.344ex" viewBox="0 -755.9 864.8 1009.2" role="img"
-                            focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
-                            <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                              transform="matrix(1 0 0 -1 0 0)">
-                              <use href="#MJMATHI-64" x="0" y="0"></use>
-                              <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
-                            </g>
-                          </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                              xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                              <msub>
-                                <mi>d</mi>
-                                <mi>i</mi>
-                              </msub>
-                            </math></span></span>
-                        <script type="math/tex" id="MathJax-Element-3" mt_node="origin">d_i</script>
-                      </span><!--volctrans extension anchor for patchId=385--> is the
-                      <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">是
-                      </font><em mt_node="origin_leaf">i</em><em
-                        mt_node="trans">我</em><!--volctrans extension anchor for patchId=387-->-th element of the shape
-                      of the array. Negative indices are
-                      interpreted as counting from the end of the array (<font mt_node="trans"
-                        style="vertical-align: inherit; margin: 0px 5px;">-数组形状的第一个元素。负索引是
-                        解释为从数组末尾开始计数（</font><em mt_node="origin_leaf">i.e.</em><em
-                        mt_node="trans">即。</em><!--volctrans extension anchor for patchId=389-->, if
-                      <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">，如果
-                      </font><span class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
-                          style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
-                          id="MathJax-Element-4-Frame" tabindex="0"
-                          style="font-size: 100%; display: inline-block; position: relative;"
-                          data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/math&gt;"
-                          role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                            width="6.455ex" height="2.344ex" viewBox="0 -755.9 2779.4 1009.2" role="img"
-                            focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
-                            <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                              transform="matrix(1 0 0 -1 0 0)">
-                              <use href="#MJMATHI-6E" x="0" y="0"></use>
-                              <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
-                              <use href="#MJMAIN-3C" x="1222" y="0"></use>
-                              <use href="#MJMAIN-30" x="2278" y="0"></use>
-                            </g>
-                          </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                              xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                              <msub>
-                                <mi>n</mi>
-                                <mi>i</mi>
-                              </msub>
-                              <mo>&lt;</mo>
-                              <mn>0</mn>
-                            </math></span></span>
-                        <script type="math/tex" id="MathJax-Element-4" mt_node="origin">n_i < 0</script>
-                      </span><!--volctrans extension anchor for patchId=397-->, it means <font mt_node="trans"
-                        style="vertical-align: inherit; margin: 0px 5px;">，这意味着</font><span
-                        class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
-                          style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
-                          id="MathJax-Element-5-Frame" tabindex="0"
-                          style="font-size: 100%; display: inline-block; position: relative;"
-                          data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
-                          role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                            width="7.043ex" height="2.344ex" viewBox="0 -755.9 3032.6 1009.2" role="img"
-                            focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
-                            <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                              transform="matrix(1 0 0 -1 0 0)">
-                              <use href="#MJMATHI-6E" x="0" y="0"></use>
-                              <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
-                              <use href="#MJMAIN-2B" x="1167" y="0"></use>
-                              <g transform="translate(2167,0)">
-                                <use href="#MJMATHI-64" x="0" y="0"></use>
-                                <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
-                              </g>
-                            </g>
-                          </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                              xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                              <msub>
-                                <mi>n</mi>
-                                <mi>i</mi>
-                              </msub>
-                              <mo>+</mo>
-                              <msub>
-                                <mi>d</mi>
-                                <mi>i</mi>
-                              </msub>
-                            </math></span></span>
-                        <script type="math/tex" id="MathJax-Element-5" mt_node="origin">n_i + d_i</script>
-                      </span><!--volctrans extension anchor for patchId=405-->).<font mt_node="trans"
-                        style="vertical-align: inherit; margin: 0px 5px;">).</font>
+                          mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=352-->也可以与这些对象穿插在一起。</p>
+                    <p id="index-1" mt_node="origin"><!--volctrans extension anchor for patchId=354-->The simplest case of indexing with N integers returns an <a
+                      class="reference internal"
+                      href="https://numpy.org/doc/stable/reference/arrays.scalars.html#arrays-scalars"
+                      mt_node="origin_leaf"><span class="std std-ref" mt_node="origin_leaf">array
+                        scalar</span></a> representing the corresponding item. As in Python, all indices are zero-based: for the <em mt_node="origin_leaf">i</em>-th index <span class="MathJax_SVG"
+                        id="MathJax-Element-1-Frame" tabindex="0"
+                        style="font-size: 100%; display: inline-block; position: relative;"
+                        data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
+                        role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                          width="2.194ex" height="1.76ex" viewBox="0 -504.6 944.8 757.9" role="img" focusable="false"
+                          style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
+                          <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                            transform="matrix(1 0 0 -1 0 0)">
+                            <use href="#MJMATHI-6E" x="0" y="0"></use>
+                            <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
+                          </g>
+                        </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                            xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                            <msub>
+                              <mi>n</mi>
+                              <mi>i</mi>
+                            </msub>
+                          </math></span></span>
+                      <script type="math/tex" id="MathJax-Element-1" mt_node="origin">n_i</script>
+                    </span>, the valid range is <span
+                    class="MathJax_SVG" id="MathJax-Element-2-Frame" tabindex="0"
+                    style="font-size: 100%; display: inline-block; position: relative;"
+                    data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;&amp;#x2264;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
+                    role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                      width="11.562ex" height="2.344ex" viewBox="0 -755.9 4978.2 1009.2" role="img"
+                      focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
+                      <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                        transform="matrix(1 0 0 -1 0 0)">
+                        <use href="#MJMAIN-30" x="0" y="0"></use>
+                        <use href="#MJMAIN-2264" x="778" y="0"></use>
+                        <g transform="translate(1834,0)">
+                          <use href="#MJMATHI-6E" x="0" y="0"></use>
+                          <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
+                        </g>
+                        <use href="#MJMAIN-3C" x="3057" y="0"></use>
+                        <g transform="translate(4113,0)">
+                          <use href="#MJMATHI-64" x="0" y="0"></use>
+                          <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
+                        </g>
+                      </g>
+                    </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                        xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                        <mn>0</mn>
+                        <mo>≤</mo>
+                        <msub>
+                          <mi>n</mi>
+                          <mi>i</mi>
+                        </msub>
+                        <mo>&lt;</mo>
+                        <msub>
+                          <mi>d</mi>
+                          <mi>i</mi>
+                        </msub>
+                      </math></span></span>
+                  <script type="math/tex" id="MathJax-Element-2" mt_node="origin">0 \le n_i < d_i</script>
+                </span>where <span
+                class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
+                  style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
+                  id="MathJax-Element-3-Frame" tabindex="0"
+                  style="font-size: 100%; display: inline-block; position: relative;"
+                  data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
+                  role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                    width="2.009ex" height="2.344ex" viewBox="0 -755.9 864.8 1009.2" role="img"
+                    focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
+                    <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                      transform="matrix(1 0 0 -1 0 0)">
+                      <use href="#MJMATHI-64" x="0" y="0"></use>
+                      <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
+                    </g>
+                  </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                      xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                      <msub>
+                        <mi>d</mi>
+                        <mi>i</mi>
+                      </msub>
+                    </math></span></span>
+                <script type="math/tex" id="MathJax-Element-3" mt_node="origin">d_i</script>
+              </span> is the <em mt_node="origin_leaf">i</em>-th element of the shape of the array. Negative indices are interpreted as counting from the end of the array (<em>i.e.</em>, if <span class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
+                style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
+                id="MathJax-Element-4-Frame" tabindex="0"
+                style="font-size: 100%; display: inline-block; position: relative;"
+                data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/math&gt;"
+                role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                  width="6.455ex" height="2.344ex" viewBox="0 -755.9 2779.4 1009.2" role="img"
+                  focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
+                  <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                    transform="matrix(1 0 0 -1 0 0)">
+                    <use href="#MJMATHI-6E" x="0" y="0"></use>
+                    <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
+                    <use href="#MJMAIN-3C" x="1222" y="0"></use>
+                    <use href="#MJMAIN-30" x="2278" y="0"></use>
+                  </g>
+                </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                    xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                    <msub>
+                      <mi>n</mi>
+                      <mi>i</mi>
+                    </msub>
+                    <mo>&lt;</mo>
+                    <mn>0</mn>
+                  </math></span></span>
+              <script type="math/tex" id="MathJax-Element-4" mt_node="origin">n_i < 0</script>
+            </span>, it means <span
+            class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
+              style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
+              id="MathJax-Element-5-Frame" tabindex="0"
+              style="font-size: 100%; display: inline-block; position: relative;"
+              data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
+              role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                width="7.043ex" height="2.344ex" viewBox="0 -755.9 3032.6 1009.2" role="img"
+                focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
+                <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                  transform="matrix(1 0 0 -1 0 0)">
+                  <use href="#MJMATHI-6E" x="0" y="0"></use>
+                  <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
+                  <use href="#MJMAIN-2B" x="1167" y="0"></use>
+                  <g transform="translate(2167,0)">
+                    <use href="#MJMATHI-64" x="0" y="0"></use>
+                    <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
+                  </g>
+                </g>
+              </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                  xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                  <msub>
+                    <mi>n</mi>
+                    <mi>i</mi>
+                  </msub>
+                  <mo>+</mo>
+                  <msub>
+                    <mi>d</mi>
+                    <mi>i</mi>
+                  </msub>
+                </math></span></span>
+            <script type="math/tex" id="MathJax-Element-5" mt_node="origin">n_i + d_i</script>
+          </span>).
+                    </p>
+                    <p mt_node="origin_leaf">
+                      用N个整数进行索引的最简单情况是，使用一个数组标量，来表示相应的项。与Python一样，所有索引都是从零开始的，如对于第i个索引ni，其有效范围为 0 <= ni < di 其中di是指指指形状数组里的第i个元素。负索引被解释为从数组末尾开始计数(即，如果 ni < 0，则表示 ni + di )
                     </p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=407-->All arrays generated by
                       basic slicing are always <a class="reference internal"
@@ -1147,10 +1119,9 @@
                           class="xref std std-term"
                           mt_node="origin_leaf">views</span></a><!--volctrans extension anchor for patchId=410-->
                       of the original array.</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=407-->基本切片生成的所有数组始终是<a
-                        class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
-                        mt_node="trans">视图</a><!--volctrans extension anchor for patchId=410-->
-                      原始数组。</p>
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=407-->所有由基本切片生成的数组都是原始数组的<a
+                      class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
+                      mt_node="trans">视图</a>。</p>
                     <div class="admonition note" mt_node="origin">
                       <p class="admonition-title" mt_node="origin_leaf">Note</p>
                       <p class="admonition-title" mt_node="trans">注</p>
