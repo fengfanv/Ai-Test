@@ -1142,15 +1142,11 @@
                       </p>
                       <p mt_node="trans"><!--volctrans extension anchor for patchId=414-->NumPy切片创建一个<a
                           class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
-                          mt_node="trans">视图</a><!--volctrans extension anchor for patchId=417-->，而不是像
-                        内置Python序列，例如字符串、元组和列表。
-                        提取时必须小心
-                        大数组中的一小部分在
-                        提取，因为提取的一小部分包含引用
-                        到内存不会释放的大型原始数组，直到
-                        从它派生的所有数组都被垃圾收集。在这种情况下
-                        建议显式<code class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">copy()</span></code><!--volctrans extension anchor for patchId=419-->。
+                          mt_node="trans">视图</a><!--volctrans extension anchor for patchId=417-->，而不是像string、tuple和list等内置Python序列那样创建副本。
+                        当从一个大数组中提取一小部分时，必须小心，因为提取出来的小部分包含有对原始大数组的引用，由原始大数组所派生的所有数组被垃圾回收之前，原始大数组的内存不会被释放。
+                        在这种情况下，建议使用<code class="docutils literal notranslate"
+                          mt_node="trans"><span class="pre">copy()</span></code><!--volctrans extension anchor for patchId=419-->
+                          来创建副本（来切断对原始大数组的引用）。
                       </p>
                     </div>
                     <p mt_node="origin_leaf">The standard rules of sequence slicing apply to basic slicing on a
