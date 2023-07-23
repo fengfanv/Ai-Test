@@ -703,7 +703,7 @@
 
             <img src="./Indexing on ndarrays — NumPy v1.25 Manual_files/numpylogo.svg" class="logo__image only-light"
               alt="Logo image" mt_node="origin">
-           
+
             <img src="./Indexing on ndarrays — NumPy v1.25 Manual_files/numpylogo_dark.svg"
               class="logo__image only-dark" alt="Logo image" mt_node="origin">
 
@@ -773,7 +773,9 @@
                   basic indexing, advanced indexing and field access.
                 </p>
                 <p id="index-0" mt_node="trans">
-                  <a class="reference internal" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" mt_node="trans">
+                  <a class="reference internal"
+                    href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
+                    title="numpy.ndarray" mt_node="trans">
                     <code class="xref py py-class docutils literal notranslate" mt_node="trans">
                       <span class="pre">ndarrays</span>
                     </code>
@@ -796,7 +798,9 @@
                     mt_node="origin_leaf"><span class="std std-ref" mt_node="origin_leaf">Assigning values to indexed
                       arrays</span></a><!--volctrans extension anchor for patchId=289--> for
                   specific examples and explanations on how assignments work.</p>
-                <p mt_node="trans"><!--volctrans extension anchor for patchId=286-->以下的大多数示例显示了在数组中引用数据时索引的使用。这些示例在对数组进行赋值时也同样有效。有关赋值如何工作的具体示例和解释，请参见<a class="reference internal"
+                <p mt_node="trans">
+                  <!--volctrans extension anchor for patchId=286-->以下的大多数示例显示了在数组中引用数据时索引的使用。这些示例在对数组进行赋值时也同样有效。有关赋值如何工作的具体示例和解释，请参见<a
+                    class="reference internal"
                     href="https://numpy.org/doc/stable/user/basics.indexing.html#assigning-values-to-indexed-arrays"
                     mt_node="trans">为索引数组赋值</a>。</p>
                 <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=291-->Note that in Python, <code
@@ -812,7 +816,8 @@
                     class="docutils literal notranslate"
                     mt_node="trans"><span class="pre">x[(exp1,</span> <span class="pre">exp2,</span> <span class="pre">...,</span> <span class="pre">expN)]</span></code><!--volctrans extension anchor for patchId=293-->等价于
                   <code class="docutils literal notranslate"
-                    mt_node="trans"><span class="pre">x[exp1,</span> <span class="pre">exp2,</span> <span class="pre">...,</span> <span class="pre">expN]</span></code><!--volctrans extension anchor for patchId=295-->；对于前者 后者只是前者的语法糖。
+                    mt_node="trans"><span class="pre">x[exp1,</span> <span class="pre">exp2,</span> <span class="pre">...,</span> <span class="pre">expN]</span></code><!--volctrans extension anchor for patchId=295-->；对于前者
+                  后者只是前者的语法糖。
                 </p>
                 <section id="basic-indexing" mt_node="origin">
                   <span id="id1" mt_node="origin_leaf"></span><span id="id1" mt_node="trans"
@@ -885,7 +890,8 @@
                       In this case, the 1-D array at the first position (0) is returned.
                       So using a single index on the returned array, results in a single
                       element being returned. That is:</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=319-->也就是说，指定的每个维度的索引都会选择该维度 后面维度的数组。在上面的例子中，仅选择0意味着长度为5的维度没有被指定，
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=319-->也就是说，指定的每个维度的索引都会选择该维度
+                      后面维度的数组。在上面的例子中，仅选择0意味着长度为5的维度没有被指定，
                       所以返回的是所选维度后面的 维度长度是5的数组。
                       必须注意的是，返回的数组是一个<a class="reference internal"
                         href="https://numpy.org/doc/stable/glossary.html#term-view"
@@ -961,19 +967,22 @@
                           mt_node="trans"><span class="pre">slice</span></code></a><!--volctrans extension anchor for patchId=344-->对象（由括号内的
 
                       <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">start:stop:step</span></code><!--volctrans extension anchor for patchId=346-->符号构造）、一个整数，或切片对象元组和切片整数元组，就会发生基本切片。<a class="reference external"
-                        href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.11)"
-                        mt_node="trans"><code class="xref py py-data docutils literal notranslate"
+                        mt_node="trans"><span class="pre">start:stop:step</span></code><!--volctrans extension anchor for patchId=346-->符号构造）、一个整数，或切片对象元组和切片整数元组，就会发生基本切片。<a
+                        class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis"
+                        title="(in Python v3.11)" mt_node="trans"><code
+                          class="xref py py-data docutils literal notranslate"
                           mt_node="trans"><span class="pre">Ellipsis</span></code></a><!--volctrans extension anchor for patchId=349-->
                       和<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="numpy.newaxis"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
-                          mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=352-->也可以与这些对象穿插在一起。</p>
-                    <p id="index-1" mt_node="origin"><!--volctrans extension anchor for patchId=354-->The simplest case of indexing with N integers returns an <a
-                      class="reference internal"
-                      href="https://numpy.org/doc/stable/reference/arrays.scalars.html#arrays-scalars"
-                      mt_node="origin_leaf"><span class="std std-ref" mt_node="origin_leaf">array
-                        scalar</span></a> representing the corresponding item. As in Python, all indices are zero-based: for the <em mt_node="origin_leaf">i</em>-th index <span class="MathJax_SVG"
+                          mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=352-->也可以与这些对象穿插在一起。
+                    </p>
+                    <p id="index-1" mt_node="origin"><!--volctrans extension anchor for patchId=354-->The simplest case
+                      of indexing with N integers returns an <a class="reference internal"
+                        href="https://numpy.org/doc/stable/reference/arrays.scalars.html#arrays-scalars"
+                        mt_node="origin_leaf"><span class="std std-ref" mt_node="origin_leaf">array
+                          scalar</span></a> representing the corresponding item. As in Python, all indices are
+                      zero-based: for the <em mt_node="origin_leaf">i</em>-th index <span class="MathJax_SVG"
                         id="MathJax-Element-1-Frame" tabindex="0"
                         style="font-size: 100%; display: inline-block; position: relative;"
                         data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
@@ -993,394 +1002,369 @@
                             </msub>
                           </math></span></span>
                       <script type="math/tex" id="MathJax-Element-1" mt_node="origin">n_i</script>
-                    </span>, the valid range is <span
-                    class="MathJax_SVG" id="MathJax-Element-2-Frame" tabindex="0"
-                    style="font-size: 100%; display: inline-block; position: relative;"
-                    data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;&amp;#x2264;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
-                    role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                      width="11.562ex" height="2.344ex" viewBox="0 -755.9 4978.2 1009.2" role="img"
-                      focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
-                      <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                        transform="matrix(1 0 0 -1 0 0)">
-                        <use href="#MJMAIN-30" x="0" y="0"></use>
-                        <use href="#MJMAIN-2264" x="778" y="0"></use>
-                        <g transform="translate(1834,0)">
-                          <use href="#MJMATHI-6E" x="0" y="0"></use>
-                          <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
-                        </g>
-                        <use href="#MJMAIN-3C" x="3057" y="0"></use>
-                        <g transform="translate(4113,0)">
-                          <use href="#MJMATHI-64" x="0" y="0"></use>
-                          <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
-                        </g>
-                      </g>
-                    </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                        xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                        <mn>0</mn>
-                        <mo>≤</mo>
-                        <msub>
-                          <mi>n</mi>
-                          <mi>i</mi>
-                        </msub>
-                        <mo>&lt;</mo>
-                        <msub>
-                          <mi>d</mi>
-                          <mi>i</mi>
-                        </msub>
-                      </math></span></span>
-                  <script type="math/tex" id="MathJax-Element-2" mt_node="origin">0 \le n_i < d_i</script>
-                </span>where <span
-                class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
-                  style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
-                  id="MathJax-Element-3-Frame" tabindex="0"
-                  style="font-size: 100%; display: inline-block; position: relative;"
-                  data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
-                  role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                    width="2.009ex" height="2.344ex" viewBox="0 -755.9 864.8 1009.2" role="img"
-                    focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
-                    <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                      transform="matrix(1 0 0 -1 0 0)">
-                      <use href="#MJMATHI-64" x="0" y="0"></use>
-                      <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
-                    </g>
-                  </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                      xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                      <msub>
-                        <mi>d</mi>
-                        <mi>i</mi>
-                      </msub>
-                    </math></span></span>
-                <script type="math/tex" id="MathJax-Element-3" mt_node="origin">d_i</script>
-              </span> is the <em mt_node="origin_leaf">i</em>-th element of the shape of the array. Negative indices are interpreted as counting from the end of the array (<em>i.e.</em>, if <span class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
-                style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
-                id="MathJax-Element-4-Frame" tabindex="0"
-                style="font-size: 100%; display: inline-block; position: relative;"
-                data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/math&gt;"
-                role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                  width="6.455ex" height="2.344ex" viewBox="0 -755.9 2779.4 1009.2" role="img"
-                  focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
-                  <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                    transform="matrix(1 0 0 -1 0 0)">
-                    <use href="#MJMATHI-6E" x="0" y="0"></use>
-                    <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
-                    <use href="#MJMAIN-3C" x="1222" y="0"></use>
-                    <use href="#MJMAIN-30" x="2278" y="0"></use>
-                  </g>
-                </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                    xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                    <msub>
-                      <mi>n</mi>
-                      <mi>i</mi>
-                    </msub>
-                    <mo>&lt;</mo>
-                    <mn>0</mn>
-                  </math></span></span>
-              <script type="math/tex" id="MathJax-Element-4" mt_node="origin">n_i < 0</script>
-            </span>, it means <span
-            class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
-              style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
-              id="MathJax-Element-5-Frame" tabindex="0"
-              style="font-size: 100%; display: inline-block; position: relative;"
-              data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
-              role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                width="7.043ex" height="2.344ex" viewBox="0 -755.9 3032.6 1009.2" role="img"
-                focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
-                <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                  transform="matrix(1 0 0 -1 0 0)">
-                  <use href="#MJMATHI-6E" x="0" y="0"></use>
-                  <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
-                  <use href="#MJMAIN-2B" x="1167" y="0"></use>
-                  <g transform="translate(2167,0)">
-                    <use href="#MJMATHI-64" x="0" y="0"></use>
-                    <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
-                  </g>
-                </g>
-              </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                  xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                  <msub>
-                    <mi>n</mi>
-                    <mi>i</mi>
-                  </msub>
-                  <mo>+</mo>
-                  <msub>
-                    <mi>d</mi>
-                    <mi>i</mi>
-                  </msub>
-                </math></span></span>
-            <script type="math/tex" id="MathJax-Element-5" mt_node="origin">n_i + d_i</script>
-          </span>).
+                      </span>, the valid range is <span class="MathJax_SVG" id="MathJax-Element-2-Frame" tabindex="0"
+                        style="font-size: 100%; display: inline-block; position: relative;"
+                        data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo&gt;&amp;#x2264;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
+                        role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                          width="11.562ex" height="2.344ex" viewBox="0 -755.9 4978.2 1009.2" role="img"
+                          focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
+                          <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                            transform="matrix(1 0 0 -1 0 0)">
+                            <use href="#MJMAIN-30" x="0" y="0"></use>
+                            <use href="#MJMAIN-2264" x="778" y="0"></use>
+                            <g transform="translate(1834,0)">
+                              <use href="#MJMATHI-6E" x="0" y="0"></use>
+                              <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
+                            </g>
+                            <use href="#MJMAIN-3C" x="3057" y="0"></use>
+                            <g transform="translate(4113,0)">
+                              <use href="#MJMATHI-64" x="0" y="0"></use>
+                              <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
+                            </g>
+                          </g>
+                        </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                            xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                            <mn>0</mn>
+                            <mo>≤</mo>
+                            <msub>
+                              <mi>n</mi>
+                              <mi>i</mi>
+                            </msub>
+                            <mo>&lt;</mo>
+                            <msub>
+                              <mi>d</mi>
+                              <mi>i</mi>
+                            </msub>
+                          </math></span></span>
+                      <script type="math/tex" id="MathJax-Element-2" mt_node="origin">0 \le n_i < d_i</script>
+                      </span>where <span class="math notranslate nohighlight" mt_node="origin"><span
+                          class="MathJax_Preview" style="color: inherit; display: none;" mt_node="origin"></span><span
+                          class="MathJax_SVG" id="MathJax-Element-3-Frame" tabindex="0"
+                          style="font-size: 100%; display: inline-block; position: relative;"
+                          data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
+                          role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="2.009ex" height="2.344ex" viewBox="0 -755.9 864.8 1009.2" role="img"
+                            focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
+                            <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                              transform="matrix(1 0 0 -1 0 0)">
+                              <use href="#MJMATHI-64" x="0" y="0"></use>
+                              <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
+                            </g>
+                          </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                              xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                              <msub>
+                                <mi>d</mi>
+                                <mi>i</mi>
+                              </msub>
+                            </math></span></span>
+                        <script type="math/tex" id="MathJax-Element-3" mt_node="origin">d_i</script>
+                      </span> is the <em mt_node="origin_leaf">i</em>-th element of the shape of the array. Negative
+                      indices are interpreted as counting from the end of the array (<em>i.e.</em>, if <span
+                        class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
+                          style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
+                          id="MathJax-Element-4-Frame" tabindex="0"
+                          style="font-size: 100%; display: inline-block; position: relative;"
+                          data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/math&gt;"
+                          role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="6.455ex" height="2.344ex" viewBox="0 -755.9 2779.4 1009.2" role="img"
+                            focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
+                            <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                              transform="matrix(1 0 0 -1 0 0)">
+                              <use href="#MJMATHI-6E" x="0" y="0"></use>
+                              <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
+                              <use href="#MJMAIN-3C" x="1222" y="0"></use>
+                              <use href="#MJMAIN-30" x="2278" y="0"></use>
+                            </g>
+                          </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                              xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                              <msub>
+                                <mi>n</mi>
+                                <mi>i</mi>
+                              </msub>
+                              <mo>&lt;</mo>
+                              <mn>0</mn>
+                            </math></span></span>
+                        <script type="math/tex" id="MathJax-Element-4" mt_node="origin">n_i < 0</script>
+                      </span>, it means <span class="math notranslate nohighlight" mt_node="origin"><span
+                          class="MathJax_Preview" style="color: inherit; display: none;" mt_node="origin"></span><span
+                          class="MathJax_SVG" id="MathJax-Element-5-Frame" tabindex="0"
+                          style="font-size: 100%; display: inline-block; position: relative;"
+                          data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;msub&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;d&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;/math&gt;"
+                          role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                            width="7.043ex" height="2.344ex" viewBox="0 -755.9 3032.6 1009.2" role="img"
+                            focusable="false" style="vertical-align: -0.588ex;" aria-hidden="true" mt_node="origin">
+                            <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                              transform="matrix(1 0 0 -1 0 0)">
+                              <use href="#MJMATHI-6E" x="0" y="0"></use>
+                              <use transform="scale(0.707)" href="#MJMATHI-69" x="849" y="-213"></use>
+                              <use href="#MJMAIN-2B" x="1167" y="0"></use>
+                              <g transform="translate(2167,0)">
+                                <use href="#MJMATHI-64" x="0" y="0"></use>
+                                <use transform="scale(0.707)" href="#MJMATHI-69" x="736" y="-213"></use>
+                              </g>
+                            </g>
+                          </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                              xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                              <msub>
+                                <mi>n</mi>
+                                <mi>i</mi>
+                              </msub>
+                              <mo>+</mo>
+                              <msub>
+                                <mi>d</mi>
+                                <mi>i</mi>
+                              </msub>
+                            </math></span></span>
+                        <script type="math/tex" id="MathJax-Element-5" mt_node="origin">n_i + d_i</script>
+                      </span>).
                     </p>
                     <p mt_node="origin_leaf">
-                      用N个整数进行索引的最简单情况是，使用一个数组标量，来表示相应的项。与Python一样，所有索引都是从零开始的，如对于第i个索引ni，其有效范围为 0 <= ni < di 其中di是指指指形状数组里的第i个元素。负索引被解释为从数组末尾开始计数(即，如果 ni < 0，则表示 ni + di )
-                    </p>
-                    <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=407-->All arrays generated by
-                      basic slicing are always <a class="reference internal"
-                        href="https://numpy.org/doc/stable/glossary.html#term-view" mt_node="origin_leaf"><span
-                          class="xref std std-term"
-                          mt_node="origin_leaf">views</span></a><!--volctrans extension anchor for patchId=410-->
-                      of the original array.</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=407-->所有由基本切片生成的数组都是原始数组的<a
-                      class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
-                      mt_node="trans">视图</a>。</p>
-                    <div class="admonition note" mt_node="origin">
-                      <p class="admonition-title" mt_node="origin_leaf">Note</p>
-                      <p class="admonition-title" mt_node="trans">注</p>
-                      <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=414-->NumPy slicing creates a
-                        <a class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
-                          mt_node="origin_leaf"><span class="xref std std-term"
-                            mt_node="origin_leaf">view</span></a><!--volctrans extension anchor for patchId=417-->
-                        instead of a copy as in the case of
-                        built-in Python sequences such as string, tuple and list.
-                        Care must be taken when extracting
-                        a small portion from a large array which becomes useless after the
-                        extraction, because the small portion extracted contains a reference
-                        to the large original array whose memory will not be released until
-                        all arrays derived from it are garbage-collected. In such cases an
-                        explicit <code class="docutils literal notranslate"
-                          mt_node="origin_leaf"><span class="pre">copy()</span></code><!--volctrans extension anchor for patchId=419-->
-                        is recommended.
-                      </p>
-                      <p mt_node="trans"><!--volctrans extension anchor for patchId=414-->NumPy切片创建一个<a
-                          class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
-                          mt_node="trans">视图</a><!--volctrans extension anchor for patchId=417-->，而不是像string、tuple和list等内置Python序列那样创建副本。
-                        当从一个大数组中提取一小部分时，必须小心，因为提取出来的小部分包含有对原始大数组的引用，由原始大数组所派生的所有数组被垃圾回收之前，原始大数组的内存不会被释放。
-                        在这种情况下，建议使用<code class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">copy()</span></code><!--volctrans extension anchor for patchId=419-->
-                          来创建副本（来切断对原始大数组的引用）。
-                      </p>
-                    </div>
-                    <p mt_node="origin_leaf">The standard rules of sequence slicing apply to basic slicing on a
-                      per-dimension basis (including using a step index). Some useful
-                      concepts to remember include:</p>
-                    <p mt_node="trans">序列切片的标准规则适用于基于每个维度的基本切片（包括使用步长索引）。要记住的一些有用概念包括：</p>
-                    <ul mt_node="origin">
-                      <li mt_node="origin">
-                        <p mt_node="origin"><!--volctrans extension anchor for patchId=424-->The basic slice syntax is
-                          <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">基本的切片语法是</font><code
-                            class="docutils literal notranslate"
-                            mt_node="origin"><span class="pre">i:j:k</span></code><!--volctrans extension anchor for patchId=426-->
-                          where <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">哪里</font><em
-                            mt_node="origin_leaf">i</em><em
-                            mt_node="trans">我</em><!--volctrans extension anchor for patchId=428--> is the starting
-                          index,
-                          <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">是起始索引，
-                          </font><em mt_node="origin_leaf">j</em><em
-                            mt_node="trans">j</em><!--volctrans extension anchor for patchId=430--> is the stopping
-                          index, and <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">是停止索引，并且
-                          </font><em mt_node="origin_leaf">k</em><em
-                            mt_node="trans">k</em><!--volctrans extension anchor for patchId=432--> is the step (<font
-                            mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">是步骤（</font><span
-                            class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
-                              style="color: inherit; display: none;" mt_node="origin"></span><span class="MathJax_SVG"
-                              id="MathJax-Element-6-Frame" tabindex="0"
-                              style="font-size: 100%; display: inline-block; position: relative;"
-                              data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;mo&gt;&amp;#x2260;&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/math&gt;"
-                              role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="5.472ex" height="2.577ex" viewBox="0 -806.1 2356.1 1109.7" role="img"
-                                focusable="false" style="vertical-align: -0.705ex;" aria-hidden="true" mt_node="origin">
-                                <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                                  transform="matrix(1 0 0 -1 0 0)">
-                                  <use href="#MJMATHI-6B" x="0" y="0"></use>
-                                  <use href="#MJMAIN-2260" x="799" y="0"></use>
-                                  <use href="#MJMAIN-30" x="1855" y="0"></use>
-                                </g>
-                              </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
-                                  xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
-                                  <mi>k</mi>
-                                  <mo>≠</mo>
-                                  <mn>0</mn>
-                                </math></span></span>
-                            <script type="math/tex" id="MathJax-Element-6" mt_node="origin">k\neq0</script>
-                          </span><!--volctrans extension anchor for patchId=440-->).
-                          This selects the <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">）。
-                            这选择了</font><em mt_node="origin_leaf">m</em><em
-                            mt_node="trans">米</em><!--volctrans extension anchor for patchId=442--> elements (in the
-                          corresponding dimension) with
-                          index values <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">
-                            元素（在相应的维度中）与
-                            指数值</font><em mt_node="origin_leaf">i</em><em
-                            mt_node="trans">我</em><!--volctrans extension anchor for patchId=444-->, <font
-                            mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">, </font><em
-                            mt_node="origin_leaf">i + k</em><em
-                            mt_node="trans">i+k</em><!--volctrans extension anchor for patchId=446-->, …, <font
-                            mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">, …, </font><em
-                            mt_node="origin_leaf">i + (m - 1) k</em><em
-                            mt_node="trans">i+（m-1）k</em><!--volctrans extension anchor for patchId=448--> where
-                          <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">哪里
-                          </font><span class="math notranslate nohighlight" mt_node="origin"><span
-                              class="MathJax_Preview" style="color: inherit; display: none;"
-                              mt_node="origin_leaf"></span><span class="MathJax_Preview"
-                              style="color: inherit; display: none;" mt_node="trans"></span><span class="MathJax_SVG"
-                              id="MathJax-Element-7-Frame" tabindex="0"
-                              style="font-size: 100%; display: inline-block; position: relative;"
-                              data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mo&gt;&amp;#x2260;&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;"
-                              role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
-                                width="16.168ex" height="2.577ex" viewBox="0 -806.1 6961.1 1109.7" role="img"
-                                focusable="false" style="vertical-align: -0.705ex;" aria-hidden="true" mt_node="origin">
-                                <g stroke="currentColor" fill="currentColor" stroke-width="0"
-                                  transform="matrix(1 0 0 -1 0 0)">
-                                  <use href="#MJMATHI-6D" x="0" y="0"></use>
-                                  <use href="#MJMAIN-3D" x="1156" y="0"></use>
-                                  <use href="#MJMATHI-71" x="2212" y="0"></use>
-                                  <use href="#MJMAIN-2B" x="2895" y="0"></use>
-                                  <use href="#MJMAIN-28" x="3896" y="0"></use>
-                                  <use href="#MJMATHI-72" x="4285" y="0"></use>
-                                  <use href="#MJMAIN-2260" x="5014" y="0"></use>
-                                  <use href="#MJMAIN-30" x="6071" y="0"></use>
-                                  <use href="#MJMAIN-29" x="6571" y="0"></use>
-                                </g>
-                              </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin_leaf"><math
-                                  xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin_leaf">
-                                  <mi>m</mi>
-                                  <mo>=</mo>
-                                  <mi>q</mi>
-                                  <mo>+</mo>
-                                  <mo stretchy="false">(</mo>
-                                  <mi>r</mi>
-                                  <mo>≠</mo>
-                                  <mn>0</mn>
-                                  <mo stretchy="false">)</mo>
-                                </math></span><span class="MJX_Assistive_MathML" role="presentation"
-                                mt_node="trans"><math xmlns="http://www.w3.org/1998/Math/MathML" mt_node="trans">
-                                  <mi>m</mi>
-                                  <mo>=</mo>
-                                  <mi>q</mi>
-                                  <mo>+</mo>
-                                  <mo stretchy="false">(</mo>
-                                  <mi>r</mi>
-                                  <mo>≠</mo>
-                                  <mn>0</mn>
-                                  <mo stretchy="false">)</mo>
-                                </math></span></span>
-                            <script type="math/tex" id="MathJax-Element-7" mt_node="origin">m = q + (r\neq0)</script>
-                          </span><!--volctrans extension anchor for patchId=456--> and <font mt_node="trans"
-                            style="vertical-align: inherit; margin: 0px 5px;">和</font><em
-                            mt_node="origin_leaf">q</em><em
-                            mt_node="trans">q</em><!--volctrans extension anchor for patchId=458--> and <font
-                            mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">和</font><em
-                            mt_node="origin_leaf">r</em><em
-                            mt_node="trans">r</em><!--volctrans extension anchor for patchId=460--> are the quotient and
-                          remainder
-                          obtained by dividing <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">
-                            是商和余数
-                            除法得到</font><em mt_node="origin_leaf">j - i</em><em
-                            mt_node="trans">j-i</em><!--volctrans extension anchor for patchId=462--> by <font
-                            mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">由</font><em
-                            mt_node="origin_leaf">k</em><em
-                            mt_node="trans">k</em><!--volctrans extension anchor for patchId=464-->: <font
-                            mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">: </font><em
-                            mt_node="origin_leaf">j - i = q k + r</em><em mt_node="trans">j-i=q
-                            k+r</em><!--volctrans extension anchor for patchId=466-->, so that
-                          <font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">，这样
-                          </font><em mt_node="origin_leaf">i + (m - 1) k &lt; j</em><em
-                            mt_node="trans">i+（m-1）k&lt;j</em><!--volctrans extension anchor for patchId=468-->.
-                          For example:<font mt_node="trans" style="vertical-align: inherit; margin: 0px 5px;">.
-                            例如：</font>
-                        </p>
-                        <div class="highlight-default notranslate" mt_node="origin">
-                          <div class="highlight" mt_node="origin">
-                            <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+                      用N个整数进行索引的最简单情况是，使用一个数组标量，来表示相应的项。与Python一样，所有索引都是从零开始的，如对于第i个索引ni，其有效范围为 0 <= ni < di
+                        其中di是指指指形状数组里的第i个元素。负索引被解释为从数组末尾开始计数(即，如果 ni < 0，则表示 ni + di ) </p>
+                        <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=407-->All arrays generated
+                          by
+                          basic slicing are always <a class="reference internal"
+                            href="https://numpy.org/doc/stable/glossary.html#term-view" mt_node="origin_leaf"><span
+                              class="xref std std-term"
+                              mt_node="origin_leaf">views</span></a><!--volctrans extension anchor for patchId=410-->
+                          of the original array.</p>
+                        <p mt_node="trans"><!--volctrans extension anchor for patchId=407-->所有由基本切片生成的数组都是原始数组的<a
+                            class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
+                            mt_node="trans">视图</a>。</p>
+                        <div class="admonition note" mt_node="origin">
+                          <p class="admonition-title" mt_node="origin_leaf">Note</p>
+                          <p class="admonition-title" mt_node="trans">注</p>
+                          <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=414-->NumPy slicing
+                            creates a
+                            <a class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
+                              mt_node="origin_leaf"><span class="xref std std-term"
+                                mt_node="origin_leaf">view</span></a><!--volctrans extension anchor for patchId=417-->
+                            instead of a copy as in the case of
+                            built-in Python sequences such as string, tuple and list.
+                            Care must be taken when extracting
+                            a small portion from a large array which becomes useless after the
+                            extraction, because the small portion extracted contains a reference
+                            to the large original array whose memory will not be released until
+                            all arrays derived from it are garbage-collected. In such cases an
+                            explicit <code class="docutils literal notranslate"
+                              mt_node="origin_leaf"><span class="pre">copy()</span></code><!--volctrans extension anchor for patchId=419-->
+                            is recommended.
+                          </p>
+                          <p mt_node="trans"><!--volctrans extension anchor for patchId=414-->NumPy切片创建一个<a
+                              class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
+                              mt_node="trans">视图</a><!--volctrans extension anchor for patchId=417-->，而不是像string、tuple和list等内置Python序列那样创建副本。
+                            当从一个大数组中提取一小部分时，必须小心，因为提取出来的小部分包含有对原始大数组的引用，由原始大数组所派生的所有数组被垃圾回收之前，原始大数组的内存不会被释放。
+                            在这种情况下，建议使用<code class="docutils literal notranslate"
+                              mt_node="trans"><span class="pre">copy()</span></code><!--volctrans extension anchor for patchId=419-->
+                            来创建副本（来切断对原始大数组的引用）。
+                          </p>
+                        </div>
+                        <p mt_node="origin_leaf">The standard rules of sequence slicing apply to basic slicing on a
+                          per-dimension basis (including using a step index). Some useful
+                          concepts to remember include:</p>
+                        <p mt_node="trans">序列切片的标准规则适用于每个维度的基本切片（包括使用步长索引）。一些有用的概念需要记住:</p>
+                        <ul mt_node="origin">
+                          <li mt_node="origin">
+                            <p mt_node="origin"><!--volctrans extension anchor for patchId=424-->The basic slice syntax
+                              is
+                              <code class="docutils literal notranslate"
+                                mt_node="origin"><span class="pre">i:j:k</span></code><!--volctrans extension anchor for patchId=426-->
+                              where <em mt_node="origin_leaf">i</em><!--volctrans extension anchor for patchId=428--> is
+                              the starting
+                              index,
+                              <em mt_node="trans">j</em><!--volctrans extension anchor for patchId=430--> is the
+                              stopping
+                              index, and <em mt_node="trans">k</em><!--volctrans extension anchor for patchId=432--> is
+                              the step (<span class="math notranslate nohighlight" mt_node="origin"><span
+                                  class="MathJax_Preview" style="color: inherit; display: none;"
+                                  mt_node="origin"></span><span class="MathJax_SVG" id="MathJax-Element-6-Frame"
+                                  tabindex="0" style="font-size: 100%; display: inline-block; position: relative;"
+                                  data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;mo&gt;&amp;#x2260;&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;/math&gt;"
+                                  role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="5.472ex" height="2.577ex" viewBox="0 -806.1 2356.1 1109.7" role="img"
+                                    focusable="false" style="vertical-align: -0.705ex;" aria-hidden="true"
+                                    mt_node="origin">
+                                    <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                                      transform="matrix(1 0 0 -1 0 0)">
+                                      <use href="#MJMATHI-6B" x="0" y="0"></use>
+                                      <use href="#MJMAIN-2260" x="799" y="0"></use>
+                                      <use href="#MJMAIN-30" x="1855" y="0"></use>
+                                    </g>
+                                  </svg><span class="MJX_Assistive_MathML" role="presentation" mt_node="origin"><math
+                                      xmlns="http://www.w3.org/1998/Math/MathML" mt_node="origin">
+                                      <mi>k</mi>
+                                      <mo>≠</mo>
+                                      <mn>0</mn>
+                                    </math></span></span>
+                                <script type="math/tex" id="MathJax-Element-6" mt_node="origin">k\neq0</script>
+                              </span><!--volctrans extension anchor for patchId=440-->).
+                              This selects the <em
+                                mt_node="origin_leaf">m</em><!--volctrans extension anchor for patchId=442--> elements
+                              (in the
+                              corresponding dimension) with
+                              index values <em mt_node="origin_leaf">i</em>, <em mt_node="origin_leaf">i + k</em>, …,
+                              <em mt_node="origin_leaf">i + (m - 1) k</em> where
+                              <span class="math notranslate nohighlight" mt_node="origin"><span class="MathJax_Preview"
+                                  style="color: inherit; display: none;" mt_node="origin_leaf"></span><span
+                                  class="MathJax_Preview" style="color: inherit; display: none;"
+                                  mt_node="trans"></span><span class="MathJax_SVG" id="MathJax-Element-7-Frame"
+                                  tabindex="0" style="font-size: 100%; display: inline-block; position: relative;"
+                                  data-mathml="&lt;math xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;q&lt;/mi&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mo stretchy=&quot;false&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;r&lt;/mi&gt;&lt;mo&gt;&amp;#x2260;&lt;/mo&gt;&lt;mn&gt;0&lt;/mn&gt;&lt;mo stretchy=&quot;false&quot;&gt;)&lt;/mo&gt;&lt;/math&gt;"
+                                  role="presentation" mt_node="origin"><svg xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    width="16.168ex" height="2.577ex" viewBox="0 -806.1 6961.1 1109.7" role="img"
+                                    focusable="false" style="vertical-align: -0.705ex;" aria-hidden="true"
+                                    mt_node="origin">
+                                    <g stroke="currentColor" fill="currentColor" stroke-width="0"
+                                      transform="matrix(1 0 0 -1 0 0)">
+                                      <use href="#MJMATHI-6D" x="0" y="0"></use>
+                                      <use href="#MJMAIN-3D" x="1156" y="0"></use>
+                                      <use href="#MJMATHI-71" x="2212" y="0"></use>
+                                      <use href="#MJMAIN-2B" x="2895" y="0"></use>
+                                      <use href="#MJMAIN-28" x="3896" y="0"></use>
+                                      <use href="#MJMATHI-72" x="4285" y="0"></use>
+                                      <use href="#MJMAIN-2260" x="5014" y="0"></use>
+                                      <use href="#MJMAIN-30" x="6071" y="0"></use>
+                                      <use href="#MJMAIN-29" x="6571" y="0"></use>
+                                    </g>
+                                  </svg><span class="MJX_Assistive_MathML" role="presentation"
+                                    mt_node="origin_leaf"><math xmlns="http://www.w3.org/1998/Math/MathML"
+                                      mt_node="origin_leaf">
+                                      <mi>m</mi>
+                                      <mo>=</mo>
+                                      <mi>q</mi>
+                                      <mo>+</mo>
+                                      <mo stretchy="false">(</mo>
+                                      <mi>r</mi>
+                                      <mo>≠</mo>
+                                      <mn>0</mn>
+                                      <mo stretchy="false">)</mo>
+                                    </math></span><span class="MJX_Assistive_MathML" role="presentation"
+                                    mt_node="trans"><math xmlns="http://www.w3.org/1998/Math/MathML" mt_node="trans">
+                                      <mi>m</mi>
+                                      <mo>=</mo>
+                                      <mi>q</mi>
+                                      <mo>+</mo>
+                                      <mo stretchy="false">(</mo>
+                                      <mi>r</mi>
+                                      <mo>≠</mo>
+                                      <mn>0</mn>
+                                      <mo stretchy="false">)</mo>
+                                    </math></span></span>
+                                <script type="math/tex" id="MathJax-Element-7"
+                                  mt_node="origin">m = q + (r\neq0)</script>
+                              </span><!--volctrans extension anchor for patchId=456--> and <em
+                                mt_node="trans">q</em><!--volctrans extension anchor for patchId=458--> and <em
+                                mt_node="trans">r</em><!--volctrans extension anchor for patchId=460--> are the quotient
+                              and
+                              remainder
+                              obtained by dividing <em mt_node="origin_leaf">j - i</em> by <em
+                                mt_node="trans">k</em><!--volctrans extension anchor for patchId=464-->: <em
+                                mt_node="trans">j - i = q
+                                k + r</em><!--volctrans extension anchor for patchId=466-->, so that
+                              <em mt_node="origin_leaf">i + (m - 1) k &lt;
+                                j</em><!--volctrans extension anchor for patchId=468-->.
+                              For example:
+                            </p>
+                            <p mt_node="origin">
+                              基本的切片语法是i:j:k，其中i是开始索引，j是停止索引，k是步长(k≠0)。基本切片语法在数组相关维度中 所选取数据的索引值为 i, i + k，…，i + (m - 1)
+                              k的m个元素，其中m = q + (r≠0)，q和r为j - i除以k得到的商和余数:j - i = q k + r，使得i + (m - 1) k < j。 </p>
+                                <div class="highlight-default notranslate" mt_node="origin">
+                                  <div class="highlight" mt_node="origin">
+                                    <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">7</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
 <span class="go">array([1, 3, 5])</span>
 </pre>
-                          </div>
-                        </div>
-                      </li>
-                      <li mt_node="origin">
-                        <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=474-->Negative <em
-                            mt_node="origin_leaf">i</em><!--volctrans extension anchor for patchId=476--> and <em
-                            mt_node="origin_leaf">j</em><!--volctrans extension anchor for patchId=478--> are
-                          interpreted as <em mt_node="origin_leaf">n +
-                            i</em><!--volctrans extension anchor for patchId=480--> and <em mt_node="origin_leaf">n +
-                            j</em><!--volctrans extension anchor for patchId=482--> where
-                          <em mt_node="origin_leaf">n</em><!--volctrans extension anchor for patchId=484--> is the
-                          number of elements in the corresponding dimension.
-                          Negative <em mt_node="origin_leaf">k</em><!--volctrans extension anchor for patchId=486-->
-                          makes stepping go towards smaller indices.
-                          From the above example:
-                        </p>
-                        <p mt_node="trans">负i和j被解释为n+i和n+j，其中n是相应维度中元素的数量。负k使步进走向更小的索引。从上面的例子中：</p>
-                        <div class="highlight-default notranslate" mt_node="origin">
-                          <div class="highlight" mt_node="origin">
-                            <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
+                                  </div>
+                                </div>
+                          </li>
+                          <li mt_node="origin">
+                            <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=474-->Negative <em
+                                mt_node="origin_leaf">i</em><!--volctrans extension anchor for patchId=476--> and <em
+                                mt_node="origin_leaf">j</em><!--volctrans extension anchor for patchId=478--> are
+                              interpreted as <em mt_node="origin_leaf">n +
+                                i</em><!--volctrans extension anchor for patchId=480--> and <em mt_node="origin_leaf">n
+                                +
+                                j</em><!--volctrans extension anchor for patchId=482--> where
+                              <em mt_node="origin_leaf">n</em><!--volctrans extension anchor for patchId=484--> is the
+                              number of elements in the corresponding dimension.
+                              Negative <em mt_node="origin_leaf">k</em><!--volctrans extension anchor for patchId=486-->
+                              makes stepping go towards smaller indices.
+                              From the above example:
+                            </p>
+                            <p mt_node="trans">负i和j被解释为n+i和n+j，其中n是相应维度中元素的数量。负k使步进走向更小的索引。从上面的例子中：</p>
+                            <div class="highlight-default notranslate" mt_node="origin">
+                              <div class="highlight" mt_node="origin">
+                                <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
 <span class="go">array([8, 9])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:</span><span class="mi">3</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 <span class="go">array([7, 6, 5, 4])</span>
 </pre>
-                          </div>
-                        </div>
-                      </li>
-                      <li mt_node="origin">
-                        <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=492-->Assume <em
-                            mt_node="origin_leaf">n</em><!--volctrans extension anchor for patchId=494--> is the number
-                          of elements in the dimension being
-                          sliced. Then, if <em
-                            mt_node="origin_leaf">i</em><!--volctrans extension anchor for patchId=496--> is not given
-                          it defaults to 0 for <em mt_node="origin_leaf">k &gt;
-                            0</em><!--volctrans extension anchor for patchId=498--> and
-                          <em mt_node="origin_leaf">n - 1</em><!--volctrans extension anchor for patchId=500--> for <em
-                            mt_node="origin_leaf">k &lt; 0</em><!--volctrans extension anchor for patchId=502--> . If
-                          <em mt_node="origin_leaf">j</em><!--volctrans extension anchor for patchId=504--> is not given
-                          it defaults to <em
-                            mt_node="origin_leaf">n</em><!--volctrans extension anchor for patchId=506--> for <em
-                            mt_node="origin_leaf">k &gt; 0</em><!--volctrans extension anchor for patchId=508-->
-                          and <em mt_node="origin_leaf">-n-1</em><!--volctrans extension anchor for patchId=510--> for
-                          <em mt_node="origin_leaf">k &lt; 0</em><!--volctrans extension anchor for patchId=512--> . If
-                          <em mt_node="origin_leaf">k</em><!--volctrans extension anchor for patchId=514--> is not given
-                          it defaults to 1. Note that
-                          <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">::</span></code><!--volctrans extension anchor for patchId=516-->
-                          is the same as <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=518-->
-                          and means select all indices along this
-                          axis.
-                          From the above example:
-                        </p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=492-->假设<em
-                            mt_node="trans">n</em><!--volctrans extension anchor for patchId=494-->是维度中的元素数
-                          然后，如果没有给<em mt_node="trans">i</em><!--volctrans extension anchor for patchId=496-->，则<em
-                            mt_node="trans">k&gt;0</em><!--volctrans extension anchor for patchId=498-->时默认为0
-                          <em mt_node="trans">n-1</em><!--volctrans extension anchor for patchId=500-->表示<em
-                            mt_node="trans">k&lt;0</em><!--volctrans extension anchor for patchId=502-->。如果没有给出<em
-                            mt_node="trans">j</em><!--volctrans extension anchor for patchId=504-->，则默认为<em
-                            mt_node="trans">n</em><!--volctrans extension anchor for patchId=506-->表示<em
-                            mt_node="trans">k&gt;0</em><!--volctrans extension anchor for patchId=508-->
-                          和<em mt_node="trans">-n-1</em><!--volctrans extension anchor for patchId=510-->表示<em
-                            mt_node="trans">k&lt;0</em><!--volctrans extension anchor for patchId=512-->。如果没有给出<em
-                            mt_node="trans">k</em><!--volctrans extension anchor for patchId=514-->，则默认为1。注意
-                          <code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">::</span></code><!--volctrans extension anchor for patchId=516-->与相同<code
-                            class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=518-->并表示选择沿此的所有索引
-                          轴。
-                          从上面的例子来看：
-                        </p>
-                        <div class="highlight-default notranslate" mt_node="origin">
-                          <div class="highlight" mt_node="origin">
-                            <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+                              </div>
+                            </div>
+                          </li>
+                          <li mt_node="origin">
+                            <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=492-->Assume <em
+                                mt_node="origin_leaf">n</em><!--volctrans extension anchor for patchId=494--> is the
+                              number
+                              of elements in the dimension being
+                              sliced. Then, if <em
+                                mt_node="origin_leaf">i</em><!--volctrans extension anchor for patchId=496--> is not
+                              given
+                              it defaults to 0 for <em mt_node="origin_leaf">k &gt;
+                                0</em><!--volctrans extension anchor for patchId=498--> and
+                              <em mt_node="origin_leaf">n - 1</em><!--volctrans extension anchor for patchId=500--> for
+                              <em mt_node="origin_leaf">k &lt; 0</em><!--volctrans extension anchor for patchId=502--> .
+                              If
+                              <em mt_node="origin_leaf">j</em><!--volctrans extension anchor for patchId=504--> is not
+                              given
+                              it defaults to <em
+                                mt_node="origin_leaf">n</em><!--volctrans extension anchor for patchId=506--> for <em
+                                mt_node="origin_leaf">k &gt; 0</em><!--volctrans extension anchor for patchId=508-->
+                              and <em mt_node="origin_leaf">-n-1</em><!--volctrans extension anchor for patchId=510-->
+                              for
+                              <em mt_node="origin_leaf">k &lt; 0</em><!--volctrans extension anchor for patchId=512--> .
+                              If
+                              <em mt_node="origin_leaf">k</em><!--volctrans extension anchor for patchId=514--> is not
+                              given
+                              it defaults to 1. Note that
+                              <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">::</span></code><!--volctrans extension anchor for patchId=516-->
+                              is the same as <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=518-->
+                              and means select all indices along this
+                              axis.
+                              From the above example:
+                            </p>
+                            <p mt_node="trans">假设n是 数组被切片维度的元素的个数。 然后，如果没有给出 i，则对于 k > 0 ，i 它默认为 0，对于 k < 0，i 它默认为 n -
+                                1。 如果没有给出j，则对于k> 0，j 它默认为n，对于k < 0，则 j 默认为 - n - 1。 如果没有给定k，则 k 默认为1。请注意 :: 与 :
+                                  相同，表示选择沿此轴的所有索引。从上面的例子来看： </p>
+                                  <div class="highlight-default notranslate" mt_node="origin">
+                                    <div class="highlight" mt_node="origin">
+                                      <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
 <span class="go">array([5, 6, 7, 8, 9])</span>
 </pre>
-                          </div>
-                        </div>
-                      </li>
-                      <li mt_node="origin">
-                        <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=524-->If the number of
-                          objects in the selection tuple is less than
-                          <em mt_node="origin_leaf">N</em><!--volctrans extension anchor for patchId=526-->, then <code
-                            class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=528-->
-                          is assumed for any subsequent dimensions.
-                          For example:
-                        </p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=524-->如果选择元组中的对象数小于
-                          <em mt_node="trans">N</em><!--volctrans extension anchor for patchId=526-->，则<code
-                            class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=528-->假设用于任何后续维度。
-                          例如：
-                        </p>
-                        <div class="highlight-default notranslate" mt_node="origin">
-                          <div class="highlight" mt_node="origin">
-                            <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">4</span><span class="p">],[</span><span class="mi">5</span><span class="p">],[</span><span class="mi">6</span><span class="p">]]])</span>
+                                    </div>
+                                  </div>
+                          </li>
+                          <li mt_node="origin">
+                            <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=524-->If the number of
+                              objects in the selection tuple is less than
+                              <em mt_node="origin_leaf">N</em><!--volctrans extension anchor for patchId=526-->, then
+                              <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=528-->
+                              is assumed for any subsequent dimensions.
+                              For example:
+                            </p>
+                            <p mt_node="trans"><!--volctrans extension anchor for patchId=524-->用一些索引，索引一个多维数组，如果索引的数量小于
+                              数组维度的数
+                              <em mt_node="trans">N</em><!--volctrans extension anchor for patchId=526-->，则<code
+                                class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=528-->代表多维数组后续的维度。
+                              例如：
+                            </p>
+                            <div class="highlight-default notranslate" mt_node="origin">
+                              <div class="highlight" mt_node="origin">
+                                <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[[</span><span class="mi">1</span><span class="p">],[</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">4</span><span class="p">],[</span><span class="mi">5</span><span class="p">],[</span><span class="mi">6</span><span class="p">]]])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">shape</span>
 <span class="go">(2, 3, 1)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
@@ -1388,182 +1372,174 @@
 <span class="go">        [5],</span>
 <span class="go">        [6]]])</span>
 </pre>
-                          </div>
-                        </div>
-                      </li>
-                      <li mt_node="origin">
-                        <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=534-->An integer, <em
-                            mt_node="origin_leaf">i</em><!--volctrans extension anchor for patchId=536-->, returns the
-                          same values as <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">i:i+1</span></code>
-                          <strong mt_node="origin_leaf">except</strong><!--volctrans extension anchor for patchId=539-->
-                          the dimensionality of the returned object is reduced by
-                          1. In particular, a selection tuple with the <em
-                            mt_node="origin_leaf">p</em><!--volctrans extension anchor for patchId=541-->-th
-                          element an integer (and all other entries <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=543-->)
-                          returns the
-                          corresponding sub-array with dimension <em mt_node="origin_leaf">N -
-                            1</em><!--volctrans extension anchor for patchId=545-->. If <em mt_node="origin_leaf">N =
-                            1</em><!--volctrans extension anchor for patchId=547-->
-                          then the returned object is an array scalar. These objects are
-                          explained in <a class="reference internal"
-                            href="https://numpy.org/doc/stable/reference/arrays.scalars.html#arrays-scalars"
-                            mt_node="origin_leaf"><span class="std std-ref"
-                              mt_node="origin_leaf">Scalars</span></a><!--volctrans extension anchor for patchId=550-->.
-                        </p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=534-->整数<em
-                            mt_node="trans">i</em><!--volctrans extension anchor for patchId=536-->返回的值与<code
-                            class="docutils literal notranslate" mt_node="trans"><span class="pre">i:i+1</span></code>
-                          <strong
-                            mt_node="trans">相同，只是</strong><!--volctrans extension anchor for patchId=539-->返回对象的维数减少了
-                          1.特别是，具有<em mt_node="trans">第p</em><!--volctrans extension anchor for patchId=541-->个的选择元组
-                          元素一个整数（和所有其他条目<code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=543-->）返回
-                          对应的子数组，维度为<em mt_node="trans">N-1</em><!--volctrans extension anchor for patchId=545-->。如果<em
-                            mt_node="trans">N=1</em><!--volctrans extension anchor for patchId=547-->
-                          那么返回的对象是一个数组标量。这些对象是
-                          用<a class="reference internal"
-                            href="https://numpy.org/doc/stable/reference/arrays.scalars.html#arrays-scalars"
-                            mt_node="trans">标量</a><!--volctrans extension anchor for patchId=550-->解释。
-                        </p>
-                      </li>
-                      <li mt_node="origin">
-                        <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=553-->If the selection tuple
-                          has all entries <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=555-->
-                          except the
-                          <em mt_node="origin_leaf">p</em><!--volctrans extension anchor for patchId=557-->-th entry
-                          which is a slice object <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">i:j:k</span></code><!--volctrans extension anchor for patchId=559-->,
-                          then the returned array has dimension <em
-                            mt_node="origin_leaf">N</em><!--volctrans extension anchor for patchId=561--> formed by
-                          concatenating the sub-arrays returned by integer indexing of
-                          elements <em mt_node="origin_leaf">i</em><!--volctrans extension anchor for patchId=563-->,
-                          <em mt_node="origin_leaf">i+k</em><!--volctrans extension anchor for patchId=565-->, …, <em
-                            mt_node="origin_leaf">i + (m - 1) k &lt;
-                            j</em><!--volctrans extension anchor for patchId=567-->,
-                        </p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=553-->如果选择元组具有所有条目<code
-                            class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=555-->除了
-                          <em mt_node="trans">第p</em><!--volctrans extension anchor for patchId=557-->个条目是一个切片对象<code
-                            class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">i:j:k</span></code><!--volctrans extension anchor for patchId=559-->，
-                          那么返回的数组的维数<em mt_node="trans">N</em><!--volctrans extension anchor for patchId=561-->由
-                          连接整数索引返回的子数组
-                          元素<em mt_node="trans">i</em><!--volctrans extension anchor for patchId=563-->，<em
-                            mt_node="trans">i+k</em><!--volctrans extension anchor for patchId=565-->，…，<em
-                            mt_node="trans">i+（m-1）k&lt;j</em><!--volctrans extension anchor for patchId=567-->，
-                        </p>
-                      </li>
-                      <li mt_node="origin">
-                        <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=570-->Basic slicing with
-                          more than one non-<code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=572-->
-                          entry in the slicing
-                          tuple, acts like repeated application of slicing using a single
-                          non-<code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=574-->
-                          entry, where the non-<code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=576-->
-                          entries are successively taken
-                          (with all other non-<code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=578-->
-                          entries replaced by <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=580-->).
-                          Thus,
-                          <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">x[ind1,</span> <span class="pre">...,</span> <span class="pre">ind2,:]</span></code><!--volctrans extension anchor for patchId=582-->
-                          acts like <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">x[ind1][...,</span> <span class="pre">ind2,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=584-->
-                          under basic
-                          slicing.
-                        </p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=570-->具有多个非基本切片<code
-                            class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=572-->切片中的条目
-                          元组，就像使用单个重复应用切片
-                          non<code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=574-->entry，其中non<code
-                            class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=576-->条目被连续获取
-                          （所有其他非<code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=578-->条目替换为<code
-                            class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=580-->）。因此，
-                          <code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">x[ind1,</span> <span class="pre">...,</span> <span class="pre">ind2,:]</span></code><!--volctrans extension anchor for patchId=582-->行为就像<code
-                            class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">x[ind1][...,</span> <span class="pre">ind2,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=584-->在基本下
-                          切片。
-                        </p>
-                        <div class="admonition warning" mt_node="origin">
-                          <p class="admonition-title" mt_node="origin_leaf">Warning</p>
-                          <p class="admonition-title" mt_node="trans">警告</p>
-                          <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=588-->The above is <strong
-                              mt_node="origin_leaf">not</strong><!--volctrans extension anchor for patchId=590--> true
-                            for advanced indexing.</p>
-                          <p mt_node="trans">对于高级索引，上述情况并非如此。</p>
-                        </div>
-                      </li>
-                      <li mt_node="origin">
-                        <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=593-->You may use slicing to
-                          set values in the array, but (unlike lists) you
-                          can never grow the array. The size of the value to be set in
-                          <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">x[obj]</span> <span class="pre">=</span> <span class="pre">value</span></code><!--volctrans extension anchor for patchId=595-->
-                          must be (broadcastable to) the same shape as
-                          <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=597-->.
-                        </p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=593-->您可以使用切片来设置数组中的值，但（与列表不同）您
-                          永远无法增长数组。要设置的值的大小
-                          <code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">x[obj]</span> <span class="pre">=</span> <span class="pre">value</span></code><!--volctrans extension anchor for patchId=595-->必须是（可广播的）相同的形状
-                          <code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=597-->.
-                        </p>
-                      </li>
-                      <li mt_node="origin">
-                        <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=600-->A slicing tuple can
-                          always be constructed as <em
-                            mt_node="origin_leaf">obj</em><!--volctrans extension anchor for patchId=602-->
-                          and used in the <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=604-->
-                          notation. Slice objects can be used in
-                          the construction in place of the <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">[start:stop:step]</span></code><!--volctrans extension anchor for patchId=606-->
-                          notation. For example, <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">x[1:10:5,</span> <span class="pre">::-1]</span></code><!--volctrans extension anchor for patchId=608-->
-                          can also be implemented
-                          as <code class="docutils literal notranslate"
-                            mt_node="origin_leaf"><span class="pre">obj</span> <span class="pre">=</span> <span class="pre">(slice(1,</span> <span class="pre">10,</span> <span class="pre">5),</span> <span class="pre">slice(None,</span> <span class="pre">None,</span> <span class="pre">-1));</span> <span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=610-->
-                          . This
-                          can be useful for constructing generic code that works on arrays
-                          of arbitrary dimensions. See <a class="reference internal"
-                            href="https://numpy.org/doc/stable/user/basics.indexing.html#dealing-with-variable-indices"
-                            mt_node="origin_leaf"><span class="std std-ref" mt_node="origin_leaf">Dealing with variable
-                              numbers of indices within
-                              programs</span></a><!--volctrans extension anchor for patchId=613-->
-                          for more information.</p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=600-->切片元组总是可以构造为<em
-                            mt_node="trans">obj</em><!--volctrans extension anchor for patchId=602-->
-                          并用于<code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=604-->表示法。切片对象可用于
-                          施工的地方<code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">[start:stop:step]</span></code><!--volctrans extension anchor for patchId=606-->
-                          符号。例如，<code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">x[1:10:5,</span> <span class="pre">::-1]</span></code><!--volctrans extension anchor for patchId=608-->也可以实现
-                          as<code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">obj</span> <span class="pre">=</span> <span class="pre">(slice(1,</span> <span class="pre">10,</span> <span class="pre">5),</span> <span class="pre">slice(None,</span> <span class="pre">None,</span> <span class="pre">-1));</span> <span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=610-->。这
-                          对于构造适用于数组的通用代码很有用
-                          任意尺寸。参见<a class="reference internal"
-                            href="https://numpy.org/doc/stable/user/basics.indexing.html#dealing-with-variable-indices"
-                            mt_node="trans">处理程序中可变数量的索引</a><!--volctrans extension anchor for patchId=613-->
-                          了解更多信息。</p>
-                      </li>
-                    </ul>
+                              </div>
+                            </div>
+                          </li>
+                          <li mt_node="origin">
+                            <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=534-->An integer, <em
+                                mt_node="origin_leaf">i</em><!--volctrans extension anchor for patchId=536-->, returns
+                              the
+                              same values as <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">i:i+1</span></code>
+                              <strong
+                                mt_node="origin_leaf">except</strong><!--volctrans extension anchor for patchId=539-->
+                              the dimensionality of the returned object is reduced by
+                              1. In particular, a selection tuple with the <em
+                                mt_node="origin_leaf">p</em><!--volctrans extension anchor for patchId=541-->-th
+                              element an integer (and all other entries <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=543-->)
+                              returns the
+                              corresponding sub-array with dimension <em mt_node="origin_leaf">N -
+                                1</em><!--volctrans extension anchor for patchId=545-->. If <em mt_node="origin_leaf">N
+                                =
+                                1</em><!--volctrans extension anchor for patchId=547-->
+                              then the returned object is an array scalar. These objects are
+                              explained in <a class="reference internal"
+                                href="https://numpy.org/doc/stable/reference/arrays.scalars.html#arrays-scalars"
+                                mt_node="origin_leaf"><span class="std std-ref"
+                                  mt_node="origin_leaf">Scalars</span></a><!--volctrans extension anchor for patchId=550-->.
+                            </p>
+                            <p mt_node="trans"><!--volctrans extension anchor for patchId=534-->整数<em
+                                mt_node="trans">i</em><!--volctrans extension anchor for patchId=536-->返回的值与<code
+                                class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">i:i+1</span></code>
+                              相同，<strong
+                                mt_node="trans">只是</strong><!--volctrans extension anchor for patchId=539-->返回的值维数减少了1.
+                              特别是，一个多维度的索引元组 它第<em
+                                mt_node="trans">p</em><!--volctrans extension anchor for patchId=541-->个的
+                              索引元素是一个整数（索引元组除了第p个是整数，所有其他索引为<code class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=543-->）的返回值
+                              维度为<em mt_node="trans">N-1</em><!--volctrans extension anchor for patchId=545-->。如果<em
+                                mt_node="trans">N=1</em><!--volctrans extension anchor for patchId=547-->
+                              那么返回值是一个数组标量。
+                          </li>
+                          <li mt_node="origin">
+                            <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=553-->If the selection
+                              tuple
+                              has all entries <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=555-->
+                              except the
+                              <em mt_node="origin_leaf">p</em><!--volctrans extension anchor for patchId=557-->-th entry
+                              which is a slice object <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">i:j:k</span></code><!--volctrans extension anchor for patchId=559-->,
+                              then the returned array has dimension <em
+                                mt_node="origin_leaf">N</em><!--volctrans extension anchor for patchId=561--> formed by
+                              concatenating the sub-arrays returned by integer indexing of
+                              elements <em
+                                mt_node="origin_leaf">i</em><!--volctrans extension anchor for patchId=563-->,
+                              <em mt_node="origin_leaf">i+k</em><!--volctrans extension anchor for patchId=565-->, …,
+                              <em mt_node="origin_leaf">i + (m - 1) k &lt;
+                                j</em><!--volctrans extension anchor for patchId=567-->,
+                            </p>
+                            <p mt_node="trans"><!--volctrans extension anchor for patchId=553-->
+                              如果 选择元组 除了第p个条目是切片对象i:j:k之外，所有条目均为：，则返回的数组具有由元素i，i+k，…，i+（m-1）k＜j的整数索引返回的子数组合并形成的N维，
+                            </p>
+                          </li>
+                          <li mt_node="origin">
+                            <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=570-->Basic slicing with
+                              more than one non-<code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=572-->
+                              entry in the slicing
+                              tuple, acts like repeated application of slicing using a single
+                              non-<code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=574-->
+                              entry, where the non-<code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=576-->
+                              entries are successively taken
+                              (with all other non-<code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=578-->
+                              entries replaced by <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=580-->).
+                              Thus,
+                              <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">x[ind1,</span> <span class="pre">...,</span> <span class="pre">ind2,:]</span></code><!--volctrans extension anchor for patchId=582-->
+                              acts like <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">x[ind1][...,</span> <span class="pre">ind2,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=584-->
+                              under basic
+                              slicing.
+                            </p>
+                            <p mt_node="trans"><!--volctrans extension anchor for patchId=570-->
+                              当切片元组中存在多个非:条目时，基本的切片操作会像重复使用单个非:条目进行切片一样，其中非:条目是连续取的（其他所有非:条目均用:代替）。因此，x[ind1，…，ind2，:]的行为类似于x[ind1][…，ind2，:]在基本切片下的行为。
+                            </p>
+                            <p>
+                              1、选择元组（selection tuple）是一个包含冒号（:）和整数的元组，用于对数组进行索引。<br>
+                              2、选择元组的第p个元素可以是整数或切片对象。<br>
+                              3、如果选择元组中除了第p个元素外，其他元素都是冒号（:），则返回的数组的维度将减少1。<br>
+                              4、如果选择元组的第p个元素是切片对象，则返回的数组的维度将由通过整数索引返回的子数组拼接而成。<br>
+                              5、在基本切片（basic slicing）中，如果有多个非冒号（:）元素，则将其视为连续使用基本切片操作，其中每次使用一个非冒号元素，并替换其他非冒号元素为冒号（:）。
+                            </p>
+                            <div class="admonition warning" mt_node="origin">
+                              <p class="admonition-title" mt_node="origin_leaf">Warning</p>
+                              <p class="admonition-title" mt_node="trans">警告</p>
+                              <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=588-->The above is
+                                <strong
+                                  mt_node="origin_leaf">not</strong><!--volctrans extension anchor for patchId=590-->
+                                true
+                                for advanced indexing.</p>
+                              <p mt_node="trans">对于高级索引，上述情况并非如此。</p>
+                            </div>
+                          </li>
+                          <li mt_node="origin">
+                            <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=593-->You may use
+                              slicing to
+                              set values in the array, but (unlike lists) you
+                              can never grow the array. The size of the value to be set in
+                              <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">x[obj]</span> <span class="pre">=</span> <span class="pre">value</span></code><!--volctrans extension anchor for patchId=595-->
+                              must be (broadcastable to) the same shape as
+                              <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=597-->.
+                            </p>
+                            <p mt_node="trans">
+                              <!--volctrans extension anchor for patchId=593-->您可以使用切片来设置数组中的值，但（与列表不同）您
+                              永远无法增长数组。要设置的值的大小
+                              <code class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">x[obj]</span> <span class="pre">=</span> <span class="pre">value</span></code><!--volctrans extension anchor for patchId=595-->必须是（可广播的）相同的形状
+                              <code class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=597-->.
+                            </p>
+                          </li>
+                          <li mt_node="origin">
+                            <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=600-->A slicing tuple
+                              can
+                              always be constructed as <em
+                                mt_node="origin_leaf">obj</em><!--volctrans extension anchor for patchId=602-->
+                              and used in the <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=604-->
+                              notation. Slice objects can be used in
+                              the construction in place of the <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">[start:stop:step]</span></code><!--volctrans extension anchor for patchId=606-->
+                              notation. For example, <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">x[1:10:5,</span> <span class="pre">::-1]</span></code><!--volctrans extension anchor for patchId=608-->
+                              can also be implemented
+                              as <code class="docutils literal notranslate"
+                                mt_node="origin_leaf"><span class="pre">obj</span> <span class="pre">=</span> <span class="pre">(slice(1,</span> <span class="pre">10,</span> <span class="pre">5),</span> <span class="pre">slice(None,</span> <span class="pre">None,</span> <span class="pre">-1));</span> <span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=610-->
+                              . This
+                              can be useful for constructing generic code that works on arrays
+                              of arbitrary dimensions. See <a class="reference internal"
+                                href="https://numpy.org/doc/stable/user/basics.indexing.html#dealing-with-variable-indices"
+                                mt_node="origin_leaf"><span class="std std-ref" mt_node="origin_leaf">Dealing with
+                                  variable
+                                  numbers of indices within
+                                  programs</span></a><!--volctrans extension anchor for patchId=613-->
+                              for more information.</p>
+                            <p mt_node="trans"><!--volctrans extension anchor for patchId=600-->切片元组总是可以构造为<em
+                                mt_node="trans">obj</em><!--volctrans extension anchor for patchId=602-->
+                              并用于<code class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=604-->表示法。切片对象可用于
+                              施工的地方<code class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">[start:stop:step]</span></code><!--volctrans extension anchor for patchId=606-->
+                              符号。例如，<code class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">x[1:10:5,</span> <span class="pre">::-1]</span></code><!--volctrans extension anchor for patchId=608-->也可以实现
+                              as<code class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">obj</span> <span class="pre">=</span> <span class="pre">(slice(1,</span> <span class="pre">10,</span> <span class="pre">5),</span> <span class="pre">slice(None,</span> <span class="pre">None,</span> <span class="pre">-1));</span> <span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=610-->。这
+                              对于构造适用于数组的通用代码很有用
+                              任意尺寸。参见<a class="reference internal"
+                                href="https://numpy.org/doc/stable/user/basics.indexing.html#dealing-with-variable-indices"
+                                mt_node="trans">处理程序中可变数量的索引</a><!--volctrans extension anchor for patchId=613-->
+                              了解更多信息。</p>
+                          </li>
+                        </ul>
                   </section>
                   <section id="dimensional-indexing-tools" mt_node="origin">
                     <span id="index-2" mt_node="origin_leaf"></span><span id="index-2" mt_node="trans"
