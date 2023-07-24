@@ -1523,21 +1523,9 @@
                                   numbers of indices within
                                   programs</span></a><!--volctrans extension anchor for patchId=613-->
                               for more information.</p>
-                            <p mt_node="trans"><!--volctrans extension anchor for patchId=600-->切片元组总是可以构造为<em
-                                mt_node="trans">obj</em><!--volctrans extension anchor for patchId=602-->
-                              并用于<code class="docutils literal notranslate"
-                                mt_node="trans"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=604-->表示法。切片对象可用于
-                              施工的地方<code class="docutils literal notranslate"
-                                mt_node="trans"><span class="pre">[start:stop:step]</span></code><!--volctrans extension anchor for patchId=606-->
-                              符号。例如，<code class="docutils literal notranslate"
-                                mt_node="trans"><span class="pre">x[1:10:5,</span> <span class="pre">::-1]</span></code><!--volctrans extension anchor for patchId=608-->也可以实现
-                              as<code class="docutils literal notranslate"
-                                mt_node="trans"><span class="pre">obj</span> <span class="pre">=</span> <span class="pre">(slice(1,</span> <span class="pre">10,</span> <span class="pre">5),</span> <span class="pre">slice(None,</span> <span class="pre">None,</span> <span class="pre">-1));</span> <span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=610-->。这
-                              对于构造适用于数组的通用代码很有用
-                              任意尺寸。参见<a class="reference internal"
-                                href="https://numpy.org/doc/stable/user/basics.indexing.html#dealing-with-variable-indices"
-                                mt_node="trans">处理程序中可变数量的索引</a><!--volctrans extension anchor for patchId=613-->
-                              了解更多信息。</p>
+                            <p mt_node="trans">
+                              切片元组可以始终以obj的形式构造，并在x[obj]的符号中使用。切片对象可以用于构造[start:stop:step]符号。例如，x[1:10:5，::-1]也可以通过obj=（slice（1，10，5），slice（None，None，-1））；x[obj]来实现。这对于构造适用于任意维数的数组的通用代码非常有用。有关在程序中处理可变数量的索引的更多信息，请参阅Dealing with variable numbers of indices within programs。
+                            </p>
                           </li>
                         </ul>
                   </section>
