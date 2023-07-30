@@ -1606,25 +1606,27 @@
                       can be used in place of this with the same result.
                       From the above example:
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=637-->选择元组中的每个<a
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=637-->
+                      选择元组中的每个
+                      <a
                         class="reference internal"
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="numpy.newaxis"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
-                          mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=640-->对象用于展开
-                      结果选择的尺寸为一个单位长度
-                      维度额外的维度是<a class="reference internal"
+                          mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=640-->对象
+                          用于将选择结果的维度扩展一个单位长度维度。添加的维度是选择元组中<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="numpy.newaxis"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
                           mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=643-->
-                      选择元组中的对象。<a class="reference internal"
+                          对象的位置。<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="numpy.newaxis"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
                           mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=646-->是
                       <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">None</span></code><!--volctrans extension anchor for patchId=648-->和<code
+                        mt_node="trans"><span class="pre">None</span></code>
+                        的别名，可以用
+                        <!--volctrans extension anchor for patchId=648--><code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">None</span></code><!--volctrans extension anchor for patchId=650-->可以用来代替这个，结果相同。
-                      从上面的例子来看：
+                        mt_node="trans"><span class="pre">None</span></code><!--volctrans extension anchor for patchId=650-->代替它并获得相同的结果。从上面的示例中：
                     </p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
@@ -1638,7 +1640,7 @@
                     <p mt_node="origin_leaf">This can be handy to combine two
                       arrays in a way that otherwise would require explicit reshaping
                       operations. For example:</p>
-                    <p mt_node="trans">这可以方便地以需要显式整形操作的方式组合两个数组。例如：</p>
+                    <p mt_node="trans">这可以方便地以一种 显式整形操作方式 组合两个数组，例如：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
@@ -1674,15 +1676,7 @@
                     or a tuple with at least one sequence object or ndarray (of data type
                     integer or bool). There are two types of advanced indexing: integer
                     and Boolean.</p>
-                  <p mt_node="trans"><!--volctrans extension anchor for patchId=664-->当选择对象<em
-                      mt_node="trans">obj</em><!--volctrans extension anchor for patchId=666-->为
-                    非元组序列对象，一个<a class="reference internal"
-                      href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
-                      title="numpy.ndarray" mt_node="trans"><code class="xref py py-class docutils literal notranslate"
-                        mt_node="trans"><span class="pre">ndarray</span></code></a><!--volctrans extension anchor for patchId=669-->（数据类型为整数或布尔），
-                    或具有至少一个序列对象或ndarray（数据类型）的元组
-                    整数或布尔）。有两种类型的高级索引：整数
-                    和布尔值。</p>
+                  <p mt_node="trans">当选择对象obj是一个非元组序列对象、是一个ndarray(但ndarray数据类型为整数或布尔)、是一个至少包含一个序列对象或ndarray(ndarray是数据类型为整数或布尔)的元组时，会触发高级索引。有两种类型的高级索引：整数和布尔。</p>
                   <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=671-->Advanced indexing always
                     returns a <em mt_node="origin_leaf">copy</em><!--volctrans extension anchor for patchId=673--> of
                     the data (contrast with
@@ -1690,10 +1684,8 @@
                       href="https://numpy.org/doc/stable/glossary.html#term-view" mt_node="origin_leaf"><span
                         class="xref std std-term"
                         mt_node="origin_leaf">view</span></a><!--volctrans extension anchor for patchId=676-->).</p>
-                  <p mt_node="trans"><!--volctrans extension anchor for patchId=671-->高级索引总是返回数据的<em
-                      mt_node="trans">副本</em><!--volctrans extension anchor for patchId=673-->（与
-                    返回<a class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
-                      mt_node="trans">视图</a><!--volctrans extension anchor for patchId=676-->的基本切片）。</p>
+
+                  <p mt_node="trans"><!--volctrans extension anchor for patchId=671-->高级索引总是返回数据的副本(与返回视图的基本切片相反)。</p>
                   <div class="admonition warning" mt_node="origin">
                     <p class="admonition-title" mt_node="origin_leaf">Warning</p>
                     <p class="admonition-title" mt_node="trans">警告</p>
