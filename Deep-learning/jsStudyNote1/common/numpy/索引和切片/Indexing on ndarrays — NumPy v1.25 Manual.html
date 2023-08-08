@@ -1725,10 +1725,10 @@
                         mt_node="origin_leaf">N</em><!--volctrans extension anchor for patchId=694-->-dimensional index.
                       Each integer array represents a number
                       of indices into that dimension.</p>
-                    <p mt_node="trans">整数数组索引允许根据其N维索引选择数组中的任意项目。每个整数数组代表该维度的多个索引。</p>
+                    <p mt_node="trans">整数数组索引 可以根据其N维索引 来选择数组中的任意项。每个整数数组表示 该维度 的多个索引。</p>
                     <p mt_node="origin_leaf">Negative values are permitted in the index arrays and work as they do with
                       single indices or slices:</p>
-                    <p mt_node="trans">索引数组中允许使用负值，并且它们与单个索引或切片一样工作：</p>
+                    <p mt_node="trans">索引数组中允许使用负值，其作用与在单索引或片中的作用相同：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
@@ -1765,7 +1765,7 @@
                     <p mt_node="origin_leaf">When the index consists of as many integer arrays as dimensions of the
                       array
                       being indexed, the indexing is straightforward, but different from slicing.</p>
-                    <p mt_node="trans">当索引由与被索引数组的维度一样多的整数数组组成时，索引很简单，但与切片不同。</p>
+                    <p mt_node="trans">当索引包含的整数数组与被索引数组的维数一样多时，索引很简单，但不同于切片。</p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=708-->Advanced indices always
                       are <a class="reference internal"
                         href="https://numpy.org/doc/stable/user/basics.broadcasting.html#basics-broadcasting"
@@ -1774,11 +1774,7 @@
                       and
                       iterated as <em mt_node="origin_leaf">one</em><!--volctrans extension anchor for patchId=713-->:
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=708-->高级索引总是<a
-                        class="reference internal"
-                        href="https://numpy.org/doc/stable/user/basics.broadcasting.html#basics-broadcasting"
-                        mt_node="trans">广播</a><!--volctrans extension anchor for patchId=711-->和
-                      迭代为<em mt_node="trans">一个</em><!--volctrans extension anchor for patchId=713-->：</p>
+                    <p mt_node="trans">高级索引总是作为一个广播和迭代:</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="n">result</span><span class="p">[</span><span class="n">i_1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">i_M</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="n">ind_1</span><span class="p">[</span><span class="n">i_1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">i_M</span><span class="p">],</span> <span class="n">ind_2</span><span class="p">[</span><span class="n">i_1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">i_M</span><span class="p">],</span>
@@ -1795,12 +1791,12 @@
                         mt_node="origin_leaf"><span class="pre">IndexError:</span> <span class="pre">shape</span> <span class="pre">mismatch:</span> <span class="pre">indexing</span> <span class="pre">arrays</span> <span class="pre">could</span>
 <span class="pre">not</span> <span class="pre">be</span> <span class="pre">broadcast</span> <span class="pre">together</span> <span class="pre">with</span> <span class="pre">shapes...</span></code><!--volctrans extension anchor for patchId=722-->
                       is raised.</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=718-->请注意，生成的形状与（广播）索引数组相同
-                      形状<code class="docutils literal notranslate"
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=718-->请注意，生成的形状与(广播)索引数组相同
+                      <code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">ind_1,</span> <span class="pre">...,</span> <span class="pre">ind_N</span></code><!--volctrans extension anchor for patchId=720-->。如果索引不能广播到
-                      相同的形状，一个异常<code class="docutils literal notranslate"
+                      相同的形状，将引发一个异常<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">IndexError:</span> <span class="pre">shape</span> <span class="pre">mismatch:</span> <span class="pre">indexing</span> <span class="pre">arrays</span> <span class="pre">could</span>
-<span class="pre">not</span> <span class="pre">be</span> <span class="pre">broadcast</span> <span class="pre">together</span> <span class="pre">with</span> <span class="pre">shapes...</span></code><!--volctrans extension anchor for patchId=722-->引发。
+<span class="pre">not</span> <span class="pre">be</span> <span class="pre">broadcast</span> <span class="pre">together</span> <span class="pre">with</span> <span class="pre">shapes...</span></code><!--volctrans extension anchor for patchId=722-->。
                     </p>
                     <p mt_node="origin_leaf">Indexing with multidimensional index arrays tend
                       to be more unusual uses, but they are permitted, and they are useful for some
@@ -1834,22 +1830,18 @@
                       the last is <code class="docutils literal notranslate"
                         mt_node="origin_leaf"><span class="pre">y[4,</span> <span class="pre">2]</span></code><!--volctrans extension anchor for patchId=734-->.
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=728-->在这种情况下，如果索引数组具有匹配的形状，并且有一个
-                      被索引数组的每个维度的索引数组，结果
-                      数组与索引数组形状相同，值对应
-                      到索引数组中每个位置的索引集。在这个例子中，
-                      两个索引数组的第一个索引值都是0，因此第一个值
-                      的结果数组是<code class="docutils literal notranslate"
+                    <p mt_node="trans">在这种情况下，如果索引数组具有匹配的形状，并且被索引数组的每个维度都有一个索引数组，则生成的数组具有与索引数组相同的形状，并且值对应于索引数组中每个位置的索引集。
+                      在本例中，两个索引数组的第一个索引值都是0，因此结果数组的第一个值是
+                      <code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">y[0,</span> <span class="pre">0]</span></code><!--volctrans extension anchor for patchId=730-->。下一个值是<code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">y[2,</span> <span class="pre">1]</span></code><!--volctrans extension anchor for patchId=732-->，并且
-                      最后是<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">y[2,</span> <span class="pre">1]</span></code><!--volctrans extension anchor for patchId=732-->，最后一个值是<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">y[4,</span> <span class="pre">2]</span></code><!--volctrans extension anchor for patchId=734-->。
                     </p>
                     <p mt_node="origin_leaf">If the index arrays do not have the same shape, there is an attempt to
                       broadcast them to the same shape. If they cannot be broadcast to the same
                       shape, an exception is raised:</p>
-                    <p mt_node="trans">如果索引数组没有相同的形状，则尝试将它们广播到相同的形状。如果它们不能广播到相同的形状，则会引发异常：</p>
+                    <p mt_node="trans">如果索引数组的形状不相同，则会尝试将它们广播为相同的形状。如果它们不能广播到相同的形状，则会引发异常:</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])]</span>
@@ -1863,7 +1855,7 @@
                     <p mt_node="origin_leaf">The broadcasting mechanism permits index arrays to be combined with
                       scalars for other indices. The effect is that the scalar value is used
                       for all the corresponding values of the index arrays:</p>
-                    <p mt_node="trans">广播机制允许索引数组与其他索引的标量组合。效果是标量值用于索引数组的所有对应值：</p>
+                    <p mt_node="trans">广播机制允许索引数组与其他索引的标量相结合。其效果是标量值被用于索引数组的所有对应值:</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="mi">1</span><span class="p">]</span>
@@ -1875,7 +1867,7 @@
                       index an array with index arrays. It takes a bit of thought to understand
                       what happens in such cases. For example if we just use one index array
                       with y:</p>
-                    <p mt_node="trans">跳到下一个复杂级别，可以只使用索引数组对数组进行部分索引。了解在这种情况下会发生什么需要一点思考。例如，如果我们只使用一个带有y的索引数组：</p>
+                    <p mt_node="trans">下面跳转到下一个复杂级别，可以使用索引数组对数组进行部分索引。了解在这种情况下会发生什么，需要一点思考。例如，如果我们只对y使用一个索引数组：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])]</span>
@@ -1888,12 +1880,12 @@
                     <p mt_node="origin_leaf">It results in the construction of a new array where each value of the
                       index array selects one row from the array being indexed and the resultant
                       array has the resulting shape (number of index elements, size of row).</p>
-                    <p mt_node="trans">它导致构造一个新数组，其中索引数组的每个值从被索引的数组中选择一行，并且结果数组具有结果形状（索引元素的数量、行的大小）。</p>
+                    <p mt_node="trans">这将导致构造一个新数组，其中索引数组的每个值从被索引数组中选择一行，并且生成的结果数组具有最终形状(索引元素的数量，行大小)。</p>
                     <p mt_node="origin_leaf">In general, the shape of the resultant array will be the concatenation of
                       the shape of the index array (or the shape that all the index arrays were
                       broadcast to) with the shape of any unused dimensions (those not indexed)
                       in the array being indexed.</p>
-                    <p mt_node="trans">通常，结果数组的形状将是索引数组的形状（或所有索引数组广播到的形状）与被索引数组中任何未使用的维度（未索引的维度）的形状的串联。</p>
+                    <p mt_node="trans">一般来说，结果数组的形状将是索引数组的形状(或所有索引数组广播到的形状)与被索引数组中任何未使用的维度(未被索引的维度)的形状连接</p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=751-->From each row, a specific
@@ -1906,12 +1898,10 @@
                       Using both together the task
                       can be solved using advanced indexing:
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=751-->应该从每一行中选择一个特定的元素。行索引只是
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=751-->从每行中选择一个特定的元素。行索引就是
                       <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code><!--volctrans extension anchor for patchId=753-->并且列索引指定要为
-                      对应的行，这里<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">0]</span></code><!--volctrans extension anchor for patchId=755-->。一起使用两个任务
-                      可以使用高级索引解决：
+                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code><!--volctrans extension anchor for patchId=753-->列索引指定为对应行选择的元素，这里是<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">0]</span></code><!--volctrans extension anchor for patchId=755-->。将两者结合使用，系统将使用高级索引来解决此任务:
                     </p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
@@ -1930,12 +1920,10 @@
                           mt_node="origin_leaf"><span class="pre">ix_</span></code></a><!--volctrans extension anchor for patchId=763-->
                       can help with this broadcasting. This is best
                       understood with an example.</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=760-->为了实现类似于上述基本切片的行为，广播可以
-                      用过。功能<a class="reference internal"
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=760-->要实现类似于上面基本切片的行为，可以使用广播。函数<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ix_.html#numpy.ix_"
                         title="numpy.ix_" mt_node="trans"><code class="xref py py-func docutils literal notranslate"
-                          mt_node="trans"><span class="pre">ix_</span></code></a><!--volctrans extension anchor for patchId=763-->可以帮助这个广播。这是最好的
-                      通过一个例子来理解。</p>
+                          mt_node="trans"><span class="pre">ix_</span></code></a><!--volctrans extension anchor for patchId=763-->可以帮助进行这种广播。通过一个例子可以更好地理解这一点。</p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=766-->From a 4x3 array the
@@ -1951,13 +1939,11 @@
                         mt_node="origin_leaf">explicitly</em><!--volctrans extension anchor for patchId=772-->. Using
                       the method explained
                       previously one could write:</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=766-->从4x3阵列中，应使用高级选择角元素
-                      索引。因此，列为<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">2]</span></code><!--volctrans extension anchor for patchId=768-->和
-                      该行是需要选择的<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">3]</span></code><!--volctrans extension anchor for patchId=770-->之一。要使用高级索引
-                      需要<em mt_node="trans">显式地</em><!--volctrans extension anchor for patchId=772-->选择所有元素
-                      以前可以写：</p>
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=766-->从一个4x3数组中，选择数组角元素，应该使用高级索引来选择。因此，需要选择列值为<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">2]</span></code><!--volctrans extension anchor for patchId=768-->，
+                        行值为<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">3]</span></code><!--volctrans extension anchor for patchId=770-->的所有元素。要使用高级索引
+                      需要<em mt_node="trans">显式地</em><!--volctrans extension anchor for patchId=772-->选择所有元素。使用前面解释的方法，我们可以这样写:</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
@@ -1981,8 +1967,7 @@
                         mt_node="origin_leaf"><span class="pre">rows[:,</span> <span class="pre">np.newaxis]</span> <span class="pre">+</span> <span class="pre">columns</span></code><!--volctrans extension anchor for patchId=779-->)
                       to simplify this:
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=777-->但是，由于上面的索引数组只是重复它们自己，
-                      可以使用广播（比较操作，例如
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=777-->但是，由于上面的索引数组只是重复自己，因此可以使用广播（例如
                       <code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">rows[:,</span> <span class="pre">np.newaxis]</span> <span class="pre">+</span> <span class="pre">columns</span></code><!--volctrans extension anchor for patchId=779-->）来简化这一点：
                     </p>
@@ -2006,11 +1991,11 @@
                           class="xref py py-func docutils literal notranslate"
                           mt_node="origin_leaf"><span class="pre">ix_</span></code></a><!--volctrans extension anchor for patchId=787-->:
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=784-->这种广播也可以使用以下功能来实现<a
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=784-->这种广播也可以使用<a
                         class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ix_.html#numpy.ix_"
                         title="numpy.ix_" mt_node="trans"><code class="xref py py-func docutils literal notranslate"
-                          mt_node="trans"><span class="pre">ix_</span></code></a><!--volctrans extension anchor for patchId=787-->：
+                          mt_node="trans"><span class="pre">ix_</span></code></a><!--volctrans extension anchor for patchId=787-->函数来实现：
                     </p>
                     <div class="doctest highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
@@ -2026,10 +2011,9 @@
                       call, only the diagonal elements would
                       be selected:
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=792-->请注意，如果没有<code
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=792-->请注意，如果没使用<code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">np.ix_</span></code><!--volctrans extension anchor for patchId=794-->调用，只有对角线元素会
-                      被选中：</p>
+                        mt_node="trans"><span class="pre">np.ix_</span></code><!--volctrans extension anchor for patchId=794-->函数，则将只有对角线元素会被选中：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="n">rows</span><span class="p">,</span> <span class="n">columns</span><span class="p">]</span>
@@ -2039,7 +2023,7 @@
                     </div>
                     <p mt_node="origin_leaf">This difference is the most important thing to remember about
                       indexing with multiple advanced indices.</p>
-                    <p mt_node="trans">这种差异是使用多个高级索引进行索引时要记住的最重要的事情。</p>
+                    <p mt_node="trans">在使用多个高级索引进行索引时，一定要记住这个区别。</p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
                     <p mt_node="origin_leaf">A real-life example of where advanced indexing may be useful is for a color
@@ -2050,8 +2034,8 @@
                       lookup table) will result in an array of shape (ny, nx, 3) where a
                       triple of RGB values is associated with each pixel location.</p>
                     <p mt_node="trans">
-                      高级索引可能有用的一个真实例子是色彩搜寻列表，我们希望将图像的值映射到RGB三元组中以供显示。查找表可以有一个形状（nlookup，3）。使用具有dtype=np.
-                      uint8（或任何整数类型，只要值与查找表的边界一致）的形状（ny，nx，3）的图像索引这样的数组将产生一个形状（ny，nx，3）数组，其中三个RGB值与每个像素位置相关联。</p>
+                      高级索引在现实生活中，可能用于的一个例子是，用于“颜色查找表”，在这种情况下，我们希望将图像的值映射为RGB三元组以进行显示。
+                      查找表具有形状(nlookup, 3)。使用形状为(ny, nx)、数据类型为np.uint8（或任何整数类型，只要值在查找表的范围内）的图像对这样的数组进行索引，将得到形状为(ny, nx, 3)的数组，其中每个像素位置都关联着一个RGB值三元组。</p>
                   </section>
                   <section id="boolean-array-indexing" mt_node="origin">
                     <span id="boolean-indexing" mt_node="origin_leaf"></span><span id="boolean-indexing" mt_node="trans"
