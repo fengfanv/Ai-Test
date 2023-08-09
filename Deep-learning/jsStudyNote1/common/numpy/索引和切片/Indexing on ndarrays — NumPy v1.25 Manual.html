@@ -2076,16 +2076,13 @@
                         mt_node="origin_leaf"><span class="pre">obj.shape</span> <span class="pre">==</span> <span class="pre">x.shape</span></code><!--volctrans extension anchor for patchId=824-->.
                     </p>
                     <p mt_node="trans"><!--volctrans extension anchor for patchId=807-->这种高级索引发生在<em
-                        mt_node="trans">obj</em><!--volctrans extension anchor for patchId=809-->是布尔数组对象时
-                      类型，例如可以从比较运算符返回。单个
-                      布尔索引数组实际上等同于<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[obj.nonzero()]</span></code><!--volctrans extension anchor for patchId=811-->其中，
-                      如上所述，<a class="reference internal"
+                        mt_node="trans">obj</em><!--volctrans extension anchor for patchId=809-->是布尔类型的数组对象时，例如可能从比较操作符返回的数组对象。单个布尔索引数组实际上等同于<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">x[obj.nonzero()]</span></code><!--volctrans extension anchor for patchId=811-->，
+                        其中，如上所述，<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.nonzero.html#numpy.ndarray.nonzero"
                         title="numpy.ndarray.nonzero" mt_node="trans"><code
                           class="xref py py-meth docutils literal notranslate"
-                          mt_node="trans"><span class="pre">obj.nonzero()</span></code></a><!--volctrans extension anchor for patchId=814-->返回一个
-                      整数索引的元组（长度为<a class="reference internal"
+                          mt_node="trans"><span class="pre">obj.nonzero()</span></code></a><!--volctrans extension anchor for patchId=814-->返回一个由整数索引数组组成的元组（长度为<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.ndim.html#numpy.ndarray.ndim"
                         title="numpy.ndarray.ndim" mt_node="trans"><code
                           class="xref py py-attr docutils literal notranslate"
@@ -2095,9 +2092,9 @@
                         mt_node="trans"></a><!--volctrans extension anchor for patchId=820--><em
                         mt_node="trans">obj</em><!--volctrans extension anchor for patchId=822-->的<code
                         class="xref py py-data docutils literal notranslate"
-                        mt_node="trans"><span class="pre">True</span></code>元素的数组
-                      更快的时候<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">obj.shape</span> <span class="pre">==</span> <span class="pre">x.shape</span></code><!--volctrans extension anchor for patchId=824-->。
+                        mt_node="trans"><span class="pre">True</span></code>元素。
+                        但是，当<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">obj.shape</span> <span class="pre">==</span> <span class="pre">x.shape</span></code><!--volctrans extension anchor for patchId=824-->时，速度更快。
                     </p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=826-->If <code
                         class="docutils literal notranslate"
@@ -2132,21 +2129,19 @@
                     </p>
                     <p mt_node="trans"><!--volctrans extension anchor for patchId=826-->如果<code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">obj.ndim</span> <span class="pre">==</span> <span class="pre">x.ndim</span></code><!--volctrans extension anchor for patchId=828-->，<code
+                        mt_node="trans"><span class="pre">obj.ndim</span> <span class="pre">==</span> <span class="pre">x.ndim</span></code><!--volctrans extension anchor for patchId=828-->，则<code
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=830-->
-                      返回一个一维数组填充的元素<em mt_node="trans">x</em><!--volctrans extension anchor for patchId=832-->
-                      对应于<a class="reference external" href="https://docs.python.org/3/library/constants.html#True"
+                      返回一个一维数组，其中包含<em mt_node="trans">x</em><!--volctrans extension anchor for patchId=832-->
+                      中与<a class="reference external" href="https://docs.python.org/3/library/constants.html#True"
                         title="(in Python v3.11)"
                         mt_node="trans"></a><!--volctrans extension anchor for patchId=835--><em
                         mt_node="trans">obj</em><!--volctrans extension anchor for patchId=837-->的<code
                         class="xref py py-data docutils literal notranslate"
-                        mt_node="trans"><span class="pre">True</span></code>值。搜索顺序
-                      将是<a class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-row-major"
-                        mt_node="trans">行的主要</a><!--volctrans extension anchor for patchId=840-->，C风格。如果
-                      &lt;a i=13&gt;obj<em mt_node="trans">的形状</em><!--volctrans extension anchor for patchId=842-->与<em
-                        mt_node="trans">x</em><!--volctrans extension anchor for patchId=844-->的对应尺寸不匹配，
-                      不管这些值是<a class="reference external" href="https://docs.python.org/3/library/constants.html#True"
+                        mt_node="trans"><span class="pre">True</span></code>值相对应的元素。搜索顺序将是<a class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-row-major"
+                        mt_node="trans">行</a><!--volctrans extension anchor for patchId=840-->为主的，C风格。如果obj<em mt_node="trans">的形状</em><!--volctrans extension anchor for patchId=842-->与<em
+                        mt_node="trans">x</em><!--volctrans extension anchor for patchId=844-->的相应尺寸不匹配，则会引发索引错误，
+                        无论这些值是<a class="reference external" href="https://docs.python.org/3/library/constants.html#True"
                         title="(in Python v3.11)" mt_node="trans"><code
                           class="xref py py-data docutils literal notranslate"
                           mt_node="trans"><span class="pre">True</span></code></a><!--volctrans extension anchor for patchId=847-->还是
@@ -2163,12 +2158,11 @@
                         mt_node="origin_leaf"><code class="xref py py-const docutils literal notranslate"
                           mt_node="origin_leaf"><span class="pre">NaN</span></code></a><!--volctrans extension anchor for patchId=855-->:
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=852-->一个常见的用例是过滤所需的元素值。
-                      例如，可能希望从一个数组中选择所有条目
-                      不是<a class="reference internal"
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=852-->一个常见的用例(使用方法)是过滤所需的元素值。
+                      例如，你可能希望选择数组中所有非<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.NaN" title="numpy.NaN"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
-                          mt_node="trans"><span class="pre">NaN</span></code></a><!--volctrans extension anchor for patchId=855-->：
+                          mt_node="trans"><span class="pre">NaN</span></code></a><!--volctrans extension anchor for patchId=855-->的项：
                     </p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
@@ -2179,7 +2173,7 @@
                       </div>
                     </div>
                     <p mt_node="origin_leaf">Or wish to add a constant to all negative elements:</p>
-                    <p mt_node="trans">或者希望为所有负面元素添加一个常量：</p>
+                    <p mt_node="trans">或者希望给所有的负元素加一个常数：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
