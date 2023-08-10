@@ -2195,11 +2195,9 @@
                       <code class="docutils literal notranslate"
                         mt_node="origin_leaf"><span class="pre">x[(ind_1,)</span> <span class="pre">+</span> <span class="pre">boolean_array.nonzero()</span> <span class="pre">+</span> <span class="pre">(ind_2,)]</span></code><!--volctrans extension anchor for patchId=870-->.
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=864-->一般来说，如果索引包含布尔数组，结果将是
-                      与将<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">obj.nonzero()</span></code><!--volctrans extension anchor for patchId=866-->插入相同位置相同
-                      并使用上述整数数组索引机制。
-                      <code class="docutils literal notranslate"
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=864-->一般来说，如果索引包含布尔数组，结果将是与，将<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">obj.nonzero()</span></code><!--volctrans extension anchor for patchId=866-->插入相同位置 并使用上述整数数组索引机制相同。
+                      所以<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x[ind_1,</span> <span class="pre">boolean_array,</span> <span class="pre">ind_2]</span></code><!--volctrans extension anchor for patchId=868-->等价于
                       <code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x[(ind_1,)</span> <span class="pre">+</span> <span class="pre">boolean_array.nonzero()</span> <span class="pre">+</span> <span class="pre">(ind_2,)]</span></code><!--volctrans extension anchor for patchId=870-->。
@@ -2211,7 +2209,7 @@
                         mt_node="origin_leaf">exactly</em><!--volctrans extension anchor for patchId=874--> as many
                       dimensions as it is supposed to work
                       with.</p>
-                    <p mt_node="trans">如果只有一个布尔数组而不存在整数索引数组，这很简单。必须注意确保布尔索引的维度与它应该使用的维度完全一样多。</p>
+                    <p mt_node="trans">如果只有一个布尔数组而不存在整数索引数组，那么这种情况处理起来就比较简单，但这种情况 需要注意确保布尔索引的维数与它应该处理的维数完全相同。</p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=876-->In general, when the
                       boolean array has fewer dimensions than the array being
                       indexed, this is equivalent to <code class="docutils literal notranslate"
