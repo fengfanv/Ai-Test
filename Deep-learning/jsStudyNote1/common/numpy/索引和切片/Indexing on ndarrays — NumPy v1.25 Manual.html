@@ -2221,14 +2221,9 @@
                       shape of the result is one dimension containing the number of True elements of
                       the boolean array, followed by the remaining dimensions of the array being
                       indexed:</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=876-->通常，当布尔数组的维数小于数组时
-                      索引，这相当于<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[b,</span> <span class="pre">...]</span></code><!--volctrans extension anchor for patchId=878-->，表示x被b索引
-                      后跟尽可能多的<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=880-->因为需要填写x的等级。因此
-                      结果的形状是一维，包含True元素的数量
-                      布尔数组，后跟数组的剩余维度
-                      索引：</p>
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=876-->一般来说，当布尔数组的维度比被索引的数组的维度少时，这等同于<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">x[b,</span> <span class="pre">...]</span></code><!--volctrans extension anchor for patchId=878-->，这意味着x通过b进行索引，然后跟随尽可能多的<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=880-->来填满 x 的剩余维度。因此，结果的形状是一个一维的数组，包含布尔数组中True元素的数量，然后跟随被索引的数组的剩余维度：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
