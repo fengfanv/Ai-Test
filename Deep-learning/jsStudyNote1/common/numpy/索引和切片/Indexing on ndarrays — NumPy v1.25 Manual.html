@@ -2370,7 +2370,7 @@
                       basic indexing<a class="headerlink"
                         href="https://numpy.org/doc/stable/user/basics.indexing.html#combining-advanced-and-basic-indexing"
                         title="Permalink to this heading" mt_node="origin_leaf">#</a></h3>
-                    <h3 mt_node="trans"><!--volctrans extension anchor for patchId=926-->结合高级和基本索引<a class="headerlink"
+                    <h3 mt_node="trans"><!--volctrans extension anchor for patchId=926-->高级索引和基本索引相结合<a class="headerlink"
                         href="https://numpy.org/doc/stable/user/basics.indexing.html#combining-advanced-and-basic-indexing"
                         title="Permalink to this heading" mt_node="trans">#</a></h3>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=929-->When there is at least one
@@ -2385,7 +2385,7 @@
                       in the index (or the array has more dimensions than there are advanced indices),
                       then the behaviour can be more complicated. It is like concatenating the
                       indexing result for each advanced index element.</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=929-->当至少有一个切片（<code
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=929-->如果索引中至少有一个切片（<code
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=931-->）、省略号（<code
                         class="docutils literal notranslate"
@@ -2394,9 +2394,7 @@
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="numpy.newaxis"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
                           mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=936-->
-                      在索引中（或数组的维度比高级索引多），
-                      那么行为可能会更复杂。这就像连接
-                      每个高级索引元素的索引结果。</p>
+                      （或者数组的维数比高级索引的维数多），那么行为可能会更复杂。这类似于将每个高级索引元素的索引结果连接起来。</p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=938-->In the simplest case,
                       there is only a <em
                         mt_node="origin_leaf">single</em><!--volctrans extension anchor for patchId=940--> advanced
@@ -2418,7 +2416,7 @@
                       followed by the index array operation which extracts rows with index 0, 2 and 4
                       (i.e the first, third and fifth rows). This is equivalent to:</p>
                     <p mt_node="trans">
-                      实际上，切片和索引数组操作是独立的。切片操作提取索引为1和2的列（即第2和第3列），然后是索引数组操作，提取索引为0、2和4的行（即第一、第三和第五行）。这相当于：</p>
+                      实际上，切片操作和索引数组操作是独立的。切片操作提取索引为1和2的列(即第二和第三列)，然后是索引数组操作，提取索引为0、2和4的行(即第一、第三和第五行)。这相当于：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="p">:]</span>
@@ -2433,7 +2431,7 @@
                       will be the same. However, it is a copy and may have a different memory layout.
                       A slice is preferable when it is possible.
                       For example:</p>
-                    <p mt_node="trans">例如，单个高级索引可以替换一个切片，结果数组将是相同的。但是，它是一个副本，可能具有不同的内存布局。尽可能使用切片。例如：</p>
+                    <p mt_node="trans">例如，单个高级索引可以替换一个切片，结果数组将是相同的。但是，它是一个副本，可能具有不同的内存布局。在可能的情况下，尽可能使用切片。例如：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
