@@ -799,7 +799,7 @@
                       arrays</span></a><!--volctrans extension anchor for patchId=289--> for
                   specific examples and explanations on how assignments work.</p>
                 <p mt_node="trans">
-                  <!--volctrans extension anchor for patchId=286-->以下的大多数示例显示了在数组中引用数据时索引的使用。这些示例在对数组进行赋值时也同样有效。有关赋值如何工作的具体示例和解释，请参见<a
+                  <!--volctrans extension anchor for patchId=286-->以下大多数示例都展示了索引在引用数组中的数据时的用法。这些示例在给数组赋值时同样有效。有关赋值如何工作的具体示例和解释，请参阅<a
                     class="reference internal"
                     href="https://numpy.org/doc/stable/user/basics.indexing.html#assigning-values-to-indexed-arrays"
                     mt_node="trans">为索引数组赋值</a>。</p>
@@ -835,13 +835,13 @@
                         class="headerlink"
                         href="https://numpy.org/doc/stable/user/basics.indexing.html#single-element-indexing"
                         title="Permalink to this heading" mt_node="origin_leaf">#</a></h3>
-                    <h3 mt_node="trans"><!--volctrans extension anchor for patchId=304-->单元素索引<a class="headerlink"
+                    <h3 mt_node="trans"><!--volctrans extension anchor for patchId=304-->单个元素索引<a class="headerlink"
                         href="https://numpy.org/doc/stable/user/basics.indexing.html#single-element-indexing"
                         title="Permalink to this heading" mt_node="trans">#</a></h3>
                     <p mt_node="origin_leaf">Single element indexing works
                       exactly like that for other standard Python sequences. It is 0-based,
                       and accepts negative indices for indexing from the end of the array.</p>
-                    <p mt_node="trans">单元素索引的工作原理与其它标准Python序列的工作原理完全相同。它从0开始，并接受从数组末尾开始索引的负索引。</p>
+                    <p mt_node="trans">单个元素索引的工作原理与其它标准Python序列的工作原理完全相同。它从0开始，并接受从数组末尾开始索引的负索引。</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
@@ -867,7 +867,7 @@
                     </div>
                     <p mt_node="origin_leaf">Note that if one indexes a multidimensional array with fewer indices
                       than dimensions, one gets a subdimensional array. For example:</p>
-                    <p mt_node="trans">请注意，如果索引多维数组的索引数 小于该多维数组的维度数，则将得到该多维数组的子维度数组。例如：</p>
+                    <p mt_node="trans">请注意，如果用维度少的索引对多维数组进行索引，则将得到该多维数组的子维度数组。例如：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -897,7 +897,7 @@
                         href="https://numpy.org/doc/stable/glossary.html#term-view"
                         mt_node="trans">视图</a><!--volctrans extension anchor for patchId=322-->，也就是说，它不是原始数组的副本，它与原始数组一样都指向内存里同一个值。
                       所以在这种情况下，返回了第一个位置（0）的一维数组。
-                      因此，在返回的数组上使用单元素索引，会导致返回单个元素。如：</p>
+                      因此，在返回的数组上使用单个元素索引，会导致返回单个元素。如：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span>
@@ -913,8 +913,7 @@
                       that is subsequently indexed by 2.</p>
                     <p mt_node="trans"><!--volctrans extension anchor for patchId=327-->所以请注意<code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[0,</span> <span class="pre">2]</span> <span class="pre">==</span> <span class="pre">x[0][2]</span></code><!--volctrans extension anchor for patchId=329-->尽管第二种情况更多
-                      ，但效率低下，因为在第一个索引之后创建了一个新的临时数组，然后这个新的临时数组又被2索引了。</p>
+                        mt_node="trans"><span class="pre">x[0,</span> <span class="pre">2]</span> <span class="pre">==</span> <span class="pre">x[0][2]</span></code><!--volctrans extension anchor for patchId=329-->尽管第二种情况更好理解，但效率低下，因为在第一个索引之后创建了一个新的临时数组，然后这个新的临时数组又被2索引了。</p>
                     <div class="admonition note" mt_node="origin">
                       <p class="admonition-title" mt_node="origin_leaf">Note</p>
                       <p class="admonition-title" mt_node="trans">注</p>
@@ -967,7 +966,7 @@
                           mt_node="trans"><span class="pre">slice</span></code></a><!--volctrans extension anchor for patchId=344-->对象（由括号内的
 
                       <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">start:stop:step</span></code><!--volctrans extension anchor for patchId=346-->符号构造）、一个整数，或切片对象元组和切片整数元组，就会发生基本切片。<a
+                        mt_node="trans"><span class="pre">start:stop:step</span></code><!--volctrans extension anchor for patchId=346-->符号构造）、一个整数，或由切片对象和整数组成的元组时，会发生基本切片。<a
                         class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis"
                         title="(in Python v3.11)" mt_node="trans"><code
                           class="xref py py-data docutils literal notranslate"
@@ -975,7 +974,7 @@
                       和<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="numpy.newaxis"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
-                          mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=352-->也可以与这些对象穿插在一起。
+                          mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=352-->也可以与这些对象混合使用。
                     </p>
                     <p id="index-1" mt_node="origin"><!--volctrans extension anchor for patchId=354-->The simplest case
                       of indexing with N integers returns an <a class="reference internal"
@@ -1120,7 +1119,7 @@
                     </p>
                     <p mt_node="origin_leaf">
                       用N个整数进行索引的最简单情况是，使用一个数组标量，来表示相应的项。与Python一样，所有索引都是从零开始的，如对于第i个索引ni，其有效范围为 0 <= ni < di
-                        其中di是指指指形状数组里的第i个元素。负索引被解释为从数组末尾开始计数(即，如果 ni < 0，则表示 ni + di ) </p>
+                        其中di是指 形状数组里的第i个元素。负索引被解释为从数组末尾开始计数(即，如果 ni < 0，则表示 ni + di ) </p>
                         <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=407-->All arrays generated
                           by
                           basic slicing are always <a class="reference internal"
@@ -1162,7 +1161,7 @@
                         <p mt_node="origin_leaf">The standard rules of sequence slicing apply to basic slicing on a
                           per-dimension basis (including using a step index). Some useful
                           concepts to remember include:</p>
-                        <p mt_node="trans">序列切片的标准规则适用于每个维度的基本切片（包括使用步长索引）。一些有用的概念需要记住:</p>
+                        <p mt_node="trans">标准的序列切片规则适用于每个维度的基本切片（包括使用步长索引）。要记住的一些有用概念包括：</p>
                         <ul mt_node="origin">
                           <li mt_node="origin">
                             <p mt_node="origin"><!--volctrans extension anchor for patchId=424-->The basic slice syntax
@@ -1266,8 +1265,8 @@
                               For example:
                             </p>
                             <p mt_node="origin">
-                              基本的切片语法是i:j:k，其中i是开始索引，j是停止索引，k是步长(k≠0)。基本切片语法在数组相关维度中 所选取数据的索引值为 i, i + k，…，i + (m - 1)
-                              k的m个元素，其中m = q + (r≠0)，q和r为j - i除以k得到的商和余数:j - i = q k + r，使得i + (m - 1) k < j。 </p>
+                              基本的切片语法是i:j:k，其中i是开始索引，j是停止索引，k是步长(k≠0)。基本切片语法所选取数据的索引值为 i, i + k，…，i + (m - 1)
+                              k的m个元素(在相应维度中)，其中m = q + (r≠0)，q和r是通过将j - i除以k得到的商和余数:j - i = q k + r，因此i + (m - 1) k < j。例如： </p>
                                 <div class="highlight-default notranslate" mt_node="origin">
                                   <div class="highlight" mt_node="origin">
                                     <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
@@ -1291,7 +1290,7 @@
                               makes stepping go towards smaller indices.
                               From the above example:
                             </p>
-                            <p mt_node="trans">负i和j被解释为n+i和n+j，其中n是相应维度中元素的数量。负k使步进走向更小的索引。从上面的例子中：</p>
+                            <p mt_node="trans">负i和j被解释为n+i和n+j，其中n是相应维度中元素的数量。负的k使步长向较小的索引方向移动。从上面的例子中：</p>
                             <div class="highlight-default notranslate" mt_node="origin">
                               <div class="highlight" mt_node="origin">
                                 <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span>
@@ -1335,9 +1334,9 @@
                               axis.
                               From the above example:
                             </p>
-                            <p mt_node="trans">假设n是 数组被切片维度的元素的个数。 然后，如果没有给出 i，则对于 k > 0 ，i 它默认为 0，对于 k < 0，i 它默认为 n -
-                                1。 如果没有给出j，则对于k> 0，j 它默认为n，对于k < 0，则 j 默认为 - n - 1。 如果没有给定k，则 k 默认为1。请注意 :: 与 :
-                                  相同，表示选择沿此轴的所有索引。从上面的例子来看： </p>
+                            <p mt_node="trans">假设n是正在切片的维度中的元素数量。那么，如果没有给出i，则对于 k > 0 ，i 它默认为 0，对于 k < 0，i 它默认为 n -
+                                1。 如果没有给出j，则对于k> 0，j 它默认为n，对于k < 0，则 j 默认为 -n - 1。 如果没有给定k，则 k 默认为1。请注意 :: 与 :
+                                  相同，表示沿着这个轴选择所有索引。从上面的例子来看： </p>
                                   <div class="highlight-default notranslate" mt_node="origin">
                                     <div class="highlight" mt_node="origin">
                                       <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
@@ -1355,12 +1354,10 @@
                               is assumed for any subsequent dimensions.
                               For example:
                             </p>
-                            <p mt_node="trans"><!--volctrans extension anchor for patchId=524-->用一些索引，索引一个多维数组，如果索引的数量小于
-                              数组维度的数
-                              <em mt_node="trans">N</em><!--volctrans extension anchor for patchId=526-->，则<code
+                            <p mt_node="trans"><!--volctrans extension anchor for patchId=524-->如果选择元组中的对象数量小于
+                              <em mt_node="trans">N</em><!--volctrans extension anchor for patchId=526-->，则对任何后续维度都假定为<code
                                 class="docutils literal notranslate"
-                                mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=528-->代表多维数组后续的维度。
-                              例如：
+                                mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=528-->例如：
                             </p>
                             <div class="highlight-default notranslate" mt_node="origin">
                               <div class="highlight" mt_node="origin">
@@ -1405,13 +1402,10 @@
                                 mt_node="trans"><span class="pre">i:i+1</span></code>
                               相同，<strong
                                 mt_node="trans">只是</strong><!--volctrans extension anchor for patchId=539-->返回的值维数减少了1.
-                              特别是，一个多维度的索引元组 它第<em
-                                mt_node="trans">p</em><!--volctrans extension anchor for patchId=541-->个的
-                              索引元素是一个整数（索引元组除了第p个是整数，所有其他索引为<code class="docutils literal notranslate"
-                                mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=543-->）的返回值
-                              维度为<em mt_node="trans">N-1</em><!--volctrans extension anchor for patchId=545-->。如果<em
-                                mt_node="trans">N=1</em><!--volctrans extension anchor for patchId=547-->
-                              那么返回值是一个数组标量。
+                              特别是，一个具有第<em
+                              mt_node="trans">p</em>个元素为整数（索引元组除了第p个是整数，所有其他索引为<code class="docutils literal notranslate"
+                                mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=543-->）的选择元组 返回具有维度<em mt_node="trans">N-1</em><!--volctrans extension anchor for patchId=545-->的相应子数组。如果<em
+                                mt_node="trans">N=1</em><!--volctrans extension anchor for patchId=547-->则返回的对象是数组标量。
                           </li>
                           <li mt_node="origin">
                             <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=553-->If the selection
@@ -1432,7 +1426,7 @@
                                 j</em><!--volctrans extension anchor for patchId=567-->,
                             </p>
                             <p mt_node="trans"><!--volctrans extension anchor for patchId=553-->
-                              如果 选择元组 除了第p个条目是切片对象i:j:k之外，所有条目均为：，则返回的数组具有由元素i，i+k，…，i+（m-1）k＜j的整数索引返回的子数组合并形成的N维，
+                              如果 选择元组 除了第p个条目是切片对象i:j:k之外，所有条目均为：，则返回的数组具有由元素i，i+k，…，i+（m-1）k＜j的整数索引返回的子数合并形成的N维数组，
                             </p>
                           </li>
                           <li mt_node="origin">
@@ -1459,7 +1453,7 @@
                               slicing.
                             </p>
                             <p mt_node="trans"><!--volctrans extension anchor for patchId=570-->
-                              当切片元组中存在多个非:条目时，基本的切片操作会像重复使用单个非:条目进行切片一样，其中非:条目是连续取的（其他所有非:条目均用:代替）。因此，x[ind1，…，ind2，:]的行为类似于x[ind1][…，ind2，:]在基本切片下的行为。
+                              当切片元组中具有一个以上非:条目时，基本切片的行为就像使用单个:条目，重复切片操作。其中非:条目，是连续取的（所有其他非:项被替换为:）。因此，x[ind1，…，ind2，:]的行为就像在基本切片下x[ind1][…，ind2，:]一样。
                             </p>
                             <p>
                               1、选择元组（selection tuple）是一个包含冒号（:）和整数的元组，用于对数组进行索引。<br>
@@ -1524,7 +1518,7 @@
                                   programs</span></a><!--volctrans extension anchor for patchId=613-->
                               for more information.</p>
                             <p mt_node="trans">
-                              切片元组可以始终以obj的形式构造，并在x[obj]的符号中使用。切片对象可以用于构造[start:stop:step]符号。例如，x[1:10:5，::-1]也可以通过obj=（slice（1，10，5），slice（None，None，-1））；x[obj]来实现。这对于构造适用于任意维数的数组的通用代码非常有用。有关在程序中处理可变数量的索引的更多信息，请参阅Dealing with variable numbers of indices within programs。
+                              切片元组总是可以构造为obj，并在x[obj]表示法中使用。切片对象可以用来代替[start:stop:step]符号。例如，x[1:10:5，::-1]也可以通过obj=（slice（1，10，5），slice（None，None，-1））；x[obj]这样的方式实现。这对于在任意维数的数组上构建通用代码很有用。有关更多信息，请参见处理程序中的可变索引数。
                             </p>
                           </li>
                         </ul>
@@ -1559,9 +1553,9 @@
                     <p mt_node="trans"><a class="reference external"
                         href="https://docs.python.org/3/library/constants.html#Ellipsis" title="(in Python v3.11)"
                         mt_node="trans"><code class="xref py py-data docutils literal notranslate"
-                          mt_node="trans"><span class="pre">Ellipsis</span></code></a><!--volctrans extension anchor for patchId=624-->是扩展(或查漏补缺)所需数量的<code
+                          mt_node="trans"><span class="pre">Ellipsis</span></code></a><!--volctrans extension anchor for patchId=624-->扩展，为选择元组索引补充所需数量的<code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=626-->对象 的。以便 选择元组 为所有维度都建立索引。这意味着
+                        mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=626-->对象。以便 选择元组 为所有维度都建立索引。这意味着
                       扩展后的 选择元组 的长度是<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x.ndim</span></code><!--volctrans extension anchor for patchId=628-->。可能只有一个单省略号。
                       从上面的例子来看：</p>
@@ -1613,7 +1607,7 @@
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="numpy.newaxis"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
                           mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=640-->对象
-                          用于将选择结果的维度扩展一个单位长度维度。添加的维度是选择元组中<a class="reference internal"
+                          用于将所得选择的空间维度扩展一个单位长度维度。添加的维度是选择元组中<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis" title="numpy.newaxis"
                         mt_node="trans"><code class="xref py py-const docutils literal notranslate"
                           mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=643-->
@@ -1626,7 +1620,7 @@
                         的别名，可以用
                         <!--volctrans extension anchor for patchId=648--><code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">None</span></code><!--volctrans extension anchor for patchId=650-->代替它并获得相同的结果。从上面的示例中：
+                        mt_node="trans"><span class="pre">None</span></code><!--volctrans extension anchor for patchId=650-->代替它，来获取相同的结果。从上面的示例中：
                     </p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
@@ -1676,7 +1670,7 @@
                     or a tuple with at least one sequence object or ndarray (of data type
                     integer or bool). There are two types of advanced indexing: integer
                     and Boolean.</p>
-                  <p mt_node="trans">当选择对象obj是一个非元组序列对象、是一个ndarray(但ndarray数据类型为整数或布尔)、是一个至少包含一个序列对象或ndarray(ndarray是数据类型为整数或布尔)的元组时，会触发高级索引。有两种类型的高级索引：整数和布尔。</p>
+                  <p mt_node="trans">当选择对象obj是一个非元组序列对象、是一个ndarray(ndarray数据类型为整数或布尔)、或至少包含一个序列对象或数据类型为整数或布尔值的ndarray的元组时，会触发高级索引。有两种类型的高级索引：整数索引和布尔索引。</p>
                   <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=671-->Advanced indexing always
                     returns a <em mt_node="origin_leaf">copy</em><!--volctrans extension anchor for patchId=673--> of
                     the data (contrast with
@@ -1765,7 +1759,7 @@
                     <p mt_node="origin_leaf">When the index consists of as many integer arrays as dimensions of the
                       array
                       being indexed, the indexing is straightforward, but different from slicing.</p>
-                    <p mt_node="trans">当索引包含的整数数组与被索引数组的维数一样多时，索引很简单，但不同于切片。</p>
+                    <p mt_node="trans">当索引由与被索引数组的维数相同的整数数组组成时，索引很简单，但与切片不同。</p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=708-->Advanced indices always
                       are <a class="reference internal"
                         href="https://numpy.org/doc/stable/user/basics.broadcasting.html#basics-broadcasting"
@@ -1774,7 +1768,7 @@
                       and
                       iterated as <em mt_node="origin_leaf">one</em><!--volctrans extension anchor for patchId=713-->:
                     </p>
-                    <p mt_node="trans">高级索引总是作为一个广播和迭代:</p>
+                    <p mt_node="trans">高级索引总是作为一个整体进行广播和迭代：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="n">result</span><span class="p">[</span><span class="n">i_1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">i_M</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="n">ind_1</span><span class="p">[</span><span class="n">i_1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">i_M</span><span class="p">],</span> <span class="n">ind_2</span><span class="p">[</span><span class="n">i_1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">i_M</span><span class="p">],</span>
@@ -1791,9 +1785,9 @@
                         mt_node="origin_leaf"><span class="pre">IndexError:</span> <span class="pre">shape</span> <span class="pre">mismatch:</span> <span class="pre">indexing</span> <span class="pre">arrays</span> <span class="pre">could</span>
 <span class="pre">not</span> <span class="pre">be</span> <span class="pre">broadcast</span> <span class="pre">together</span> <span class="pre">with</span> <span class="pre">shapes...</span></code><!--volctrans extension anchor for patchId=722-->
                       is raised.</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=718-->请注意，生成的形状与(广播)索引数组相同
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=718-->注意，得到的结果形状与索引数组
                       <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">ind_1,</span> <span class="pre">...,</span> <span class="pre">ind_N</span></code><!--volctrans extension anchor for patchId=720-->。如果索引不能广播到
+                        mt_node="trans"><span class="pre">ind_1,</span> <span class="pre">...,</span> <span class="pre">ind_N</span></code><!--volctrans extension anchor for patchId=720-->的形状相同。如果索引不能广播到
                       相同的形状，将引发一个异常<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">IndexError:</span> <span class="pre">shape</span> <span class="pre">mismatch:</span> <span class="pre">indexing</span> <span class="pre">arrays</span> <span class="pre">could</span>
 <span class="pre">not</span> <span class="pre">be</span> <span class="pre">broadcast</span> <span class="pre">together</span> <span class="pre">with</span> <span class="pre">shapes...</span></code><!--volctrans extension anchor for patchId=722-->。
@@ -1801,7 +1795,7 @@
                     <p mt_node="origin_leaf">Indexing with multidimensional index arrays tend
                       to be more unusual uses, but they are permitted, and they are useful for some
                       problems. We’ll start with the simplest multidimensional case:</p>
-                    <p mt_node="trans">使用多维索引数组进行索引往往是更不寻常的用途，但它们是允许的，并且它们对某些问题很有用。我们将从最简单的多维案例开始：</p>
+                    <p mt_node="trans">使用多维索引数组进行索引往往是不太常见的用法，但它们是允许的，并且它们对某些问题很有用。我们将从最简单的多维案例开始：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">35</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
@@ -1830,7 +1824,7 @@
                       the last is <code class="docutils literal notranslate"
                         mt_node="origin_leaf"><span class="pre">y[4,</span> <span class="pre">2]</span></code><!--volctrans extension anchor for patchId=734-->.
                     </p>
-                    <p mt_node="trans">在这种情况下，如果索引数组具有匹配的形状，并且被索引数组的每个维度都有一个索引数组，则生成的数组具有与索引数组相同的形状，并且值对应于索引数组中每个位置的索引集。
+                    <p mt_node="trans">在这种情况下，如果索引数组具有匹配的形状，并且对于被索引的数组的每个维度都有一个索引数组，则结果数组与索引数组具有相同的形状，并且值对应于索引数组中每个位置的索引集。
                       在本例中，两个索引数组的第一个索引值都是0，因此结果数组的第一个值是
                       <code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">y[0,</span> <span class="pre">0]</span></code><!--volctrans extension anchor for patchId=730-->。下一个值是<code
@@ -1855,7 +1849,7 @@
                     <p mt_node="origin_leaf">The broadcasting mechanism permits index arrays to be combined with
                       scalars for other indices. The effect is that the scalar value is used
                       for all the corresponding values of the index arrays:</p>
-                    <p mt_node="trans">广播机制允许索引数组与其他索引的标量相结合。其效果是标量值被用于索引数组的所有对应值:</p>
+                    <p mt_node="trans">广播机制允许索引数组与其他索引的标量结合使用。其效果是标量值被用于索引数组的所有对应值:</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="mi">1</span><span class="p">]</span>
@@ -1880,12 +1874,12 @@
                     <p mt_node="origin_leaf">It results in the construction of a new array where each value of the
                       index array selects one row from the array being indexed and the resultant
                       array has the resulting shape (number of index elements, size of row).</p>
-                    <p mt_node="trans">这将导致构造一个新数组，其中索引数组的每个值从被索引数组中选择一行，并且生成的结果数组具有最终形状(索引元素的数量，行大小)。</p>
+                    <p mt_node="trans">这将导致构造一个新数组，其中索引数组的每个值从被索引的数组中选择一行，并且结果数组具有相应的形状(索引元素的数量、行的尺寸)。</p>
                     <p mt_node="origin_leaf">In general, the shape of the resultant array will be the concatenation of
                       the shape of the index array (or the shape that all the index arrays were
                       broadcast to) with the shape of any unused dimensions (those not indexed)
                       in the array being indexed.</p>
-                    <p mt_node="trans">一般来说，结果数组的形状将是索引数组的形状(或所有索引数组广播到的形状)与被索引数组中任何未使用的维度(未被索引的维度)的形状连接</p>
+                    <p mt_node="trans">一般来说，结果数组的形状将是索引数组的形状(或所有索引数组被广播后的形状)与索引的数组中未使用的维度(未被索引的维度)的形状的连接</p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=751-->From each row, a specific
@@ -1898,9 +1892,9 @@
                       Using both together the task
                       can be solved using advanced indexing:
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=751-->从每行中选择一个特定的元素。行索引就是
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=751-->从每行中选择一个特定的元素。行索引是
                       <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code><!--volctrans extension anchor for patchId=753-->列索引指定为对应行选择的元素，这里是<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code><!--volctrans extension anchor for patchId=753-->，列索引指定为对应行选择的元素，这里是<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">0]</span></code><!--volctrans extension anchor for patchId=755-->。将两者结合使用，系统将使用高级索引来解决此任务:
                     </p>
                     <div class="highlight-default notranslate" mt_node="origin">
@@ -2034,8 +2028,8 @@
                       lookup table) will result in an array of shape (ny, nx, 3) where a
                       triple of RGB values is associated with each pixel location.</p>
                     <p mt_node="trans">
-                      高级索引在现实生活中，可能用于的一个例子是，用于“颜色查找表”，在这种情况下，我们希望将图像的值映射为RGB三元组以进行显示。
-                      查找表具有形状(nlookup, 3)。使用形状为(ny, nx)、数据类型为np.uint8（或任何整数类型，只要值在查找表的范围内）的图像对这样的数组进行索引，将得到形状为(ny, nx, 3)的数组，其中每个像素位置都关联着一个RGB值三元组。</p>
+                      高级索引在现实生活中，可能用于的一个例子是，用于“颜色查找表”，在这种情况下，我们希望将图像的值映射到RGB三元组以进行显示。
+                      查找表具有形状(nlookup, 3)。使用形状为(ny, nx)、数据类型为np.uint8（或任何整数类型，只要值在查找表的范围内）的图像，对这样的数组进行索引，将得到形状为(ny, nx, 3)的数组，其中每个像素位置都关联着一个RGB值的三元组。</p>
                   </section>
                   <section id="boolean-array-indexing" mt_node="origin">
                     <span id="boolean-indexing" mt_node="origin_leaf"></span><span id="boolean-indexing" mt_node="trans"
@@ -2454,7 +2448,7 @@
                       the subspace from the advanced indexing part. Two cases of index combination
                       need to be distinguished:</p>
                     <p mt_node="trans">
-                      理解多个高级索引组合的最简单方法可能是根据生成的形状进行思考。索引操作有两个部分，由基本索引定义的子空间（不包括整数）和高级索引部分的子空间。需要区分两种索引组合情况：</p>
+                      理解多个高级索引组合的最简单方法可能是根据生成的结果形状进行思考。索引操作分为两部分，一部分是由基本索引（不包括整数）所定义的子空间，另一部分是由高级索引部分定义的子空间。需要区分两种索引组合的情况：</p>
                     <ul class="simple" mt_node="origin">
                       <li mt_node="origin">
                         <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=959-->The advanced indices
@@ -2471,7 +2465,7 @@
                           For example <code class="docutils literal notranslate"
                             mt_node="origin_leaf"><span class="pre">x[arr1,</span> <span class="pre">:,</span> <span class="pre">arr2]</span></code><!--volctrans extension anchor for patchId=967-->.
                         </p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=959-->高级索引由切片、<a
+                        <p mt_node="trans"><!--volctrans extension anchor for patchId=959-->高级索引可以通过切片、<a
                             class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis"
                             title="(in Python v3.11)" mt_node="trans"><code
                               class="xref py py-data docutils literal notranslate"
@@ -2480,7 +2474,7 @@
                             href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis"
                             title="numpy.newaxis" mt_node="trans"><code
                               class="xref py py-const docutils literal notranslate"
-                              mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=965-->。例如<code
+                              mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=965-->进行分割。例如 <code
                             class="docutils literal notranslate"
                             mt_node="trans"><span class="pre">x[arr1,</span> <span class="pre">:,</span> <span class="pre">arr2]</span></code><!--volctrans extension anchor for patchId=967-->。
                         </p>
@@ -2495,13 +2489,11 @@
                           since <code class="docutils literal notranslate"
                             mt_node="origin_leaf"><span class="pre">1</span></code><!--volctrans extension anchor for patchId=977-->
                           is an advanced index in this regard.</p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=970-->高级指数都紧挨着。
-                          例如<code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">x[...,</span> <span class="pre">arr1,</span> <span class="pre">arr2,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=972-->但<em
-                            mt_node="trans">不是</em> <code class="docutils literal notranslate"
+                        <p mt_node="trans"><!--volctrans extension anchor for patchId=970-->高级索引都是彼此相邻的。例如<code class="docutils literal notranslate"
+                            mt_node="trans"><span class="pre">x[...,</span> <span class="pre">arr1,</span> <span class="pre">arr2,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=972-->但不包括 <code class="docutils literal notranslate"
                             mt_node="trans"><span class="pre">x[arr1,</span> <span class="pre">:,</span> <span class="pre">1]</span></code><!--volctrans extension anchor for patchId=975-->
                           因为<code class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">1</span></code><!--volctrans extension anchor for patchId=977-->是这方面的高级指数。
+                            mt_node="trans"><span class="pre">1</span></code><!--volctrans extension anchor for patchId=977-->在这里面是一个高级索引。
                         </p>
                       </li>
                     </ul>
@@ -2513,7 +2505,7 @@
                       initial array (the latter logic is what makes simple advanced indexing
                       behave just like slicing).</p>
                     <p mt_node="trans">
-                      在第一种情况下，高级索引操作产生的维度首先出现在结果数组中，然后是子空间维度。在第二种情况下，高级索引操作产生的维度被插入到结果数组中，与它们在初始数组中的位置相同（后一种逻辑使简单的高级索引的行为类似于切片）。
+                      在第一种情况下，高级索引操作产生的维度首先出现在结果数组中，然后是子空间维度。在第二种情况下，高级索引操作所得到的维度被插入到结果数组中，插入位置与它们在初始数组中的位置相同（后一种逻辑使简单的高级索引的行为类似于切片）。
                     </p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
@@ -2547,23 +2539,18 @@
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x.shape</span></code><!--volctrans extension anchor for patchId=983-->是（10,20,30），<code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">ind</span></code><!--volctrans extension anchor for patchId=985-->是（2,3,4）形
-                      索引<a class="reference internal"
+                        mt_node="trans"><span class="pre">ind</span></code><!--volctrans extension anchor for patchId=985-->是一个形状为（2,3,4）的<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/arrays.scalars.html#numpy.intp" title="numpy.intp"
                         mt_node="trans"><code class="xref py py-class docutils literal notranslate"
-                          mt_node="trans"><span class="pre">intp</span></code></a><!--volctrans extension anchor for patchId=988-->数组，则<code
+                          mt_node="trans"><span class="pre">intp</span></code></a><!--volctrans extension anchor for patchId=988-->（整数）类型的索引数组，那么<code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">x[...,</span> <span class="pre">ind,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=990-->有
-                      形状（10,2,3,4,30），因为（20，）形子空间已经
-                      替换为（2,3,4）形的广播索引子空间。如果
-                      我们让<em mt_node="trans">i，j，k</em><!--volctrans extension anchor for patchId=992-->在（2,3,4）形子空间上循环
-                      <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">result[...,</span> <span class="pre">i,</span> <span class="pre">j,</span> <span class="pre">k,</span> <span class="pre">:]</span> <span class="pre">=</span> <span class="pre">x[...,</span> <span class="pre">ind[i,</span> <span class="pre">j,</span> <span class="pre">k],</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=994-->。这个例子
-                      产生相同的结果<a class="reference internal"
+                        mt_node="trans"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">x[...,</span> <span class="pre">ind,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=990-->的形状为（10,2,3,4,30），因为形状为（20，）的下标空间被替换为一个形状为（2,3,4）的广播索引子空间。如果我们让<em mt_node="trans">i，j，k</em><!--volctrans extension anchor for patchId=992-->在形状为（2,3,4）的子空间上循环遍历
+                        ，则<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">result[...,</span> <span class="pre">i,</span> <span class="pre">j,</span> <span class="pre">k,</span> <span class="pre">:]</span> <span class="pre">=</span> <span class="pre">x[...,</span> <span class="pre">ind[i,</span> <span class="pre">j,</span> <span class="pre">k],</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=994-->。这个例子与<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.take.html#numpy.ndarray.take"
                         title="numpy.ndarray.take" mt_node="trans"><code
                           class="xref py py-meth docutils literal notranslate"
-                          mt_node="trans"><span class="pre">x.take(ind,</span> <span class="pre">axis=-2)</span></code></a><!--volctrans extension anchor for patchId=997-->。
+                          mt_node="trans"><span class="pre">x.take(ind,</span> <span class="pre">axis=-2)</span></code></a><!--volctrans extension anchor for patchId=997-->产生相同的结果。
                     </p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
@@ -2598,31 +2585,27 @@
                           class="xref py py-func docutils literal notranslate"
                           mt_node="origin_leaf"><span class="pre">take</span></code></a><!--volctrans extension anchor for patchId=1016-->.
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=1000-->设<code
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=1000-->假设<code
                         class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x.shape</span></code><!--volctrans extension anchor for patchId=1002-->为（10,20,30,40,50）并假设<code
+                        mt_node="trans"><span class="pre">x.shape</span></code><!--volctrans extension anchor for patchId=1002-->为（10,20,30,40,50）并且假设<code
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">ind_1</span></code><!--volctrans extension anchor for patchId=1004-->
-                      并且<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">ind_2</span></code><!--volctrans extension anchor for patchId=1006-->可以广播到形状（2,3,4）。然后
+                        和<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">ind_2</span></code><!--volctrans extension anchor for patchId=1006-->可以广播到形状（2,3,4）。那么
                       <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[:,</span> <span class="pre">ind_1,</span> <span class="pre">ind_2]</span></code><!--volctrans extension anchor for patchId=1008-->具有形状（10,2,3,4,40,50），因为
-                      X的（20,30）形子空间已被替换为
-                      （2,3,4）来自索引的子空间。然而，
+                        mt_node="trans"><span class="pre">x[:,</span> <span class="pre">ind_1,</span> <span class="pre">ind_2]</span></code><!--volctrans extension anchor for patchId=1008-->的形状为（10,2,3,4,40,50），因为
+                      X 的（20,30）子空间被替换为索引的
+                      （2,3,4）子空间。然而，
                       <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[:,</span> <span class="pre">ind_1,</span> <span class="pre">:,</span> <span class="pre">ind_2]</span></code><!--volctrans extension anchor for patchId=1010-->有形状（2,3,4,10,30,50）因为
-                      在索引子空间中没有明确的位置，因此
-                      它被贴在开头。总是可以使用的
+                        mt_node="trans"><span class="pre">x[:,</span> <span class="pre">ind_1,</span> <span class="pre">:,</span> <span class="pre">ind_2]</span></code><!--volctrans extension anchor for patchId=1010-->的形状为（2,3,4,10,30,50）因为在索引子空间中没有明确的放置位置，因此它被附加到开头。这时可以使用
                       <a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.transpose.html#numpy.ndarray.transpose"
                         title="numpy.ndarray.transpose" mt_node="trans"><code
                           class="xref py py-meth docutils literal notranslate"
-                          mt_node="trans"><span class="pre">.transpose()</span></code></a><!--volctrans extension anchor for patchId=1013-->移动子空间
-                      任何需要的地方。请注意，此示例无法复制
-                      使用<a class="reference internal"
+                          mt_node="trans"><span class="pre">.transpose()</span></code></a><!--volctrans extension anchor for patchId=1013-->将子空间移动到所需的位置。请注意，此示例无法使用<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.take.html#numpy.take"
                         title="numpy.take" mt_node="trans"><code class="xref py py-func docutils literal notranslate"
-                          mt_node="trans"><span class="pre">take</span></code></a><!--volctrans extension anchor for patchId=1016-->。
+                          mt_node="trans"><span class="pre">take</span></code></a><!--volctrans extension anchor for patchId=1016-->复制。
                     </p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
@@ -2652,7 +2635,7 @@
                   <h2 mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1025-->Field access<a
                       class="headerlink" href="https://numpy.org/doc/stable/user/basics.indexing.html#field-access"
                       title="Permalink to this heading" mt_node="origin_leaf">#</a></h2>
-                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1025-->现场访问<a class="headerlink"
+                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1025-->字段访问<a class="headerlink"
                       href="https://numpy.org/doc/stable/user/basics.indexing.html#field-access"
                       title="Permalink to this heading" mt_node="trans">#</a></h2>
                   <div class="admonition seealso" mt_node="origin">
@@ -2681,11 +2664,9 @@
                   <p mt_node="trans"><!--volctrans extension anchor for patchId=1033-->如果<a class="reference internal"
                       href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray"
                       title="numpy.ndarray" mt_node="trans"><code class="xref py py-class docutils literal notranslate"
-                        mt_node="trans"><span class="pre">ndarray</span></code></a><!--volctrans extension anchor for patchId=1036-->对象是结构化数组，则<a
+                        mt_node="trans"><span class="pre">ndarray</span></code></a><!--volctrans extension anchor for patchId=1036-->对象是一个结构化数组，则可以通过使用字符串或类似字典的索引方式来访问数组的<a
                       class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-field"
-                      mt_node="trans">字段</a><!--volctrans extension anchor for patchId=1039-->
-                    可以通过使用字符串索引数组来访问数组，
-                    像字典一样。</p>
+                      mt_node="trans">字段</a><!--volctrans extension anchor for patchId=1039-->。</p>
                   <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1041-->Indexing <code
                       class="docutils literal notranslate"
                       mt_node="origin_leaf"><span class="pre">x['field-name']</span></code><!--volctrans extension anchor for patchId=1043-->
@@ -2712,13 +2693,11 @@
                       mt_node="trans"><span class="pre">x['field-name']</span></code><!--volctrans extension anchor for patchId=1043-->返回数组的新<a
                       class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
                       mt_node="trans">视图</a><!--volctrans extension anchor for patchId=1046-->，
-                    与<em mt_node="trans">x</em><!--volctrans extension anchor for patchId=1048-->形状相同（除非字段是
-                    子数组）但数据类型为<code class="docutils literal notranslate"
-                      mt_node="trans"><span class="pre">x.dtype['field-name']</span></code><!--volctrans extension anchor for patchId=1050-->并包含
-                    仅指定字段中的部分数据。还有，
+                      其形状与<em mt_node="trans">x</em><!--volctrans extension anchor for patchId=1048-->相同（除非该字段是子数组），但数据类型为<code class="docutils literal notranslate"
+                      mt_node="trans"><span class="pre">x.dtype['field-name']</span></code><!--volctrans extension anchor for patchId=1050-->并且只包含指定字段中的部分数据。此外，
                     <a class="reference internal"
                       href="https://numpy.org/doc/stable/reference/arrays.classes.html#arrays-classes-rec"
-                      mt_node="trans">记录数组</a><!--volctrans extension anchor for patchId=1053-->标量可以通过这种方式“索引”。
+                      mt_node="trans">记录数组</a><!--volctrans extension anchor for patchId=1053-->标量也可以通过这种方式“索引”。
                   </p>
                   <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1055-->Indexing into a structured
                     array can also be done with a list of field names,
@@ -2731,15 +2710,12 @@
                       mt_node="origin_leaf"><span class="std std-ref" mt_node="origin_leaf">Structured
                         arrays</span></a><!--volctrans extension anchor for patchId=1060--> for more
                     information on multifield indexing.</p>
-                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1055-->也可以使用字段名称列表对结构化数组进行索引，
+                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1055-->对结构化数组的索引也可以通过字段名列表来完成，
                     例如<code class="docutils literal notranslate"
                       mt_node="trans"><span class="pre">x[['field-name1',</span> <span class="pre">'field-name2']]</span></code><!--volctrans extension anchor for patchId=1057-->。从NumPy
-                    1.16开始，它返回一个
-                    仅包含这些字段的视图。在旧版本的NumPy中，它返回一个
-                    复制。有关更多信息，请参阅<a class="reference internal"
+                    1.16开始，它将返回一个只包含这些字段的视图。在旧版本的NumPy中，它返回一个副本。有关多字段索引的更多信息，请参阅用户指南中有关<a class="reference internal"
                       href="https://numpy.org/doc/stable/user/basics.rec.html#structured-arrays"
-                      mt_node="trans">结构化数组</a><!--volctrans extension anchor for patchId=1060-->的用户指南部分
-                    关于多字段索引的信息。</p>
+                      mt_node="trans">结构化数组</a><!--volctrans extension anchor for patchId=1060-->的章节。</p>
                   <p mt_node="origin_leaf">If the accessed field is a sub-array, the dimensions of the sub-array
                     are appended to the shape of the result.
                     For example:</p>
@@ -2766,7 +2742,7 @@
                       class="headerlink"
                       href="https://numpy.org/doc/stable/user/basics.indexing.html#flat-iterator-indexing"
                       title="Permalink to this heading" mt_node="origin_leaf">#</a></h2>
-                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1068-->平面迭代器索引<a class="headerlink"
+                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1068-->平直迭代器索引<a class="headerlink"
                       href="https://numpy.org/doc/stable/user/basics.indexing.html#flat-iterator-indexing"
                       title="Permalink to this heading" mt_node="trans">#</a></h2>
                   <p mt_node="origin_leaf"><a class="reference internal"
@@ -2790,17 +2766,14 @@
                       href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flat.html#numpy.ndarray.flat"
                       title="numpy.ndarray.flat" mt_node="trans"><code
                         class="xref py py-attr docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x.flat</span></code></a><!--volctrans extension anchor for patchId=1073-->返回一个迭代器
-                    在整个数组上（以C连续样式与最后一个索引
-                    变化最快）。此迭代器对象也可以使用
-                    基本切片或高级索引，只要选择对象是
-                    不是元组。这应该从<a class="reference internal"
+                        mt_node="trans"><span class="pre">x.flat</span></code></a><!--volctrans extension anchor for patchId=1073-->返回一个迭代器，该迭代器将遍历整个数组（以C连续风格，最后一个索引变化最快）。
+                        只要选择对象不是元组，此迭代器对象也可以使用基本切片或高级索引进行索引。
+                        从<a class="reference internal"
                       href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.flat.html#numpy.ndarray.flat"
                       title="numpy.ndarray.flat" mt_node="trans"><code
                         class="xref py py-attr docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x.flat</span></code></a><!--volctrans extension anchor for patchId=1076-->是一维视图的事实中清楚。它可以用于整数
-                    使用一维C样式平面索引进行索引。任何形状
-                    因此，返回的数组是整数索引对象的形状。</p>
+                        mt_node="trans"><span class="pre">x.flat</span></code></a><!--volctrans extension anchor for patchId=1076-->是一维视图这一事实中应该可以清楚地看出这一点。它可以用于1维C-style-flat
+                        索引的整数索引。因此，任何返回的数组形状都是整数索引对象的形状。</p>
                 </section>
                 <section id="assigning-values-to-indexed-arrays" mt_node="origin">
                   <span id="index-3" mt_node="origin_leaf"></span><span id="index-3" mt_node="trans"
@@ -2818,7 +2791,7 @@
                     assigned to the indexed array must be shape consistent (the same shape
                     or broadcastable to the shape the index produces). For example, it is
                     permitted to assign a constant to a slice:</p>
-                  <p mt_node="trans">如前所述，可以使用单个索引、切片以及索引和掩码数组选择要分配的数组子集。分配给索引数组的值必须形状一致（与索引产生的形状相同或可广播）。例如，允许为切片分配常量：
+                  <p mt_node="trans">如前所述，可以使用单个索引、切片以及索引和掩码数组来选择数组的子集进行赋值。赋给已索引数组的值必须是形状一致的（与索引产生的形状相同或可广播）。例如，允许将常量赋值给切片：
                   </p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
@@ -2828,7 +2801,7 @@
                     </div>
                   </div>
                   <p mt_node="origin_leaf">or an array of the right size:</p>
-                  <p mt_node="trans">或大小合适的数组：</p>
+                  <p mt_node="trans">或者一个大小合适的数组：</p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
                       <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
@@ -2838,7 +2811,7 @@
                   <p mt_node="origin_leaf">Note that assignments may result in changes if assigning
                     higher types to lower types (like floats to ints) or even
                     exceptions (assigning complex to floats or ints):</p>
-                  <p mt_node="trans">请注意，如果将较高类型分配给较低类型（如将浮点数分配给整数）甚至异常（将复数分配给浮点数或整数），分配可能会导致更改：</p>
+                  <p mt_node="trans">请注意，如果将高级类型赋值给低级类型（如将float赋值给int），赋值可能会导致更改甚至是异常：</p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
                       <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.2</span>
@@ -2857,7 +2830,7 @@
                     actions may not work as one may naively expect. This particular
                     example is often surprising to people:</p>
                   <p mt_node="trans">
-                    与某些引用（例如数组和掩码索引）不同，总是对数组中的原始数据进行赋值（事实上，没有其他任何意义！）。但是请注意，有些操作可能不像人们天真地期望的那样工作。这个特殊的例子经常让人惊讶：</p>
+                    与某些引用不同（例如数组和掩码索引），赋值总是对数组中的原始数据进行赋值（事实上，没有其他任何意义！）。但是请注意，有些操作可能不像人们天真地期望的那样工作。下面这个特定的例子经常会让人们感到惊讶：</p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
                       <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
@@ -2881,16 +2854,13 @@
                       mt_node="origin_leaf"><span class="pre">x[1]</span></code><!--volctrans extension anchor for patchId=1104-->
                     three times,
                     rather than being incremented 3 times.</p>
-                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1100-->人们期望第一个位置增加3。
-                    事实上，它只会增加1。原因是
-                    从原始数组中提取一个新数组（作为临时数组），其中包含
-                    1,1,3,1处的值，然后将值1添加到临时值中，
-                    然后临时被分配回原始数组。因此
-                    数组在<code class="docutils literal notranslate"
-                      mt_node="trans"><span class="pre">x[1]</span> <span class="pre">+</span> <span class="pre">1</span></code><!--volctrans extension anchor for patchId=1102-->的值被分配给<code
+                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1100-->人们原本期望第一个位置能够增加3。
+                    但实际上，它只会增加1。原因是，从原始数组中提取了一个包含 1,1,3,1 处值的新数组（作为临时数组），然后将1的值加到临时数组中，再将临时数组重新赋值给原始数组。
+                    因此，<code class="docutils literal notranslate"
+                      mt_node="trans"><span class="pre">x[1]</span> <span class="pre">+</span> <span class="pre">1</span></code><!--volctrans extension anchor for patchId=1102-->的值被赋值给<code
                       class="docutils literal notranslate"
                       mt_node="trans"><span class="pre">x[1]</span></code><!--volctrans extension anchor for patchId=1104-->三次，
-                    而不是增加3倍。</p>
+                      而不是增加了3次。</p>
                 </section>
                 <section id="dealing-with-variable-numbers-of-indices-within-programs" mt_node="origin">
                   <span id="dealing-with-variable-indices" mt_node="origin_leaf"></span><span
@@ -2899,7 +2869,7 @@
                     numbers of indices within programs<a class="headerlink"
                       href="https://numpy.org/doc/stable/user/basics.indexing.html#dealing-with-variable-numbers-of-indices-within-programs"
                       title="Permalink to this heading" mt_node="origin_leaf">#</a></h2>
-                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1108-->处理程序中可变数量的索引<a
+                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1108-->在程序中处理可变数量的索引<a
                       class="headerlink"
                       href="https://numpy.org/doc/stable/user/basics.indexing.html#dealing-with-variable-numbers-of-indices-within-programs"
                       title="Permalink to this heading" mt_node="trans">#</a></h2>
@@ -2911,7 +2881,7 @@
                     supplies to the index a tuple, the tuple will be interpreted
                     as a list of indices. For example:</p>
                   <p mt_node="trans">
-                    索引语法非常强大，但在处理可变数量的索引时会受到限制。例如，如果您想编写一个函数，该函数可以处理具有不同数量维度的参数，而不必为每个可能数量的维度编写特殊情况代码，那该怎么做呢？如果向索引提供一个元组，则元组将被解释为索引列表。例如：
+                    索引语法功能非常强大，但在处理可变数量的索引时会受到限制。例如，如果您想编写一个函数，该函数可以处理具有不同维数的参数，而又不想为每个可能维度编写特殊情况代码，如何做到这一点？如果向索引提供了一个元组，该元组将被解释为索引列表。例如：
                   </p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
@@ -2924,10 +2894,10 @@
                   </div>
                   <p mt_node="origin_leaf">So one can use code to construct tuples of any number of indices
                     and then use these within an index.</p>
-                  <p mt_node="trans">因此，可以使用代码构造任意数量索引的元组，然后在索引中使用这些元组。</p>
+                  <p mt_node="trans">因此，可以使用代码来构建包含任意数量索引的元组，然后在索引中使用这些元组。</p>
                   <p mt_node="origin_leaf">Slices can be specified within programs by using the slice() function
                     in Python. For example:</p>
-                  <p mt_node="trans">可以使用Python中的切片（）函数在程序中指定切片。例如：</p>
+                  <p mt_node="trans">在Python程序中，可以使用slice()函数来指定切片。例如：</p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
                       <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>  <span class="c1"># same as [1, 1, 1, 0:2]</span>
@@ -2938,7 +2908,7 @@
                   </div>
                   <p mt_node="origin_leaf">Likewise, ellipsis can be specified by code by using the Ellipsis
                     object:</p>
-                  <p mt_node="trans">同样，可以使用Ellipsis对象通过代码指定省略号：</p>
+                  <p mt_node="trans">同样，省略号也可以通过代码使用Ellipsis对象来指定:</p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
                       <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">Ellipsis</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># same as [1, ..., 1]</span>
@@ -2959,13 +2929,12 @@
                     function directly as an index since
                     it always returns a tuple of index arrays.
                   </p>
-                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1124-->因此，可以使用来自
+                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1124-->由于这个原因，可以直接使用
                     <a class="reference internal"
                       href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.nonzero.html#numpy.ndarray.nonzero"
                       title="numpy.ndarray.nonzero" mt_node="trans"><code
                         class="xref py py-meth docutils literal notranslate"
-                        mt_node="trans"><span class="pre">np.nonzero()</span></code></a><!--volctrans extension anchor for patchId=1127-->直接作为索引，因为
-                    它总是返回一个索引数组元组。
+                        mt_node="trans"><span class="pre">np.nonzero()</span></code></a><!--volctrans extension anchor for patchId=1127-->函数的输出作为索引，因为它总是返回一个索引数组元组。
                   </p>
                   <p mt_node="origin_leaf">Because of the special treatment of tuples, they are not automatically
                     converted to an array as a list would be. As an example:</p>
@@ -2985,12 +2954,12 @@
                   <h2 mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1134-->Detailed notes<a
                       class="headerlink" href="https://numpy.org/doc/stable/user/basics.indexing.html#detailed-notes"
                       title="Permalink to this heading" mt_node="origin_leaf">#</a></h2>
-                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1134-->详细注释<a class="headerlink"
+                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1134-->详细说明<a class="headerlink"
                       href="https://numpy.org/doc/stable/user/basics.indexing.html#detailed-notes"
                       title="Permalink to this heading" mt_node="trans">#</a></h2>
                   <p mt_node="origin_leaf">These are some detailed notes, which are not of importance for day to day
                     indexing (in no particular order):</p>
-                  <p mt_node="trans">这些是一些详细的注释，对于日常索引并不重要（没有特定的顺序）：</p>
+                  <p mt_node="trans">以下是一些详细的说明，这些说明在日常索引中并不重要（并无特定顺序）：</p>
                   <ul class="simple" mt_node="origin">
                     <li mt_node="origin">
                       <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1140-->The native NumPy
@@ -3002,19 +2971,16 @@
                         is the smallest data type
                         sufficient to safely index any array; for advanced indexing it may be
                         faster than other types.</p>
-                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1140-->本机NumPy索引类型是<code
+                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1140-->NumPy的原生索引类型是<code
                           class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">intp</span></code><!--volctrans extension anchor for patchId=1142-->，可能与
-                        默认整数数组类型.<code class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">intp</span></code><!--volctrans extension anchor for patchId=1144-->是最小的数据类型
-                        足以安全地索引任何数组；对于高级索引，它可能是
-                        比其他类型更快。</p>
+                          mt_node="trans"><span class="pre">intp</span></code><!--volctrans extension anchor for patchId=1142-->，可能与默认的整数数组类型不同。<code class="docutils literal notranslate"
+                          mt_node="trans"><span class="pre">intp</span></code><!--volctrans extension anchor for patchId=1144-->是最小的数据类型，足以安全地索引任何数组；对于高级索引，它可能比其他类型更快。</p>
                     </li>
                     <li mt_node="origin">
                       <p mt_node="origin_leaf">For advanced assignments, there is in general no guarantee for the
                         iteration order. This means that if an element is set more than once,
                         it is not possible to predict the final result.</p>
-                      <p mt_node="trans">对于高级作业，一般不能保证迭代顺序。这意味着如果一个元素被设置多次，则无法预测最终结果。</p>
+                      <p mt_node="trans">对于高级赋值，一般不能保证迭代顺序。这意味着如果一个元素被设置多次，则无法预测最终结果。</p>
                     </li>
                     <li mt_node="origin">
                       <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1149-->An empty (tuple) index
@@ -3030,13 +2996,12 @@
                           mt_node="origin_leaf"><span class="pre">x[...]</span></code><!--volctrans extension anchor for patchId=1157-->
                         always returns a view.
                       </p>
-                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1149-->空（元组）索引是零维数组的全标量索引。
+                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1149-->空（元组）索引是一个零维数组的完整标量索引。如果<code
+                        class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">x</span></code>是零维，
                         <code class="docutils literal notranslate"
                           mt_node="trans"><span class="pre">x[()]</span></code><!--volctrans extension anchor for patchId=1151-->返回一个<em
-                          mt_node="trans">标量</em><!--volctrans extension anchor for patchId=1153-->如果<code
-                          class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">x</span></code><!--volctrans extension anchor for patchId=1155-->是零维和一个视图
-                        另一方面，<code class="docutils literal notranslate"
+                          mt_node="trans">标量</em><!--volctrans extension anchor for patchId=1153-->，否则返回一个视图。另一方面，<code class="docutils literal notranslate"
                           mt_node="trans"><span class="pre">x[...]</span></code><!--volctrans extension anchor for patchId=1157-->总是返回一个视图。
                       </p>
                     </li>
@@ -3048,7 +3013,7 @@
                           mt_node="origin_leaf">scalar</em><!--volctrans extension anchor for patchId=1164--> and not a
                         zero-dimensional array.
                         (Advanced indexing is not triggered.)</p>
-                      <p mt_node="trans">如果索引中存在零维数组并且它是全整数索引，则结果将是标量而不是零维数组。（不会触发高级索引。）</p>
+                      <p mt_node="trans">如果索引中存在零维数组，并且它是一个完整的整数索引，则结果将是标量而不是零维数组。（不会触发高级索引。）</p>
                     </li>
                     <li mt_node="origin">
                       <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1167-->When an ellipsis (<code
@@ -3062,10 +3027,9 @@
                       </p>
                       <p mt_node="trans"><!--volctrans extension anchor for patchId=1167-->当省略号（<code
                           class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">...</span></code><!--volctrans extension anchor for patchId=1169-->）存在但没有大小（即替换零
+                          mt_node="trans"><span class="pre">...</span></code><!--volctrans extension anchor for patchId=1169-->）存在，但没有尺寸（即替换零
                         <code class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=1171-->）结果仍然是一个数组。如果没有高级索引，则为视图
-                        存在，否则是副本。
+                          mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=1171-->）结果仍然是一个数组。如果没有高级索引，则为视图，否则为副本。
                       </p>
                     </li>
                     <li mt_node="origin">
@@ -3076,8 +3040,7 @@
                         dimensional boolean arrays.</p>
                       <p mt_node="trans"><!--volctrans extension anchor for patchId=1174-->布尔数组的<code
                           class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">nonzero</span></code><!--volctrans extension anchor for patchId=1176-->等价不适用于零
-                        维布尔数组。</p>
+                          mt_node="trans"><span class="pre">nonzero</span></code><!--volctrans extension anchor for patchId=1176-->等价不适用于零维布尔数组。</p>
                     </li>
                     <li mt_node="origin">
                       <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1179-->When the result of an
@@ -3090,13 +3053,11 @@
                         with <code class="docutils literal notranslate"
                           mt_node="origin_leaf"><span class="pre">123</span></code><!--volctrans extension anchor for patchId=1185-->
                         being out of bounds).</p>
-                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1179-->当高级索引操作的结果没有元素但
-                        无论<code class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">IndexError</span></code><!--volctrans extension anchor for patchId=1181-->是否越界，单个索引都是越界
-                        凸起是未定义的（例如<code class="docutils literal notranslate"
+                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1179-->当高级索引操作的结果没有元素，但单个索引越界时，是否引发<code class="docutils literal notranslate"
+                          mt_node="trans"><span class="pre">IndexError</span></code><!--volctrans extension anchor for patchId=1181-->是未定义的（例如<code class="docutils literal notranslate"
                           mt_node="trans"><span class="pre">x[[],</span> <span class="pre">[123]]</span></code><!--volctrans extension anchor for patchId=1183-->其中<code
                           class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">123</span></code><!--volctrans extension anchor for patchId=1185-->是出界的）。
+                          mt_node="trans"><span class="pre">123</span></code><!--volctrans extension anchor for patchId=1185-->是越界的）。
                       </p>
                     </li>
                     <li mt_node="origin">
@@ -3108,7 +3069,7 @@
                         However, if any other error (such as an out of bounds index) occurs, the
                         array will remain unchanged.</p>
                       <p mt_node="trans">
-                        当赋值过程中发生强制转换错误（例如使用字符串序列更新数字数组）时，被赋值的数组可能最终处于不可预测的部分更新状态。但是，如果发生任何其他错误（例如越界索引），数组将保持不变。</p>
+                        当在赋值期间发生类型转换错误（例如，使用字符串序列更新数值数组）时，被赋值的数组可能最终处于不可预测的部分更新状态。但是，如果出现任何其他错误（例如越界索引），数组将保持不变。</p>
                     </li>
                     <li mt_node="origin">
                       <p mt_node="origin_leaf">The memory layout of an advanced indexing result is optimized for each
@@ -3140,19 +3101,15 @@
                       </p>
                       <p mt_node="trans"><!--volctrans extension anchor for patchId=1195-->当使用子类（尤其是操纵其形状的子类）时，
                         默认<code class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">ndarray.__setitem__</span></code><!--volctrans extension anchor for patchId=1197-->行为将要求<code
+                          mt_node="trans"><span class="pre">ndarray.__setitem__</span></code><!--volctrans extension anchor for patchId=1197-->行为将调用<code
                           class="docutils literal notranslate"
                           mt_node="trans"><span class="pre">__getitem__</span></code><!--volctrans extension anchor for patchId=1199-->
-                        <em mt_node="trans">基本</em><!--volctrans extension anchor for patchId=1201-->索引，但不适用于<em
-                          mt_node="trans">高级</em><!--volctrans extension anchor for patchId=1203-->索引。对于这样的子类，它可能
-                        最好叫<code class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">ndarray.__setitem__</span></code><!--volctrans extension anchor for patchId=1205-->一个<em
-                          mt_node="trans">基类</em><!--volctrans extension anchor for patchId=1207-->ndarray
-                        查看数据。如果子类<!--volctrans extension anchor for patchId=1209--><code
+                          进行<em mt_node="trans">基本</em><!--volctrans extension anchor for patchId=1201-->索引，但这种情况不适用于<em
+                          mt_node="trans">高级</em><!--volctrans extension anchor for patchId=1203-->索引。对于这样的子类，最好使用<em
+                          mt_node="trans">基类</em><!--volctrans extension anchor for patchId=1207-->ndarray视图调用<code class="docutils literal notranslate"
+                          mt_node="trans"><span class="pre">ndarray.__setitem__</span></code><!--volctrans extension anchor for patchId=1205-->来访问数据。如果子类的<!--volctrans extension anchor for patchId=1209--><code
                           class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">__getitem__</span></code><!--volctrans extension anchor for patchId=1211-->这样做，<em
-                          mt_node="trans">必须</em>这样做
-                        不返回视图。
+                          mt_node="trans"><span class="pre">__getitem__</span></code>不返回视图，则必须这样做。
                       </p>
                     </li>
                   </ul>
