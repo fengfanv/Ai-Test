@@ -2069,9 +2069,9 @@
                       faster when <code class="docutils literal notranslate"
                         mt_node="origin_leaf"><span class="pre">obj.shape</span> <span class="pre">==</span> <span class="pre">x.shape</span></code><!--volctrans extension anchor for patchId=824-->.
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=807-->这种高级索引发生在<em
-                        mt_node="trans">obj</em><!--volctrans extension anchor for patchId=809-->是布尔类型的数组对象时，例如可能从比较操作符返回的数组对象。单个布尔索引数组实际上等同于<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[obj.nonzero()]</span></code><!--volctrans extension anchor for patchId=811-->，
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=807-->这种高级索引发生在索引 <em
+                        mt_node="trans">obj</em><!--volctrans extension anchor for patchId=809--> 是布尔类型的数组对象时，例如可能从比较操作符返回的数组对象。单个布尔索引数组实际上等同于<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">x[obj.nonzero()]</span></code><!--volctrans extension anchor for patchId=811-->(这里x是被索引数组；obj是索引)，
                         其中，如上所述，<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.nonzero.html#numpy.ndarray.nonzero"
                         title="numpy.ndarray.nonzero" mt_node="trans"><code
@@ -2126,11 +2126,11 @@
                         mt_node="trans"><span class="pre">obj.ndim</span> <span class="pre">==</span> <span class="pre">x.ndim</span></code><!--volctrans extension anchor for patchId=828-->，则<code
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x[obj]</span></code><!--volctrans extension anchor for patchId=830-->
-                      返回一个一维数组，其中包含<em mt_node="trans">x</em><!--volctrans extension anchor for patchId=832-->
+                      返回一个一维数组，其中包含 <em mt_node="trans">x</em><!--volctrans extension anchor for patchId=832-->
                       中与<a class="reference external" href="https://docs.python.org/3/library/constants.html#True"
                         title="(in Python v3.11)"
-                        mt_node="trans"></a><!--volctrans extension anchor for patchId=835--><em
-                        mt_node="trans">obj</em><!--volctrans extension anchor for patchId=837-->的<code
+                        mt_node="trans"></a><!--volctrans extension anchor for patchId=835--> <em
+                        mt_node="trans">obj</em> <!--volctrans extension anchor for patchId=837-->的<code
                         class="xref py py-data docutils literal notranslate"
                         mt_node="trans"><span class="pre">True</span></code>值相对应的元素。搜索顺序将是<a class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-row-major"
                         mt_node="trans">行</a><!--volctrans extension anchor for patchId=840-->为主的，C风格。如果obj<em mt_node="trans">的形状</em><!--volctrans extension anchor for patchId=842-->与<em
