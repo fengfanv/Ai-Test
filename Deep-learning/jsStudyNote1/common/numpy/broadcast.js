@@ -510,3 +510,8 @@ exports.broadcast = broadcast;
 //         ]
 //     ],
 // ]
+
+// let a9 = [1, 2, 3]
+// let b9 = [2, 2]
+// console.log(broadcast(a9, b9))
+// 报错说明是正确的
