@@ -2426,7 +2426,7 @@
                       will be the same. However, it is a copy and may have a different memory layout.
                       A slice is preferable when it is possible.
                       For example:</p>
-                    <p mt_node="trans">例如，单个高级索引可以替换一个切片，结果数组将是相同的。但是，它是一个副本，可能具有不同的内存布局。在可能的情况下，尽可能使用切片。例如：</p>
+                    <p mt_node="trans">例如，单个高级索引可以替换切片，且结果数组将是相同的。但是，它是一个副本，可能具有不同的内存布局。在可能的情况下，尽可能使用切片。例如：</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">],</span>
@@ -2490,7 +2490,7 @@
                           since <code class="docutils literal notranslate"
                             mt_node="origin_leaf"><span class="pre">1</span></code><!--volctrans extension anchor for patchId=977-->
                           is an advanced index in this regard.</p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=970-->高级索引都是彼此相邻的。例如<code class="docutils literal notranslate"
+                        <p mt_node="trans"><!--volctrans extension anchor for patchId=970-->这些高级索引都是彼此相邻的。例如<code class="docutils literal notranslate"
                             mt_node="trans"><span class="pre">x[...,</span> <span class="pre">arr1,</span> <span class="pre">arr2,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=972-->但不包括 <code class="docutils literal notranslate"
                             mt_node="trans"><span class="pre">x[arr1,</span> <span class="pre">:,</span> <span class="pre">1]</span></code><!--volctrans extension anchor for patchId=975-->
                           因为<code class="docutils literal notranslate"
@@ -2689,16 +2689,16 @@
                         array</span></a><!--volctrans extension anchor for patchId=1053--> scalars can be “indexed” this
                     way.
                   </p>
-                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1041-->索引<code
+                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1041-->对<code
                       class="docutils literal notranslate"
-                      mt_node="trans"><span class="pre">x['field-name']</span></code><!--volctrans extension anchor for patchId=1043-->返回数组的新<a
+                      mt_node="trans"><span class="pre">x['field-name']</span></code><!--volctrans extension anchor for patchId=1043-->进行索引会返回数组的新<a
                       class="reference internal" href="https://numpy.org/doc/stable/glossary.html#term-view"
                       mt_node="trans">视图</a><!--volctrans extension anchor for patchId=1046-->，
                       其形状与<em mt_node="trans">x</em><!--volctrans extension anchor for patchId=1048-->相同（除非该字段是子数组），但数据类型为<code class="docutils literal notranslate"
-                      mt_node="trans"><span class="pre">x.dtype['field-name']</span></code><!--volctrans extension anchor for patchId=1050-->并且只包含指定字段中的部分数据。此外，
+                      mt_node="trans"><span class="pre">x.dtype['field-name']</span></code>，<!--volctrans extension anchor for patchId=1050-->并且只包含指定字段中的部分数据。此外，
                     <a class="reference internal"
                       href="https://numpy.org/doc/stable/reference/arrays.classes.html#arrays-classes-rec"
-                      mt_node="trans">记录数组</a><!--volctrans extension anchor for patchId=1053-->标量也可以通过这种方式“索引”。
+                      mt_node="trans">记录数组</a><!--volctrans extension anchor for patchId=1053-->标量也可以通过这种方式进行“索引”。
                   </p>
                   <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1055-->Indexing into a structured
                     array can also be done with a list of field names,
@@ -2720,7 +2720,7 @@
                   <p mt_node="origin_leaf">If the accessed field is a sub-array, the dimensions of the sub-array
                     are appended to the shape of the result.
                     For example:</p>
-                  <p mt_node="trans">如果访问的字段是子数组，则子数组的维度将附加到结果的形状中。例如：</p>
+                  <p mt_node="trans">如果访问的字段是子数组，则子数组的维度将追加到结果的形状中。例如：</p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
                       <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="p">[(</span><span class="s1">'a'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> <span class="p">(</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))])</span>
@@ -2743,7 +2743,7 @@
                       class="headerlink"
                       href="https://numpy.org/doc/stable/user/basics.indexing.html#flat-iterator-indexing"
                       title="Permalink to this heading" mt_node="origin_leaf">#</a></h2>
-                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1068-->平直迭代器索引<a class="headerlink"
+                  <h2 mt_node="trans"><!--volctrans extension anchor for patchId=1068-->平铺迭代器索引<a class="headerlink"
                       href="https://numpy.org/doc/stable/user/basics.indexing.html#flat-iterator-indexing"
                       title="Permalink to this heading" mt_node="trans">#</a></h2>
                   <p mt_node="origin_leaf"><a class="reference internal"
@@ -2882,7 +2882,7 @@
                     supplies to the index a tuple, the tuple will be interpreted
                     as a list of indices. For example:</p>
                   <p mt_node="trans">
-                    索引语法功能非常强大，但在处理可变数量的索引时会受到限制。例如，如果您想编写一个函数，该函数可以处理具有不同维数的参数，而又不想为每个可能维度编写特殊情况代码，如何做到这一点？如果向索引提供了一个元组，该元组将被解释为索引列表。例如：
+                    索引语法功能非常强大，但在处理可变数量的索引时却有限制。例如，如果您想编写一个函数，该函数可以处理具有不同维数的参数，而又不想为每个可能维度编写特殊情况代码，如何做到这一点？如果向索引提供了一个元组，该元组将被解释为索引列表。例如：
                   </p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
@@ -2960,7 +2960,7 @@
                       title="Permalink to this heading" mt_node="trans">#</a></h2>
                   <p mt_node="origin_leaf">These are some detailed notes, which are not of importance for day to day
                     indexing (in no particular order):</p>
-                  <p mt_node="trans">以下是一些详细的说明，这些说明在日常索引中并不重要（并无特定顺序）：</p>
+                  <p mt_node="trans">以下是一些详细的说明，这些说明对于日常索引来说并不重要（无特定顺序）：</p>
                   <ul class="simple" mt_node="origin">
                     <li mt_node="origin">
                       <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1140-->The native NumPy
@@ -2997,7 +2997,7 @@
                           mt_node="origin_leaf"><span class="pre">x[...]</span></code><!--volctrans extension anchor for patchId=1157-->
                         always returns a view.
                       </p>
-                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1149-->空（元组）索引是一个零维数组的完整标量索引。如果<code
+                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1149-->空（元组）索引是零维数组的全(完整)标量索引。如果<code
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x</span></code>是零维，
                         <code class="docutils literal notranslate"
@@ -3055,8 +3055,8 @@
                           mt_node="origin_leaf"><span class="pre">123</span></code><!--volctrans extension anchor for patchId=1185-->
                         being out of bounds).</p>
                       <p mt_node="trans"><!--volctrans extension anchor for patchId=1179-->当高级索引操作的结果没有元素，但单个索引越界时，是否引发<code class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">IndexError</span></code><!--volctrans extension anchor for patchId=1181-->是未定义的（例如<code class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">x[[],</span> <span class="pre">[123]]</span></code><!--volctrans extension anchor for patchId=1183-->其中<code
+                          mt_node="trans"><span class="pre">IndexError</span></code><!--volctrans extension anchor for patchId=1181-->是不确定的（例如<code class="docutils literal notranslate"
+                          mt_node="trans"><span class="pre">x[[],</span> <span class="pre">[123]]</span></code><!--volctrans extension anchor for patchId=1183-->，其中<code
                           class="docutils literal notranslate"
                           mt_node="trans"><span class="pre">123</span></code><!--volctrans extension anchor for patchId=1185-->是越界的）。
                       </p>
@@ -3075,7 +3075,7 @@
                     <li mt_node="origin">
                       <p mt_node="origin_leaf">The memory layout of an advanced indexing result is optimized for each
                         indexing operation and no particular memory order can be assumed.</p>
-                      <p mt_node="trans">高级索引结果的内存布局针对每个索引操作进行了优化，并且不能假定特定的内存顺序。</p>
+                      <p mt_node="trans">高级索引结果的内存布局针对每个索引操作进行了优化，不能假定任何特定的内存顺序。</p>
                     </li>
                     <li mt_node="origin">
                       <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1195-->When using a subclass
