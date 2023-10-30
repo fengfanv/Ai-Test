@@ -1720,7 +1720,7 @@
                         mt_node="origin_leaf">N</em><!--volctrans extension anchor for patchId=694-->-dimensional index.
                       Each integer array represents a number
                       of indices into that dimension.</p>
-                    <p mt_node="trans">整数数组索引 可以根据其N维索引 来选择数组中的任意项。每个整数数组表示 该维度 的多个索引。</p>
+                    <p mt_node="trans">整数数组索引 允许根据N维索引 选择数组中的任意项。每个整数数组表示 该维度 的若干个索引。</p>
                     <p mt_node="origin_leaf">Negative values are permitted in the index arrays and work as they do with
                       single indices or slices:</p>
                     <p mt_node="trans">索引数组中允许使用负值，其作用与在单索引或切片中的作用相同：</p>
@@ -1760,7 +1760,7 @@
                     <p mt_node="origin_leaf">When the index consists of as many integer arrays as dimensions of the
                       array
                       being indexed, the indexing is straightforward, but different from slicing.</p>
-                    <p mt_node="trans">当索引是由 与被索引数组的维数相同的整数数组组成时，索引很简单，但与切片不同。</p>
+                    <p mt_node="trans">当索引是由 与被索引数组的维数一样多的整数数组组成时，索引很简单，但与切片不同。</p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=708-->Advanced indices always
                       are <a class="reference internal"
                         href="https://numpy.org/doc/stable/user/basics.broadcasting.html#basics-broadcasting"
@@ -1770,6 +1770,7 @@
                       iterated as <em mt_node="origin_leaf">one</em><!--volctrans extension anchor for patchId=713-->:
                     </p>
                     <p mt_node="trans">高级索引总是作为一个整体进行广播和迭代：</p>
+                    <p mt_node="trans">上面这句话的意思是，无论高级索引是什么类型，它们都将被视为一个整体，并且在广播（Broadcasting）和迭代（Iteration）过程中也会被视为一个整体。例如，如果使用两个不同形状的数组进行高级索引，它们将被视为一个整体，并且将根据广播规则进行广播以匹配要索引的数组的形状。</p>
                     <div class="highlight-default notranslate" mt_node="origin">
                       <div class="highlight" mt_node="origin">
                         <pre mt_node="origin"><span></span><span class="n">result</span><span class="p">[</span><span class="n">i_1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">i_M</span><span class="p">]</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="n">ind_1</span><span class="p">[</span><span class="n">i_1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">i_M</span><span class="p">],</span> <span class="n">ind_2</span><span class="p">[</span><span class="n">i_1</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">i_M</span><span class="p">],</span>
@@ -1786,9 +1787,9 @@
                         mt_node="origin_leaf"><span class="pre">IndexError:</span> <span class="pre">shape</span> <span class="pre">mismatch:</span> <span class="pre">indexing</span> <span class="pre">arrays</span> <span class="pre">could</span>
 <span class="pre">not</span> <span class="pre">be</span> <span class="pre">broadcast</span> <span class="pre">together</span> <span class="pre">with</span> <span class="pre">shapes...</span></code><!--volctrans extension anchor for patchId=722-->
                       is raised.</p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=718-->注意，得到的结果形状与索引数组
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=718-->注意，得到的结果的形状与（广播）索引数组的形状
                       <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">ind_1,</span> <span class="pre">...,</span> <span class="pre">ind_N</span></code><!--volctrans extension anchor for patchId=720-->的形状相同。如果索引不能广播到
+                        mt_node="trans"><span class="pre">ind_1,</span> <span class="pre">...,</span> <span class="pre">ind_N</span></code><!--volctrans extension anchor for patchId=720-->相同。如果索引不能广播到
                       相同的形状，将引发一个异常<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">IndexError:</span> <span class="pre">shape</span> <span class="pre">mismatch:</span> <span class="pre">indexing</span> <span class="pre">arrays</span> <span class="pre">could</span>
 <span class="pre">not</span> <span class="pre">be</span> <span class="pre">broadcast</span> <span class="pre">together</span> <span class="pre">with</span> <span class="pre">shapes...</span></code><!--volctrans extension anchor for patchId=722-->。
@@ -2071,8 +2072,8 @@
                         mt_node="origin_leaf"><span class="pre">obj.shape</span> <span class="pre">==</span> <span class="pre">x.shape</span></code><!--volctrans extension anchor for patchId=824-->.
                     </p>
                     <p mt_node="trans"><!--volctrans extension anchor for patchId=807-->这种高级索引发生在索引 <em
-                        mt_node="trans">obj</em><!--volctrans extension anchor for patchId=809--> 是布尔类型的数组对象时，例如可能从比较操作符返回的数组对象。单个布尔索引数组实际上等同于<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[obj.nonzero()]</span></code><!--volctrans extension anchor for patchId=811-->(这里x是被索引数组；obj是索引)，
+                        mt_node="trans">obj</em><!--volctrans extension anchor for patchId=809--> 是布尔类型的数组对象时，例如可能从比较操作符返回的数组对象。一个单独的布尔索引数组实际上等同于<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">x[obj.nonzero()]</span></code><!--volctrans extension anchor for patchId=811-->（这里x是被索引数组；obj是索引），
                         其中，如上所述，<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.nonzero.html#numpy.ndarray.nonzero"
                         title="numpy.ndarray.nonzero" mt_node="trans"><code
@@ -2084,8 +2085,8 @@
                           mt_node="trans"><span class="pre">obj.ndim</span></code></a><!--volctrans extension anchor for patchId=817-->）
                       显示<a class="reference external" href="https://docs.python.org/3/library/constants.html#True"
                         title="(in Python v3.11)"
-                        mt_node="trans"></a><!--volctrans extension anchor for patchId=820--><em
-                        mt_node="trans">obj</em><!--volctrans extension anchor for patchId=822-->的<code
+                        mt_node="trans"></a><!--volctrans extension anchor for patchId=820--> <em
+                        mt_node="trans">obj</em> <!--volctrans extension anchor for patchId=822-->的<code
                         class="xref py py-data docutils literal notranslate"
                         mt_node="trans"><span class="pre">True</span></code>元素。
                         但是，当<code class="docutils literal notranslate"
@@ -2190,7 +2191,7 @@
                       <code class="docutils literal notranslate"
                         mt_node="origin_leaf"><span class="pre">x[(ind_1,)</span> <span class="pre">+</span> <span class="pre">boolean_array.nonzero()</span> <span class="pre">+</span> <span class="pre">(ind_2,)]</span></code><!--volctrans extension anchor for patchId=870-->.
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=864-->一般来说，如果索引包含布尔数组，结果将是与，将<code class="docutils literal notranslate"
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=864-->一般来说，如果索引包含布尔数组，则结果将是与，将<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">obj.nonzero()</span></code><!--volctrans extension anchor for patchId=866-->插入相同位置 并使用上述整数数组索引机制相同。
                       所以<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x[ind_1,</span> <span class="pre">boolean_array,</span> <span class="pre">ind_2]</span></code><!--volctrans extension anchor for patchId=868-->等价于
@@ -2263,7 +2264,7 @@
                           mt_node="origin_leaf"><span class="pre">ix_</span></code></a><!--volctrans extension anchor for patchId=897-->
                       also supports boolean arrays and will work without any surprises.
                     </p>
-                    <p mt_node="trans"><!--volctrans extension anchor for patchId=891-->结合多个布尔索引数组或一个布尔值与一个整数索引数组最好使用
+                    <p mt_node="trans"><!--volctrans extension anchor for patchId=891-->将多个布尔索引数组或一个布尔值与一个整数索引数组组合，最好使用
                       <a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.nonzero.html#numpy.ndarray.nonzero"
                         title="numpy.ndarray.nonzero" mt_node="trans"><code
