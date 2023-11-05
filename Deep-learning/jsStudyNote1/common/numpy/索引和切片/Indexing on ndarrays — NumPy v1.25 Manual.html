@@ -3040,9 +3040,12 @@
                       </p>
                       <p mt_node="trans"><!--volctrans extension anchor for patchId=1167-->当省略号（<code
                           class="docutils literal notranslate"
-                          mt_node="trans"><span class="pre">...</span></code><!--volctrans extension anchor for patchId=1169-->）存在，但没有尺寸（即替换零
+                          mt_node="trans"><span class="pre">...</span></code><!--volctrans extension anchor for patchId=1169-->）存在，但没有给定大小（即 替换零
                         <code class="docutils literal notranslate"
                           mt_node="trans"><span class="pre">:</span></code><!--volctrans extension anchor for patchId=1171-->）结果仍然是一个数组。如果没有高级索引，则为视图，否则为副本。
+                      </p>
+                      <p mt_node="trans">
+                        上边这话里前一句话的意思是，即使省略号在索引中没有给定具体的大小（即没有使用冒号来指定范围），它仍然可以用来表示完整的切片操作，并且返回的结果将始终是一个数组。如有一个3维数组arr，它的形状是(2,3,4)，如果我们想要获取整个数组的所有元素，可以使用省略号表示为arr[...]。这样就能够获取到整个数组的所有元素，并且结果仍然是一个数组。
                       </p>
                     </li>
                     <li mt_node="origin">
