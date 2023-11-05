@@ -2509,6 +2509,11 @@
                     <p mt_node="trans">
                       在第一种情况下，高级索引操作产生的维度首先出现在结果数组中，然后是子空间维度。在第二种情况下，高级索引操作所得到的维度被插入到结果数组中，插入位置与它们在初始数组中的位置相同（后一种逻辑使简单的高级索引的行为类似于切片）。
                     </p>
+                    <p mt_node="trans">
+                      上边说 “在第一种情况下，高级索引操作产生的维度首先出现在结果数组中，然后是子空间维度” 是因为在 x 的第一个维度就使用了索引。<br>
+                      上边说 “在第二种情况下，高级索引操作所得到的维度被插入到结果数组中，插入位置与它们在初始数组中的位置相同” 是因为，没有在 x 的第一个维度使用索引。<br>
+                      chatGPT说我这个思路，是正确的。
+                    </p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
                     <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=981-->Suppose <code
@@ -3005,6 +3010,12 @@
                           mt_node="trans"><span class="pre">x[()]</span></code><!--volctrans extension anchor for patchId=1151-->返回一个<em
                           mt_node="trans">标量</em><!--volctrans extension anchor for patchId=1153-->，否则返回一个视图。另一方面，<code class="docutils literal notranslate"
                           mt_node="trans"><span class="pre">x[...]</span></code><!--volctrans extension anchor for patchId=1157-->总是返回一个视图。
+                      </p>
+                      <p mt_node="trans">
+                        什么是零维数组？一个零维数组是指形状为 () 的数组，也被称为标量（scalar）。它没有任何维度，只包含一个单一的数值。可以将零维数组看作是没有任何结构的最简单的数组类型。
+                        举个例子来说，一个零维数组可以表示一个单独的数字，比如 5 或者 3.14。它不具有行、列或其他维度的概念，只是一个独立的数值。
+                        在 NumPy 中，可以使用 numpy.array() 或者其他创建数组的函数来创建一个零维数组。例如，x = numpy.array(5) 将创建一个零维数组 x，其中包含单个值 5。
+                        需要注意的是，零维数组虽然没有维度，但仍然是有效的数组类型，可以进行索引、切片和其他数组操作。
                       </p>
                     </li>
                     <li mt_node="origin">
