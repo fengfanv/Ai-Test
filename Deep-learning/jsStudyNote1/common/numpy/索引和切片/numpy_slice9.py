@@ -23,6 +23,9 @@ print(x)
 # print(boolean_array.nonzero())
 # # (array([0, 2], dtype=int64),)
 
+# print((ind_1,)+boolean_array.nonzero()+(ind_2,))
+# (array([0, 1]), array([0, 2], dtype=int64), array([0, 2]))
+
 # ----------------------------------------
 
 index_1 = np.array([True,False])
