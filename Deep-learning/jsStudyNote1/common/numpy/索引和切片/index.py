@@ -15,4 +15,33 @@
 ## 
 
 
+### 可变索引元祖列表 与 索引简写模式 的对比
+'''
+a=np.arange(10,30)
+
+(3) ==> a[3] 
+
+(slice(3,15)) ==> a[3:15]
+
+(slice(None,None,3)) ==> a[::3]
+
+a = np.arange(16).reshape(4,4)
+
+(2,2) ==> a[2,2]
+
+注意 slice(1) 会转换成 slice(None, 1, None)
+(slice(None,2),slice(1,None)) ==> a[:2,1:]
+
+a = np.arange(12).reshape(3,4)
+i = [True,False,True]
+j = [True,False,True,False]
+(i,slice(None)) ==> a[i,:]
+(slice(None),j) ==> a[:,j]
+'''
+
+'''
+
+
+
+'''
 
