@@ -15,8 +15,13 @@
 ## 
 
 
+
+
 ### 可变索引元祖列表 与 索引简写模式 的对比
 '''
+a=(1)   识别成括号
+a=(1,)  识别成元祖
+
 a=np.arange(10,30)
 
 (3) ==> a[3] 
@@ -33,6 +38,7 @@ a = np.arange(16).reshape(4,4)
 (slice(None,2),slice(1,None)) ==> a[:2,1:]
 
 a = np.arange(12).reshape(3,4)
+
 i = [True,False,True]
 j = [True,False,True,False]
 (i,slice(None)) ==> a[i,:]
@@ -40,8 +46,158 @@ j = [True,False,True,False]
 '''
 
 '''
+a=np.array([1,2,3,4])
 
+(slice(None,3)) ==> a[:3]
 
+(slice(3,None)) ==> a[3:]
 
+(slice(None,None,2)) ==> a[::2]
+
+(slice(None,-1)) ==> a[:-1]
+
+a=np.arange(10).reshape(2,5)
+
+(slice(None),1) ==> a[:,1]
+
+a=np.arange(36).reshape(6,6)
+
+(0,slice(3,5)) ==> a[0,3:5]
+
+(slice(4,None),slice(4,None)) ==> a[4:,4:]
+
+(slice(None),2) ==> a[:,2]
+
+(slice(2,None,2),slice(None,None,2)) ==> a[2::2,::2]
+
+a=np.arange(0,100,10)
+
+index=[1,2,-3]
+(index) ==> a[index]
+
+a=np.arange(36).reshape(6,6)
+
+([0,1,2,3,4],[1,2,3,4,5]) ==> a[[0,1,2,3,4],[1,2,3,4,5]]
+((0,1,2,3,4),(1,2,3,4,5)) ==> a[(0,1,2,3,4),(1,2,3,4,5)]
+
+(slice(3,None),[0,2,4]) ==> a[3:,[0,2,4]]
+
+([False,True,True,False,True,False]) ==> a[[False,True,True,False,True,False]]
 '''
 
+'''
+a=np.arange(10)
+
+(slice(1,10,2)) ==> a[1:10:2]
+
+(slice(2,None)) ==> a[2:]
+
+(slice(None,5)) ==> a[:5]
+
+a=np.arange(1,10).reshape(3,3)
+
+(slice(1,None)) ==> a[1:]
+
+(Ellipsis,0) ==> a[...,0]
+
+(1,Ellipsis) ==> a[1,...]
+
+(Ellipsis,slice(1,None)) ==> a[...,1:]
+
+(slice(1,None),Ellipsis) ==> a[1:,...]
+
+([0,1,2],[0,1,2]) ==> a[[0,1,2],[0,1,2]]
+
+([[0,0],[2,2]],[[0,2],[0,2]]) ==> a[[[0,0],[2,2]],[[0,2],[0,2]]]
+
+(slice(0,2),slice(0,2)) ==> a[0:2,0:2]
+
+(Ellipsis,slice(0,2)) ==> a[...,0:2]
+
+a=np.arange(25).reshape(5,5)
+
+([1,2,3]) ==> a[[1,2,3]]
+
+([-1,-2,-3]) ==> a[[-1,-2,-3]]
+
+([[2],[1],[3]],[2,3,1,4,0]) ==> a[[[2],[1],[3]],[2,3,1,4,0]]
+'''
+
+'''
+a=np.arange(12).reshape(3,4)
+
+(Ellipsis,1) ==> a[...,1]
+
+(slice(None),1) ==> a[:,1]
+
+(Ellipsis,slice(1,None)) ==> a[...,1:]
+
+(slice(None),slice(1,None)) ==> a[:,1:]
+
+a=np.arange(10)
+
+(-1) ==> a[-1]
+
+(slice(None,-3)) ==> a[:-3]
+
+(slice(None,None,-1)) ==> a[::-1]
+
+(slice(2,None,-1)) ==> a[2::-1]
+
+(slice(5,None,2)) ==> a[5::2]
+
+(slice(5,None,-3)) ==> a[5::-3]
+
+a=np.arange(12).reshape(4,3)
+
+([0,1,3,2],[2,1,2,2]) ==> a[[0,1,3,2],[2,1,2,2]]
+
+rows=[[0,0],[3,3]]
+cols=[[0,2],[0,2]]
+(rows,cols) ==> a[rows,cols]
+
+(slice(None),[1,2]) ==> a[:,[1,2]]
+'''
+
+'''
+a=np.arange(20)
+
+(slice(5,16,1)) ==> a[5:16:1]
+
+a=np.arange(1,10).reshape(3,3)
+
+(Ellipsis,1) ==> a[...,1]
+
+(1,Ellipsis) ==> a[1,...]
+
+(Ellipsis,slice(1,None)) ==> a[...,1:]
+
+a=np.arange(32).reshape(8,4)
+
+([0,3,5],Ellipsis) ==> a[[0,3,5],...]
+
+([0,-3,-5],Ellipsis) ==> a[[0,-3,-5],...]
+'''
+
+'''
+a=np.arange(11,36).reshape(5,5)
+
+(2,1) ==> a[2,1]
+
+a=np.arange(5*4*3*6*4).reshape(5,4,3,6,4)
+
+(1,2,Ellipsis) ==> a[1,2,...]
+
+(1,2,slice(None),slice(None),slice(None)) ==> a[1,2,:,:,:]
+
+
+(Ellipsis,3) ==> a[...,3]
+
+(slice(None),slice(None),slice(None),slice(None),3) ==> a[:,:,:,:,3]
+
+
+(4,Ellipsis,5,slice(None)) ==> a[4,...,5,:]
+
+(4,slice(None),slice(None),5,slice(None)) ==> a[4,:,:,5,:]
+
+'''
