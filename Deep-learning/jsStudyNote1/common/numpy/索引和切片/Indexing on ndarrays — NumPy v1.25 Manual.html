@@ -1705,7 +1705,10 @@
                         mt_node="trans"><span class="pre">x[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code><!--volctrans extension anchor for patchId=686-->这将触发基本选择
                       前者会触发高级索引。一定要了解
                       为什么会发生这种情况。</p>
-                  </div>
+                      <p mt_node="trans">在Python里，a=(1) 会识别成括号，a=(1,) 会识别成元祖。</p>
+                      <p mt_node="trans">在Python里，x[exp1,exp2,...,expN] 是 x[(exp1,exp2,...,expN)] 的语法糖。</p>
+                      <p mt_node="trans">所以上边 x[(1, 2, 3),] 其实是这样 x[((1, 2, 3),)] 这样符合高级索引的定义(高级索引是一个至少包含一个序列对象或ndarray(数据类型为整数或布尔)的元组)。上边 x[(1, 2, 3)] 里 (1,2,3) 是一个整数元祖，这个元祖里参数是整数，而不是Python序列对象，更不是ndarray。所以会执行基本索引。</p>
+                    </div>
                   <section id="integer-array-indexing" mt_node="origin">
                     <h3 mt_node="origin_leaf"><!--volctrans extension anchor for patchId=689-->Integer array indexing<a
                         class="headerlink"

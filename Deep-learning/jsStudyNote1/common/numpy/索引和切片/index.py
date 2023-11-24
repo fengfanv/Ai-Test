@@ -212,5 +212,4 @@ a=np.arange(5*5).reshape(5,5)
 (slice(None),slice(None)) ==> a[:,:]
 (slice(None),slice(None)) ==> a[::,::]
 
-
 '''
