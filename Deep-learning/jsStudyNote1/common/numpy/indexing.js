@@ -171,13 +171,14 @@ function basicIndexing(arr, indexingTuple) {
     // console.log('indexingTupleArr：',indexingTupleArr);
     /*索引补全 end*/
     /*
-    数组每个维度对应的索引参数 start
+    形状数组里元素(被索引数组的每个维度)对应的索引参数 start
     */
-    let dimToIndex = {
-        //"0":"1",
-        //"1":"slice(None,None,None)"
-        //...
-    };
+    let shapeArrToIndexingTupleArr = {
+        // "0":"1", //形状数组下标 0，对应索引元祖数组下标是1的索引元素
+        // "1":"3", //形状数组下标 1，对应索引元祖数组下标是3的索引元素
+        // "2":"5" //形状数组下标 2，对应索引元祖数组下标是5的索引元素
+    }; 
+
     
 
     /*
