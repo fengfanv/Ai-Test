@@ -22,9 +22,14 @@ function slice(start, stop, step) {
     let dataType = [start, stop, step];
     for (let i = 0; i < dataType.length; i++) {
         let itemType = String(dataType[i]);
-        if (itemType != 'None' && itemType != 'number') {
-            throw new Error('slice 错误：入参只接受 None 或 数值')
+        if (itemType != 'None' && /^\d+$/.test(itemType) == false) {
+            throw new Error('slice 错误：入参只接受 None 或 整数')
         }
+    }
+    if(/^\d+$/.test(String(start)) && String(stop) == 'None' && String(step) == 'None'){
+        stop = start;
+        start = None;
+        step = None;
     }
     return {
         "name": "slice",
@@ -98,9 +103,9 @@ function indexing(arr, indexingTuple) {
         }
     }
     if (isAdvancedIndexing) {
-        return basicIndexing(arr, indexingTuple)
-    } else {
         return advancedIndexing(arr, indexingTuple)
+    } else {
+        return basicIndexing(arr, indexingTuple)
     }
 }
 exports.indexing = indexing;
@@ -130,11 +135,10 @@ function basicIndexing(arr, indexingTuple) {
     索引元祖里有Ellipsis（索引元祖里最多只能有一个Ellipsis）
 
     首先 数出 除了None/np.newaxis/Ellipsis 以外，有几个有效(有用)索引元素
-    
     */
     //检查索引里有几个有效(有用的索引元素)
     let canNum = 0;//有效的索引元素数量
-    let indexingTupleArr = JSON.parse(JSON.stringify(indexingTuple));
+    let indexingTupleArr = [].concat(indexingTuple);
     let EllipsisNum = 0;//Ellipsis数量
     let EllipsisIndex = -1;//Ellipsis位置
     for (let i = 0; i < indexingTupleArr.length; i++) {
@@ -164,29 +168,34 @@ function basicIndexing(arr, indexingTuple) {
             indexingTupleArr.push(slice(None));//在数组末尾的位置，插入可需数量的slice(None,None,None)
         }
     }
-
-    console.log('indexingTupleArr：',indexingTupleArr);
-
-
-
-
-
+    // console.log('indexingTupleArr：',indexingTupleArr);
     /*索引补全 end*/
+    /*
+    数组每个维度对应的索引参数 start
+    */
+    let dimToIndex = {
+        //"0":"1",
+        //"1":"slice(None,None,None)"
+        //...
+    };
+    
 
-    //数组每个维度对应的索引参数
-    // let indexObj = {
-    //     // "0":"1",
-    //     // "1":{
-    //     //     "name":"slice"
-    //     // }
-    // };
-    // for (let i = 0; i < arrNdim; i++) {
+    /*
+    数组每个维度对应的索引参数 end
+    */
 
-    // }
+
 }
 
-var a=create_array([2,3,4,5,6,7,8],1)
-indexing(a,[Ellipsis,1])
+var a=create_array([2,3,4,5,6],1)
+//indexing(a,[Ellipsis,1]) //=>[slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
+//indexing(a,[Ellipsis,1,Ellipsis]) //=>Error: 基本索引 错误：索引元祖里最多只能有一个Ellipsis
+//indexing(a,[slice(1),Ellipsis,1]) //=>[slice(None,1,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
+//indexing(a,[slice(1),1,Ellipsis]) //=>[slice(None,1,None),1,slice(None,None,None),slice(None,None,None),slice(None,None,None)]
+//indexing(a,[slice(1),1]) //=>[slice(None,1,None),1,slice(None,None,None),slice(None,None,None),slice(None,None,None)]
+//indexing(a,[1,1,1,1,1]) //=>[ 1, 1, 1, 1, 1 ]
+//indexing(a,[1,None,Ellipsis,slice(1)]) //=>[1,None,slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,1,None)]
+
 
 
 

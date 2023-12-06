@@ -169,4 +169,4 @@ function slice(d, i, j, k) {
 // indexArr []
 
 
-slice(4, 4,-11,-1)
+// slice(4, 4,-11,-1)
