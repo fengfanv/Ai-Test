@@ -6,9 +6,11 @@ var create_array = Main.create_array;
 索引和切片
 */
 
-/*切片 slice
-只接受两种类型的参数 None 或 数值
+
+/*
+索引元祖参数 start
 */
+//切片 slice（slice仅接受两种类型的参数 None 或 数值）
 function slice(start, stop, step) {
     if (String(start) == 'undefined') {
         throw new Error('slice 错误：请至少传入一个参数')
@@ -26,7 +28,7 @@ function slice(start, stop, step) {
             throw new Error('slice 错误：入参只接受 None 或 整数')
         }
     }
-    if(/^\d+$/.test(String(start)) && String(stop) == 'None' && String(step) == 'None'){
+    if(/^-?\d+$/.test(String(start)) && String(stop) == 'None' && String(step) == 'None'){
         stop = start;
         start = None;
         step = None;
@@ -43,7 +45,7 @@ function slice(start, stop, step) {
 }
 exports.slice = slice;
 
-/*省略号 Ellipsis ...*/
+//省略号 Ellipsis（...）
 var Ellipsis = {
     "name": "Ellipsis",
     "toString": () => {
@@ -53,7 +55,7 @@ var Ellipsis = {
 Object.freeze(Ellipsis); //冻结对象，防止对象属性被修改
 exports.Ellipsis = Ellipsis;
 
-/*None 可用于slice里，也可用于索引元祖里(用于索引元祖里时和np.newaxis意思一样)*/
+//None（可作为slice的参数，也可直接作为索引元祖的参数（作为索引元祖参数时，其作用与 np.newaxis 一样））
 var None = {
     "name": "None",
     "toString": () => {
@@ -63,18 +65,12 @@ var None = {
 Object.freeze(None);
 exports.None = None;
 
-
-
 /*
-var arr = [slice(None,None,None),Ellipsis,None,1,[11111]]
-[
-  { name: 'slice' },
-  { name: 'Ellipsis' },
-  { name: 'None' },
-  1,
-  [ 11111 ]
-]
+索引元祖参数 end
 */
+
+
+
 
 
 
@@ -179,7 +175,8 @@ function basicIndexing(arr, indexingTuple) {
     let shapeArrToIndexingTupleArr = {
         // "0":"1", //形状数组下标 0，对应索引元祖数组下标是1的索引元素
         // "1":"3", //形状数组下标 1，对应索引元祖数组下标是3的索引元素
-        // "2":"5" //形状数组下标 2，对应索引元祖数组下标是5的索引元素
+        // "2":"5", //形状数组下标 2，对应索引元祖数组下标是5的索引元素
+        // ...
     }
     let shapeArrIndex = -1;
     for(let i=0;i<indexingTupleArr.length;i++){
@@ -221,11 +218,70 @@ function basicIndexing(arr, indexingTuple) {
     数组每个维度对应的索引参数 end
     */
 
-    /*将numpy负索引转成正常索引；预测索引结果形状*/
+    /*将numpy负索引转成正常索引下标；获取slice的数据下标；预测索引结果形状 start*/
+    //根据上边 shapeArrToIndexingTupleArr 数组，形状数组里元素(被索引数组的每个维度)与对应的索引参数，得出来的每个维度被索引的数据下标
+    let dataIndex = {
+        // "0":[1,2,3,4], //这里"0"是shape数组里的数据下标；为什么用shape数组，因为没有比shape数组能更好展示数据维度的方式了
+        // "1":[0],
+        // "2":[5,6,7],
+        // ...
+    }
+
+
+
+
+
+    /*将numpy负索引转成正常索引；预测索引结果形状 end*/
+
     
 
 
 }
+
+function get_number_index(d,i){
+    //1、如果i是numpy负索引，则转成正常索引
+    i = i < 0 ? d + i : i;
+    return [i];
+}
+
+
+//获取被索引数组维度slice参数的数据下标
+function get_slice_index(d, i, j, k) {
+    if (k == 0) throw new Error('get_slice_index 错误：slice(i,j,k) k不能是0')
+
+    //1、如果i或j是numpy负索引，则转成正常索引
+    i = i < 0 ? d + i : i;
+    j = j < 0 ? d + j : j;
+
+    //2、如果i或j超越了数组范围，将超越范围的值，进行正常化处理
+    if (k > 0) {
+        i = i <= 0 ? 0 : i;
+        j = j >= d ? d : j;
+    } else if (k < 0) {
+        i = i >= (d - 1) ? (d - 1) : i;
+        j = j <= -1 ? -1 : j;
+    }
+
+    //3、使用(j-i)/k 和 (j-i)%k进行计算
+    let q = Math.floor((j - i) / k);
+    let r = (j - i) % k;
+    let m = r == 0 ? (q + r) : (q + 1);
+    m = m <= 0 ? 0 : m;
+
+    let indexArr = [];
+    let index = i;
+    while (indexArr.length != m) {
+        indexArr.push(index)
+        index = index + k;
+    }
+    return indexArr;
+}
+
+
+
+
+
+
 
 var a=create_array([2,3,4,5,6],1)
 //indexing(a,[Ellipsis,1]) //=>indexingTupleArr：[slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
