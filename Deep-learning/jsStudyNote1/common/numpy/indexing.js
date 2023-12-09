@@ -213,7 +213,7 @@ function basicIndexing(arr, indexingTuple) {
             }
         }
     }
-    console.log('indexingTupleArr2：',indexingTupleArr);
+    // console.log('indexingTupleArr2：',indexingTupleArr);
     /*
     数组每个维度对应的索引参数 end
     */
@@ -226,10 +226,31 @@ function basicIndexing(arr, indexingTuple) {
         // "2":[5,6,7],
         // ...
     }
+    for(let key in shapeArrToIndexingTupleArr){
+        let shape_idx = key;
+        let shape_item = arrShape[shape_idx];
+        let indexingTupleArr_idx = shapeArrToIndexingTupleArr[shape_idx];
+        let indexingTupleArr_item = indexingTupleArr[indexingTupleArr_idx];
+        let itemType = String(indexingTupleArr_item);
+        if(itemType == 'slice'){
+            let d = shape_item;
+            let i = indexingTupleArr_item.start;
+            let j = indexingTupleArr_item.stop;
+            let k = indexingTupleArr_item.step;
+            dataIndex[shape_idx] = get_slice_index(d,i,j,k)
+        }else{
+            let d = shape_item;
+            let i = indexingTupleArr_item;
+            dataIndex[shape_idx] = get_number_index(d,i)
+        }
+    }
+    console.log('dataIndex：',dataIndex);
+
+    let resultShape = [];//索引结果形状数组
 
 
 
-
+    
 
     /*将numpy负索引转成正常索引；预测索引结果形状 end*/
 
@@ -299,7 +320,31 @@ var a=create_array([2,3,4,5,6],1)
 //indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)]) 
 //=>indexingTupleArr2：[1,slice(0,3,1),slice(3,-5,-1),slice(1,5,1),slice(0,6,1)]
 
-
+// indexing(a,[None,1,None,1,1,Ellipsis,1,1]) //=>dataIndex： { '0': [ 1 ], '1': [ 1 ], '2': [ 1 ], '3': [ 1 ], '4': [ 1 ] }
+// indexing(a,[None,1,Ellipsis,1,1])
+// dataIndex： {
+//     '0': [ 1 ],
+//     '1': [ 0, 1, 2 ],
+//     '2': [ 0, 1, 2, 3 ],
+//     '3': [ 1 ],
+//     '4': [ 1 ]
+// }
+// indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)])
+// dataIndex： {
+//     '0': [ 1 ],
+//     '1': [ 0, 1, 2 ],
+//     '2': [ 3, 2, 1, 0 ],
+//     '3': [ 1, 2, 3, 4 ],
+//     '4': [ 0, 1, 2, 3, 4, 5 ]
+// }
+// indexing(a,[1,slice(None,None,None),slice(3,0,-1),slice(1,None,1)])
+// dataIndex： {
+//     '0': [ 1 ],
+//     '1': [ 0, 1, 2 ],
+//     '2': [ 3, 2, 1 ],
+//     '3': [ 1, 2, 3, 4 ],
+//     '4': [ 0, 1, 2, 3, 4, 5 ]
+// }
 
 
 
