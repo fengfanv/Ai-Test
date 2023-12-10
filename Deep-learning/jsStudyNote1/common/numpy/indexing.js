@@ -28,7 +28,7 @@ function slice(start, stop, step) {
             throw new Error('slice 错误：入参只接受 None 或 整数')
         }
     }
-    if(/^-?\d+$/.test(String(start)) && String(stop) == 'None' && String(step) == 'None'){
+    if (/^-?\d+$/.test(String(start)) && String(stop) == 'None' && String(step) == 'None') {
         stop = start;
         start = None;
         step = None;
@@ -151,21 +151,21 @@ function basicIndexing(arr, indexingTuple) {
         throw new Error('基本索引 错误：索引元祖里最多只能有一个Ellipsis')
     }
     let needAddNum = 0;//索引元祖里，需要补充多少个slice(None,None,None)
-    needAddNum = arrNdim-canNum<=0?0:arrNdim-canNum;
-    if(EllipsisNum!=0){
+    needAddNum = arrNdim - canNum <= 0 ? 0 : arrNdim - canNum;
+    if (EllipsisNum != 0) {
         //有Ellipsis时，在Ellipsis所处的位置，将Ellipsis替换成所需数量的slice(None,None,None)
-        indexingTupleArr.splice(EllipsisIndex,1)//删除Ellipsis
-        for(let i=0;i<needAddNum;i++){
-            indexingTupleArr.splice(EllipsisIndex,0,slice(None));//在Ellipsis的位置，插入可需数量的slice(None,None,None)
+        indexingTupleArr.splice(EllipsisIndex, 1)//删除Ellipsis
+        for (let i = 0; i < needAddNum; i++) {
+            indexingTupleArr.splice(EllipsisIndex, 0, slice(None));//在Ellipsis的位置，插入可需数量的slice(None,None,None)
         }
-    }else{
+    } else {
         //没有Ellipsis时，在索引元祖末尾插入所需数量的slice(None,None,None)
-        for(let i=0;i<needAddNum;i++){
+        for (let i = 0; i < needAddNum; i++) {
             indexingTupleArr.push(slice(None));//在数组末尾的位置，插入可需数量的slice(None,None,None)
         }
     }
-    if(arrNdim<canNum+needAddNum){
-        throw new Error(`基本索引 错误：被索引数组是一个${arrNdim}维数组 但却有${canNum+needAddNum}个索引参数`)
+    if (arrNdim < canNum + needAddNum) {
+        throw new Error(`基本索引 错误：被索引数组是一个${arrNdim}维数组 但却有${canNum + needAddNum}个索引参数`)
     }
     // console.log('indexingTupleArr：',indexingTupleArr);
     /*索引补全 end*/
@@ -173,41 +173,52 @@ function basicIndexing(arr, indexingTuple) {
     形状数组里元素(被索引数组的每个维度)对应的索引参数 start
     */
     let shapeArrToIndexingTupleArr = {
-        // "0":"1", //形状数组下标 0，对应索引元祖数组下标是1的索引元素
-        // "1":"3", //形状数组下标 1，对应索引元祖数组下标是3的索引元素
-        // "2":"5", //形状数组下标 2，对应索引元祖数组下标是5的索引元素
+        // "0":"1", //形状数组下标 0，对应，索引元祖数组下标是1的索引元素
+        // "1":"3", //形状数组下标 1，对应，索引元祖数组下标是3的索引元素
+        // "2":"5", //形状数组下标 2，对应，索引元祖数组下标是5的索引元素
+        // ...
+    }
+    let shapeArrToIndexingTupleArrReverse = {
+        // "1":"0", //索引元祖数组下标是1的索引元素，对应，形状数组下标 0
+        // "3":"1", //索引元祖数组下标是3的索引元素，对应，形状数组下标 1
+        // "5":"2", //索引元祖数组下标是5的索引元素，对应，形状数组下标 2
         // ...
     }
     let shapeArrIndex = -1;
-    for(let i=0;i<indexingTupleArr.length;i++){
+    for (let i = 0; i < indexingTupleArr.length; i++) {
         let item = String(indexingTupleArr[i]);
-        if(item != 'None'){
+        if (item != 'None') {
             shapeArrIndex++;
             shapeArrToIndexingTupleArr[shapeArrIndex] = i;
         }
     }
+    for (let key in shapeArrToIndexingTupleArr) {
+        let value = shapeArrToIndexingTupleArr[key];
+        shapeArrToIndexingTupleArrReverse[value] = key;
+    }
     // console.log("shapeArrToIndexingTupleArr：",shapeArrToIndexingTupleArr);
+    // console.log("shapeArrToIndexingTupleArrReverse：",shapeArrToIndexingTupleArrReverse);
     // 为，被索引数组的每个维度，所对应，的索引参数，补全索引参数，如将slice(1,None,None)补成slice(1,10,1)
     // 到达这里 indexingTupleArr 里只存在 None 整数 slice
-    for(let key in shapeArrToIndexingTupleArr){
+    for (let key in shapeArrToIndexingTupleArr) {
         let shape_idx = key;
         let indexingTupleArr_idx = shapeArrToIndexingTupleArr[shape_idx];
         let item = String(indexingTupleArr[indexingTupleArr_idx]);
-        if(item == 'slice'){
-            if(String(indexingTupleArr[indexingTupleArr_idx].step) == 'None'){
+        if (item == 'slice') {
+            if (String(indexingTupleArr[indexingTupleArr_idx].step) == 'None') {
                 indexingTupleArr[indexingTupleArr_idx].step = 1
             }
-            if(String(indexingTupleArr[indexingTupleArr_idx].start) == 'None'){
-                if(indexingTupleArr[indexingTupleArr_idx].step > 0){
+            if (String(indexingTupleArr[indexingTupleArr_idx].start) == 'None') {
+                if (indexingTupleArr[indexingTupleArr_idx].step > 0) {
                     indexingTupleArr[indexingTupleArr_idx].start = 0
-                }else{
+                } else {
                     indexingTupleArr[indexingTupleArr_idx].start = arrShape[shape_idx] - 1;
                 }
             }
-            if(String(indexingTupleArr[indexingTupleArr_idx].stop) == 'None'){
-                if(indexingTupleArr[indexingTupleArr_idx].step > 0){
+            if (String(indexingTupleArr[indexingTupleArr_idx].stop) == 'None') {
+                if (indexingTupleArr[indexingTupleArr_idx].step > 0) {
                     indexingTupleArr[indexingTupleArr_idx].stop = arrShape[shape_idx]
-                }else{
+                } else {
                     indexingTupleArr[indexingTupleArr_idx].stop = -arrShape[shape_idx] - 1;
                 }
             }
@@ -226,43 +237,63 @@ function basicIndexing(arr, indexingTuple) {
         // "2":[5,6,7],
         // ...
     }
-    for(let key in shapeArrToIndexingTupleArr){
+    for (let key in shapeArrToIndexingTupleArr) {
         let shape_idx = key;
         let shape_item = arrShape[shape_idx];
         let indexingTupleArr_idx = shapeArrToIndexingTupleArr[shape_idx];
         let indexingTupleArr_item = indexingTupleArr[indexingTupleArr_idx];
         let itemType = String(indexingTupleArr_item);
-        if(itemType == 'slice'){
+        if (itemType == 'slice') {
             let d = shape_item;
             let i = indexingTupleArr_item.start;
             let j = indexingTupleArr_item.stop;
             let k = indexingTupleArr_item.step;
-            dataIndex[shape_idx] = get_slice_index(d,i,j,k)
-        }else{
+            dataIndex[shape_idx] = get_slice_index(d, i, j, k)
+        } else {
             let d = shape_item;
             let i = indexingTupleArr_item;
-            dataIndex[shape_idx] = get_number_index(d,i)
+            dataIndex[shape_idx] = get_number_index(d, i)
         }
     }
-    console.log('dataIndex：',dataIndex);
+    // console.log('dataIndex：',dataIndex);
 
     let resultShape = [];//索引结果形状数组
+    for (let i = 0; i < indexingTupleArr.length; i++) {
+        let item = indexingTupleArr[i];
+        let itemType = String(item);
+        if (/^-?\d+$/.test(itemType)) {
+            //索引参数是 数值
+
+        } else if (itemType == 'None') {
+            //索引参数是 None/np.newaxis
+
+        } else if (itemType == 'slice') {
+            //索引参数是 slice
+
+        }
+
+    }
 
 
 
-    
+
+
 
     /*将numpy负索引转成正常索引；预测索引结果形状 end*/
 
-    
+
 
 
 }
 
-function get_number_index(d,i){
+function get_number_index(d, i) {
     //1、如果i是numpy负索引，则转成正常索引
     i = i < 0 ? d + i : i;
-    return [i];
+    if (i < 0 || i >= d) {
+        return [];
+    } else {
+        return [i];
+    }
 }
 
 
@@ -304,7 +335,7 @@ function get_slice_index(d, i, j, k) {
 
 
 
-var a=create_array([2,3,4,5,6],1)
+var a = create_array([2, 3, 4, 5, 6], 1)
 //indexing(a,[Ellipsis,1]) //=>indexingTupleArr：[slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
 //indexing(a,[Ellipsis,1,Ellipsis]) //=>Error: 基本索引 错误：索引元祖里最多只能有一个Ellipsis
 //indexing(a,[slice(1),Ellipsis,1]) //=>indexingTupleArr：[slice(None,1,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]

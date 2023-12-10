@@ -168,5 +168,8 @@ function slice(d, i, j, k) {
 // slice(10, -11, -11, -3)
 // indexArr []
 
-
 // slice(4, 4,-11,-1)
+// indexArr [ 3, 2, 1, 0 ]
+
+// slice(4, -11, 100, 1)
+// indexArr [ 0, 1, 2, 3 ]
