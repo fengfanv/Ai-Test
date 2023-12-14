@@ -258,21 +258,31 @@ function basicIndexing(arr, indexingTuple) {
     // console.log('dataIndex：',dataIndex);
 
     let resultShape = [];//索引结果形状数组
+    let newResultShape = [];//索引结果形状数组
     for (let i = 0; i < indexingTupleArr.length; i++) {
         let item = indexingTupleArr[i];
         let itemType = String(item);
         if (/^-?\d+$/.test(itemType)) {
             //索引参数是 数值
-
+            resultShape.push('-')
         } else if (itemType == 'None') {
             //索引参数是 None/np.newaxis
-
+            resultShape.push(1)
         } else if (itemType == 'slice') {
             //索引参数是 slice
-
+            let sliceArrLen = dataIndex[shapeArrToIndexingTupleArrReverse[i]].length || 0;
+            resultShape.push(sliceArrLen)
         }
-
     }
+    //去除结果形状数组里的"-"
+    for(let i=0;i<resultShape.length;i++){
+        if(resultShape[i]!='-'){
+            newResultShape.push(resultShape[i])
+        }
+    }
+    console.log(`resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
+    
+    
 
 
 
@@ -376,6 +386,13 @@ var a = create_array([2, 3, 4, 5, 6], 1)
 //     '3': [ 1, 2, 3, 4 ],
 //     '4': [ 0, 1, 2, 3, 4, 5 ]
 // }
+
+//indexing(a,[None,1,None,1,1,Ellipsis,1,1]) //resultShape：[1,-,1,-,-,-,-] => [1,1]
+//indexing(a,[1,slice(10,10,1)]) //resultShape：[-,0,4,5,6] => [0,4,5,6] 
+//indexing(a,[None,1,Ellipsis,1,1]) //resultShape：[1,-,3,4,-,-] => [1,3,4]
+//indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)]) //resultShape：[-,3,4,4,6] => [3,4,4,6]
+//indexing(a,[1,slice(None,None,None),slice(3,0,-1),slice(1,None,1)]) //resultShape：[-,3,3,4,6] => [3,3,4,6]
+
 
 
 
