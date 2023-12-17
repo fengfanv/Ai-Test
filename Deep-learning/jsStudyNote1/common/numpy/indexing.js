@@ -2,6 +2,17 @@ const Main = require('./main.js');
 var shape = Main.shape;
 var create_array = Main.create_array;
 
+const Common = require('./common.js');
+var printArr = Common.printArr;
+
+//-----------------
+
+const Reshape = require('./reshape.js');
+var reshape = Reshape.reshape;
+var arange = Main.arange;
+
+
+
 /*
 索引和切片
 */
@@ -275,21 +286,46 @@ function basicIndexing(arr, indexingTuple) {
         }
     }
     //去除结果形状数组里的"-"
-    for(let i=0;i<resultShape.length;i++){
-        if(resultShape[i]!='-'){
+    for (let i = 0; i < resultShape.length; i++) {
+        if (resultShape[i] != '-') {
             newResultShape.push(resultShape[i])
         }
     }
     console.log(`resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
-    
-    
-
-
-
-
-
-
     /*将numpy负索引转成正常索引；预测索引结果形状 end*/
+
+    /*获取索引数据 start*/
+    let resultDataArr = [
+        // {
+        //     "index":[1,2,3,1,1,1],
+        //     "value":10
+        // },
+        // ...
+    ];
+
+    printArr(arr, [], (res) => {
+        //打印矩阵里的每一个元素
+        // console.log(res.index,res.value)
+        let v = 0;
+        for(let i=0;i<res.index.length;i++){
+            if(dataIndex[i].indexOf(res.index[i]) != -1){
+                v++;
+            }
+        }
+        if(v == res.index.length){
+            resultDataArr.push({
+                index:res.index,
+                value:res.value
+            })
+        }
+    })
+    console.log("size：",resultDataArr.length)
+    for(let i=0;i<resultDataArr.length;i++){
+        console.log(resultDataArr[i])
+    }
+    /*获取索引数据 end*/
+
+
 
 
 
@@ -345,7 +381,7 @@ function get_slice_index(d, i, j, k) {
 
 
 
-var a = create_array([2, 3, 4, 5, 6], 1)
+var a = reshape(arange(2*3*4*5*6),[2, 3, 4, 5, 6])
 //indexing(a,[Ellipsis,1]) //=>indexingTupleArr：[slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
 //indexing(a,[Ellipsis,1,Ellipsis]) //=>Error: 基本索引 错误：索引元祖里最多只能有一个Ellipsis
 //indexing(a,[slice(1),Ellipsis,1]) //=>indexingTupleArr：[slice(None,1,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
@@ -392,6 +428,13 @@ var a = create_array([2, 3, 4, 5, 6], 1)
 //indexing(a,[None,1,Ellipsis,1,1]) //resultShape：[1,-,3,4,-,-] => [1,3,4]
 //indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)]) //resultShape：[-,3,4,4,6] => [3,4,4,6]
 //indexing(a,[1,slice(None,None,None),slice(3,0,-1),slice(1,None,1)]) //resultShape：[-,3,3,4,6] => [3,3,4,6]
+
+// indexing(a,[Ellipsis,1])
+// indexing(a,[None,1,None,1,1,Ellipsis,1,1])
+// indexing(a,[1,slice(10,10,1)])
+// indexing(a,[None,1,Ellipsis,1,1])
+// indexing(a,[slice(1),Ellipsis,1])
+// indexing(a,[1,None,slice(0,1,1),slice(0,None,2),slice(1,5,3),slice(0,5,2)])
 
 
 
