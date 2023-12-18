@@ -325,6 +325,23 @@ function basicIndexing(arr, indexingTuple) {
     }
     /*获取索引数据 end*/
 
+    /*调整索引结果数据顺序(处理slice(i,j,k) k是负值的情况) start*/
+    let dataIndexSliceK = {
+        // "0":undefined, //这里的0 对应形状数组里 第0位，这里值是undefined，代表形状数组 第0位 对应的索引参数，不存在slice(i,j,k)k是负值的情况
+        // "1":{          //这里的1 对应形状数组里 第1位，这里值是object，代表形状数组 第1位 对应的索引参数，存在slice(i,j,k)k是负值的情况
+        //     "0":"3",
+        //     "1":"2",   
+        //     "2":"1",   //resultDataArr里数据 的 形状数组坐标(resultDataArr[i].index)的第1位，是2时，则变成1    [1,2,...] ==> [1,1,...]
+        //     "3":"0"    //resultDataArr里数据 的 形状数组坐标(resultDataArr[i].index)的第1位，是3时，则变成0    [1,3,...] ==> [1,0,...]
+        // },
+        // "2":undefined, //这里的2 对应形状数组里 第2位，这里值是undefined，代表形状数组 第2位 对应的索引参数，不存在slice(i,j,k)k是负值的情况
+        // ...
+    }
+
+
+
+    /*调整索引结果数据顺序(处理slice(i,j,k) k是负值的情况) end*/
+
 
 
 
