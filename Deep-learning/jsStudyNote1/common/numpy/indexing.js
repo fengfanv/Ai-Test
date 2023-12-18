@@ -331,8 +331,8 @@ function basicIndexing(arr, indexingTuple) {
         // "1":{          //这里的1 对应形状数组里 第1位，这里值是object，代表形状数组 第1位 对应的索引参数，存在slice(i,j,k)k是负值的情况
         //     "0":"3",
         //     "1":"2",   
-        //     "2":"1",   //resultDataArr里数据 的 形状数组坐标(resultDataArr[i].index)的第1位，是2时，则变成1    [1,2,...] ==> [1,1,...]
-        //     "3":"0"    //resultDataArr里数据 的 形状数组坐标(resultDataArr[i].index)的第1位，是3时，则变成0    [1,3,...] ==> [1,0,...]
+        //     "2":"1",   //resultDataArr里数据 的 形状数组坐标(resultDataArr[i].index)里第1位，是2时，则变成1    [1,2,...] ==> [1,1,...]
+        //     "3":"0"    //resultDataArr里数据 的 形状数组坐标(resultDataArr[i].index)里第1位，是3时，则变成0    [1,3,...] ==> [1,0,...]
         // },
         // "2":undefined, //这里的2 对应形状数组里 第2位，这里值是undefined，代表形状数组 第2位 对应的索引参数，不存在slice(i,j,k)k是负值的情况
         // ...
