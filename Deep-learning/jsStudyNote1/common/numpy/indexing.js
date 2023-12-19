@@ -297,8 +297,9 @@ function basicIndexing(arr, indexingTuple) {
     /*获取索引数据 start*/
     let resultDataArr = [
         // {
-        //     "index":[1,2,3,1,1,1],
-        //     "value":10
+        //     "originalIndex":[1,2,3,1,1,1], //数据原始坐标（永远不变）
+        //     "index":[1,2,3,1,1,1],         //数据当前坐标（可能会在处理slice(i,j,k)k是负值的情况时，坐标发生变化）
+        //     "value":10                     //数据值
         // },
         // ...
     ];
@@ -307,20 +308,21 @@ function basicIndexing(arr, indexingTuple) {
         //打印矩阵里的每一个元素
         // console.log(res.index,res.value)
         let v = 0;
-        for(let i=0;i<res.index.length;i++){
-            if(dataIndex[i].indexOf(res.index[i]) != -1){
+        for (let i = 0; i < res.index.length; i++) {
+            if (dataIndex[i].indexOf(res.index[i]) != -1) {
                 v++;
             }
         }
-        if(v == res.index.length){
+        if (v == res.index.length) {
             resultDataArr.push({
-                index:res.index,
-                value:res.value
+                originalIndex: JSON.parse(JSON.stringify(res.index)),
+                index: res.index,
+                value: res.value
             })
         }
     })
-    console.log("size：",resultDataArr.length)
-    for(let i=0;i<resultDataArr.length;i++){
+    console.log("size：", resultDataArr.length)
+    for (let i = 0; i < resultDataArr.length; i++) {
         console.log(resultDataArr[i])
     }
     /*获取索引数据 end*/
@@ -337,6 +339,70 @@ function basicIndexing(arr, indexingTuple) {
         // "2":undefined, //这里的2 对应形状数组里 第2位，这里值是undefined，代表形状数组 第2位 对应的索引参数，不存在slice(i,j,k)k是负值的情况
         // ...
     }
+    for (let key in shapeArrToIndexingTupleArr) {
+        let shape_idx = key;
+        let indexingTupleArr_idx = shapeArrToIndexingTupleArr[shape_idx];
+        let indexingTupleArr_item = indexingTupleArr[indexingTupleArr_idx];
+        let itemType = String(indexingTupleArr_item);
+        let dataIndexItem = dataIndex[shape_idx];
+        if (itemType == 'slice' && indexingTupleArr_item.step < 0) {
+            //slice(i,j,k)k是负值
+            let reverseObj = {
+                // "0": "3",
+                // "1": "2",
+                // "2": "1",
+                // ...
+            };
+            for (let i = 0; i < dataIndexItem.length; i++) {
+                let indexValue = dataIndexItem[i];
+                let toIndexValue = dataIndexItem[dataIndexItem.length - 1 - i];
+                reverseObj[indexValue] = toIndexValue;
+            }
+            dataIndexSliceK[shape_idx] = reverseObj;
+        } else {
+            dataIndexSliceK[shape_idx] = undefined;
+        }
+    }
+    //先备份resultDataArr数据
+    let resultDataArr2 = JSON.parse(JSON.stringify(resultDataArr));
+    //变换resultDataArr[i].index里的坐标。如将[1,2,...]变成[1,1,...]等等。
+    for (let i = 0; i < resultDataArr.length; i++) {
+        let item = resultDataArr[i];
+        let itemIndexArr = item.index;
+        let newItemIndexArr = [];
+        for (let j = 0; j < itemIndexArr.length; j++) {
+            let indexValue = itemIndexArr[j];
+            if (dataIndexSliceK[j] == undefined) {
+                newItemIndexArr.push(indexValue)
+            } else {
+                newItemIndexArr.push(dataIndexSliceK[j][indexValue])
+            }
+        }
+        resultDataArr[i].index = newItemIndexArr;
+    }
+    //上边resultDataArr[i].index里的坐标变化完成后，为变换完坐标的数据，重新排序。
+    let newResultDataArr = [
+        // {
+        //     "originalIndex":[1,2,3,1,1,1], //数据原始坐标（永远不变）
+        //     "index":[1,2,3,1,1,1],         //数据当前坐标（可能会在处理slice(i,j,k)k是负值的情况时，坐标发生变化）
+        //     "value":10                     //数据值
+        // },
+        // ...
+    ]
+    for (let i = 0; i < resultDataArr2.length; i++) {
+        let item = resultDataArr2[i];
+        for (let j = 0; j < resultDataArr.length; j++) {
+            if (item.index.join() == resultDataArr[j].index.join()) {
+                newResultDataArr.push(resultDataArr[j]);
+                break;
+            }
+        }
+    }
+    console.log("newResultDataArr：", newResultDataArr.length)
+    for (let i = 0; i < newResultDataArr.length; i++) {
+        console.log(newResultDataArr[i].value)
+    }
+
 
 
 
@@ -398,7 +464,7 @@ function get_slice_index(d, i, j, k) {
 
 
 
-var a = reshape(arange(2*3*4*5*6),[2, 3, 4, 5, 6])
+var a = reshape(arange(2 * 3 * 4 * 5 * 6), [2, 3, 4, 5, 6])
 //indexing(a,[Ellipsis,1]) //=>indexingTupleArr：[slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
 //indexing(a,[Ellipsis,1,Ellipsis]) //=>Error: 基本索引 错误：索引元祖里最多只能有一个Ellipsis
 //indexing(a,[slice(1),Ellipsis,1]) //=>indexingTupleArr：[slice(None,1,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
@@ -453,6 +519,11 @@ var a = reshape(arange(2*3*4*5*6),[2, 3, 4, 5, 6])
 // indexing(a,[slice(1),Ellipsis,1])
 // indexing(a,[1,None,slice(0,1,1),slice(0,None,2),slice(1,5,3),slice(0,5,2)])
 
+// indexing(a,[1,None,slice(1,0,-1),slice(None,0,-2),slice(5,1,-3),slice(5,0,-2)])
+// indexing(a,[1,None,slice(1,0,-1),slice(0,None,2),slice(5,1,-3),slice(5,0,-2)])
+// indexing(a,[slice(2,None,-1),None,slice(2,0,-1),slice(0,None,2),slice(5,1,-3),slice(5,0,-2)])
+// indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)])
+// indexing(a,[1,None,slice(0,1,1),slice(0,None,2),slice(1,5,3),slice(0,5,2)])
 
 
 
