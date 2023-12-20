@@ -89,10 +89,11 @@ exports.None = None;
 
 
 
-function indexing(arr, indexingTuple) {
+function indexing(arr, indexingTuple, value) {
     /*
     arr 被索引数据
     indexingTuple py里索引元祖，js这里用一个一维数组代替
+    value 根据索引结果赋的值
     */
     /*
     处理流程：
@@ -112,7 +113,7 @@ function indexing(arr, indexingTuple) {
     if (isAdvancedIndexing) {
         return advancedIndexing(arr, indexingTuple)
     } else {
-        return basicIndexing(arr, indexingTuple)
+        return basicIndexing(arr, indexingTuple, value)
     }
 }
 exports.indexing = indexing;
@@ -121,29 +122,34 @@ exports.indexing = indexing;
 
 //基本索引
 //处理基本索引
-function basicIndexing(arr, indexingTuple) {
+function basicIndexing(arr, indexingTuple, value) {
     /*
     arr 被索引数据
     indexingTuple py里索引元祖，js这里用一个一维数组代替
+    value 根据索引结果赋的值
     */
     /*
-    处理流程：
-    1、根据 arr和indexingTuple 推算出，索引结果的形状。
+    基本索引处理的大概流程：
+    1、根据 arr和indexingTuple 推算出，索引结果的形状
     2、获取索引结果里的数据(不用考虑形状)
     3、将获取的数据 转换成 索引结果的形状
     4、返回索引结果
     */
+    //
+    //
+    //下面开始处理
+    //
+    //
     let arrShape = shape(arr);
     let arrNdim = arrShape.length || 0;
     /*
-    索引补全 start
+    为 索引元祖数组 补全 索引元素 start
     什么时候需要补全？
-    索引元祖里抛除 None/np.newaxis 后，索引元祖长度不及被索引数组的维度数
-    索引元祖里有Ellipsis（索引元祖里最多只能有一个Ellipsis）
-
-    首先 数出 除了None/np.newaxis/Ellipsis 以外，有几个有效(有用)索引元素
+    1、索引元祖数组里抛除 None/np.newaxis 后，索引元祖数组长度不及被索引数组的维度数
+    2、索引元祖数组里有Ellipsis（索引元祖数组里最多只能有一个Ellipsis）
     */
-    //检查索引里有几个有效(有用的索引元素)
+    //首先 从索引元祖数组里 数(找)出 除了 None/np.newaxis/Ellipsis 以外，有几个有效(有用)的索引元素
+    //检查索引元祖数组里有几个有效(有用)的索引元素
     let canNum = 0;//有效的索引元素数量
     let indexingTupleArr = [].concat(indexingTuple);
     let EllipsisNum = 0;//Ellipsis数量
@@ -159,40 +165,43 @@ function basicIndexing(arr, indexingTuple) {
         }
     }
     if (EllipsisNum > 1) {
-        throw new Error('基本索引 错误：索引元祖里最多只能有一个Ellipsis')
+        throw new Error('基本索引 错误：索引元祖数组里最多只能有一个Ellipsis')
     }
-    let needAddNum = 0;//索引元祖里，需要补充多少个slice(None,None,None)
+    //数出索引元祖数组里有几个有效的索引元素后
+    //1、如果有效的索引元素数量不及被索引数组的维度数，则补充所需数量的slice(None,None,None)
+    //2、如果索引元祖数组里有Ellipsis，则将Ellipsis替换成所需数量的slice(None,None,None)
+    let needAddNum = 0;//索引元祖数组里，需要补充多少个slice(None,None,None)
     needAddNum = arrNdim - canNum <= 0 ? 0 : arrNdim - canNum;
     if (EllipsisNum != 0) {
         //有Ellipsis时，在Ellipsis所处的位置，将Ellipsis替换成所需数量的slice(None,None,None)
         indexingTupleArr.splice(EllipsisIndex, 1)//删除Ellipsis
         for (let i = 0; i < needAddNum; i++) {
-            indexingTupleArr.splice(EllipsisIndex, 0, slice(None));//在Ellipsis的位置，插入可需数量的slice(None,None,None)
+            indexingTupleArr.splice(EllipsisIndex, 0, slice(None));//在Ellipsis的位置，插入所需数量的slice(None,None,None)
         }
     } else {
-        //没有Ellipsis时，在索引元祖末尾插入所需数量的slice(None,None,None)
+        //没有Ellipsis时，在索引元祖数组末尾，插入所需数量的slice(None,None,None)
         for (let i = 0; i < needAddNum; i++) {
-            indexingTupleArr.push(slice(None));//在数组末尾的位置，插入可需数量的slice(None,None,None)
+            indexingTupleArr.push(slice(None));//在数组末尾的位置，插入所需数量的slice(None,None,None)
         }
     }
     if (arrNdim < canNum + needAddNum) {
-        throw new Error(`基本索引 错误：被索引数组是一个${arrNdim}维数组 但却有${canNum + needAddNum}个索引参数`)
+        throw new Error(`基本索引 错误：被索引数组是一个${arrNdim}维数组 但却有${canNum + needAddNum}个索引元素`)
     }
     // console.log('indexingTupleArr：',indexingTupleArr);
-    /*索引补全 end*/
+    /*为 索引元祖数组 补全 索引元素 end*/
     /*
-    形状数组里元素(被索引数组的每个维度)对应的索引参数 start
+    匹配形状数组里元素(被索引数组的每个维度) 所对应的索引元素 start
     */
     let shapeArrToIndexingTupleArr = {
-        // "0":"1", //形状数组下标 0，对应，索引元祖数组下标是1的索引元素
-        // "1":"3", //形状数组下标 1，对应，索引元祖数组下标是3的索引元素
-        // "2":"5", //形状数组下标 2，对应，索引元祖数组下标是5的索引元素
+        // "0":"1", //形状数组下标 0，对应，索引元祖数组下标是 1 的索引元素
+        // "1":"3", //形状数组下标 1，对应，索引元祖数组下标是 3 的索引元素
+        // "2":"5", //形状数组下标 2，对应，索引元祖数组下标是 5 的索引元素
         // ...
     }
     let shapeArrToIndexingTupleArrReverse = {
-        // "1":"0", //索引元祖数组下标是1的索引元素，对应，形状数组下标 0
-        // "3":"1", //索引元祖数组下标是3的索引元素，对应，形状数组下标 1
-        // "5":"2", //索引元祖数组下标是5的索引元素，对应，形状数组下标 2
+        // "1":"0", //索引元祖数组下标是 1 的索引元素，对应，形状数组下标 0
+        // "3":"1", //索引元祖数组下标是 3 的索引元素，对应，形状数组下标 1
+        // "5":"2", //索引元祖数组下标是 5 的索引元素，对应，形状数组下标 2
         // ...
     }
     let shapeArrIndex = -1;
@@ -209,8 +218,12 @@ function basicIndexing(arr, indexingTuple) {
     }
     // console.log("shapeArrToIndexingTupleArr：",shapeArrToIndexingTupleArr);
     // console.log("shapeArrToIndexingTupleArrReverse：",shapeArrToIndexingTupleArrReverse);
-    // 为，被索引数组的每个维度，所对应，的索引参数，补全索引参数，如将slice(1,None,None)补成slice(1,10,1)
-    // 到达这里 indexingTupleArr 里只存在 None 整数 slice
+     /*
+    匹配形状数组里元素(被索引数组的每个维度) 所对应的索引元素 end
+    */
+
+    // 到这里 索引元祖数组(indexingTupleArr) 里只存在 None/整数/slice
+    // 根据被索引数组的每个维度信息，为 该维度 所对应 的索引元素，补全 该索引元素的“参数”。如将slice(1,None,None)补成slice(1,10,1)。（注意，这里是为 索引元素 补全 参数。与上边不一样。上边是为 索引元祖数组 补全 索引元素）
     for (let key in shapeArrToIndexingTupleArr) {
         let shape_idx = key;
         let indexingTupleArr_idx = shapeArrToIndexingTupleArr[shape_idx];
@@ -236,14 +249,11 @@ function basicIndexing(arr, indexingTuple) {
         }
     }
     // console.log('indexingTupleArr2：',indexingTupleArr);
-    /*
-    数组每个维度对应的索引参数 end
-    */
 
-    /*将numpy负索引转成正常索引下标；获取slice的数据下标；预测索引结果形状 start*/
-    //根据上边 shapeArrToIndexingTupleArr 数组，形状数组里元素(被索引数组的每个维度)与对应的索引参数，得出来的每个维度被索引的数据下标
+    /*将numpy负索引转成正常索引下标；获取slice的下标；预测索引结果形状 start*/
+    //根据上边 shapeArrToIndexingTupleArr数组，形状数组里元素(被索引数组的每个维度)与之对应的索引元素，计算出(求出)被索引数组里 每个维度 会被索引 的下标
     let dataIndex = {
-        // "0":[1,2,3,4], //这里"0"是shape数组里的数据下标；为什么用shape数组，因为没有比shape数组能更好展示数据维度的方式了
+        // "0":[1,2,3,4], //这里"0"是shape数组里的下标（用shape数组，是因为没有比shape数组，能更好展示被索引数组维度的方式了）；这里[1,2,3,4]是指该维度会被索引的“下标”；
         // "1":[0],
         // "2":[5,6,7],
         // ...
@@ -259,7 +269,7 @@ function basicIndexing(arr, indexingTuple) {
             let i = indexingTupleArr_item.start;
             let j = indexingTupleArr_item.stop;
             let k = indexingTupleArr_item.step;
-            dataIndex[shape_idx] = get_slice_index(d, i, j, k)
+            dataIndex[shape_idx] = get_slice_index(d, i, j, k) 
         } else {
             let d = shape_item;
             let i = indexingTupleArr_item;
@@ -268,8 +278,9 @@ function basicIndexing(arr, indexingTuple) {
     }
     // console.log('dataIndex：',dataIndex);
 
+    //预测索引结果形状
     let resultShape = [];//索引结果形状数组
-    let newResultShape = [];//索引结果形状数组
+    let newResultShape = [];//索引结果形状数组2
     for (let i = 0; i < indexingTupleArr.length; i++) {
         let item = indexingTupleArr[i];
         let itemType = String(item);
@@ -285,25 +296,25 @@ function basicIndexing(arr, indexingTuple) {
             resultShape.push(sliceArrLen)
         }
     }
-    //去除结果形状数组里的"-"
+    //去除索引结果形状数组里的"-"
     for (let i = 0; i < resultShape.length; i++) {
         if (resultShape[i] != '-') {
             newResultShape.push(resultShape[i])
         }
     }
     console.log(`resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
-    /*将numpy负索引转成正常索引；预测索引结果形状 end*/
+    /*将numpy负索引转成正常索引；获取slice的下标；预测索引结果形状 end*/
 
-    /*获取索引数据 start*/
+
+    /*获取索引结果数据 start*/
     let resultDataArr = [
         // {
-        //     "originalIndex":[1,2,3,1,1,1], //数据原始坐标（永远不变）
-        //     "index":[1,2,3,1,1,1],         //数据当前坐标（可能会在处理slice(i,j,k)k是负值的情况时，坐标发生变化）
+        //     "originalIndex":[1,2,3,1,1,1], //该数据值，在被索引数组里的坐标，后面用于索引赋值时使用（该坐标，永远不变）
+        //     "index":[1,2,3,1,1,1],         //该数据值，在被索引数组里的坐标（该坐标，可能会在处理slice(i,j,k)k是负值的情况时，发生变化）
         //     "value":10                     //数据值
         // },
         // ...
     ];
-
     printArr(arr, [], (res) => {
         //打印矩阵里的每一个元素
         // console.log(res.index,res.value)
@@ -325,18 +336,18 @@ function basicIndexing(arr, indexingTuple) {
     for (let i = 0; i < resultDataArr.length; i++) {
         console.log(resultDataArr[i])
     }
-    /*获取索引数据 end*/
+    /*获取索引结果数据 end*/
 
-    /*调整索引结果数据顺序(处理slice(i,j,k) k是负值的情况) start*/
+    /*调整索引结果数据的顺序(处理slice(i,j,k) k是负值的情况) start*/
     let dataIndexSliceK = {
-        // "0":undefined, //这里的0 对应形状数组里 第0位，这里值是undefined，代表形状数组 第0位 对应的索引参数，不存在slice(i,j,k)k是负值的情况
-        // "1":{          //这里的1 对应形状数组里 第1位，这里值是object，代表形状数组 第1位 对应的索引参数，存在slice(i,j,k)k是负值的情况
+        // "0":undefined, //这里的 0 对应形状数组里 第0位，这里值是undefined，代表形状数组 第0位 对应的索引元素，不存在slice(i,j,k)k是负值的情况
+        // "1":{          //这里的 1 对应形状数组里 第1位，这里值是object，代表形状数组 第1位 对应的索引元素，存在slice(i,j,k)k是负值的情况
         //     "0":"3",
         //     "1":"2",   
         //     "2":"1",   //resultDataArr里数据 的 形状数组坐标(resultDataArr[i].index)里第1位，是2时，则变成1    [1,2,...] ==> [1,1,...]
         //     "3":"0"    //resultDataArr里数据 的 形状数组坐标(resultDataArr[i].index)里第1位，是3时，则变成0    [1,3,...] ==> [1,0,...]
         // },
-        // "2":undefined, //这里的2 对应形状数组里 第2位，这里值是undefined，代表形状数组 第2位 对应的索引参数，不存在slice(i,j,k)k是负值的情况
+        // "2":undefined, //这里的2 对应形状数组里 第2位，这里值是undefined，代表形状数组 第2位 对应的索引元素，不存在slice(i,j,k)k是负值的情况
         // ...
     }
     for (let key in shapeArrToIndexingTupleArr) {
@@ -363,7 +374,7 @@ function basicIndexing(arr, indexingTuple) {
             dataIndexSliceK[shape_idx] = undefined;
         }
     }
-    //先备份resultDataArr数据
+    //备份resultDataArr数据
     let resultDataArr2 = JSON.parse(JSON.stringify(resultDataArr));
     //变换resultDataArr[i].index里的坐标。如将[1,2,...]变成[1,1,...]等等。
     for (let i = 0; i < resultDataArr.length; i++) {
@@ -380,11 +391,11 @@ function basicIndexing(arr, indexingTuple) {
         }
         resultDataArr[i].index = newItemIndexArr;
     }
-    //上边resultDataArr[i].index里的坐标变化完成后，为变换完坐标的数据，重新排序。
+    //上边resultDataArr[i].index里的坐标变化完成后，为变换完坐标的索引结果数据，重新排序。
     let newResultDataArr = [
         // {
-        //     "originalIndex":[1,2,3,1,1,1], //数据原始坐标（永远不变）
-        //     "index":[1,2,3,1,1,1],         //数据当前坐标（可能会在处理slice(i,j,k)k是负值的情况时，坐标发生变化）
+        //     "originalIndex":[1,2,3,1,1,1], //该数据值，在被索引数组里的坐标，后面用于索引赋值时使用（该坐标，永远不变）
+        //     "index":[1,2,3,1,1,1],         //该数据值，在被索引数组里的坐标（该坐标，可能会在处理slice(i,j,k)k是负值的情况时，发生变化）
         //     "value":10                     //数据值
         // },
         // ...
@@ -402,31 +413,38 @@ function basicIndexing(arr, indexingTuple) {
     for (let i = 0; i < newResultDataArr.length; i++) {
         console.log(newResultDataArr[i].value)
     }
+    /*调整索引结果数据的顺序(处理slice(i,j,k) k是负值的情况) end*/
 
 
+    /* start
+    检查是否需要根据索引结果来为原始数据赋值。
+    1、如果需要根据索引结果为原始数据赋值，则为原始数据进行赋值，然后返回 被更改(赋值)完 的原始数据。
+    2、如果不需要根据索引结果为原始数据赋值，则根据索引结果形状，创建一个空数组，然后将索引结果数据导入进空数组，最后返回索引结果数组。
+    */
 
 
-    /*调整索引结果数据顺序(处理slice(i,j,k) k是负值的情况) end*/
-
-
-
-
-
+    /* 
+    检查是否需要根据索引结果来为原始数据赋值。
+    1、如果需要根据索引结果为原始数据赋值，则为原始数据进行赋值，然后返回 被更改(赋值)完 的原始数据。
+    2、如果不需要根据索引结果为原始数据赋值，则根据索引结果形状，创建一个空数组，然后将索引结果数据导入进空数组，最后返回索引结果数组。
+    end */
 
 }
 
+//获取被索引数组 某个维度 “整数” 会索引的 下标
 function get_number_index(d, i) {
     //1、如果i是numpy负索引，则转成正常索引
     i = i < 0 ? d + i : i;
     if (i < 0 || i >= d) {
+        //如果 该整数下标 不在该维度的有效范围内，则返回空数组
         return [];
     } else {
         return [i];
     }
 }
 
-
-//获取被索引数组维度slice参数的数据下标
+//获取被索引数组 某个维度 “slice” 会索引的 下标
+//对于该方法的更多内容，请看“索引和切片/关于切片slice/slice_test.js”
 function get_slice_index(d, i, j, k) {
     if (k == 0) throw new Error('get_slice_index 错误：slice(i,j,k) k不能是0')
 
