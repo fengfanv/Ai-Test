@@ -483,6 +483,8 @@ function get_slice_index(d, i, j, k) {
 
 
 var a = reshape(arange(2 * 3 * 4 * 5 * 6), [2, 3, 4, 5, 6])
+var a1 = arange(5)
+var a2 = reshape(arange(1,7), [2, 3, 1])
 //indexing(a,[Ellipsis,1]) //=>indexingTupleArr：[slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
 //indexing(a,[Ellipsis,1,Ellipsis]) //=>Error: 基本索引 错误：索引元祖里最多只能有一个Ellipsis
 //indexing(a,[slice(1),Ellipsis,1]) //=>indexingTupleArr：[slice(None,1,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
@@ -542,6 +544,11 @@ var a = reshape(arange(2 * 3 * 4 * 5 * 6), [2, 3, 4, 5, 6])
 // indexing(a,[slice(2,None,-1),None,slice(2,0,-1),slice(0,None,2),slice(5,1,-3),slice(5,0,-2)])
 // indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)])
 // indexing(a,[1,None,slice(0,1,1),slice(0,None,2),slice(1,5,3),slice(0,5,2)])
+
+// indexing(a1,[slice(None),None])
+// indexing(a1,[None,slice(None)])
+// indexing(a2,[slice(None),None,slice(None),slice(None)])
+// indexing(a2,[slice(None),slice(None),0])
 
 
 
