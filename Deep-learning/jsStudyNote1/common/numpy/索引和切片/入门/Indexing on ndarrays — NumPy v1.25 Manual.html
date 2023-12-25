@@ -1426,7 +1426,7 @@
                                 j</em><!--volctrans extension anchor for patchId=567-->,
                             </p>
                             <p mt_node="trans"><!--volctrans extension anchor for patchId=553-->
-                              如果 选择元组 除了第p个条目是切片对象i:j:k之外，所有条目均为：，则返回的数组具有由元素i，i+k，…，i+（m-1）k＜j的整数索引返回的子数组合并形成的N维数组，
+                              如果 选择元组 除了第p个条目是切片对象i:j:k之外，所有其他条目均为：，则返回的数组具有由元素i，i+k，…，i+（m-1）k＜j的整数索引返回的子数组合并形成的N维数组，
                             </p>
                           </li>
                           <li mt_node="origin">
@@ -1453,13 +1453,13 @@
                               slicing.
                             </p>
                             <p mt_node="trans"><!--volctrans extension anchor for patchId=570-->
-                              当切片元组中具有一个以上非:条目时，基本切片的行为就像使用单个:条目，重复切片操作。其中非:条目，是连续取的（所有其他非:项被替换为:）。因此，x[ind1，…，ind2，:]的行为就像在基本切片下x[ind1][…，ind2，:]一样。
+                              当切片元组中具有一个以上非:条目时，基本切片的行为类似于使用单个非:条目 然后重复应用切片操作一样。其中非:条目 是连续提取的（所有其他非:条目被替换为:）。因此x[ind1，…，ind2，:]在基本切片下的行为类似于x[ind1][…，ind2，:]。
                             </p>
                             <p>
-                              1、选择元组(selection tuple)是一个可以包含冒号(:)或整数或其它切片对象的元组，用于对数组进行索引。<br>
+                              1、选择元组(selection tuple)是一个可以包含冒号(:)或整数或切片或其他索引对象的元组，用于对数组进行索引。<br>
                               2、选择元组的第p个元素可以是整数或切片对象等等。<br>
                               3、如果选择元组中除了第p个元素是整数外，其他元素都是冒号(:)，则返回的数组的维度将减少1。<br>
-                              4、如果选择元组的第p个元素是切片对象，则返回的数组的维度将由通过整数索引返回的子数组拼接而成。<br>
+                              4、如果选择元组中除了第p个元素是切片对象外，其他元素都是冒号(:)，则返回的数组将由切片对象的整数索引，索引返回的子数组拼接而成。<br>
                               5、在基本切片(basic slicing)中，如果有多个非冒号(:)元素，则将其视为连续使用基本切片操作，其中每次使用一个非冒号元素，并替换其他非冒号元素为冒号(:)。
                             </p>
                             <div class="admonition warning" mt_node="origin">
@@ -1518,7 +1518,7 @@
                                   programs</span></a><!--volctrans extension anchor for patchId=613-->
                               for more information.</p>
                             <p mt_node="trans">
-                              切片元组总是可以构造为obj，并在x[obj]表示法中使用。切片对象可以用来代替[start:stop:step]符号。例如，x[1:10:5，::-1]也可以通过obj=（slice（1，10，5），slice（None，None，-1））；x[obj]这样的方式实现。这对于在任意维数的数组上构建通用代码很有用。有关更多信息，请参见处理程序中的可变索引数。
+                              切片元组总是可以构造为obj，并在x[obj]表示法中使用。切片对象可以用来代替[start:stop:step]符号。例如，x[1:10:5，::-1]也可以通过obj=（slice（1，10，5），slice（None，None，-1））；x[obj]这样的方式实现。这对于在任意维数的数组上构建通用代码很有用。有关更多信息，请参见 在程序中处理可变数量的索引。
                             </p>
                           </li>
                         </ul>
@@ -1667,8 +1667,8 @@
                     or a tuple with at least one sequence object or ndarray (of data type
                     integer or bool). There are two types of advanced indexing: integer
                     and Boolean.</p>
-                  <p mt_node="trans">当选择对象obj是一个非元组序列对象、是一个ndarray(数据类型为整数或布尔)、或者是一个至少包含一个序列对象或ndarray(数据类型为整数或布尔)的元组时，会触发高级索引。有两种类型的高级索引：整数索引和布尔索引。（Python序列对象，列表List、元组Tuple、集合Sets、字典Dictionary等等）</p>
-                  <p mt_node="trans">高级索引，是当选择对象obj是一个非元组序列对象、一个ndarray(数据类型为整数或布尔值)，或者一个至少包含一个序列对象或ndarray(数据类型为整数或布尔值)的元组时触发的。高级索引有两种类型: 整数索引和布尔索引。</p>
+                  <p mt_node="trans">当选择对象obj是一个非元组序列对象、是一个ndarray(数据类型为整数或布尔)、或者是一个至少包含一个序列对象或ndarray(数据类型为整数或布尔)的元组时，会触发高级索引。有两种类型的高级索引：整数索引和布尔索引。（Python序列对象：列表List、元组Tuple、集合Sets、字典Dictionary等等）</p>
+                  <p mt_node="trans">高级索引，是当选择对象obj是一个非元组序列对象、一个ndarray(数据类型为整数或布尔值)，或者是一个至少包含一个序列对象或ndarray(数据类型为整数或布尔值)的元组时触发的。高级索引有两种类型: 整数索引和布尔索引。</p>
                   <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=671-->Advanced indexing always
                     returns a <em mt_node="origin_leaf">copy</em><!--volctrans extension anchor for patchId=673--> of
                     the data (contrast with
@@ -1677,7 +1677,7 @@
                         class="xref std std-term"
                         mt_node="origin_leaf">view</span></a><!--volctrans extension anchor for patchId=676-->).</p>
 
-                  <p mt_node="trans"><!--volctrans extension anchor for patchId=671-->高级索引总是返回数据的副本(与返回视图的基本切片相反)。</p>
+                  <p mt_node="trans"><!--volctrans extension anchor for patchId=671-->高级索引总是返回数据的副本(与返回视图的基本索引相反)。</p>
                   <div class="admonition warning" mt_node="origin">
                     <p class="admonition-title" mt_node="origin_leaf">Warning</p>
                     <p class="admonition-title" mt_node="trans">警告</p>
@@ -1697,11 +1697,8 @@
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x[(1,</span> <span class="pre">2,</span> <span class="pre">3),]</span></code><!--volctrans extension anchor for patchId=682-->是
                       根本不同于<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[(1,</span> <span class="pre">2,</span> <span class="pre">3)]</span></code><!--volctrans extension anchor for patchId=684-->。后者是
-                      相当于<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code><!--volctrans extension anchor for patchId=686-->这将触发基本选择
-                      前者会触发高级索引。一定要了解
-                      为什么会发生这种情况。</p>
+                        mt_node="trans"><span class="pre">x[(1,</span> <span class="pre">2,</span> <span class="pre">3)]</span></code><!--volctrans extension anchor for patchId=684-->。后者相当于<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">x[1,</span> <span class="pre">2,</span> <span class="pre">3]</span></code><!--volctrans extension anchor for patchId=686-->将触发基本索引，前者会触发高级索引。一定要了解为什么会发生这种情况。</p>
                       <p mt_node="trans">在Python里，a=(1) 会识别成括号，a=(1,) 会识别成元祖。</p>
                       <p mt_node="trans">在Python里，x[exp1,exp2,...,expN] 是 x[(exp1,exp2,...,expN)] 的语法糖。</p>
                       <p mt_node="trans">所以上边 x[(1, 2, 3),] 其实是这样 x[((1, 2, 3),)] 这样符合高级索引的定义(高级索引是一个至少包含一个序列对象或ndarray(数据类型为整数或布尔)的元组)。上边 x[(1, 2, 3)] 里 (1,2,3) 是一个整数元祖，这个元祖里参数是整数，而不是Python序列对象，更不是ndarray。所以会执行基本索引。</p>
@@ -1720,7 +1717,7 @@
                         mt_node="origin_leaf">N</em><!--volctrans extension anchor for patchId=694-->-dimensional index.
                       Each integer array represents a number
                       of indices into that dimension.</p>
-                    <p mt_node="trans">整数数组索引 允许根据N维索引 选择数组中的任意项。每个整数数组表示 该维度 的若干个索引。</p>
+                    <p mt_node="trans">整数数组索引 允许根据其N维索引(的功能) 选择数组中的任意项。每个整数数组表示 该维度中的多个索引。</p>
                     <p mt_node="origin_leaf">Negative values are permitted in the index arrays and work as they do with
                       single indices or slices:</p>
                     <p mt_node="trans">索引数组中允许使用负值，其作用与在单索引或切片中的作用相同：</p>
