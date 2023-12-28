@@ -2463,7 +2463,7 @@
                           For example <code class="docutils literal notranslate"
                             mt_node="origin_leaf"><span class="pre">x[arr1,</span> <span class="pre">:,</span> <span class="pre">arr2]</span></code><!--volctrans extension anchor for patchId=967-->.
                         </p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=959-->高级索引可以通过切片、<a
+                        <p mt_node="trans"><!--volctrans extension anchor for patchId=959-->高级索引可以被 切片、<a
                             class="reference external" href="https://docs.python.org/3/library/constants.html#Ellipsis"
                             title="(in Python v3.11)" mt_node="trans"><code
                               class="xref py py-data docutils literal notranslate"
@@ -2471,9 +2471,9 @@
                             href="https://numpy.org/doc/stable/reference/constants.html#numpy.newaxis"
                             title="numpy.newaxis" mt_node="trans"><code
                               class="xref py py-const docutils literal notranslate"
-                              mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=965-->进行分割。例如 <code
+                              mt_node="trans"><span class="pre">newaxis</span></code></a><!--volctrans extension anchor for patchId=965-->分开。例如 <code
                             class="docutils literal notranslate"
-                            mt_node="trans"><span class="pre">x[arr1,</span> <span class="pre">:,</span> <span class="pre">arr2]</span></code><!--volctrans extension anchor for patchId=967-->。
+                            mt_node="trans"><span class="pre">x[arr1,</span> <span class="pre">:,</span> <span class="pre">arr2]</span></code><!--volctrans extension anchor for patchId=967-->。（可以使用切片、省略号或新轴作为分隔符来处理高级索引）
                         </p>
                       </li>
                       <li mt_node="origin">
@@ -2486,7 +2486,7 @@
                           since <code class="docutils literal notranslate"
                             mt_node="origin_leaf"><span class="pre">1</span></code><!--volctrans extension anchor for patchId=977-->
                           is an advanced index in this regard.</p>
-                        <p mt_node="trans"><!--volctrans extension anchor for patchId=970-->这些高级索引都是彼此相邻的。例如<code class="docutils literal notranslate"
+                        <p mt_node="trans"><!--volctrans extension anchor for patchId=970-->高级索引可以是都彼此紧挨着的。例如<code class="docutils literal notranslate"
                             mt_node="trans"><span class="pre">x[...,</span> <span class="pre">arr1,</span> <span class="pre">arr2,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=972-->但不包括 <code class="docutils literal notranslate"
                             mt_node="trans"><span class="pre">x[arr1,</span> <span class="pre">:,</span> <span class="pre">1]</span></code><!--volctrans extension anchor for patchId=975-->
                           因为<code class="docutils literal notranslate"
@@ -2505,9 +2505,9 @@
                       在第一种情况下，高级索引操作产生的维度首先出现在结果数组中，然后是子空间维度。在第二种情况下，高级索引操作所得到的维度被插入到结果数组中，插入位置与它们在初始数组中的位置相同（后一种逻辑使简单的高级索引的行为类似于切片）。
                     </p>
                     <p mt_node="trans">
-                      上边说 “在第一种情况下，高级索引操作产生的维度首先出现在结果数组中，然后是子空间维度” 是因为在 x 的第一个维度就使用了索引。<br>
-                      上边说 “在第二种情况下，高级索引操作所得到的维度被插入到结果数组中，插入位置与它们在初始数组中的位置相同” 是因为，没有在 x 的第一个维度使用索引。<br>
-                      chatGPT说我这个思路，是正确的。
+                      上边说 “在第一种情况 x[arr1,:,arr2] 下，高级索引操作产生的维度首先出现在结果数组中，然后是子空间维度” 是因为在 x 的第一个维度就使用了索引。<br>
+                      上边说 “在第二种情况 x[...,arr1,arr2,:] 下，高级索引操作所得到的维度被插入到结果数组中，插入位置与它们在初始数组中的位置相同” 是因为，没有在 x 的第一个维度使用索引。<br>
+                      ChatGPT认同我上面这两个解释。
                     </p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
@@ -2548,11 +2548,11 @@
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">x[...,</span> <span class="pre">ind,</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=990-->的形状为（10,2,3,4,30），因为形状为（20，）的下标空间被替换为一个形状为（2,3,4）的广播索引子空间。如果我们让<em mt_node="trans">i，j，k</em><!--volctrans extension anchor for patchId=992-->在形状为（2,3,4）的子空间上循环遍历
                         ，则<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">result[...,</span> <span class="pre">i,</span> <span class="pre">j,</span> <span class="pre">k,</span> <span class="pre">:]</span> <span class="pre">=</span> <span class="pre">x[...,</span> <span class="pre">ind[i,</span> <span class="pre">j,</span> <span class="pre">k],</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=994-->。这个例子与<a class="reference internal"
+                        mt_node="trans"><span class="pre">result[...,</span> <span class="pre">i,</span> <span class="pre">j,</span> <span class="pre">k,</span> <span class="pre">:]</span> <span class="pre">=</span> <span class="pre">x[...,</span> <span class="pre">ind[i,</span> <span class="pre">j,</span> <span class="pre">k],</span> <span class="pre">:]</span></code><!--volctrans extension anchor for patchId=994-->。这个例子产生的结果与<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.take.html#numpy.ndarray.take"
                         title="numpy.ndarray.take" mt_node="trans"><code
                           class="xref py py-meth docutils literal notranslate"
-                          mt_node="trans"><span class="pre">x.take(ind,</span> <span class="pre">axis=-2)</span></code></a><!--volctrans extension anchor for patchId=997-->产生相同的结果。
+                          mt_node="trans"><span class="pre">x.take(ind,</span> <span class="pre">axis=-2)</span></code></a><!--volctrans extension anchor for patchId=997-->相同。
                     </p>
                     <p class="rubric" mt_node="origin_leaf">Example</p>
                     <p class="rubric" mt_node="trans">示例</p>
@@ -2593,14 +2593,11 @@
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">ind_1</span></code><!--volctrans extension anchor for patchId=1004-->
                         和<code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">ind_2</span></code><!--volctrans extension anchor for patchId=1006-->可以广播到形状（2,3,4）。那么
-                      <code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">ind_2</span></code><!--volctrans extension anchor for patchId=1006-->可以广播到形状（2,3,4）。那么<code class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x[:,</span> <span class="pre">ind_1,</span> <span class="pre">ind_2]</span></code><!--volctrans extension anchor for patchId=1008-->的形状为（10,2,3,4,40,50），因为
                       X 的（20,30）子空间被替换为索引的
-                      （2,3,4）子空间。然而，
-                      <code class="docutils literal notranslate"
-                        mt_node="trans"><span class="pre">x[:,</span> <span class="pre">ind_1,</span> <span class="pre">:,</span> <span class="pre">ind_2]</span></code><!--volctrans extension anchor for patchId=1010-->的形状为（2,3,4,10,30,50）因为在索引子空间中没有明确的放置位置，因此它被附加到开头。这时可以使用
-                      <a class="reference internal"
+                      （2,3,4）子空间。然而，<code class="docutils literal notranslate"
+                        mt_node="trans"><span class="pre">x[:,</span> <span class="pre">ind_1,</span> <span class="pre">:,</span> <span class="pre">ind_2]</span></code><!--volctrans extension anchor for patchId=1010-->的形状为（2,3,4,10,30,50）因为在索引子空间中没有明确的放置位置，因此它被附加到开头。这时可以使用<a class="reference internal"
                         href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.transpose.html#numpy.ndarray.transpose"
                         title="numpy.ndarray.transpose" mt_node="trans"><code
                           class="xref py py-meth docutils literal notranslate"
