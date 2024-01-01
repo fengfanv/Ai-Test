@@ -2880,7 +2880,7 @@
                     supplies to the index a tuple, the tuple will be interpreted
                     as a list of indices. For example:</p>
                   <p mt_node="trans">
-                    索引语法功能非常强大，但在处理可变数量的索引时却有限制。例如，如果您想编写一个函数，该函数可以处理具有不同维数的参数，而又不想为每个可能维度编写特殊情况代码，如何做到这一点？如果向索引提供了一个元组，该元组将被解释为索引列表。例如：
+                    索引语法非常强大，但在处理可变数量的索引时却有限制。例如，如果您想编写一个函数，该函数可以处理具有不同维数的参数，而又不想为每个可能维度编写特殊情况代码，如何做到这一点？如果向索引提供了一个元组，该元组将被解释为索引列表。例如：
                   </p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
@@ -2893,7 +2893,7 @@
                   </div>
                   <p mt_node="origin_leaf">So one can use code to construct tuples of any number of indices
                     and then use these within an index.</p>
-                  <p mt_node="trans">因此，可以使用代码来构建包含任意数量索引的元组，然后在索引中使用这些元组。</p>
+                  <p mt_node="trans">因此，可以使用代码来构建包含任意数量的索引的元组，然后在索引中使用这些元组。</p>
                   <p mt_node="origin_leaf">Slices can be specified within programs by using the slice() function
                     in Python. For example:</p>
                   <p mt_node="trans">在Python程序中，可以使用slice()函数来指定切片。例如：</p>
@@ -2907,7 +2907,7 @@
                   </div>
                   <p mt_node="origin_leaf">Likewise, ellipsis can be specified by code by using the Ellipsis
                     object:</p>
-                  <p mt_node="trans">同样，省略号也可以通过代码使用Ellipsis对象来指定:</p>
+                  <p mt_node="trans">同样，省略号也可以通过使用Ellipsis对象来指定:</p>
                   <div class="highlight-default notranslate" mt_node="origin">
                     <div class="highlight" mt_node="origin">
                       <pre mt_node="origin"><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">indices</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">Ellipsis</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># same as [1, ..., 1]</span>
@@ -2928,12 +2928,11 @@
                     function directly as an index since
                     it always returns a tuple of index arrays.
                   </p>
-                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1124-->由于这个原因，可以直接使用
-                    <a class="reference internal"
+                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1124-->由于这个原因，可以直接使用<a class="reference internal"
                       href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.nonzero.html#numpy.ndarray.nonzero"
                       title="numpy.ndarray.nonzero" mt_node="trans"><code
                         class="xref py py-meth docutils literal notranslate"
-                        mt_node="trans"><span class="pre">np.nonzero()</span></code></a><!--volctrans extension anchor for patchId=1127-->函数的输出作为索引，因为它总是返回一个索引数组元组。
+                        mt_node="trans"><span class="pre">np.nonzero()</span></code></a><!--volctrans extension anchor for patchId=1127-->函数的输出作为索引，因为它总是返回一个包含索引数组的元组。
                   </p>
                   <p mt_node="origin_leaf">Because of the special treatment of tuples, they are not automatically
                     converted to an array as a list would be. As an example:</p>
@@ -2979,7 +2978,7 @@
                       <p mt_node="origin_leaf">For advanced assignments, there is in general no guarantee for the
                         iteration order. This means that if an element is set more than once,
                         it is not possible to predict the final result.</p>
-                      <p mt_node="trans">对于高级赋值，一般不能保证迭代顺序。这意味着如果一个元素被设置多次，则无法预测最终结果。</p>
+                      <p mt_node="trans">对于高级赋值，通常不能保证迭代顺序。这意味着如果一个元素被设置(赋值)多次，则无法预测最终结果。</p>
                     </li>
                     <li mt_node="origin">
                       <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1149-->An empty (tuple) index
@@ -2995,7 +2994,7 @@
                           mt_node="origin_leaf"><span class="pre">x[...]</span></code><!--volctrans extension anchor for patchId=1157-->
                         always returns a view.
                       </p>
-                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1149-->空（元组）索引是零维数组的全(完整)标量索引。如果<code
+                      <p mt_node="trans"><!--volctrans extension anchor for patchId=1149-->一个空（元组）索引是零维数组的全(完整)标量索引。如果<code
                         class="docutils literal notranslate"
                         mt_node="trans"><span class="pre">x</span></code>是零维，
                         <code class="docutils literal notranslate"
@@ -3018,7 +3017,8 @@
                           mt_node="origin_leaf">scalar</em><!--volctrans extension anchor for patchId=1164--> and not a
                         zero-dimensional array.
                         (Advanced indexing is not triggered.)</p>
-                      <p mt_node="trans">如果索引中存在零维数组，并且它是一个完整的整数索引，则结果将是标量而不是零维数组。（不会触发高级索引。）</p>
+                      <p mt_node="trans">如果索引中存在零维数组，并且该零维数组被用作成(被当作成)一个完整的 整数索引 时，则结果将是标量而不是零维数组。（不会触发高级索引）（注意，仔细看字，是零位数组被当作成整数(数值)索引，而不是被当作成整数数组索引。请仔细看字，别看错了，整数索引(整数数值)和整数数组索引，这俩，别看错了）</p>
+                      <p mt_node="trans">上边这句话是说，在使用零维数组进行索引时，会把零维数组认定位整数数值索引。整数(数值)索引会触发基本索引，所以这就是为什么上边会说，不会触发高级索引，的原因。</p>
                     </li>
                     <li mt_node="origin">
                       <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1167-->When an ellipsis (<code
