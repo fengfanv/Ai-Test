@@ -8,7 +8,7 @@ import numpy as np
 def check_index_type(arr, indices):
     result = arr[indices]
     if np.isscalar(result):
-        # np.isscalar 判断指定对象是否为标量值（标量值的含义：标量值是指不具有维度的单个数值，如整数、浮点数、布尔值和字符串等）
+        # np.isscalar 判断指定对象是否为标量值（标量值的含义：标量值是指不具有维度的单个数值，如零维数组，整数等）
         print("触发了基本索引")
     elif  np.may_share_memory(result, arr):
         print("触发了基本索引")
@@ -86,11 +86,6 @@ def check_index_type(arr, indices):
 # print(arr5[[0]])
 # # [[1 2 3]]
 # print(arr5[[0]].shape) # (1, 3)
-
-
-# print(arr5[[[[0]]]])
-# # [[[[1 2 3]]]]
-# print(arr5[[[[0]]]].shape) # (1, 1, 1, 3)
 
 
 # print(arr5[[[[0]]]])
