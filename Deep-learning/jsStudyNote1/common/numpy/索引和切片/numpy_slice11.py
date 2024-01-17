@@ -16,6 +16,10 @@ print(arr[0]['name'])  # b'John'
 print(arr[1]['age'])   # 32
 print(arr['name']) # [b'John' b'Anna' b'Peter']
 print(arr['age']) # [28 32 37]
+print(arr['name'].dtype) # S10
+print(arr['age'].dtype) # int32
+print(arr.dtype) # [('name', 'S10'), ('age', '<i4')]
+print(arr[['age','name']]) # [(28, b'John') (32, b'Anna') (37, b'Peter')]
 
 arr[0]['name'] = 'Jane'
 arr[1]['age'] = 31

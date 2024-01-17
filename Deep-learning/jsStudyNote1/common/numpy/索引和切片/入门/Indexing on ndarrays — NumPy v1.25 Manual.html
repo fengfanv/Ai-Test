@@ -2709,7 +2709,7 @@
                       mt_node="origin_leaf"><span class="std std-ref" mt_node="origin_leaf">Structured
                         arrays</span></a><!--volctrans extension anchor for patchId=1060--> for more
                     information on multifield indexing.</p>
-                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1055-->对结构化数组的索引也可以通过字段名列表来完成，
+                  <p mt_node="trans"><!--volctrans extension anchor for patchId=1055-->对结构化数组的索引也可以通过 字段名列表 来完成，
                     例如<code class="docutils literal notranslate"
                       mt_node="trans"><span class="pre">x[['field-name1',</span> <span class="pre">'field-name2']]</span></code><!--volctrans extension anchor for patchId=1057-->。从NumPy
                     1.16开始，它将返回一个只包含这些字段的视图。在旧版本的NumPy中，它返回一个副本。有关多字段索引的更多信息，请参阅用户指南中有关<a class="reference internal"
@@ -3017,8 +3017,8 @@
                           mt_node="origin_leaf">scalar</em><!--volctrans extension anchor for patchId=1164--> and not a
                         zero-dimensional array.
                         (Advanced indexing is not triggered.)</p>
-                      <p mt_node="trans">如果索引中存在零维数组，并且该零维数组被用作成(被当作成)一个完整的 整数索引 时，则结果将是标量而不是零维数组。（不会触发高级索引）（注意，仔细看字，是零位数组被当作成整数(数值)索引，而不是被当作成整数数组索引。请仔细看字，别看错了，整数索引(整数数值)和整数数组索引，这俩，别看错了）</p>
-                      <p mt_node="trans">上边这句话是说，在使用零维数组进行索引时，会把零维数组认定位整数数值索引。整数(数值)索引会触发基本索引，所以这就是为什么上边会说，不会触发高级索引，的原因。</p>
+                      <p mt_node="trans">如果索引中存在零维数组，并且该零维数组被用作成(被当作成)一个完整的 整数索引 时，则结果将是标量而不是零维数组。（不会触发高级索引）（注意，仔细看字，是零维数组被当作成整数(数值)索引，而不是被当作成整数数组索引。请仔细看字，别看错了，整数索引(整数数值)和整数数组索引，这俩，别看错了）</p>
+                      <p mt_node="trans">上边这句话是说，在使用零维数组进行索引时，会把零维数组认定为整数数值索引。整数(数值)索引会触发基本索引，所以这就是上边为什么说，不会触发高级索引，的原因。a=np.arange(10) a[np.array(8)] == a[8] != a[np.array([8])]</p>
                     </li>
                     <li mt_node="origin">
                       <p mt_node="origin_leaf"><!--volctrans extension anchor for patchId=1167-->When an ellipsis (<code
