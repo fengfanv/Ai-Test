@@ -66,7 +66,7 @@ print(x[index_1])
 print(x[index_1].shape)
 # (1, 3, 4)
 
-print(x[index_1,index_2_1])
+print(x[index_1,index_2_1]) # 和 x[[0],[0,1,2]] 一样
 # [[ 0  1  2  3]
 #  [ 4  5  6  7]
 #  [ 8  9 10 11]]
@@ -76,7 +76,7 @@ print(x[index_1,index_2_1].shape)
 print(x[index_1_1,index_2_1])
 # IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (2,) (3,)
 
-print(x[index_1,index_2])
+print(x[index_1,index_2]) # 和 x[[0],[0,2]] 一样
 # [[ 0  1  2  3]
 #  [ 8  9 10 11]]
 print(x[index_1,index_2].shape)
@@ -84,7 +84,7 @@ print(x[index_1,index_2].shape)
 
 
 
-print(x[:,index_2])
+print(x[:,index_2]) # 和 x[:,[0,2]] 一样
 # [[[ 0  1  2  3]
 #   [ 8  9 10 11]]
 
@@ -93,7 +93,7 @@ print(x[:,index_2])
 print(x[:,index_2].shape)
 # (2, 2, 4)
 
-print(x[...,index_3])
+print(x[...,index_3]) # 和 x[...,[0,2]] 一样
 # [[[ 0  2]
 #   [ 4  6]
 #   [ 8 10]]
@@ -118,8 +118,7 @@ print(x)
 #   [20 21 22 23 24]
 #   [25 26 27 28 29]]]
 
-index = np.array([[True,False,True],[True,False,True]])
-print(index.shape) # (2, 3)
+index = np.array([[True,False,True],[True,False,True]]) # (2, 3)
 
 print(x[index])
 # [[ 0  1  2  3  4]
@@ -127,3 +126,14 @@ print(x[index])
 #  [15 16 17 18 19]
 #  [25 26 27 28 29]]
 print(x[index].shape) # (4, 5)
+
+print(x[:,[[True,True,True,True,False],[True,True,True,True,False],[True,True,True,True,False]]])
+# [[ 0,  1,  2,  3,  5,  6,  7,  8, 10, 11, 12, 13],
+#  [15, 16, 17, 18, 20, 21, 22, 23, 25, 26, 27, 28]]
+# (2, 12)
+
+print(x[:,[[True,True,True,False,False],[True,True,True,True,False],[True,True,True,True,False]]])
+#                            ^
+# [[ 0,  1,  2,  5,  6,  7,  8, 10, 11, 12, 13],
+#  [15, 16, 17, 20, 21, 22, 23, 25, 26, 27, 28]]
+# (2, 11)

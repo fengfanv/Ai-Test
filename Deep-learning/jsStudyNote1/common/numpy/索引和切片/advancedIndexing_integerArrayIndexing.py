@@ -3,7 +3,7 @@ import numpy as np
 # only integers, slices (`:`), ellipsis (`...`), numpy.newaxis (`None`) and integer or boolean arrays are valid indices
 # 只有整数、切片（':'）、省略号（'...'）、numpy.newaxis（'None'）和整数或布尔数组是有效的索引
 
-# 关于高级索引_整数数组索引
+# 关于高级索引_整数数组索引的案例
 
 a=np.arange(2*3*4*5).reshape(2,3,4,5)
 
@@ -457,6 +457,9 @@ c[:,:,[[1]],[[2]],[[3]]].shape                                                  
 # a[::-1,None,[1,2],None,2:4:1,[2,2]] == a[::-1,None,:,None,2:4:1,:][:,:,[1,2],:,:,[2,2]]
 # a[::-1,None,0:2:1,None,[1,2],None,[2,2]] == a[::-1,None,0:2:1,None,:,None,:][:,:,:,:,[1,2],:,[2,2]]
 # a[::-1,1,None,2:4:1,[2,2]] == a[::-1,:,None,2:4:1,:][:,[1,1],:,:,[2,2]]
+# 注意，这里布尔数组和基本索引相结合的执行顺序，和预想的不一样
+# a[[[True,False],[True,False]],slice(1,3,1)] 报错：IndexError: boolean index did not match indexed array along dimension 1; dimension is 3 but corresponding boolean dimension is 2
+# a[[[True,True,False],[True,True,False]],slice(1,3)] 是这样执行的 a[[[True,True,False],[True,True,False]]][:,slice(1,3)] 
 
 
 # 多个数组之间需要广播的情况
