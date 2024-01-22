@@ -37,6 +37,7 @@ a=np.arange(2*3*4*5).reshape(2,3,4,5)
 #          [115, 116, 117, 118, 119]]]])
 
 
+
 print(a[[True,False]]) # (1, 3, 4, 5) 和 a[[0]] 一样
 
 print(a[[True,False,True]]) # 报错。IndexError: boolean index did not match indexed array along dimension 0; dimension is 2 but corresponding boolean dimension is 3
@@ -63,20 +64,136 @@ print(a[:,[True,False,True],:,[True,True,False,False,False]]) # (2, 2, 4) 和 a[
 
 print(a[:,[True,False,True],:,[True,True,True,False,False]]) # 报错。报错提示信息和 a[:,[0,2],:,[0,1,2]] 一模一样。IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (2,) (3,)
 
+
+
 # -------------------
 
+
+# 如下不能转换成整数数组索引。但如下在索引前，处理索引的方式，和整数数组在分解和处理索引时，有点类似。
 print(a[np.array([[True,False,True],[True,False,True]])]) # a (2, 3, 4, 5) index (2, 3) result (4, 4, 5)
+'''
+[[True,False,True],[True,False,True]] 转换成 [0,0]、[0,2]、[1,0]、[1,2]
+
+a[0,0] (4,5)
+a[0,2] (4,5)
+a[1,0] (4,5)
+a[1,2] (4,5)
+
+a.shape                                                                  (2,3,4,5)
+([[True,False,True],[True,False,True]]) => [<0,0>,<0,2>,<1,0>,<1,2>]     (4  )
+                                                                          ^
+a[0,0].shape                                                                 (4,5)  #  这些索引结果的形状：a[0,0]，a[0,2]等等
+                                                                              ^ ^
+a[[[True,False,True],[True,False,True]]].shape                           (4,  4,5)
+'''
 
 print(a[np.array([[True,False,True],[True,True,False]])]) # a (2, 3, 4, 5) index (2, 3) result (4, 4, 5)
 #                                           ^
+'''
+[[True,False,True],[True,True,False]] 转换成 [0,0]、[0,2]、[1,0]、[1,1]
+
+a[0,0] (4,5)
+a[0,2] (4,5)
+a[1,0] (4,5)
+a[1,1] (4,5)
+
+a.shape                                                                  (2,3,4,5)
+([[True,False,True],[True,True,False]]) => [<0,0>,<0,2>,<1,0>,<1,1>]     (4  )
+                                                                          ^
+a[0,0].shape                                                                 (4,5)  #  这些索引结果的形状：a[0,0]，a[0,2]等等
+                                                                              ^ ^
+a[[[True,False,True],[True,True,False]]].shape                           (4,  4,5)
+'''
+
 print(a[np.array([[True,False,True],[True,True,True]])]) # a (2, 3, 4, 5) index (2, 3) result (5, 4, 5)
-#                                               ^
+#                                           ^    ^
+'''
+[[True,False,True],[True,True,True]] 转换成 [0,0]、[0,2]、[1,0]、[1,1]、[1,2]
+
+a[0,0] (4,5)
+a[0,2] (4,5)
+a[1,0] (4,5)
+a[1,1] (4,5)
+a[1,2] (4,5)
+
+a.shape                                                                     (2,3,4,5)
+([[True,False,True],[True,True,True]]) => [<0,0>,<0,2>,<1,0>,<1,1>,<1,2>]   (5  )
+                                                                             ^
+a[0,0].shape                                                                    (4,5)  #  这些索引结果的形状：a[0,0]，a[0,2]等等
+                                                                                 ^ ^
+a[[[True,False,True],[True,True,True]]].shape                               (5,  4,5)
+'''
+
 print(a[np.array([[True,False,True,False],[True,True,True,False]])]) # a (2, 3, 4, 5) index (2, 4) 报错。IndexError: boolean index did not match indexed array along dimension 1; dimension is 3 but corresponding boolean dimension is 4
 
+
 print(a[:,np.array([[True,True,False,False],[True,True,False,False],[True,True,False,False]])])  # a (2, 3, 4, 5) index (3, 4) result (2, 6, 5)
+'''
+(:,[[True,True,False,False],[True,True,False,False],[True,True,False,False]]) 转换成 [:,0,0]、[:,0,1]、[:,1,0]、[:,1,1]、[:,2,0]、[:,2,1]
+
+a[0,0,0] (5)
+a[0,0,1] (5)
+a[0,1,0] (5)
+a[0,1,1] (5)
+a[0,2,0] (5)
+a[0,2,1] (5)
+
+a[1,0,0] (5)
+a[1,0,1] (5)
+a[1,1,0] (5)
+a[1,1,1] (5)
+a[1,2,0] (5)
+a[1,2,1] (5)
+
+a.shape                                                                                                                                  (2,3,4,5)
+                                                                                                                                          ^
+(:,[[True,True,False,False],[True,True,False,False],[True,True,False,False]]) => [<:,0,0>,<:,0,1>,<:,1,0>,<:,1,1>,<:,2,0>,<:,2,1>]         (6  )
+                                                                                                                                            ^
+a[0,0,0].shape                                                                                                                                 (5)  #  这些索引结果的形状：a[0,0,0]，a[0,0,1]等等
+                                                                                                                                                ^
+a[:,[[True,True,False,False],[True,True,False,False],[True,True,False,False]]].shape                                                     (2,6,  5)
+'''
 
 print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]])]) # a (2, 3, 4, 5) index (3, 4) result (2, 8, 5)
 #                                                        ^    ^
+'''
+(:,[[True,True,False,False],[True,True,True,True],[True,True,False,False]]) 转换成 [:,0,0]、[:,0,1]、[:,1,0]、[:,1,1]、[:,1,2]、[:,1,3]、[:,2,0]、[:,2,1]
 
-#？？？？？
-#？？？？？
+a[0,0,0] (5)
+a[0,0,1] (5)
+a[0,1,0] (5)
+a[0,1,1] (5)
+a[0,1,2] (5)
+a[0,1,3] (5)
+a[0,2,0] (5)
+a[0,2,1] (5)
+
+a[1,0,0] (5)
+a[1,0,1] (5)
+a[1,1,0] (5)
+a[1,1,1] (5)
+a[1,1,2] (5)
+a[1,1,3] (5)
+a[1,2,0] (5)
+a[1,2,1] (5)
+
+a.shape                                                                                                                                             (2,3,4,5)
+                                                                                                                                                     ^
+(:,[[True,True,False,False],[True,True,True,True],[True,True,False,False]]) => [<:,0,0>,<:,0,1>,<:,1,0>,<:,1,1>,<:,1,2>,<:,1,3>,<:,2,0>,<:,2,1>]      (8  )
+                                                                                                                                                       ^
+a[0,0,0].shape                                                                                                                                            (5)  #  这些索引结果的形状：a[0,0,0]，a[0,0,1]等等
+                                                                                                                                                           ^
+a[:,[[True,True,False,False],[True,True,True,True],[True,True,False,False]]].shape                                                                  (2,8,  5)
+'''
+
+
+# -------------------
+
+
+print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]]),np.array([True,True,True,True])]) # a (2, 3, 4, 5) index (:,(3,4),(4)) 报错：IndexError: boolean index did not match indexed array along dimension 3; dimension is 5 but corresponding boolean dimension is 4
+print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]]),np.array([True,True,True,True,True])]) # a (2, 3, 4, 5) index (:,(3,4),:,(5)) 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (8,) (8,) (5,)
+print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]]),:,np.array([True,True,True,True,True])]) # a (2, 3, 4, 5) index (:,(3,4),(5)) 报错：IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
+#-
+print(a[np.array([[True,False,True],[True,False,True]]),np.array([True,True,True,True])]) # a (2, 3, 4, 5) index ((2,3),(4)) result (4, 5)
+print(a[np.array([[True,False,True],[True,False,True]])])                                 # a (2, 3, 4, 5) index (2, 3)      result (4, 4, 5)
+print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) # 结果与 a[np.array([[True,False,True],[True,False,True]]),np.array([True,True,True,True])] 一样。
