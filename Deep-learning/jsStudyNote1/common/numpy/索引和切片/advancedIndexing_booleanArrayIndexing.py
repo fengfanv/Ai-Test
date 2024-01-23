@@ -186,6 +186,45 @@ a[0,0,0].shape                                                                  
 a[:,[[True,True,False,False],[True,True,True,True],[True,True,False,False]]].shape                                                                  (2,8,  5)
 '''
 
+print(a[:,:,np.array([[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]])]) # a (2, 3, 4, 5) index (4, 5) result (2, 3, 3)
+'''
+(:,:,[[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]) 转换成 [:,:,0,0]、[:,:,0,1]、[:,:,3,4]
+
+a[0,0,0,0] 索引结果是标量值，没有维度
+a[0,0,0,1] 索引结果是标量值，没有维度
+a[0,0,3,4] 索引结果是标量值，没有维度
+
+a[0,1,0,0] 索引结果是标量值，没有维度
+a[0,1,0,1] 索引结果是标量值，没有维度
+a[0,1,3,4] 索引结果是标量值，没有维度
+
+a[0,2,0,0] 索引结果是标量值，没有维度
+a[0,2,0,1] 索引结果是标量值，没有维度
+a[0,2,3,4] 索引结果是标量值，没有维度
+
+
+a[1,0,0,0] 索引结果是标量值，没有维度
+a[1,0,0,1] 索引结果是标量值，没有维度
+a[1,0,3,4] 索引结果是标量值，没有维度
+
+a[1,1,0,0] 索引结果是标量值，没有维度
+a[1,1,0,1] 索引结果是标量值，没有维度
+a[1,1,3,4] 索引结果是标量值，没有维度
+
+a[1,2,0,0] 索引结果是标量值，没有维度
+a[1,2,0,1] 索引结果是标量值，没有维度
+a[1,2,3,4] 索引结果是标量值，没有维度
+
+
+a.shape                                                                                                                                                                     (2,3,4,5)
+                                                                                                                                                                             ^ ^
+(:,:,[[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]) => [<:,:,0,0>,<:,:,0,1>,<:,:,3,4>]         (3  )
+                                                                                                                                                                                 ^
+a[0,0,0,0]                                                                                                                     a[0,0,0,0]等等这些的索引结果是标量值，没有维度        ( )
+                                                                                                                                                                                   ^
+a[:,:,[[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]].shape                                 (2,3,3  )
+'''
+
 
 # -------------------
 
