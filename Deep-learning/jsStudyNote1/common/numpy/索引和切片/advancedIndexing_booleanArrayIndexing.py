@@ -257,26 +257,30 @@ print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,Fal
 print(a[np.array([[True,False,True],[True,False,True]]),np.array([True,True,True,True])]) # a (2, 3, 4, 5) index ((2,3),(4)) result (4, 5)
 print(a[np.array([[True,False,True],[True,False,True]])])                                 # a (2, 3, 4, 5) index (2, 3)      result (4, 4, 5)
 print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) # 结果与 a[np.array([[True,False,True],[True,False,True]]),np.array([True,True,True,True])] 一样。
-'''
-# np.array([[True,False,True],[True,False,True]]) 形状(2,3) 可以转换成 [0,0]、[0,2]、[1,0]、[1,2]
 
-print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]])  # (4, 4, 5)
+'''
+print(a[np.array([[True,False,True],[True,False,True]])])  # (4, 4, 5)
 [[[  0   1   2   3   4]
   [  5   6   7   8   9]
   [ 10  11  12  13  14]
   [ 15  16  17  18  19]]
+
  [[ 40  41  42  43  44]
   [ 45  46  47  48  49]
   [ 50  51  52  53  54]
   [ 55  56  57  58  59]]
+
  [[ 60  61  62  63  64]
   [ 65  66  67  68  69]
   [ 70  71  72  73  74]
   [ 75  76  77  78  79]]
+
  [[100 101 102 103 104]
   [105 106 107 108 109]
   [110 111 112 113 114]
   [115 116 117 118 119]]]
+
+# np.array([[True,False,True],[True,False,True]]) 形状(2,3) 可转变成 [0,0]、[0,2]、[1,0]、[1,2] 
 
 print(a[0,0]) # (4, 5)
 [[ 0  1  2  3  4]
@@ -304,33 +308,158 @@ print(a[1,2]) # (4, 5)
 
 # ---
 
-# np.array([[True,False,True],[True,False,True]]) 形状(2,3) 可以转换成 [0,0]、[0,2]、[1,0]、[1,2]
-
 print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) # (4, 5)
 [[  0   1   2   3   4]
  [ 45  46  47  48  49]
  [ 70  71  72  73  74]
  [115 116 117 118 119]]
 
-print(a[0,0,0]) # (5)
+# np.array([[True,False,True],[True,False,True]]) 形状(2,3) 可转变成 [0,0]、[0,2]、[1,0]、[1,2]
+# [0,1,2,3] 形状(4) 可转变成 [:,:,0,:]、[:,:,1,:]、[:,:,2,:]、[:,:,3,:]
+
+print(a[0,0,0])
 print(a[0,0][0])
 [0 1 2 3 4]
 
-print(a[0,2,1]) # (5)
+print(a[0,2,1])
 print(a[0,2][1])
 [45 46 47 48 49]
 
-print(a[1,0,2]) # (5)
+print(a[1,0,2])
 print(a[1,0][2])
 [70 71 72 73 74]
 
-print(a[1,2,3]) # (5)
+print(a[1,2,3])
 print(a[1,2][3])
 [115 116 117 118 119]
 
+# ---
 
 print(a[np.array([[True,False,True],[True,False,True]]),[True,True,True,False]]) # 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (4,) (4,) (3,)
                                                                           ^
-print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2]]) # 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (4,) (4,) (3,)
+print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2 ]]) # 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (4,) (4,) (3,)
+                                                              ^
+# 请把这个报错的例子 与 print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) 进行对比。
+
+IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (4,) (4,) (3,)
+                                                                                         (a)  (b)  (c)
+(a)、np.array([[True,False,True],[True,False,True]]) 可转变成 [0,0]、[0,2]、[1,0]、[1,2] => [<0,:,:,:>,<0,:,:,:>,<1,:,:,:>,<1,:,:,:>] (4)
+                                                              ^      ^      ^     ^
+(b)、np.array([[True,False,True],[True,False,True]]) 可转变成 [0,0]、[0,2]、[1,0]、[1,2] => [<:,0,:,:>,<:,2,:,:>,<:,0,:,:>,<:,2,:,:>] (4)
+                                                                ^      ^      ^      ^
+(c)、[0,1,2] => [<:,:,0,:>,<:,:,1,:>,<:,:,2,:>] (3)
+'''
+
+# ---
+
+'''
+print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3],[1,1,1,1]]) # (4)
+
+# np.array([[True,False,True],[True,False,True]]) shape(2,3) => [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] (4)
+# [0,1,2,3] shape(4) => [<:,:,0,:>,<:,:,1,:>,<:,:,2,:>,<:,:,3,:>] (4)
+# [1,1,1,1] shape(4) => [<:,:,:,1>,<:,:,:,1>,<:,:,:,1>,<:,:,:,1>] (4)
+# 这三个相结合后是 [<0,0,0,1>,<0,2,1,1>,<1,0,2,1>,<1,2,3,1>] (4)
+
+a.shape                                                                                                         (2,3,4,5)
+([[True,False,True],[True,False,True]],[0,1,2,3],[1,1,1,1]) => [<0,0,0,1>,<0,2,1,1>,<1,0,2,1>,<1,2,3,1>]        (4      )
+                                                                                                                 ^
+a[0,0,0,1].shape                                              a[0,0,0,1]等等这些的索引结果是标量值，没有维度           (   )
+                                                                                                                      ^
+a[[[True,False,True],[True,False,True]],[0,1,2,3],[1,1,1,1]].shape                                              (4      )
+
+# ---
+
+print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) # (4, 5)
+
+# np.array([[True,False,True],[True,False,True]]) shape(2,3) => [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] (4)
+# [0,1,2,3] shape(4) => [<:,:,0,:>,<:,:,1,:>,<:,:,2,:>,<:,:,3,:>] (4)
+# 这俩个相结合后是 [<0,0,0,:>,<0,2,1,:>,<1,0,2,:>,<1,2,3,:>] (4)
+
+a.shape                                                                                          (2,3,4,5)
+
+([[True,False,True],[True,False,True]],[0,1,2,3]) => [<0,0,0,:>,<0,2,1,:>,<1,0,2,:>,<1,2,3,:>]   (4    )
+                                                                                                  ^
+a[0,0,0,:].shape                                                                                       (5)  #  这些索引结果的形状：a[0,0,0,:]，a[0,2,1,:]等等
+                                                                                                        ^
+a[[[True,False,True],[True,False,True]],[0,1,2,3]].shape                                         (4,    5)
+
+# ---
+
+print(a[:,np.array([[True,False,False,False],[True,False,False,False],[True,False,False,True]]),[0,1,2,3]]) # (2, 4)
+
+# np.array([[True,False,False,False],[True,False,False,False],[True,False,False,True]]) shape(3,4) => [<:,0,0,:>,<:,1,0,:>,<:,2,0,:>,<:,2,3,:>] (4)
+# [0,1,2,3] shape(4) => [<:,:,:,0>,<:,:,:,1>,<:,:,:,2>,<:,:,:,3>] (4)
+# 这俩个相结合后是 [<:,0,0,0>,<:,1,0,1>,<:,2,0,2>,<:,2,3,3>] (4)
+
+a[0,0,0,0]
+    ^ ^ ^
+a[0,1,0,1]
+    ^ ^ ^
+a[0,2,0,2]
+    ^ ^ ^
+a[0,2,3,3]
+    ^ ^ ^
+
+a[1,0,0,0]
+    ^ ^ ^
+a[1,1,0,1]
+    ^ ^ ^
+a[1,2,0,2]
+    ^ ^ ^
+a[1,2,3,3]
+    ^ ^ ^
+
+a.shape                                                                                                                                   (2,3,4,5)
+                                                                                                                                           ^
+(:,[[True,False,False,False],[True,False,False,False],[True,False,False,True]],[0,1,2,3]) => [<:,0,0,0>,<:,1,0,1>,<:,2,0,2>,<:,2,3,3>]      (4    )
+                                                                                                                                             ^
+a[0,0,0,0]                                                                                 a[0,0,0,0]等等这些的索引结果是标量值，没有维度         (  )
+                                                                                                                                                ^
+a[:,[[True,False,False,False],[True,False,False,False],[True,False,False,True]],[0,1,2,3]].shape                                          (2,4    )
+
+# ---
+
+print(a[np.array([[True,False,True],[True,False,True]]),:,[0,1,2,3]]) # (4, 4)
+
+# np.array([[True,False,True],[True,False,True]]) shape(2,3) => [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] (4)
+# [0,1,2,3] shape(4) => [<:,:,:,0>,<:,:,:,1>,<:,:,:,2>,<:,:,:,3>] (4)
+# 这俩个相结合后是 [<0,0,:,0>,<0,2,:,1>,<1,0,:,2>,<1,2,:,3>] (4)
+
+a.shape                                                                                                           (2,3,4,5)
+([[True,False,True],[True,False,True]],:,[0,1,2,3]) => [<0,0,:,0>,<0,2,:,1>,<1,0,:,2>,<1,2,:,3>]                  (4      )
+                                                                                                                   ^
+a[0,0,:,0].shape                                                                                                    (4    )
+                                                                                                                     ^
+a[[[True,False,True],[True,False,True]],:,[0,1,2,3]].shape                                                        (4,4    )
+
+# ---
+
+print(a[:,[0,1,2],np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,True]])]) # (2, 3)
+
+# [0,1,2] shape(3) => [<:,0,:,:>,<:,1,:,:>,<:,2,:,:>] (3)
+# np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,True]]) shape(4,5) => [<:,:,2,4>,<:,:,3,0>,<:,:,3,4>] (3)
+# 这俩个相结合后是 [<:,0,2,4>,<:,1,3,0>,<:,2,3,4>]
+
+a[0,0,2,4]
+    ^ ^ ^
+a[0,1,3,0]
+    ^ ^ ^
+a[0,2,3,4]
+    ^ ^ ^
+
+a[1,0,2,4]
+    ^ ^ ^
+a[1,1,3,0]
+    ^ ^ ^
+a[1,2,3,4]
+    ^ ^ ^
+
+a.shape                                                                                                                                                                                 (2,3,4,5)
+                                                                                                                                                                                         ^
+(:,[0,1,2],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,True]]) => [<:,0,2,4>,<:,1,3,0>,<:,2,3,4>]             (3    )
+                                                                                                                                                                                           ^
+a[0,0,2,4]                                                                                                                         a[0,0,2,4]等等这些的索引结果是标量值，没有维度               (  )
+                                                                                                                                                                                              ^
+a[:,[0,1,2],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,True]]].shape                                       (2,3    )
 '''
 
