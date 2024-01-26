@@ -461,5 +461,126 @@ a.shape                                                                         
 a[0,0,2,4]                                                                                                                         a[0,0,2,4]等等这些的索引结果是标量值，没有维度               (  )
                                                                                                                                                                                               ^
 a[:,[0,1,2],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,True]]].shape                                       (2,3    )
+
+# ---
+
+print(a[[0,1],:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # (2, 3)
+
+# [0,1] shape(2) => [<0,:,:,:>,<1,:,:,:>] (2)
+# np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]) shape(4,5) => [<:,:,2,4>,<:,:,3,0>] (2)
+# 这俩个相结合后是 [<0,:,2,4>,<1,:,3,0>]
+
+a.shape                                                                                                                                                                             (2,3,4,5)
+([0,1],:,[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]) => [<0,:,2,4>,<1,:,3,0>]                  (2      )
+                                                                                                                                                                                     ^
+a[0,:,2,4].shape                                                                                                                                                                      (3    )  #  这些索引结果的形状：a[0,:,2,4]，a[1,:,3,0]等等
+                                                                                                                                                                                       ^
+a[[0,1],:,[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]].shape                                    (2,3    )
+
+# ---
+
+print(a[np.array([[False,False,True],[True,False,False]]),np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # (2)
+
+# np.array([[False,False,True],[True,False,False]]) shape(2,3) => [<0,2,:,:>,<1,0,:,:>] (2)
+# np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]) shape(4,5) => [<:,:,2,4>,<:,:,3,0>] (2)
+# 这俩个相结合后是 [<0,2,2,4>,<1,0,3,0>]
+
+a.shape                                                                                                                                                                                                 (2,3,4,5)
+([[False,False,True],[True,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]) => [<0,2,2,4>,<1,0,3,0>]      (2      )
+                                                                                                                                                                                                         ^
+a[0,2,2,4]                                                                                                                                             a[0,2,2,4]等等这些的索引结果是标量值，没有维度           (  )
+                                                                                                                                                                                                              ^
+a[[[False,False,True],[True,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]].shape                        (2      )
+
+# ---
+
+print(a[np.array([[False,False,True],[True,False,False]]),:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # 报错 IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
+                                                          ^
+print(a[np.array([[False,True,True],[True,False,False]]),:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # 报错 IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
+                          ^                              ^
+index = np.arange(4*5*6).reshape(4,5,6)<1
+print(a[np.array([[False,False,True],[True,False,False]]),index]) # 报错：IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
 '''
+
+# ---
+
+'''
+print(a[np.array([[False,False,True],[True,False,False]]),[[1,2],[3,2]]]) # (2, 2, 5)
+
+索引元组从左数第一位是 np.array([[False,False,True],[True,False,False]])
+其形状是(2,3)
+所以这个在索引元组里第一位，形状是(2,3)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的前两个维度
+
+所以这个布尔数组索引 可转换成 [<0,2,:,:>,<1,0,:,:>] (2)
+
+然后分别从 [<0,2,:,:>,<1,0,:,:>] 里提取各个维度的索引，并将其组装成整数数组：
+[<0,2,:,:>,<1,0,:,:>] => [0,1]
+  ^         ^             ^ ^
+[<0,2,:,:>,<1,0,:,:>] => [2,0]
+    ^         ^           ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原布尔数组索引：
+使用 ([0,1],[2,0],:,:) 来替换原来的 (np.array([[False,False,True],[True,False,False]]),:,:)
+
+index = ([0,1],[2,0],[[1,2],[3,2]]) ((2),(2),(2,2))
+
+所以 a[index] 的结果等于 a[np.array([[False,False,True],[True,False,False]]),[[1,2],[3,2]]]
+
+# ---
+
+print(a[[[0,1],[1,0]],:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # (2, 2, 3)
+
+索引元组从左数第三位是 np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])
+其形状是(4,5)
+所以这个在索引元组里第三位，形状是(4,5)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的后两个维度
+
+所以这个布尔数组索引 可转换成 [<:,:,2,4>,<:,:,3,0>] (2)
+
+然后分别从 [<0,2,:,:>,<1,0,:,:>] 里提取各个维度的索引，并将其组装成整数数组：
+[<:,:,2,4>,<:,:,3,0>] => [2,3]
+      ^         ^         ^ ^
+[<:,:,2,4>,<:,:,3,0>] => [4,0]
+        ^         ^       ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原布尔数组索引：
+使用 (:,:,[2,3],[4,0]) 来替换原来的 (:,:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]))
+
+index = ([[0,1],[1,0]],:,[2,3],[4,0])
+                       ^ 测试时，请把 : 替换成slice(None)
+所以 a[index] 的结果等于 a[[[0,1],[1,0]],:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]
+'''
+
+# ---
+
+b=np.arange(2*3*4*5*6).reshape(2,3,4,5,6)
+
+'''
+print(b[:,[[2,1],[1,0]],:,np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]])]) # (2, 2, 2, 4)
+
+索引元组从左数第四位是 np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]])
+其形状是(5,6)
+所以这个在索引元组里第四位，形状是(5,6)的布尔数组索引 可以对应 被索引数组b(2,3,4,5,6)的后两个维度
+
+所以这个布尔数组索引 可转换成 [<:,:,:,0,0>,<:,:,:,0,1>] (2)
+
+然后分别从 [<:,:,:,0,0>,<:,:,:,0,1>] 里提取各个维度的索引，并将其组装成整数数组：
+[<:,:,:,0,0>,<:,:,:,0,1>] => [0,0]
+        ^           ^         ^ ^
+[<:,:,:,0,0>,<:,:,:,0,1>] => [0,1]
+          ^           ^       ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原布尔数组索引：
+使用 (:,:,:,[0,0],[0,1]) 来替换原来的 (:,:,:,np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]]))
+
+index = (:,[[2,1],[1,0]],:,[0,0],[0,1])
+         ^------->-------^---------> 测试时，请把 : 替换成slice(None)
+所以 b[index] 的结果等于 b[:,[[2,1],[1,0]],:,np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]])]
+
+# ---
+
+
+
+
+
+
+
+'''
+
 
