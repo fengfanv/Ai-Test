@@ -67,184 +67,156 @@ print(a[:,[True,False,True],:,[True,True,True,False,False]]) # 报错。报错�
 
 
 # -------------------
+# -------------------
+# -------------------
 
 
-# 如下不能转换成整数数组索引。但如下在索引前，处理索引的方式，和整数数组在分解和处理索引时，有点类似。
-print(a[np.array([[True,False,True],[True,False,True]])]) # a (2, 3, 4, 5) index (2, 3) result (4, 4, 5)
+# 如下可以转换成整数数组索引，但需要预先处理一下。
+print(a[np.array([[True,False,True],[True,False,True]])]) # a (2, 3, 4, 5) index ((2, 3)) result (4, 4, 5)
 '''
-[[True,False,True],[True,False,True]] 转换成 [0,0]、[0,2]、[1,0]、[1,2]
+索引元组从左数第一位是 np.array([[True,False,True],[True,False,True]])
+其形状是(2,3)
+所以 这个在索引元组里第一位，形状是(2,3)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的前两个维度
+所以这个布尔数组索引 可转换成 [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] (4)
+然后分别从 [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
+[<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] => [0,0,1,1]
+  ^         ^         ^         ^             ^ ^ ^ ^
+[<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] => [0,2,0,2]
+    ^         ^         ^         ^           ^ ^ ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
+使用 ([0,0,1,1],[0,2,0,2],:,:) 来替换原来的 (np.array([[True,False,True],[True,False,True]]),:,:)
 
-a[0,0] (4,5)
-a[0,2] (4,5)
-a[1,0] (4,5)
-a[1,2] (4,5)
+index = ([0,0,1,1],[0,2,0,2])
 
-a.shape                                                                  (2,3,4,5)
-([[True,False,True],[True,False,True]]) => [<0,0>,<0,2>,<1,0>,<1,2>]     (4  )
-                                                                          ^
-a[0,0].shape                                                                 (4,5)  #  这些索引结果的形状：a[0,0]，a[0,2]等等
-                                                                              ^ ^
-a[[[True,False,True],[True,False,True]]].shape                           (4,  4,5)
+所以 a[index] 的结果等于 a[np.array([[True,False,True],[True,False,True]])]
 '''
 
-print(a[np.array([[True,False,True],[True,True,False]])]) # a (2, 3, 4, 5) index (2, 3) result (4, 4, 5)
+print(a[np.array([[True,False,True],[True,True,False]])]) # a (2, 3, 4, 5) index ((2, 3)) result (4, 4, 5)
 #                                           ^
 '''
-[[True,False,True],[True,True,False]] 转换成 [0,0]、[0,2]、[1,0]、[1,1]
+索引元组从左数第一位是 np.array([[True,False,True],[True,True,False]])
+其形状是(2,3)
+所以 这个在索引元组里第一位，形状是(2,3)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的前两个维度
+所以这个布尔数组索引 可转换成 [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,1,:,:>] (4)
+然后分别从 [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,1,:,:>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
+[<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,1,:,:>] => [0,0,1,1]
+  ^         ^         ^         ^             ^ ^ ^ ^
+[<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,1,:,:>] => [0,2,0,1]
+    ^         ^         ^         ^           ^ ^ ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
+使用 ([0,0,1,1],[0,2,0,1],:,:) 来替换原来的 (np.array([[True,False,True],[True,True,False]]),:,:)
 
-a[0,0] (4,5)
-a[0,2] (4,5)
-a[1,0] (4,5)
-a[1,1] (4,5)
+index = ([0,0,1,1],[0,2,0,1])
 
-a.shape                                                                  (2,3,4,5)
-([[True,False,True],[True,True,False]]) => [<0,0>,<0,2>,<1,0>,<1,1>]     (4  )
-                                                                          ^
-a[0,0].shape                                                                 (4,5)  #  这些索引结果的形状：a[0,0]，a[0,2]等等
-                                                                              ^ ^
-a[[[True,False,True],[True,True,False]]].shape                           (4,  4,5)
+所以 a[index] 的结果等于 a[np.array([[True,False,True],[True,True,False]])]
 '''
 
-print(a[np.array([[True,False,True],[True,True,True]])]) # a (2, 3, 4, 5) index (2, 3) result (5, 4, 5)
+print(a[np.array([[True,False,True],[True,True,True]])]) # a (2, 3, 4, 5) index ((2, 3)) result (5, 4, 5)
 #                                           ^    ^
 '''
-[[True,False,True],[True,True,True]] 转换成 [0,0]、[0,2]、[1,0]、[1,1]、[1,2]
+索引元组从左数第一位是 np.array([[True,False,True],[True,True,True]])
+其形状是(2,3)
+所以 这个在索引元组里第一位，形状是(2,3)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的前两个维度
+所以这个布尔数组索引 可转换成 [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,1,:,:>,<1,2,:,:>] (5)
+然后分别从 [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,1,:,:>,<1,2,:,:>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
+[<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,1,:,:>,<1,2,:,:>] => [0,0,1,1,1]
+  ^         ^         ^         ^         ^             ^ ^ ^ ^ ^
+[<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,1,:,:>,<1,2,:,:>] => [0,2,0,1,2]
+    ^         ^         ^         ^         ^           ^ ^ ^ ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
+使用 ([0,0,1,1,1],[0,2,0,1,2],:,:) 来替换原来的 (np.array([[True,False,True],[True,True,True]]),:,:)
 
-a[0,0] (4,5)
-a[0,2] (4,5)
-a[1,0] (4,5)
-a[1,1] (4,5)
-a[1,2] (4,5)
+index = ([0,0,1,1,1],[0,2,0,1,2])
 
-a.shape                                                                     (2,3,4,5)
-([[True,False,True],[True,True,True]]) => [<0,0>,<0,2>,<1,0>,<1,1>,<1,2>]   (5  )
-                                                                             ^
-a[0,0].shape                                                                    (4,5)  #  这些索引结果的形状：a[0,0]，a[0,2]等等
-                                                                                 ^ ^
-a[[[True,False,True],[True,True,True]]].shape                               (5,  4,5)
+所以 a[index] 的结果等于 a[np.array([[True,False,True],[True,True,True]])]
 '''
 
-print(a[np.array([[True,False,True,False],[True,True,True,False]])]) # a (2, 3, 4, 5) index (2, 4) 报错。IndexError: boolean index did not match indexed array along dimension 1; dimension is 3 but corresponding boolean dimension is 4
+
+print(a[np.array([[True,False,True,False],[True,True,True,False]])]) # a (2, 3, 4, 5) index ((2, 4)) 报错。IndexError: boolean index did not match indexed array along dimension 1; dimension is 3 but corresponding boolean dimension is 4
 
 
-print(a[:,np.array([[True,True,False,False],[True,True,False,False],[True,True,False,False]])])  # a (2, 3, 4, 5) index (3, 4) result (2, 6, 5)
+print(a[:,np.array([[True,True,False,False],[True,True,False,False],[True,True,False,False]])])  # a (2, 3, 4, 5) index (:,(3, 4)) result (2, 6, 5)
 '''
-(:,[[True,True,False,False],[True,True,False,False],[True,True,False,False]]) 转换成 [:,0,0]、[:,0,1]、[:,1,0]、[:,1,1]、[:,2,0]、[:,2,1]
+索引元组从左数第二位是 np.array([[True,True,False,False],[True,True,False,False],[True,True,False,False]])
+其形状是(3,4)
+所以 这个在索引元组里第二位，形状是(3,4)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的中间两个维度
+所以这个布尔数组索引 可转换成 [<:,0,0,:>,<:,0,1,:>,<:,1,0,:>,<:,1,1,:>,<:,2,0,:>,<:,2,1,:>] (6)
+然后分别从 [<:,0,0,:>,<:,0,1,:>,<:,1,0,:>,<:,1,1,:>,<:,2,0,:>,<:,2,1,:>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
+[<:,0,0,:>,<:,0,1,:>,<:,1,0,:>,<:,1,1,:>,<:,2,0,:>,<:,2,1,:>] => [0,0,1,1,2,2]
+    ^         ^         ^         ^         ^         ^           ^ ^ ^ ^ ^ ^
+[<:,0,0,:>,<:,0,1,:>,<:,1,0,:>,<:,1,1,:>,<:,2,0,:>,<:,2,1,:>] => [0,1,0,1,0,1]
+      ^         ^         ^         ^         ^         ^         ^ ^ ^ ^ ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
+使用 (:,[0,0,1,1,2,2],[0,1,0,1,0,1],:) 来替换原来的 (:,np.array([[True,False,True],[True,True,True]]),:)
 
-a[0,0,0] (5)
-a[0,0,1] (5)
-a[0,1,0] (5)
-a[0,1,1] (5)
-a[0,2,0] (5)
-a[0,2,1] (5)
+index = (:,[0,0,1,1,2,2],[0,1,0,1,0,1])
 
-a[1,0,0] (5)
-a[1,0,1] (5)
-a[1,1,0] (5)
-a[1,1,1] (5)
-a[1,2,0] (5)
-a[1,2,1] (5)
-
-a.shape                                                                                                                                  (2,3,4,5)
-                                                                                                                                          ^
-(:,[[True,True,False,False],[True,True,False,False],[True,True,False,False]]) => [<:,0,0>,<:,0,1>,<:,1,0>,<:,1,1>,<:,2,0>,<:,2,1>]         (6  )
-                                                                                                                                            ^
-a[0,0,0].shape                                                                                                                                 (5)  #  这些索引结果的形状：a[0,0,0]，a[0,0,1]等等
-                                                                                                                                                ^
-a[:,[[True,True,False,False],[True,True,False,False],[True,True,False,False]]].shape                                                     (2,6,  5)
+所以 a[index] 的结果等于 a[:,np.array([[True,True,False,False],[True,True,False,False],[True,True,False,False]])]
 '''
 
-print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]])]) # a (2, 3, 4, 5) index (3, 4) result (2, 8, 5)
+print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]])]) # a (2, 3, 4, 5) index (:,(3, 4)) result (2, 8, 5)
 #                                                        ^    ^
 '''
-(:,[[True,True,False,False],[True,True,True,True],[True,True,False,False]]) 转换成 [:,0,0]、[:,0,1]、[:,1,0]、[:,1,1]、[:,1,2]、[:,1,3]、[:,2,0]、[:,2,1]
+索引元组从左数第二位是 np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]])
+其形状是(3,4)
+所以 这个在索引元组里第二位，形状是(3,4)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的中间两个维度
+所以这个布尔数组索引 可转换成 [<:,0,0,:>,<:,0,1,:>,<:,1,0,:>,<:,1,1,:>,<:,1,2,:>,<:,1,3,:>,<:,2,0,:>,<:,2,1,:>] (8)
+然后分别从 [<:,0,0,:>,<:,0,1,:>,<:,1,0,:>,<:,1,1,:>,<:,1,2,:>,<:,1,3,:>,<:,2,0,:>,<:,2,1,:>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
+[<:,0,0,:>,<:,0,1,:>,<:,1,0,:>,<:,1,1,:>,<:,1,2,:>,<:,1,3,:>,<:,2,0,:>,<:,2,1,:>] => [0,0,1,1,1,1,2,2]
+    ^         ^         ^         ^         ^         ^         ^         ^           ^ ^ ^ ^ ^ ^ ^ ^
+[<:,0,0,:>,<:,0,1,:>,<:,1,0,:>,<:,1,1,:>,<:,1,2,:>,<:,1,3,:>,<:,2,0,:>,<:,2,1,:>] => [0,1,0,1,2,3,0,1]
+      ^         ^         ^         ^         ^         ^         ^         ^         ^ ^ ^ ^ ^ ^ ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
+使用 (:,[0,0,1,1,1,1,2,2],[0,1,0,1,2,3,0,1],:) 来替换原来的 (:,np.array([[True,False,True],[True,True,True]]),:)
 
-a[0,0,0] (5)
-a[0,0,1] (5)
-a[0,1,0] (5)
-a[0,1,1] (5)
-a[0,1,2] (5)
-a[0,1,3] (5)
-a[0,2,0] (5)
-a[0,2,1] (5)
+index = (:,[0,0,1,1,1,1,2,2],[0,1,0,1,2,3,0,1])
 
-a[1,0,0] (5)
-a[1,0,1] (5)
-a[1,1,0] (5)
-a[1,1,1] (5)
-a[1,1,2] (5)
-a[1,1,3] (5)
-a[1,2,0] (5)
-a[1,2,1] (5)
-
-a.shape                                                                                                                                             (2,3,4,5)
-                                                                                                                                                     ^
-(:,[[True,True,False,False],[True,True,True,True],[True,True,False,False]]) => [<:,0,0>,<:,0,1>,<:,1,0>,<:,1,1>,<:,1,2>,<:,1,3>,<:,2,0>,<:,2,1>]      (8  )
-                                                                                                                                                       ^
-a[0,0,0].shape                                                                                                                                            (5)  #  这些索引结果的形状：a[0,0,0]，a[0,0,1]等等
-                                                                                                                                                           ^
-a[:,[[True,True,False,False],[True,True,True,True],[True,True,False,False]]].shape                                                                  (2,8,  5)
+所以 a[index] 的结果等于 a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]])]
 '''
 
-print(a[:,:,np.array([[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]])]) # a (2, 3, 4, 5) index (4, 5) result (2, 3, 3)
+print(a[:,:,np.array([[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]])]) # a (2, 3, 4, 5) index (:,:,(4, 5)) result (2, 3, 3)
 '''
-(:,:,[[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]) 转换成 [:,:,0,0]、[:,:,0,1]、[:,:,3,4]
+索引元组从左数第三位是 np.array([[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]])
+其形状是(4,5)
+所以 这个在索引元组里第三位，形状是(4,5)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的后两个维度
+所以这个布尔数组索引 可转换成 [<:,:,0,0>,<:,:,0,1>,<:,:,3,4>] (3)
+然后分别从 [<:,:,0,0>,<:,:,0,1>,<:,:,3,4>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
+[<:,:,0,0>,<:,:,0,1>,<:,:,3,4>] => [0,0,3]
+      ^         ^         ^         ^ ^ ^
+[<:,:,0,0>,<:,:,0,1>,<:,:,3,4>] => [0,1,4]
+        ^         ^         ^       ^ ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
+使用 (:,:,[0,0,3],[0,1,4]) 来替换原来的 (:,:,np.array([[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]))
 
-a[0,0,0,0] 索引结果是标量值，没有维度
-a[0,0,0,1] 索引结果是标量值，没有维度
-a[0,0,3,4] 索引结果是标量值，没有维度
+index = (:,:,[0,0,3],[0,1,4])
 
-a[0,1,0,0] 索引结果是标量值，没有维度
-a[0,1,0,1] 索引结果是标量值，没有维度
-a[0,1,3,4] 索引结果是标量值，没有维度
-
-a[0,2,0,0] 索引结果是标量值，没有维度
-a[0,2,0,1] 索引结果是标量值，没有维度
-a[0,2,3,4] 索引结果是标量值，没有维度
-
-
-a[1,0,0,0] 索引结果是标量值，没有维度
-a[1,0,0,1] 索引结果是标量值，没有维度
-a[1,0,3,4] 索引结果是标量值，没有维度
-
-a[1,1,0,0] 索引结果是标量值，没有维度
-a[1,1,0,1] 索引结果是标量值，没有维度
-a[1,1,3,4] 索引结果是标量值，没有维度
-
-a[1,2,0,0] 索引结果是标量值，没有维度
-a[1,2,0,1] 索引结果是标量值，没有维度
-a[1,2,3,4] 索引结果是标量值，没有维度
-
-
-a.shape                                                                                                                                                                     (2,3,4,5)
-                                                                                                                                                                             ^ ^
-(:,:,[[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]) => [<:,:,0,0>,<:,:,0,1>,<:,:,3,4>]         (3  )
-                                                                                                                                                                                 ^
-a[0,0,0,0]                                                                                                                     a[0,0,0,0]等等这些的索引结果是标量值，没有维度        ( )
-                                                                                                                                                                                   ^
-a[:,:,[[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]].shape                                 (2,3,3  )
+所以 a[index] 的结果等于 a[:,:,np.array([[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]])]
 '''
 
-print(a[:,np.array([[[True,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]])]) # a (2, 3, 4, 5) index (3, 4, 5) result (2, 2)
+print(a[:,np.array([[[True,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]])]) # a (2, 3, 4, 5) index (:,(3, 4, 5)) result (2, 2)
 '''
-(:,[[[True,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]]) 转换成 [:,0,0,0]、[:,2,3,4]
+索引元组从左数第二位是 np.array([[[True,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]])
+其形状是(3,4,5)
+所以 这个在索引元组里第二位，形状是(3,4,5)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的后三个维度
+所以这个布尔数组索引 可转换成 [<:,0,0,0>,<:,2,3,4>] (2)
+然后分别从 [<:,0,0,0>,<:,2,3,4>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
+[<:,0,0,0>,<:,2,3,4>] => [0,2]
+    ^         ^           ^ ^
+[<:,0,0,0>,<:,2,3,4>] => [0,3]
+      ^         ^         ^ ^
+[<:,0,0,0>,<:,2,3,4>] => [0,4]
+        ^         ^       ^ ^
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
+使用 (:,[0,2],[0,3],[0,4]) 来替换原来的 (:,np.array([[[True,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]]))
 
-a[0,0,0,0] 索引结果是标量值，没有维度
-a[0,2,3,4] 索引结果是标量值，没有维度
+index = (:,[0,2],[0,3],[0,4])
 
-a[1,0,0,0] 索引结果是标量值，没有维度
-a[1,2,3,4] 索引结果是标量值，没有维度
-
-a.shape                                                                                                                                                                                                                                                                                                                                                                                                                                   (2,3,4,5)
-                                                                                                                                                                                                                                                                                                                                                                                                                                           ^
-(:,[[[True,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]]) => [<:,0,0,0>,<:,2,3,4>]          (2    )
-                                                                                                                                                                                                                                                                                                                                                                                                                                             ^
-a[0,0,0,0]                                                                                                                                                                                                                                                                                                                                                                                   a[0,0,0,0]等等这些的索引结果是标量值，没有维度       (  )
-                                                                                                                                                                                                                                                                                                                                                                                                                                                ^
-a[:,[[[True,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]]].shape                          (2,2    )
+所以 a[index] 的结果等于 a[:,np.array([[[True,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]])]
 '''
 
 
+# -------------------
+# -------------------
 # -------------------
 
 
@@ -252,14 +224,12 @@ print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,Fal
 print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]]),np.array([True,True,True,True,True])]) # a (2, 3, 4, 5) index (:,(3,4),(5)) 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (8,) (8,) (5,)
 print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]]),:,np.array([True,True,True,True,True])]) # a (2, 3, 4, 5) index (:,(3,4),:,(5)) 报错：IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
 
-# ---
-
 print(a[np.array([[True,False,True],[True,False,True]]),np.array([True,True,True,True])]) # a (2, 3, 4, 5) index ((2,3),(4)) result (4, 5)
-print(a[np.array([[True,False,True],[True,False,True]])])                                 # a (2, 3, 4, 5) index (2, 3)      result (4, 4, 5)
+print(a[np.array([[True,False,True],[True,False,True]])])                                 # a (2, 3, 4, 5) index ((2,3))     result (4, 4, 5)
 print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) # 结果与 a[np.array([[True,False,True],[True,False,True]]),np.array([True,True,True,True])] 一样。
 
 '''
-print(a[np.array([[True,False,True],[True,False,True]])])  # (4, 4, 5)
+print(a[np.array([[True,False,True],[True,False,True]])])  # a (2, 3, 4, 5) index ((2, 3)) result (4, 4, 5)
 [[[  0   1   2   3   4]
   [  5   6   7   8   9]
   [ 10  11  12  13  14]
@@ -280,7 +250,7 @@ print(a[np.array([[True,False,True],[True,False,True]])])  # (4, 4, 5)
   [110 111 112 113 114]
   [115 116 117 118 119]]]
 
-# np.array([[True,False,True],[True,False,True]]) 形状(2,3) 可转变成 [0,0]、[0,2]、[1,0]、[1,2] 
+# 布尔数组 np.array([[True,False,True],[True,False,True]]) 形状(2,3) 可转变成 [0,0]、[0,2]、[1,0]、[1,2] 
 
 print(a[0,0]) # (4, 5)
 [[ 0  1  2  3  4]
@@ -308,7 +278,7 @@ print(a[1,2]) # (4, 5)
 
 # ---
 
-print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) # (4, 5)
+print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) # a (2, 3, 4, 5) index ((2, 3),(4)) result (4, 5)
 [[  0   1   2   3   4]
  [ 45  46  47  48  49]
  [ 70  71  72  73  74]
@@ -335,25 +305,28 @@ print(a[1,2][3])
 
 # ---
 
-print(a[np.array([[True,False,True],[True,False,True]]),[True,True,True,False]]) # 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (4,) (4,) (3,)
+print(a[np.array([[True,False,True],[True,False,True]]),[True,True,True,False]]) # a (2, 3, 4, 5) index ((2, 3),(4)) result 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (4,) (4,) (3,)
                                                                           ^
-print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2 ]]) # 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (4,) (4,) (3,)
+print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2 ]]) # a (2, 3, 4, 5) index ((2, 3),(3)) result 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (4,) (4,) (3,)
                                                               ^
 # 请把这个报错的例子 与 print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) 进行对比。
 
+为什么会报如下这个错误？
 IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (4,) (4,) (3,)
                                                                                          (a)  (b)  (c)
 (a)、np.array([[True,False,True],[True,False,True]]) 可转变成 [0,0]、[0,2]、[1,0]、[1,2] => [<0,:,:,:>,<0,:,:,:>,<1,:,:,:>,<1,:,:,:>] (4)
-                                                              ^      ^      ^     ^
+                                                              ^      ^      ^      ^
 (b)、np.array([[True,False,True],[True,False,True]]) 可转变成 [0,0]、[0,2]、[1,0]、[1,2] => [<:,0,:,:>,<:,2,:,:>,<:,0,:,:>,<:,2,:,:>] (4)
                                                                 ^      ^      ^      ^
 (c)、[0,1,2] => [<:,:,0,:>,<:,:,1,:>,<:,:,2,:>] (3)
 '''
 
-# ---
+# -------------------
+# -------------------
+# -------------------
 
 '''
-print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3],[1,1,1,1]]) # (4)
+print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3],[1,1,1,1]]) # a (2, 3, 4, 5) index ((2, 3),(4),(4)) result (4)
 
 # np.array([[True,False,True],[True,False,True]]) shape(2,3) => [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] (4)
 # [0,1,2,3] shape(4) => [<:,:,0,:>,<:,:,1,:>,<:,:,2,:>,<:,:,3,:>] (4)
@@ -369,7 +342,7 @@ a[[[True,False,True],[True,False,True]],[0,1,2,3],[1,1,1,1]].shape              
 
 # ---
 
-print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) # (4, 5)
+print(a[np.array([[True,False,True],[True,False,True]]),[0,1,2,3]]) # a (2, 3, 4, 5) index ((2, 3),(4)) result (4, 5)
 
 # np.array([[True,False,True],[True,False,True]]) shape(2,3) => [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] (4)
 # [0,1,2,3] shape(4) => [<:,:,0,:>,<:,:,1,:>,<:,:,2,:>,<:,:,3,:>] (4)
@@ -385,7 +358,7 @@ a[[[True,False,True],[True,False,True]],[0,1,2,3]].shape                        
 
 # ---
 
-print(a[:,np.array([[True,False,False,False],[True,False,False,False],[True,False,False,True]]),[0,1,2,3]]) # (2, 4)
+print(a[:,np.array([[True,False,False,False],[True,False,False,False],[True,False,False,True]]),[0,1,2,3]]) # a (2, 3, 4, 5) index (:,(3,4),(4)) result (2, 4)
 
 # np.array([[True,False,False,False],[True,False,False,False],[True,False,False,True]]) shape(3,4) => [<:,0,0,:>,<:,1,0,:>,<:,2,0,:>,<:,2,3,:>] (4)
 # [0,1,2,3] shape(4) => [<:,:,:,0>,<:,:,:,1>,<:,:,:,2>,<:,:,:,3>] (4)
@@ -419,7 +392,7 @@ a[:,[[True,False,False,False],[True,False,False,False],[True,False,False,True]],
 
 # ---
 
-print(a[np.array([[True,False,True],[True,False,True]]),:,[0,1,2,3]]) # (4, 4)
+print(a[np.array([[True,False,True],[True,False,True]]),:,[0,1,2,3]]) # a (2, 3, 4, 5) index ((2,3),:,(4)) result (4, 4)
 
 # np.array([[True,False,True],[True,False,True]]) shape(2,3) => [<0,0,:,:>,<0,2,:,:>,<1,0,:,:>,<1,2,:,:>] (4)
 # [0,1,2,3] shape(4) => [<:,:,:,0>,<:,:,:,1>,<:,:,:,2>,<:,:,:,3>] (4)
@@ -434,7 +407,7 @@ a[[[True,False,True],[True,False,True]],:,[0,1,2,3]].shape                      
 
 # ---
 
-print(a[:,[0,1,2],np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,True]])]) # (2, 3)
+print(a[:,[0,1,2],np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,True]])]) # a (2, 3, 4, 5) index (:,(3),(4,5)) result (2, 3)
 
 # [0,1,2] shape(3) => [<:,0,:,:>,<:,1,:,:>,<:,2,:,:>] (3)
 # np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,True]]) shape(4,5) => [<:,:,2,4>,<:,:,3,0>,<:,:,3,4>] (3)
@@ -464,7 +437,7 @@ a[:,[0,1,2],[[False,False,False,False,False],[False,False,False,False,False],[Fa
 
 # ---
 
-print(a[[0,1],:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # (2, 3)
+print(a[[0,1],:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # a (2, 3, 4, 5) index ((2),:,(4,5)) result (2, 3)
 
 # [0,1] shape(2) => [<0,:,:,:>,<1,:,:,:>] (2)
 # np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]) shape(4,5) => [<:,:,2,4>,<:,:,3,0>] (2)
@@ -479,7 +452,7 @@ a[[0,1],:,[[False,False,False,False,False],[False,False,False,False,False],[Fals
 
 # ---
 
-print(a[np.array([[False,False,True],[True,False,False]]),np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # (2)
+print(a[np.array([[False,False,True],[True,False,False]]),np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # a (2, 3, 4, 5) index ((2,3),(4,5)) result (2)
 
 # np.array([[False,False,True],[True,False,False]]) shape(2,3) => [<0,2,:,:>,<1,0,:,:>] (2)
 # np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]) shape(4,5) => [<:,:,2,4>,<:,:,3,0>] (2)
@@ -494,57 +467,57 @@ a[[[False,False,True],[True,False,False]],[[False,False,False,False,False],[Fals
 
 # ---
 
-print(a[np.array([[False,False,True],[True,False,False]]),:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # 报错 IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
+print(a[np.array([[False,False,True],[True,False,False]]),:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # a (2, 3, 4, 5) index ((2,3),:,(4,5)) result 报错 IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
                                                           ^
-print(a[np.array([[False,True,True],[True,False,False]]),:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # 报错 IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
+print(a[np.array([[False,True,True],[True,False,False]]),:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # a (2, 3, 4, 5) index ((2,3),:,(4,5)) result 报错 IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
                           ^                              ^
 index = np.arange(4*5*6).reshape(4,5,6)<1
-print(a[np.array([[False,False,True],[True,False,False]]),index]) # 报错：IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
+print(a[np.array([[False,False,True],[True,False,False]]),index]) # a (2, 3, 4, 5) index ((2,3),(4,5,6)) result 报错：IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
 '''
 
-# ---
+# -------------------
+# -------------------
+# -------------------
 
 '''
-print(a[np.array([[False,False,True],[True,False,False]]),[[1,2],[3,2]]]) # (2, 2, 5)
+print(a[np.array([[False,False,True],[True,False,False]]),[[1,2],[3,2]]]) # a (2, 3, 4, 5) index ((2,3),(2,2)) result (2, 2, 5)
 
 索引元组从左数第一位是 np.array([[False,False,True],[True,False,False]])
 其形状是(2,3)
-所以这个在索引元组里第一位，形状是(2,3)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的前两个维度
-
+所以 这个在索引元组里第一位，形状是(2,3)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的前两个维度
 所以这个布尔数组索引 可转换成 [<0,2,:,:>,<1,0,:,:>] (2)
-
-然后分别从 [<0,2,:,:>,<1,0,:,:>] 里提取各个维度的索引，并将其组装成整数数组：
+然后分别从 [<0,2,:,:>,<1,0,:,:>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
 [<0,2,:,:>,<1,0,:,:>] => [0,1]
   ^         ^             ^ ^
 [<0,2,:,:>,<1,0,:,:>] => [2,0]
     ^         ^           ^ ^
-提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原布尔数组索引：
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
 使用 ([0,1],[2,0],:,:) 来替换原来的 (np.array([[False,False,True],[True,False,False]]),:,:)
 
-index = ([0,1],[2,0],[[1,2],[3,2]]) ((2),(2),(2,2))
+index = ([0,1],[2,0],[[1,2],[3,2]])
 
 所以 a[index] 的结果等于 a[np.array([[False,False,True],[True,False,False]]),[[1,2],[3,2]]]
 
 # ---
 
-print(a[[[0,1],[1,0]],:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # (2, 2, 3)
+print(a[[[0,1],[1,0]],:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]) # a (2, 3, 4, 5) index ((2,2),:,(4,5)) result (2, 2, 3)
 
 索引元组从左数第三位是 np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])
 其形状是(4,5)
-所以这个在索引元组里第三位，形状是(4,5)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的后两个维度
+所以 这个在索引元组里第三位，形状是(4,5)的布尔数组索引 可以对应 被索引数组a(2,3,4,5)的后两个维度
 
 所以这个布尔数组索引 可转换成 [<:,:,2,4>,<:,:,3,0>] (2)
 
-然后分别从 [<0,2,:,:>,<1,0,:,:>] 里提取各个维度的索引，并将其组装成整数数组：
+然后分别从 [<:,:,2,4>,<:,:,3,0>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
 [<:,:,2,4>,<:,:,3,0>] => [2,3]
       ^         ^         ^ ^
 [<:,:,2,4>,<:,:,3,0>] => [4,0]
         ^         ^       ^ ^
-提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原布尔数组索引：
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
 使用 (:,:,[2,3],[4,0]) 来替换原来的 (:,:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]))
 
 index = ([[0,1],[1,0]],:,[2,3],[4,0])
-                       ^ 测试时，请把 : 替换成slice(None)
+
 所以 a[index] 的结果等于 a[[[0,1],[1,0]],:,np.array([[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]])]
 '''
 
@@ -553,33 +526,27 @@ index = ([[0,1],[1,0]],:,[2,3],[4,0])
 b=np.arange(2*3*4*5*6).reshape(2,3,4,5,6)
 
 '''
-print(b[:,[[2,1],[1,0]],:,np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]])]) # (2, 2, 2, 4)
+print(b[:,[[2,1],[1,0]],:,np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]])]) # b (2, 3, 4, 5, 6) index (:,(2,2),:,(5,6)) result (2, 2, 2, 4)
 
 索引元组从左数第四位是 np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]])
 其形状是(5,6)
-所以这个在索引元组里第四位，形状是(5,6)的布尔数组索引 可以对应 被索引数组b(2,3,4,5,6)的后两个维度
+所以 这个在索引元组里第四位，形状是(5,6)的布尔数组索引 可以对应 被索引数组b(2,3,4,5,6)的后两个维度
 
 所以这个布尔数组索引 可转换成 [<:,:,:,0,0>,<:,:,:,0,1>] (2)
 
-然后分别从 [<:,:,:,0,0>,<:,:,:,0,1>] 里提取各个维度的索引，并将其组装成整数数组：
+然后分别从 [<:,:,:,0,0>,<:,:,:,0,1>] 里提取各个维度所对应的索引，并将分属不同维度的索引组装成整数数组：
 [<:,:,:,0,0>,<:,:,:,0,1>] => [0,0]
         ^           ^         ^ ^
 [<:,:,:,0,0>,<:,:,:,0,1>] => [0,1]
           ^           ^       ^ ^
-提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原布尔数组索引：
+提取完毕后，用从布尔数组索引里提取出来的整数数组，来替换原来的布尔数组索引：
 使用 (:,:,:,[0,0],[0,1]) 来替换原来的 (:,:,:,np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]]))
 
 index = (:,[[2,1],[1,0]],:,[0,0],[0,1])
-         ^------->-------^---------> 测试时，请把 : 替换成slice(None)
+
 所以 b[index] 的结果等于 b[:,[[2,1],[1,0]],:,np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]])]
 
 # ---
-
-
-
-
-
-
 
 '''
 
