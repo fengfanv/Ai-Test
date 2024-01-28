@@ -221,6 +221,7 @@ index = (:,[0,2],[0,3],[0,4])
 
 
 print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]]),np.array([True,True,True,True])]) # a (2, 3, 4, 5) index (:,(3,4),(4)) 报错：IndexError: boolean index did not match indexed array along dimension 3; dimension is 5 but corresponding boolean dimension is 4
+print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]]),np.array([0,1,2,3])]) # a (2, 3, 4, 5) index (:,(3,4),(4)) 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (8,) (8,) (4,) 这个例子与上面这个例子理论上输出的结果应该是一样的，所以对这两个例子进行比较，比较后发现，上边np.array([True,True,True,True])由于是布尔数组的原因，进行了形状校验，而np.array([0,1,2,3])不需要校验，直接进行广播处理了。
 print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]]),np.array([True,True,True,True,True])]) # a (2, 3, 4, 5) index (:,(3,4),(5)) 报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (8,) (8,) (5,)
 print(a[:,np.array([[True,True,False,False],[True,True,True,True],[True,True,False,False]]),:,np.array([True,True,True,True,True])]) # a (2, 3, 4, 5) index (:,(3,4),:,(5)) 报错：IndexError: too many indices for array: array is 4-dimensional, but 5 were indexed
 
@@ -545,8 +546,6 @@ print(b[:,[[2,1],[1,0]],:,np.array([[True,True,False,False,False,False],[False,F
 index = (:,[[2,1],[1,0]],:,[0,0],[0,1])
 
 所以 b[index] 的结果等于 b[:,[[2,1],[1,0]],:,np.array([[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]])]
-
-# ---
 
 '''
 
