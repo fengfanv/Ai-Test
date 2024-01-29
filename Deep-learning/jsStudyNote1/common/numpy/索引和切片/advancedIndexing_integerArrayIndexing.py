@@ -473,17 +473,22 @@ c[:,:,[[1]],[[2]],[[3]]].shape                                                  
 
 
 # 番外篇（关于基本索引和高级索引相结合的前瞻）
-# 在包含有高级索引的索引元组里，切片、Ellipsis、newaxis(None)，被认定为基本索引。整数、整数数组、布尔数组，被认定为高级索引。
+# 在包含有高级索引的索引元组里，切片、newaxis(None)，在基本索引里处理。整数、整数数组、布尔数组，在高级索引里处理。
+# 高级索引和基本索引相结合时，注意一个多维布尔数组会占用多个维度的问题
 # a[None,::-1,[1,2],1:4:2,[1,2]] == a[None,::-1,:,1:4:2,:][:,:,[1,2],:,[1,2]]
 # a[[1,0],None,::-2,2:3:1,[3,3]] == a[:,None,::-2,2:3:1,:][[1,0],:,:,:,[3,3]]
 # a[::-1,[1,2],None,2:4:1,[2,2]] == a[::-1,:,None,2:4:1,:][:,[1,2],:,:,[2,2]]
 # a[::-1,None,[1,2],None,2:4:1,[2,2]] == a[::-1,None,:,None,2:4:1,:][:,:,[1,2],:,:,[2,2]]
 # a[::-1,None,0:2:1,None,[1,2],None,[2,2]] == a[::-1,None,0:2:1,None,:,None,:][:,:,:,:,[1,2],:,[2,2]]
 # a[::-1,1,None,2:4:1,[2,2]] == a[::-1,:,None,2:4:1,:][:,[1,1],:,:,[2,2]]
-# 注意，这里布尔数组和基本索引相结合的执行顺序，和预想的不一样
-# a[[[True,False],[True,False]],slice(1,3,1)] 报错：IndexError: boolean index did not match indexed array along dimension 1; dimension is 3 but corresponding boolean dimension is 2
-# a[[[True,True,False],[True,True,False]],slice(1,3)] 是这样执行的 a[[[True,True,False],[True,True,False]]][:,slice(1,3)] 
+# a[[[True,True,False],[True,True,False]],slice(1,3)] == a[:,:,slice(1,3)][[[True,True,False],[True,True,False]],:] == a[:,:,slice(1,3)][[0,0,1,1],[0,1,0,1]]
+# a[None,[[True,True,False],[True,True,False]],slice(1,3),None,[1,2,2,0]] == a[None,:,:,slice(1,3),None][:,[[True,True,False],[True,True,False]],:,:,[1,2,2,0]] == a[None,:,:,slice(1,3),None][:,[0,0,1,1],[0,1,0,1],:,:,[1,2,2,0]]
 
+# 关于 Ellipsis
+# 注意Ellipsis和多维布尔数组搭配的情况
+# a[None,[1,1],...,slice(1,2),[1,2]] == a[None,:,...,slice(1,2),:][:,[1,1],...,:,[1,2]] == a[None,:,:,slice(1,2),:][:,[1,1],:,:,[1,2]]
+# c[None,[1,1],...,None,[1,1],slice(1,2)] == c[None,:,...,None,:,slice(1,2)][:,[1,1],...,:,[1,1],:] == c[None,:,:,:,:,None,:,slice(1,2)][:,[1,1],:,:,:,:,[1,1],:]
+# c[None,[[True,True,False],[True,True,False]],slice(1,2),...,None,[1,2,2,1]] == c[None,:,:,slice(1,2),...,None,:][:,[[True,True,False],[True,True,False]],:,...,:,[1,2,2,1]] == c[None,:,:,slice(1,2),:,:,None,:][:,[[True,True,False],[True,True,False]],:,:,:,:,[1,2,2,1]]
 
 # 多个数组之间需要广播的情况
 # a[[1,0,1],[1]] == a[[1,0,1],[1,1,1]]

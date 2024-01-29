@@ -15,6 +15,12 @@ var arange = Main.arange;
 
 /*
 索引和切片
+
+编写顺序：
+基本索引
+高级索引整数数组索引
+高级索引布尔数组索引
+
 */
 
 
@@ -110,6 +116,13 @@ function indexing(arr, indexingTuple, value) {
             break;
         }
     }
+
+    
+
+
+
+                        
+
     if (isAdvancedIndexing) {
         return advancedIndexing(arr, indexingTuple)
     } else {
