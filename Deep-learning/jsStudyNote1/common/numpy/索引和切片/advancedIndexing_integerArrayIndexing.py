@@ -483,6 +483,9 @@ c[:,:,[[1]],[[2]],[[3]]].shape                                                  
 # a[::-1,1,None,2:4:1,[2,2]] == a[::-1,:,None,2:4:1,:][:,[1,1],:,:,[2,2]]
 # a[[[True,True,False],[True,True,False]],slice(1,3)] == a[:,:,slice(1,3)][[[True,True,False],[True,True,False]],:] == a[:,:,slice(1,3)][[0,0,1,1],[0,1,0,1]]
 # a[None,[[True,True,False],[True,True,False]],slice(1,3),None,[1,2,2,0]] == a[None,:,:,slice(1,3),None][:,[[True,True,False],[True,True,False]],:,:,[1,2,2,0]] == a[None,:,:,slice(1,3),None][:,[0,0,1,1],[0,1,0,1],:,:,[1,2,2,0]]
+# a[[[False,False,False],[False,False,False]]] == a[[],[]]
+# a[:,[[False,False,False,False],[False,False,False,False],[False,False,False,False]]] == a[:,[],[]]
+# a[:,[[False,False,False,False],[False,False,False,False],[False,False,False,False]],slice(1,2)] == a[:,[],[],slice(1,2)]
 
 # 关于 Ellipsis
 # 注意Ellipsis和多维布尔数组搭配的情况
@@ -494,7 +497,6 @@ c[:,:,[[1]],[[2]],[[3]]].shape                                                  
 # a[[1,0,1],[1]] == a[[1,0,1],[1,1,1]]
 # a[[1],[[1,1],[0,0]],[[1]]] == a[[[1,1],[1,1]],[[1,1],[0,0]],[[1,1],[1,1]]]
 # a[:,[1],:,[[1,1],[0,0]]] == a[:,[[1,1],[1,1]],:,[[1,1],[0,0]]]
-
 
 # 整数和数组搭配的情况
 # 文档，x[arr1, :, 1] 在这里面1是一个高级索引。

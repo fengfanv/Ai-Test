@@ -82,6 +82,22 @@ var None = {
 Object.freeze(None);
 exports.None = None;
 
+//True
+var True = {
+    "name": "True",
+    "toString": () => {
+        return "True"
+    },
+}
+
+//False
+var False = {
+    "name": "False",
+    "toString": () => {
+        return "False"
+    },
+}
+
 /*
 索引元祖参数 end
 */
@@ -108,6 +124,124 @@ function indexing(arr, indexingTuple, value) {
     3、将索引结果返回
     */
 
+    /*
+    为 索引元祖数组 补全 索引元素 start
+    什么时候需要补全？
+    1、索引元祖数组里抛除 None/np.newaxis 后，索引元祖数组长度不及被索引数组的维度数
+    2、索引元祖数组里有Ellipsis（索引元祖数组里最多只能有一个Ellipsis）
+    */
+    let arrShape = shape(arr);
+    let arrNdim = arrShape.length || 0;
+
+    //首先 从索引元祖数组里 数(找)出 除了 None/np.newaxis/Ellipsis 以外，有几个有效(有用)的索引元素
+    //数，有几个有效的索引元素时，注意多维布尔数组的问题
+    //检查索引元祖数组里有几个有效(有用)的索引元素
+    let haveBooleanArray = false;//索引元组里有布尔数组
+    let canNum = 0;//有效的索引元素数量
+    let indexingTupleArr = [].concat(indexingTuple);
+    let EllipsisNum = 0;//Ellipsis数量
+    let EllipsisIndex = -1;//Ellipsis位置
+    for (let i = 0; i < indexingTupleArr.length; i++) {
+        let item = String(indexingTupleArr[i]);
+        if (item != 'None' && item != 'Ellipsis') {
+            if (isBooleanArray(indexingTupleArr[i])) {
+                //是布尔数组，则不能默认+1，要根据布尔数组的维度数量来加
+                let booleanArrayShape = shape(indexingTupleArr[i])
+                canNum = canNum + booleanArrayShape.length;
+                haveBooleanArray = true;
+            } else {
+                //不是None/Ellipsis、布尔数组，则默认+1
+                canNum = canNum + 1;
+            }
+        }
+        if (item == 'Ellipsis') {
+            EllipsisNum++;
+            EllipsisIndex = i;
+        }
+    }
+    if (EllipsisNum > 1) {
+        throw new Error('索引元组 错误：索引元祖数组里最多只能有一个Ellipsis')
+    }
+    //数出索引元祖数组里有几个有效的索引元素后
+    //1、如果有效的索引元素数量不及被索引数组的维度数，则在索引元组末尾补充所需数量的slice(None,None,None)
+    //2、如果索引元祖数组里有Ellipsis，则将Ellipsis替换成所需数量的slice(None,None,None)
+    let needAddNum = 0;//索引元祖数组里，需要补充多少个slice(None,None,None)
+    needAddNum = arrNdim - canNum <= 0 ? 0 : arrNdim - canNum;
+    if (EllipsisNum != 0) {
+        //有Ellipsis时，在Ellipsis所处的位置，将Ellipsis替换成所需数量的slice(None,None,None)
+        indexingTupleArr.splice(EllipsisIndex, 1)//删除Ellipsis
+        for (let i = 0; i < needAddNum; i++) {
+            indexingTupleArr.splice(EllipsisIndex, 0, slice(None));//在Ellipsis的位置，插入所需数量的slice(None,None,None)
+        }
+    } else {
+        //没有Ellipsis时，在索引元祖数组末尾，插入所需数量的slice(None,None,None)
+        for (let i = 0; i < needAddNum; i++) {
+            indexingTupleArr.push(slice(None));//在数组末尾的位置，插入所需数量的slice(None,None,None)
+        }
+    }
+    if (arrNdim < canNum + needAddNum) {
+        throw new Error(`索引元组 错误：被索引数组是一个${arrNdim}维数组 但却有${canNum + needAddNum}个索引元素`)
+    }
+    // console.log('indexingTupleArr：',indexingTupleArr);
+    /*为 索引元祖数组 补全 索引元素 end*/
+
+    /*
+    索引元组里存在布尔数组，让布尔数组与其对应的维度形状进行校验，校验通过后将布尔数组转换成整数数组 start
+    */
+    if (haveBooleanArray) {
+        let shapeArrIndex = -1;
+        for (let i = 0; i < indexingTupleArr.length; i++) {
+            let item = String(indexingTupleArr[i]);
+            if (item != 'None') {
+                //！！！！！！！！！！！！写道这里了，思考如何让布尔数组形状与被索引数组对应的维度，进行形状校验。
+                shapeArrIndex++;
+                //检测是不是布尔数组
+                if (isBooleanArray(indexingTupleArr[i])) {
+
+                }
+
+
+                shapeArrToIndexingTupleArr[shapeArrIndex] = i;
+            }
+        }
+    }
+    /*
+    索引元组里存在布尔数组，让布尔数组与其对应的维度形状进行校验，校验通过后将布尔数组转换成整数数组 end
+    */
+
+
+
+
+
+
+
+    // //首先 将索引元祖数组里的 布尔数组 转换成整数数组
+    // //注意注意，这里忘记一步，这里不能直接将布尔数组转成整数数组，这里还没有校验布尔数组是否与被索引数组对应维度匹配呢
+    // let indexingTupleArr = [].concat(indexingTuple);
+    // for (let i = 0; i < indexingTupleArr.length; i++) {
+    //     let isBooleanArr = isBooleanArray(indexingTupleArr[i])
+    //     if (isBooleanArr) {
+    //         let integerArray = booleanArrayToIntegerArray(indexingTupleArr[i]);
+    //         indexingTupleArr.splice(i, 1)//删除原布尔数组
+    //         for (let j = 0; j < integerArray.length; j++) {
+    //             indexingTupleArr.splice(i+j, 0, integerArray[j]);//在原布尔数组的位置，插入整数数组
+    //         }
+    //     }
+    // }
+    // //然后
+
+    // console.log("indexingTupleArr：");
+    // console.log(indexingTupleArr)
+
+
+    return false;
+
+
+
+
+
+    /*为 索引元祖数组 补全 索引元素 end*/
+
     let isAdvancedIndexing = false;//是否是高级索引。判断高级索引比较简单，indexingTuple里有数组，就算高级索引
     for (let i = 0; i < indexingTuple.length; i++) {
         let item = indexingTuple[i];
@@ -116,20 +250,15 @@ function indexing(arr, indexingTuple, value) {
             break;
         }
     }
-
-    
-
-
-
-                        
-
     if (isAdvancedIndexing) {
-        return advancedIndexing(arr, indexingTuple)
+        return advancedIndexing(arr, indexingTuple, value)
     } else {
         return basicIndexing(arr, indexingTuple, value)
     }
 }
 exports.indexing = indexing;
+
+
 
 
 
@@ -231,9 +360,9 @@ function basicIndexing(arr, indexingTuple, value) {
     }
     // console.log("shapeArrToIndexingTupleArr：",shapeArrToIndexingTupleArr);
     // console.log("shapeArrToIndexingTupleArrReverse：",shapeArrToIndexingTupleArrReverse);
-     /*
-    匹配形状数组里元素(被索引数组的每个维度) 所对应的索引元素 end
-    */
+    /*
+   匹配形状数组里元素(被索引数组的每个维度) 所对应的索引元素 end
+   */
 
     // 到这里 索引元祖数组(indexingTupleArr) 里只存在 None/整数/slice
     // 根据被索引数组的每个维度信息，为 该维度 所对应 的索引元素，补全 该索引元素的“参数”。如将slice(1,None,None)补成slice(1,10,1)。（注意，这里是为 索引元素 补全 参数。与上边不一样。上边是为 索引元祖数组 补全 索引元素）
@@ -282,7 +411,7 @@ function basicIndexing(arr, indexingTuple, value) {
             let i = indexingTupleArr_item.start;
             let j = indexingTupleArr_item.stop;
             let k = indexingTupleArr_item.step;
-            dataIndex[shape_idx] = get_slice_index(d, i, j, k) 
+            dataIndex[shape_idx] = get_slice_index(d, i, j, k)
         } else {
             let d = shape_item;
             let i = indexingTupleArr_item;
@@ -491,13 +620,9 @@ function get_slice_index(d, i, j, k) {
 
 
 
-
-
-
-
 var a = reshape(arange(2 * 3 * 4 * 5 * 6), [2, 3, 4, 5, 6])
 var a1 = arange(5)
-var a2 = reshape(arange(1,7), [2, 3, 1])
+var a2 = reshape(arange(1, 7), [2, 3, 1])
 //indexing(a,[Ellipsis,1]) //=>indexingTupleArr：[slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
 //indexing(a,[Ellipsis,1,Ellipsis]) //=>Error: 基本索引 错误：索引元祖里最多只能有一个Ellipsis
 //indexing(a,[slice(1),Ellipsis,1]) //=>indexingTupleArr：[slice(None,1,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
@@ -563,20 +688,89 @@ var a2 = reshape(arange(1,7), [2, 3, 1])
 // indexing(a2,[slice(None),None,slice(None),slice(None)])
 // indexing(a2,[slice(None),slice(None),0])
 
+// ------------------------------------------
+
+// indexing(a,[[[False,False,True],[True,False,False]],None])
+// indexing(a,[None,[[False,False,True],[True,False,False]],None])
 
 
 //高级索引
 //处理高级索引(整数数组索引,布尔数组索引)和高级索引与基本索引相结合
-function advancedIndexing(arr, indexingTuple) {
+function advancedIndexing(arr, indexingTuple, value) {
     /*
     arr 被索引数据
     indexingTuple py里索引元祖，js这里用一个一维数组代替
+    value 根据索引结果赋的值
     */
     /*
     处理流程：
-    1、根据 arr和indexingTuple 判断是 纯高级索引 还是 高级索引与基本索引相结合
-    ...
-    ...
+    1、
+    1、根据 arr和indexingTuple 判断是 纯高级索引 还是 基本索引和高级索引相结合
+    2、如果是 纯高级索引，则直接调用 integerArrayIndexing 方法
+    3、如果是 基本索引和高级索引相结合，则将 索引元组(indexingTuple) 拆分成 纯基本索引元组 和 纯高级索引元组 两个。
+    3.1、然后 带着纯基本索引元组 先执行基本索引。
+    3.2、基本索引执行结束后，用基本索引的结果，带着纯高级索引元组 执行高级索引。
     */
 
+
+
 }
+
+//检测参数是否是布尔数组
+function isBooleanArray(arr) {
+    if (Array.isArray(arr) == true) {
+        let is = false;
+        printArr(arr, [], (res) => {
+            if (res.value.name == "True" || res.value.name == "False") {
+                is = true;
+            }
+        });
+        return is;
+    }
+    return false
+}
+
+//将布尔数组索引转换成整数数组索引
+function booleanArrayToIntegerArray(booleanArray) {
+    let booleanArrayShape = shape(booleanArray);
+    let booleanArrayNdim = booleanArrayShape.length || 0;
+    let indexingArr = [];
+    let arr = [];
+    printArr(booleanArray, [], (res) => {
+        let item = String(res.value);
+        if (item == "True") {
+            arr.push({
+                index: res.index,
+                value: res.value
+            })
+        } else {
+            if (item != "False") {
+                throw new Error('booleanArrayToIntegerArray 错误：布尔数组的元素 有非True/False值')
+            }
+        }
+    })
+    for (let i = 0; i < booleanArrayNdim; i++) {
+        indexingArr.push([])
+        for (let j = 0; j < arr.length; j++) {
+            indexingArr[i].push(arr[j].index[i])
+        }
+    }
+    return indexingArr
+}
+// console.log(booleanArrayToIntegerArray([[True,True,False],[False,True,True]])) // [ [ 0, 0, 1, 1 ], [ 0, 1, 1, 2 ] ]
+// console.log(booleanArrayToIntegerArray([])) // 报错是正确的
+// console.log(booleanArrayToIntegerArray([False,False,False])) // [ [] ]
+// console.log(booleanArrayToIntegerArray([True,False,False])) // [ [ 0 ] ]
+
+//处理整数数组索引
+function integerArrayIndexing(arr, indexingTuple, value) {
+    /*
+    arr 被索引数据
+    indexingTuple py里索引元祖，js这里用一个一维数组代替
+    value 根据索引结果赋的值
+    */
+
+
+}
+
+
