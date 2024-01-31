@@ -119,11 +119,13 @@ function indexing(arr, indexingTuple, value) {
     */
     /*
     处理流程：
-    1、根据 indexingTuple(索引元祖) 判断索引是基本索引还是高级索引
-    2、根据索引类型将 数据和索引 交给相关方法去处理
-    3、将索引结果返回
+    1、根据 被索引数据(arr) 优化索引元组
+    2、根据 索引元祖(indexingTuple) 判断索引是基本索引还是高级索引
+    3、根据索引类型将 数据和索引 交给相关方法去处理
+    4、将索引结果返回
     */
 
+    // 下面开始处理...
     /*
     为 索引元祖数组 补全 索引元素 start
     什么时候需要补全？
@@ -186,75 +188,90 @@ function indexing(arr, indexingTuple, value) {
     /*为 索引元祖数组 补全 索引元素 end*/
 
     /*
-    索引元组里存在布尔数组，让布尔数组与其对应的维度形状进行校验，校验通过后将布尔数组转换成整数数组 start
+    索引元组里存在布尔数组，让布尔数组与其对应的维度的形状进行校验，校验通过后将布尔数组转换成整数数组 start
     */
     if (haveBooleanArray) {
-        let shapeArrIndex = -1;
+        //校验布尔数组
+        let shapeArrIndex = -1;//当前对应的形状数组下标是多少
         for (let i = 0; i < indexingTupleArr.length; i++) {
             let item = String(indexingTupleArr[i]);
             if (item != 'None') {
-                //！！！！！！！！！！！！写道这里了，思考如何让布尔数组形状与被索引数组对应的维度，进行形状校验。
                 shapeArrIndex++;
-                //检测是不是布尔数组
                 if (isBooleanArray(indexingTupleArr[i])) {
-
+                    let booleanArrayShape = shape(indexingTupleArr[i])
+                    //取出，对应布尔数组的维度的形状
+                    let start = shapeArrIndex;
+                    let end = shapeArrIndex + booleanArrayShape.length;
+                    let booleanInShapeArr = arrShape.slice(start, end);
+                    //校验 布尔数组的形状 与其对应的维度的形状 是否匹配
+                    if (booleanInShapeArr.join() != booleanArrayShape.join()) {
+                        throw new Error(`索引元组 错误：布尔数组的形状是${booleanArrayShape}，但其对应维度的形状是${booleanInShapeArr}`)
+                    } else {
+                        shapeArrIndex = end - 1;//减1，是为了，下次循环时上边shapeArrIndex++不出错
+                    }
                 }
-
-
-                shapeArrToIndexingTupleArr[shapeArrIndex] = i;
+            }
+        }
+        //布尔数组转换成整数数组
+        for (let i = 0; i < indexingTupleArr.length; i++) {
+            if (isBooleanArray(indexingTupleArr[i])) {
+                let integerArray = booleanArrayToIntegerArray(indexingTupleArr[i]);
+                indexingTupleArr.splice(i, 1)//删除原布尔数组
+                for (let j = 0; j < integerArray.length; j++) {
+                    indexingTupleArr.splice(i + j, 0, integerArray[j]);//在原布尔数组的位置，插入整数数组
+                }
             }
         }
     }
     /*
-    索引元组里存在布尔数组，让布尔数组与其对应的维度形状进行校验，校验通过后将布尔数组转换成整数数组 end
+    索引元组里存在布尔数组，让布尔数组与其对应的维度的形状进行校验，校验通过后将布尔数组转换成整数数组 end
     */
-
-
-
-
-
-
-
-    // //首先 将索引元祖数组里的 布尔数组 转换成整数数组
-    // //注意注意，这里忘记一步，这里不能直接将布尔数组转成整数数组，这里还没有校验布尔数组是否与被索引数组对应维度匹配呢
-    // let indexingTupleArr = [].concat(indexingTuple);
-    // for (let i = 0; i < indexingTupleArr.length; i++) {
-    //     let isBooleanArr = isBooleanArray(indexingTupleArr[i])
-    //     if (isBooleanArr) {
-    //         let integerArray = booleanArrayToIntegerArray(indexingTupleArr[i]);
-    //         indexingTupleArr.splice(i, 1)//删除原布尔数组
-    //         for (let j = 0; j < integerArray.length; j++) {
-    //             indexingTupleArr.splice(i+j, 0, integerArray[j]);//在原布尔数组的位置，插入整数数组
-    //         }
-    //     }
-    // }
-    // //然后
+    //到达这里，索引元组，基本优化完毕。。。
 
     // console.log("indexingTupleArr：");
-    // console.log(indexingTupleArr)
+    // console.log(indexingTupleArr);
 
+    /*
+    判断索引是什么类型，然后交给相应索引方法去处理 start 
+    */
 
-    return false;
-
-
-
-
-
-    /*为 索引元祖数组 补全 索引元素 end*/
-
+    let isBasicIndexing = false;//是否是基本索引。
     let isAdvancedIndexing = false;//是否是高级索引。判断高级索引比较简单，indexingTuple里有数组，就算高级索引
     for (let i = 0; i < indexingTuple.length; i++) {
         let item = indexingTuple[i];
+        let itemType = String(item);
         if (Array.isArray(item)) {
             isAdvancedIndexing = true;
-            break;
+        }
+
+        let sliceHaveNum = false;
+        if (itemType == 'slice') {
+            if (String(item.start) != 'None' || String(item.stop) != 'None' || String(item.step) != 'None') {
+                sliceHaveNum = true;
+            }
+        }
+        if (itemType == 'None' || /^-?\d+$/.test(itemType) || sliceHaveNum) {
+            isBasicIndexing = true;
         }
     }
-    if (isAdvancedIndexing) {
-        return advancedIndexing(arr, indexingTuple, value)
-    } else {
-        return basicIndexing(arr, indexingTuple, value)
+
+    if (isBasicIndexing && isAdvancedIndexing) {
+        return console.log('基本索引和高级索引相结合')
     }
+
+    if (isBasicIndexing == false && isAdvancedIndexing == false) {
+        //索引元组里全是slice(None)的情况
+        isBasicIndexing = true
+    }
+
+    if (isBasicIndexing) {
+        return basicIndexing(arr, indexingTupleArr, value)
+    } else {
+        return console.log('高级索引')
+    }
+    /*
+    判断索引是什么类型，然后交给相应索引方法去处理 end
+    */
 }
 exports.indexing = indexing;
 
@@ -474,10 +491,10 @@ function basicIndexing(arr, indexingTuple, value) {
             })
         }
     })
-    console.log("size：", resultDataArr.length)
-    for (let i = 0; i < resultDataArr.length; i++) {
-        console.log(resultDataArr[i])
-    }
+    // console.log("size：", resultDataArr.length)
+    // for (let i = 0; i < resultDataArr.length; i++) {
+    //     console.log(resultDataArr[i])
+    // }
     /*获取索引结果数据 end*/
 
     /*调整索引结果数据的顺序(处理slice(i,j,k) k是负值的情况) start*/
@@ -551,7 +568,7 @@ function basicIndexing(arr, indexingTuple, value) {
             }
         }
     }
-    console.log("newResultDataArr：", newResultDataArr.length)
+    console.log("newResultDataArr.size：", newResultDataArr.length)
     for (let i = 0; i < newResultDataArr.length; i++) {
         console.log(newResultDataArr[i].value)
     }
@@ -623,112 +640,84 @@ function get_slice_index(d, i, j, k) {
 var a = reshape(arange(2 * 3 * 4 * 5 * 6), [2, 3, 4, 5, 6])
 var a1 = arange(5)
 var a2 = reshape(arange(1, 7), [2, 3, 1])
-//indexing(a,[Ellipsis,1]) //=>indexingTupleArr：[slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
+//indexing(a,[Ellipsis,1])
 //indexing(a,[Ellipsis,1,Ellipsis]) //=>Error: 基本索引 错误：索引元祖里最多只能有一个Ellipsis
-//indexing(a,[slice(1),Ellipsis,1]) //=>indexingTupleArr：[slice(None,1,None),slice(None,None,None),slice(None,None,None),slice(None,None,None),1]
-//indexing(a,[slice(1),1,Ellipsis]) //=>indexingTupleArr：[slice(None,1,None),1,slice(None,None,None),slice(None,None,None),slice(None,None,None)]
-//indexing(a,[slice(1),1]) //=>indexingTupleArr：[slice(None,1,None),1,slice(None,None,None),slice(None,None,None),slice(None,None,None)]
-//indexing(a,[1,1,1,1,1]) //=>indexingTupleArr：[ 1, 1, 1, 1, 1 ]
-//indexing(a,[1,None,Ellipsis,slice(1)]) //=>indexingTupleArr：[1,None,slice(None,None,None),slice(None,None,None),slice(None,None,None),slice(None,1,None)]
+//indexing(a,[slice(1),Ellipsis,1])
+//indexing(a,[slice(1),1,Ellipsis])
+//indexing(a,[slice(1),1])
+//indexing(a,[1,1,1,1,1])
+//indexing(a,[1,None,Ellipsis,slice(1)])
 
 //indexing(a,[1,1,1,1,1,1]) //=>Error: 基本索引 错误：被索引数组是一个5维数组 但却有6个索引参数
-//indexing(a,[None,1,None,1,1,Ellipsis,1,1]) //=>shapeArrToIndexingTupleArr：{ '0': 1, '1': 3, '2': 4, '3': 5, '4': 6 }
-//indexing(a,[None,1,Ellipsis,1,1]) //=>indexingTupleArr：[None,1,slice(None,None,None),slice(None,None,None),1,1] ;;;; shapeArrToIndexingTupleArr：{ '0': 1, '1': 2, '2': 3, '3': 4, '4': 5 }
+//indexing(a,[None,1,None,1,1,Ellipsis,1,1])
+//indexing(a,[None,1,Ellipsis,1,1])
 
-//indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)]) 
-//=>indexingTupleArr2：[1,slice(0,3,1),slice(3,-5,-1),slice(1,5,1),slice(0,6,1)]
+//indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)])
+//indexing(a,[1,slice(None,None,None),slice(3,0,-1),slice(1,None,1)])
+//indexing(a,[1,slice(10,10,1)])
+//indexing(a,[1,None,slice(0,1,1),slice(0,None,2),slice(1,5,3),slice(0,5,2)])
 
-// indexing(a,[None,1,None,1,1,Ellipsis,1,1]) //=>dataIndex： { '0': [ 1 ], '1': [ 1 ], '2': [ 1 ], '3': [ 1 ], '4': [ 1 ] }
-// indexing(a,[None,1,Ellipsis,1,1])
-// dataIndex： {
-//     '0': [ 1 ],
-//     '1': [ 0, 1, 2 ],
-//     '2': [ 0, 1, 2, 3 ],
-//     '3': [ 1 ],
-//     '4': [ 1 ]
-// }
-// indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)])
-// dataIndex： {
-//     '0': [ 1 ],
-//     '1': [ 0, 1, 2 ],
-//     '2': [ 3, 2, 1, 0 ],
-//     '3': [ 1, 2, 3, 4 ],
-//     '4': [ 0, 1, 2, 3, 4, 5 ]
-// }
-// indexing(a,[1,slice(None,None,None),slice(3,0,-1),slice(1,None,1)])
-// dataIndex： {
-//     '0': [ 1 ],
-//     '1': [ 0, 1, 2 ],
-//     '2': [ 3, 2, 1 ],
-//     '3': [ 1, 2, 3, 4 ],
-//     '4': [ 0, 1, 2, 3, 4, 5 ]
-// }
+//indexing(a,[1,None,slice(1,0,-1),slice(None,0,-2),slice(5,1,-3),slice(5,0,-2)])
+//indexing(a,[1,None,slice(1,0,-1),slice(0,None,2),slice(5,1,-3),slice(5,0,-2)])
+//indexing(a,[slice(2,None,-1),None,slice(2,0,-1),slice(0,None,2),slice(5,1,-3),slice(5,0,-2)])
 
-//indexing(a,[None,1,None,1,1,Ellipsis,1,1]) //resultShape：[1,-,1,-,-,-,-] => [1,1]
-//indexing(a,[1,slice(10,10,1)]) //resultShape：[-,0,4,5,6] => [0,4,5,6] 
-//indexing(a,[None,1,Ellipsis,1,1]) //resultShape：[1,-,3,4,-,-] => [1,3,4]
-//indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)]) //resultShape：[-,3,4,4,6] => [3,4,4,6]
-//indexing(a,[1,slice(None,None,None),slice(3,0,-1),slice(1,None,1)]) //resultShape：[-,3,3,4,6] => [3,3,4,6]
+//indexing(a1,[slice(None),None])
+//indexing(a1,[None,slice(None)])
+//indexing(a2,[slice(None),None,slice(None),slice(None)])
+//indexing(a2,[slice(None),slice(None),0])
 
-// indexing(a,[Ellipsis,1])
-// indexing(a,[None,1,None,1,1,Ellipsis,1,1])
-// indexing(a,[1,slice(10,10,1)])
-// indexing(a,[None,1,Ellipsis,1,1])
-// indexing(a,[slice(1),Ellipsis,1])
-// indexing(a,[1,None,slice(0,1,1),slice(0,None,2),slice(1,5,3),slice(0,5,2)])
-
-// indexing(a,[1,None,slice(1,0,-1),slice(None,0,-2),slice(5,1,-3),slice(5,0,-2)])
-// indexing(a,[1,None,slice(1,0,-1),slice(0,None,2),slice(5,1,-3),slice(5,0,-2)])
-// indexing(a,[slice(2,None,-1),None,slice(2,0,-1),slice(0,None,2),slice(5,1,-3),slice(5,0,-2)])
-// indexing(a,[1,slice(None,None,None),slice(None,None,-1),slice(1,None,1)])
-// indexing(a,[1,None,slice(0,1,1),slice(0,None,2),slice(1,5,3),slice(0,5,2)])
-
-// indexing(a1,[slice(None),None])
-// indexing(a1,[None,slice(None)])
-// indexing(a2,[slice(None),None,slice(None),slice(None)])
-// indexing(a2,[slice(None),slice(None),0])
+//indexing(a,[slice(None),slice(None),Ellipsis])
 
 // ------------------------------------------
 
-// indexing(a,[[[False,False,True],[True,False,False]],None])
-// indexing(a,[None,[[False,False,True],[True,False,False]],None])
+//indexing(a,[[[False,False,True],[True,False,False]],None])
+//indexing(a,[None,[[False,False,True],[True,False,False]],None])
+//indexing(a,[None,slice(None),[[False,False,True],[True,False,False]],None]) // 报错了，但是正确的
+//indexing(a,[[[False,False,True,True],[True,False,False,True]],None]) // 报错了，但是正确的
+//indexing(a,[[True,False],None])
+//indexing(a,[[True,False,False],None]) // 报错了，但是正确的
+//indexing(a,[[[False,False,True],[True,False,False]],None,slice(None),[True,True,True,True]]) //报错了，但是正确的
+//indexing(a,[[[False,False,True],[True,False,False]],None,slice(None),[True,True,True,True,False]])
+//indexing(a, [[[False, False, True], [True, False, False]], None, slice(None), [[[False]]]]) //报错了，但是正确的
+//indexing(a, [[[False, False, False], [False, False, False]], None, slice(None)])
+//indexing(a,[[[False,False,True],[True,False,False]],slice(None),[1,2]])
+//如上这些没有报错的例子，可能也会报错，可能会报无法广播的错误。这里先不考虑广播报错，这里仅思考索引元组是否符合规则。
 
 
-//高级索引
-//处理高级索引(整数数组索引,布尔数组索引)和高级索引与基本索引相结合
-function advancedIndexing(arr, indexingTuple, value) {
+//处理高级索引-整数数组索引
+function integerArrayIndexing(arr, indexingTuple, value) {
     /*
     arr 被索引数据
     indexingTuple py里索引元祖，js这里用一个一维数组代替
     value 根据索引结果赋的值
     */
-    /*
-    处理流程：
-    1、
-    1、根据 arr和indexingTuple 判断是 纯高级索引 还是 基本索引和高级索引相结合
-    2、如果是 纯高级索引，则直接调用 integerArrayIndexing 方法
-    3、如果是 基本索引和高级索引相结合，则将 索引元组(indexingTuple) 拆分成 纯基本索引元组 和 纯高级索引元组 两个。
-    3.1、然后 带着纯基本索引元组 先执行基本索引。
-    3.2、基本索引执行结束后，用基本索引的结果，带着纯高级索引元组 执行高级索引。
-    */
-
 
 
 }
 
 //检测参数是否是布尔数组
-function isBooleanArray(arr) {
-    if (Array.isArray(arr) == true) {
-        let is = false;
-        printArr(arr, [], (res) => {
-            if (res.value.name == "True" || res.value.name == "False") {
-                is = true;
-            }
-        });
-        return is;
+//条件：1、是数组 2、数组元素值是 True/False
+function isBooleanArray(arr, parentIsArr) {
+    if (Array.isArray(arr)) {
+        if (arr.length > 0) {
+            return isBooleanArray(arr[0], true)
+        } else {
+            return false
+        }
+    } else {
+        let value = String(arr);
+        if (parentIsArr && value == "True" || parentIsArr && value == "False") {
+            return true
+        } else {
+            return false
+        }
     }
-    return false
 }
+// console.log(isBooleanArray([])) // false
+// console.log(isBooleanArray([True])) // true
+// console.log(isBooleanArray([[False]])) // true
+// console.log(isBooleanArray(False)) // false
+// console.log(isBooleanArray(True)) // false
 
 //将布尔数组索引转换成整数数组索引
 function booleanArrayToIntegerArray(booleanArray) {
@@ -762,15 +751,6 @@ function booleanArrayToIntegerArray(booleanArray) {
 // console.log(booleanArrayToIntegerArray([False,False,False])) // [ [] ]
 // console.log(booleanArrayToIntegerArray([True,False,False])) // [ [ 0 ] ]
 
-//处理整数数组索引
-function integerArrayIndexing(arr, indexingTuple, value) {
-    /*
-    arr 被索引数据
-    indexingTuple py里索引元祖，js这里用一个一维数组代替
-    value 根据索引结果赋的值
-    */
 
-
-}
 
 
