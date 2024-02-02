@@ -506,3 +506,10 @@ c[:,:,[[1]],[[2]],[[3]]].shape                                                  
 # a[:,[1,2],None,1] == a[:,[1,2],None,[1,1]] == a[:,:,None,:][:,[1,2],:,1] == a[:,:,None,:][:,[1,2],:,[1,1]]
 # a[:,[[1,2],[2,0]],None,1] == a[:,[[1,2],[2,0]],None,[[1,1],[1,1]]]
 
+# 空数组 与 广播 出现的特殊情况
+# a[:,[],[]]         array([], shape=(2, 0, 5), dtype=int32)
+# a[:,[],[1]]        array([], shape=(2, 0, 5), dtype=int32)
+# a[:,[],[1,2]]      报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (0,) (2,)
+# a[:,[],[1],[1,1]]  报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (0,) (1,) (2,)
+# a[:,[],[[1]]]      array([], shape=(2, 1, 0, 5), dtype=int32)
+# a[:,[],[[0],[1]]]  array([], shape=(2, 2, 0, 5), dtype=int32)

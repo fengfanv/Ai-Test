@@ -34,7 +34,16 @@ function broadcast(a1, a2) {
         let arr2Item = arr2ShapeReverse[i] || 1;
         if (arr1Item != arr2Item) {
             if (arr1Item != 1 && arr2Item != 1) {
+                //意思是：当arr1Item、arr2Item这俩都不是1时，就“执行”这里
+                //意思是：当arr1Item、arr2Item这俩有一方是1时，就“不执行”这里
                 throw new Error('broadcast:error arr1 与 arr2 无法使用广播机制！');
+            }
+            //如下这里，是为了兼容(空数组、数组某一维度是0)的特殊情况
+            //如下这里，是为了修复因为(0||1=>1)而出现的bug，导致上边arr1Item或arr2Item这俩其实有一方是0，但因为(0||1=>1)的原因，导致上边(arr1Item != 1 && arr2Item != 1)没有执行
+            if (arr1ShapeReverse[i] == 0 || arr2ShapeReverse[i] == 0) {
+                if (arr1ShapeReverse[i] != 1 && arr2ShapeReverse[i] != 1) {
+                    throw new Error('broadcast:error arr1 与 arr2 无法使用广播机制!!!');
+                }
             }
         }
     }
@@ -82,6 +91,21 @@ function broadcast(a1, a2) {
                 let arr1Item = arr1ShapeReverse[i] || -1;
                 let arr2Item = arr2ShapeReverse[i] || -1;
                 if (arr1Item != arr2Item) {
+                    if (arr1ShapeReverse[i] == 0 || arr2ShapeReverse[i] == 0) {
+                        //如下这里，是为了兼容(空数组、数组某一维度是0)的特殊情况
+                        //这里是为了完善上边(0||-1=>-1)的问题
+                        if (arr1ShapeReverse[i] == 0) {
+                            let shapeIndex = (arr2Shape.length - 1) - i;
+                            printArr3(arr2, [], shapeIndex);
+                            break;
+                        }
+                        if (arr2ShapeReverse[i] == 0) {
+                            let shapeIndex = (arr1Shape.length - 1) - i;
+                            printArr3(arr1, [], shapeIndex);
+                            break;
+                        }
+                    }
+                    //如下这里才是，广播的主逻辑。如上 仅是兼容(空数组、数组某一维度是0)的特殊情况，不是主逻辑，是漏洞修复，不用细究。
                     //判断是不是，维度维度缺失
                     if (arr1Item == -1) {
                         arr1 = addDim(arr1);
@@ -132,14 +156,38 @@ function printArr2(arr, indexArr, shapeIndex, copyNum) {
             if (arrLen != 1) {
                 throw new Error('printArr2:error 需要被广播的维度的数据数量不唯一')
             }
+            arr.splice(0, 1) //删除数组内坐标0处的，这个唯一的一条数据
             for (let j = 0; j < copyNum; j++) {
-                arr[j] = item;
+                arr.push(item)//重新设置值
             }
         } else {
             if (Array.isArray(item)) {
                 printArr2(item, newIndexArr, shapeIndex, copyNum);
             } else {
                 throw new Error('printArr2:error 此数据指定的广播复制的维度不存在 或 此数据形状有问题')
+            }
+        }
+    }
+}
+
+//此方法来源于printArr2。这个方法主要功能是为了，将a.shape(1,2,3,4)变成a.shape(1,2,3,0)
+//                                                           ^                   ^
+function printArr3(arr, indexArr, shapeIndex) {
+    if (Array.isArray(arr) == false || arr.length < 1) {
+        throw new Error('printArr3:error arr不能是空数组！');
+    }
+    let arrLen = arr.length;
+    for (let i = 0; i < arrLen; i++) {
+        let item = arr[i];
+        let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        newIndexArr.push(i);
+        if (shapeIndex == newIndexArr.length - 1) {
+            arr.splice(arrLen-1-i, 1); //这个(arrLen-1-i)这样写，是因为，每删除一个数组元素，数组的长度就会减少。直接写(i)，数据删不干净。
+        } else {
+            if (Array.isArray(item)) {
+                printArr3(item, newIndexArr, shapeIndex);
+            } else {
+                throw new Error('printArr3:error 找不到需要处理的维度 或 此数据形状有问题')
             }
         }
     }
@@ -172,6 +220,11 @@ exports.broadcast = broadcast;
 //             [ 4, 5, 6 ]
 //         ]
 //     ]
+// })
+// printArr3(test1, [], 1); //[ [], [] ]
+// // printArr3(test1, [], 2); // [ [ [] ], [ [] ] ]
+// setTimeout(() => {
+//     console.log(test1);
 // })
 
 // let test2 = [
@@ -515,3 +568,18 @@ exports.broadcast = broadcast;
 // let b9 = [2, 2]
 // console.log(broadcast(a9, b9))
 // 报错说明是正确的
+
+//-------------------------------------
+
+//console.log(broadcast([],[1,1])) // 报错说明是正确的
+//console.log(broadcast([],[[1]]))
+// []      (0) => []      (0) => [[]]  (1,0)
+// [[1]] (1,1) => [[]]  (1,0) => [[]]  (1,0)
+
+//console.log(broadcast([],[[1],[1]]))
+// []          (0) => []         (0) => [[]]     (1,0) => [[],[]]  (2,0)
+// [[1],[1]] (2,1) => [[],[]]  (2,0) => [[],[]]  (2,0) => [[],[]]  (2,0)
+
+//console.log(broadcast([], [1]))
+// [] (0) => [] (0)
+// [1](1) => [] (0)
