@@ -730,7 +730,15 @@ var a2 = reshape(arange(1, 7), [2, 3, 1]) //a2=np.arange(1,7).reshape(2,3,1)
 //indexing(a,[[[False,False,True],[True,False,False]],slice(None),[1,2],1])
 
 //indexing(a,[[[False,False,True],[True,False,False]],slice(None),[1,2]])
-indexing(a,[[[False,False,True],[True,False,False]],[1,2]])
+//indexing(a,[[[False,False,True],[True,False,False]],[1,2]])
+
+//indexing(a,[slice(None),[],slice(None),[]])
+//indexing(a,[slice(None),[],[],slice(None),[]])
+//indexing(a,[slice(None),[],slice(None),[],[]])
+//indexing(a,[slice(None),[],slice(None),slice(None),[]])
+//indexing(a,[slice(None),slice(None),[],slice(None),[]])
+//indexing(a,[[],slice(None),[],slice(None),[]])
+//indexing(a,[slice(None),slice(None),[],[],slice(None)])
 //如上这些没有报错的例子，可能也会报错，可能会报无法广播的错误。这里先不考虑广播报错，这里仅思考索引元组是否符合规则。
 
 
@@ -776,19 +784,65 @@ function integerArrayIndexing(arr, indexingTuple, value) {
             shapeArrToItem[i] = [item]; //索引元素是整数，所以这里把整数转换成数组
         }
     }
-    printArr(arr, [], (res) => {
-        //打印矩阵里的每一个元素
-        console.log(res.index, res.value)
-    })
-    console.log('arrShape：', arrShape)
-    console.log("shapeArrToItem：", shapeArrToItem);
     /*
     匹配形状数组里元素(被索引数组的每个维度) 所对应的索引元素 end
     */
 
-    console.log("broadcast：",broadcast([[1],[1]],[]))
-    
-    
+    // printArr(arr, [], (res) => {
+    //     //打印矩阵里的每一个元素
+    //     console.log(res.index, res.value)
+    // })
+    console.log('arrShape：', arrShape)
+    console.log("shapeArrToItem：", shapeArrToItem);
+
+    let isTranspose = false;//是否需要transpose
+    let isTransposeArr = [];
+    for (let index in shapeArrToItem) {
+        let item = shapeArrToItem[index];
+        if (index >= 1) {
+            //从数组下标1开始找，找 [数组,slice(None,None,None),数组] 这个结构
+            if (isTransposeArr.length == 0) {
+                //isTransposeArr长度是0时，需要一个数组
+                if (Array.isArray(item)) {
+                    isTransposeArr.push(index)
+                }
+            }
+            if (isTransposeArr.length == 1) {
+                //isTransposeArr长度是1时，需要一个slice(None,None,None)
+                if (item == 'slice(None,None,None)') {
+                    isTransposeArr.push(index)
+                }
+            }
+            if (isTransposeArr.length == 2) {
+                //isTransposeArr长度是2时，需要一个数组
+                if (Array.isArray(item)) {
+                    isTransposeArr.push(index)
+                }
+            }
+        }
+    }
+    if (shapeArrToItem[0] == 'slice(None,None,None)' && isTransposeArr.length == 3) {
+        isTranspose = true;
+        console.log('需要transpose');
+    }
+
+    //广播索引元组里的数组
+    let arrNum = 0;//数组数量
+    let arrIndexArr = [];//存放索引元素是数组的下标
+    for (let index in shapeArrToItem) {
+        let item = shapeArrToItem[index];
+        if(Array.isArray(item)){
+            arrNum++;
+            arrIndexArr.push(index);
+        }
+    }
+
+    // 改造广播方法，现在广播方法只支持两数组的广播。要改造成支持多个数组一块广播的的功能。
+
+
+
+
+
 
 
 

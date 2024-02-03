@@ -17,7 +17,8 @@ var printArr = Common.printArr;
 第三步，返回被处理好的数据
 */
 
-function broadcast(a1, a2) {
+//广播旧方法。只支持两个数组广播。这个旧方法不删除。保留用于后面回忆编写广播方法时使用。
+function broadcastOld(a1, a2) {
 
     var arr1 = a1;
     var arr2 = a2;
@@ -193,6 +194,12 @@ function printArr3(arr, indexArr, shapeIndex) {
     }
 }
 
+
+//广播新方法。支持多个数组广播。
+function broadcast(arr) {
+    
+    return []
+}
 exports.broadcast = broadcast;
 
 // let test1 = [

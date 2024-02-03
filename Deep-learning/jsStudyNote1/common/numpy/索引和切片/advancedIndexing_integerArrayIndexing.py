@@ -290,7 +290,7 @@ a[0,1,:,4].shape                                                                
 a[:,[1,2,0],:,[4,3,1]].shape                                                   (3,2,4)
 '''
 
-# 注意，如下这个例子，开始变的和预想的不一样了，这个例子也用到了.transpose()
+# 注意，如下这个例子，用到了.transpose()
 print(a[:,[[1]],:,[[2]]].shape) # (1, 1, 2, 4)
 '''
 [:,1,:,2]
@@ -361,6 +361,7 @@ b[0,1,:,2].shape                                                                
 b[[0,1],[1,2],:,[2,3]].shape                                                 (2,    4,6)
 '''
 
+# 注意，如下这个例子，用到了.transpose()
 print(b[:,[0,2,1,1,0],:,[1,2,0,3,1],[2,3,5,1,4]]) # (5, 2, 4)
 '''
 [:,0,:,1,2]
@@ -406,6 +407,7 @@ b[0,0,:,1,2].shape                                                              
 
 c=np.arange(2*3*4*5*6*7).reshape(2,3,4,5,6,7)
 
+# 注意，如下这个例子，用到了.transpose()
 print(c[:,:,[[1]],:,[[2]],[[3]]]) # (1, 1, 2, 3, 5)
 '''
 [:,:,1,:,2,3]
@@ -507,7 +509,33 @@ c[:,:,[[1]],[[2]],[[3]]].shape                                                  
 # a[:,[[1,2],[2,0]],None,1] == a[:,[[1,2],[2,0]],None,[[1,1],[1,1]]]
 
 # 空数组 与 广播 出现的特殊情况
-# a[:,[],[]]         array([], shape=(2, 0, 5), dtype=int32)
+# a[[]]                     array([], shape=(0, 3, 4, 5), dtype=int32)
+# a[[],[]]                  array([], shape=(0, 4, 5), dtype=int32)
+# a[[],[],[]]               array([], shape=(0, 5), dtype=int32)
+# a[[],[],[],[]]            array([], dtype=int32)
+#
+# a[[[[]]]]                 array([], shape=(1, 1, 0, 3, 4, 5), dtype=int32)
+# a[[[[]]],[[[]]]]          array([], shape=(1, 1, 0, 4, 5), dtype=int32)
+# a[[[[]]],[[[]]],[]]       array([], shape=(1, 1, 0, 5), dtype=int32)
+# a[[[[]]],[[[]]],[],[]]    array([], shape=(1, 1, 0), dtype=int32)
+#
+# a[:,[]]                   array([], shape=(2, 0, 4, 5), dtype=int32)
+# a[:,[],[]]                array([], shape=(2, 0, 5), dtype=int32)
+# a[:,[],[],[]]             array([], shape=(2, 0), dtype=int32)
+#
+# a[:,[[[]]]]               array([], shape=(2, 1, 1, 0, 4, 5), dtype=int32)
+# a[:,[[[]]],[]]            array([], shape=(2, 1, 1, 0, 5), dtype=int32)
+# a[:,[[[]]],[],[]]         array([], shape=(2, 1, 1, 0), dtype=int32)
+#
+# a[:,[],:,[]]              array([], shape=(0, 2, 4), dtype=int32)
+#
+# b[:,[],:,[],:]            array([], shape=(0, 2, 4, 6), dtype=int32)
+# b[:,[],:,[],[]]           array([], shape=(0, 2, 4), dtype=int32)
+#
+# b[:,[[[]]],:,[]]          array([], shape=(1, 1, 0, 2, 4, 6), dtype=int32)
+#
+# b[:,[[[]]],:,[[1],[1]]]   array([], shape=(1, 2, 0, 2, 4, 6), dtype=int32)
+#
 # a[:,[],[1]]        array([], shape=(2, 0, 5), dtype=int32)
 # a[:,[],[1,2]]      报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (0,) (2,)
 # a[:,[],[1],[1,1]]  报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (0,) (1,) (2,)
