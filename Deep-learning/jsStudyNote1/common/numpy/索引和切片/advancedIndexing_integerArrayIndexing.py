@@ -541,3 +541,9 @@ c[:,:,[[1]],[[2]],[[3]]].shape                                                  
 # a[:,[],[1],[1,1]]  报错：IndexError: shape mismatch: indexing arrays could not be broadcast together with shapes (0,) (1,) (2,)
 # a[:,[],[[1]]]      array([], shape=(2, 1, 0, 5), dtype=int32)
 # a[:,[],[[0],[1]]]  array([], shape=(2, 2, 0, 5), dtype=int32)
+
+# 关于赋值与广播
+e=np.arange(5*5).reshape(5,5)
+# e[slice(1,2),:] # [[5, 6, 7, 8, 9]] (1, 5)
+# e[slice(1,2),:] = [[30],[40],[50],[60],[70]] # 报错 ValueError: could not broadcast input array from shape (5,1) into shape (1,5)
+# np.array([[1],[1],[1],[1],[1]])+np.array([[2,2,2,2,2]]) => (5, 5) 注意赋值广播 和 运算广播 有点区别

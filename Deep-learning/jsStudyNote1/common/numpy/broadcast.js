@@ -195,10 +195,149 @@ function printArr3(arr, indexArr, shapeIndex) {
 }
 
 
-//广播新方法。支持多个数组广播。
+//广播新方法。支持多个数组广播。（来自broadcastOld的改装）
 function broadcast(arr) {
-    
-    return []
+    var arrList = arr || [];
+    if (arrList.length <= 1) {
+        throw new Error(`broadcast:error ${arrList.length}个数组，无法使用广播功能`);
+    }
+
+    //第一步、检查数组们是否支持广播机制
+
+    let arrShapeList = [];
+    for (let i = 0; i < arrList.length; i++) {
+        let itemShape = shape(arrList[i])
+        arrShapeList.push(itemShape)
+    }
+
+    let arrShapeReverseList = [];
+    for (let i = 0; i < arrShapeList.length; i++) {
+        let itemShape = JSON.parse(JSON.stringify(arrShapeList[i]))
+        arrShapeReverseList.push(itemShape.reverse())
+    }
+
+    let maxShapeLen = 0;
+    for (let i = 0; i < arrShapeReverseList.length; i++) {
+        if (arrShapeReverseList[i].length > maxShapeLen) {
+            maxShapeLen = arrShapeReverseList[i].length;
+        }
+    }
+
+    for (let i = 0; i < maxShapeLen; i++) {
+        let valueList = [1];//默认放一个 数字1
+        for (let j = 0; j < arrShapeReverseList.length; j++) {
+            let itemValue = arrShapeReverseList[j][i];
+            if (typeof (itemValue) == "undefined") {
+                itemValue = 1;
+            };
+            if (valueList.indexOf(itemValue) == -1) {
+                valueList.push(itemValue)
+            }
+        }
+        //这里valueList里最多只能存在两个数字，一个是 数字1，另一个不是 数字1 的数字。如果包含的数字有三个及以上，则说明，无法广播。 
+        if (valueList.length >= 3) {
+            let errorStr = ''
+            for (let j = 0; j < arrShapeList.length; j++) {
+                errorStr += `(${arrShapeList[j].join()}) `
+            }
+            throw new Error(`broadcast:error ${errorStr}无法使用广播机制！`);
+        }
+    }
+
+
+    //第二步、处理广播
+    let isLoop = true;//是否可以循环
+    while (isLoop) {
+        arrShapeList = [];
+        for (let i = 0; i < arrList.length; i++) {
+            arrShapeList.push(shape(arrList[i]))
+        }
+
+        let shapeValueList = [];
+        for (let i = 0; i < arrShapeList.length; i++) {
+            if (shapeValueList.indexOf(arrShapeList[i].join()) == -1) {
+                shapeValueList.push(arrShapeList[i].join())
+            }
+        }
+
+        if (shapeValueList.length == 1) {
+
+            //数据处理完毕，关闭循环
+            isLoop = false;
+            //返回处理好的数据
+            return arrList;
+
+        } else {
+
+            arrShapeReverseList = [];
+            for (let i = 0; i < arrShapeList.length; i++) {
+                let itemShape = JSON.parse(JSON.stringify(arrShapeList[i]))
+                arrShapeReverseList.push(itemShape.reverse())
+            }
+
+            let maxShapeLen = 0;
+            for (let i = 0; i < arrShapeReverseList.length; i++) {
+                if (arrShapeReverseList[i].length > maxShapeLen) {
+                    maxShapeLen = arrShapeReverseList[i].length;
+                }
+            }
+
+            for (let i = 0; i < maxShapeLen; i++) {
+
+                let valueList = [];
+                for (let j = 0; j < arrShapeReverseList.length; j++) {
+                    let itemValue = arrShapeReverseList[j][i];
+                    if (typeof (itemValue) == "undefined") {
+                        itemValue = -2;//老版本里是-1，这里为了和下边indexOf思维上不冲突，改成了 -2
+                    }
+                    if (valueList.indexOf(itemValue) == -1) {
+                        valueList.push(itemValue);
+                    }
+                }
+
+                //这里valueList的长度不是1，说明这个数组们，该维度尺寸不一样，需要处理
+                if (valueList.length > 1) {
+                    let isParentBreak = false;
+                    for (let j = 0; j < arrShapeReverseList.length; j++) {
+                        let itemValue = arrShapeReverseList[j][i];
+                        if (typeof (itemValue) == "undefined") {
+                            itemValue = -2;//老版本里是-1，这里为了和下边indexOf不冲突，改成-2
+                        }
+
+                        if (valueList.indexOf(-2) != -1 && itemValue != -2) {
+                            continue;
+                        }
+
+                        if (itemValue == -2) {
+                            arrList[j] = addDim(arrList[j])
+                            isParentBreak = true;
+                            break;
+                        } else if (itemValue == 1) {
+                            let shapeIndex = (arrShapeList[j].length - 1) - i;
+                            let targetSize = -3;//这里写 -3 是怕和上边的 -1 -2 思维上出现冲突
+                            for (let k = 0; k < valueList.length; k++) {
+                                if (valueList[k] != -2 && valueList[k] != 1) {
+                                    targetSize = valueList[k];
+                                }
+                            }
+                            if (targetSize == 0) {
+                                printArr3(arrList[j], [], shapeIndex);
+                                isParentBreak = true;
+                                break;
+                            } else {
+                                printArr2(arrList[j], [], shapeIndex, targetSize);
+                                isParentBreak = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (isParentBreak) {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 exports.broadcast = broadcast;
 
@@ -332,7 +471,7 @@ exports.broadcast = broadcast;
 // let b1 = [1, 2, 3]
 // console.log('before：shape(a1)',shape(a1))
 // console.log('before：shape(b1)',shape(b1))
-// let res1 = broadcast(a1,b1)
+// let res1 = broadcast([a1,b1])
 // console.log('after：a1',res1[0]);
 // console.log('after：b1',res1[1]);
 // console.log('after：shape(a1)',shape(res1[0]))
@@ -367,7 +506,7 @@ exports.broadcast = broadcast;
 // ]
 // console.log('before：shape(a2)',shape(a2))
 // console.log('before：shape(b2)',shape(b2))
-// let res2 = broadcast(a2,b2)
+// let res2 = broadcast([a2,b2])
 // console.log('after：a2',res2[0]);
 // console.log('after：b2',res2[1]);
 // console.log('after：shape(a2)',shape(res2[0]))
@@ -407,7 +546,7 @@ exports.broadcast = broadcast;
 //         [16, 17, 18]
 //     ]
 // ]
-// broadcast(a3,b3) //抛错了，所以是正常的
+// broadcast([a3,b3]) //抛错了，所以是正常的
 
 // let a4 = [
 //     [
@@ -439,7 +578,7 @@ exports.broadcast = broadcast;
 // ]
 // console.log('before：shape(a4)',shape(a4))
 // console.log('before：shape(b4)',shape(b4))
-// let res4 = broadcast(a4,b4)
+// let res4 = broadcast([a4,b4])
 // console.log('after：a4',res4[0]);
 // console.log('after：b4',res4[1]);
 // console.log('after：shape(a4)',shape(res4[0]))
@@ -453,7 +592,7 @@ exports.broadcast = broadcast;
 // let b5 = [0, 1, 2]
 // console.log('before：shape(a5)',shape(a5))
 // console.log('before：shape(b5)',shape(b5))
-// let res5 = broadcast(a5,b5)
+// let res5 = broadcast([a5,b5])
 // console.log('after：a5',res5[0]);
 // console.log('after：b5',res5[1]);
 // console.log('after：shape(a5)',shape(res5[0]))
@@ -463,7 +602,7 @@ exports.broadcast = broadcast;
 // let b6 = [1]
 // console.log('before：shape(a6)',shape(a6))
 // console.log('before：shape(b6)',shape(b6))
-// let res6 = broadcast(a6,b6)
+// let res6 = broadcast([a6,b6])
 // console.log('after：a6',res6[0]);
 // console.log('after：b6',res6[1]);
 // console.log('after：shape(a6)',shape(res6[0]))
@@ -484,7 +623,7 @@ exports.broadcast = broadcast;
 // ]
 // console.log('before：shape(a7)', shape(a7))
 // console.log('before：shape(b7)', shape(b7))
-// let res7 = broadcast(a7, b7)
+// let res7 = broadcast([a7, b7])
 // console.log('after：a7', JSON.stringify(res7[0]));
 // console.log('after：b7', JSON.stringify(res7[1]));
 // console.log('after：shape(a7)', shape(res7[0]))
@@ -533,7 +672,7 @@ exports.broadcast = broadcast;
 // ]
 // console.log('before：shape(a8)', shape(a8))
 // console.log('before：shape(b8)', shape(b8))
-// let res8 = broadcast(a8, b8)
+// let res8 = broadcast([a8, b8])
 // console.log('after：a8', JSON.stringify(res8[0]));
 // console.log('after：b8', JSON.stringify(res8[1]));
 // console.log('after：shape(a8)', shape(res8[0]))
@@ -573,20 +712,47 @@ exports.broadcast = broadcast;
 
 // let a9 = [1, 2, 3]
 // let b9 = [2, 2]
-// console.log(broadcast(a9, b9))
-// 报错说明是正确的
+// console.log(broadcast([a9, b9])) // 报错说明是正确的
+
+// let a10 = [[1, 2, 3]]
+// let b10 = [1]
+// console.log(broadcast([a10, b10]))
+
+// let a11 = [1]
+// let b11 = [[1], [2], [3]]
+// let c11 = [4]
+// console.log(broadcast([a11, b11, c11]))
+
+// let a11 = [1]
+// let b11 = [[1], [2], [3]]
+// let c11 = [4,5,6]
+// console.log(broadcast([a11, b11, c11]))
 
 //-------------------------------------
 
-//console.log(broadcast([],[1,1])) // 报错说明是正确的
-//console.log(broadcast([],[[1]]))
+// console.log(broadcast([[],[1,1]])) // 报错说明是正确的
+// console.log(broadcast([[],[[1]]]))
 // []      (0) => []      (0) => [[]]  (1,0)
 // [[1]] (1,1) => [[]]  (1,0) => [[]]  (1,0)
 
-//console.log(broadcast([],[[1],[1]]))
+// console.log(broadcast([[],[[1],[1]]]))
 // []          (0) => []         (0) => [[]]     (1,0) => [[],[]]  (2,0)
 // [[1],[1]] (2,1) => [[],[]]  (2,0) => [[],[]]  (2,0) => [[],[]]  (2,0)
 
-//console.log(broadcast([], [1]))
+// console.log(broadcast([[], [1]]))
 // [] (0) => [] (0)
 // [1](1) => [] (0)
+
+
+
+// for(let i=0;i<5;i++){
+//     console.log("---------i：",i)
+//     for(let j=0;j<5;j++){
+//         console.log("j：",j)
+//         if(i==2&&j==2){
+//             break;
+//             break;
+//         }
+//     }
+// }
+// console.log('哈哈哈');
