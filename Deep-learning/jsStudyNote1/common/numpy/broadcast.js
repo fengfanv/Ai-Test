@@ -31,20 +31,19 @@ function broadcastOld(a1, a2) {
     let arr2ShapeReverse = arr2Shape.reverse();
     let len = arr1ShapeReverse.length > arr2ShapeReverse.length ? arr1ShapeReverse.length : arr2ShapeReverse.length;
     for (let i = 0; i < len; i++) {
-        let arr1Item = arr1ShapeReverse[i] || 1;
-        let arr2Item = arr2ShapeReverse[i] || 1;
+        let arr1Item = arr1ShapeReverse[i];
+        if (typeof (arr1ShapeReverse[i]) == "undefined") {
+            arr1Item = 1;
+        }
+        let arr2Item = arr2ShapeReverse[i];
+        if (typeof (arr2ShapeReverse[i]) == "undefined") {
+            arr2Item = 1;
+        }
         if (arr1Item != arr2Item) {
             if (arr1Item != 1 && arr2Item != 1) {
                 //意思是：当arr1Item、arr2Item这俩都不是1时，就“执行”这里
                 //意思是：当arr1Item、arr2Item这俩有一方是1时，就“不执行”这里
                 throw new Error('broadcast:error arr1 与 arr2 无法使用广播机制！');
-            }
-            //如下这里，是为了兼容(空数组、数组某一维度是0)的特殊情况
-            //如下这里，是为了修复因为(0||1=>1)而出现的bug，导致上边arr1Item或arr2Item这俩其实有一方是0，但因为(0||1=>1)的原因，导致上边(arr1Item != 1 && arr2Item != 1)没有执行
-            if (arr1ShapeReverse[i] == 0 || arr2ShapeReverse[i] == 0) {
-                if (arr1ShapeReverse[i] != 1 && arr2ShapeReverse[i] != 1) {
-                    throw new Error('broadcast:error arr1 与 arr2 无法使用广播机制!!!');
-                }
             }
         }
     }
@@ -89,24 +88,17 @@ function broadcastOld(a1, a2) {
             let arr2ShapeReverse = arr2Shape.reverse();
             let len = arr1ShapeReverse.length > arr2ShapeReverse.length ? arr1ShapeReverse.length : arr2ShapeReverse.length;
             for (let i = 0; i < len; i++) {
-                let arr1Item = arr1ShapeReverse[i] || -1;
-                let arr2Item = arr2ShapeReverse[i] || -1;
+                let arr1Item = arr1ShapeReverse[i];
+                if (typeof (arr1Item) == 'undefined') {
+                    arr1Item = -1;
+                }
+                let arr2Item = arr2ShapeReverse[i];
+                if (typeof (arr2Item) == 'undefined') {
+                    arr2Item = -1;
+                }
+
                 if (arr1Item != arr2Item) {
-                    if (arr1ShapeReverse[i] == 0 || arr2ShapeReverse[i] == 0) {
-                        //如下这里，是为了兼容(空数组、数组某一维度是0)的特殊情况
-                        //这里是为了完善上边(0||-1=>-1)的问题
-                        if (arr1ShapeReverse[i] == 0) {
-                            let shapeIndex = (arr2Shape.length - 1) - i;
-                            printArr3(arr2, [], shapeIndex);
-                            break;
-                        }
-                        if (arr2ShapeReverse[i] == 0) {
-                            let shapeIndex = (arr1Shape.length - 1) - i;
-                            printArr3(arr1, [], shapeIndex);
-                            break;
-                        }
-                    }
-                    //如下这里才是，广播的主逻辑。如上 仅是兼容(空数组、数组某一维度是0)的特殊情况，不是主逻辑，是漏洞修复，不用细究。
+
                     //判断是不是，维度维度缺失
                     if (arr1Item == -1) {
                         arr1 = addDim(arr1);
@@ -118,11 +110,19 @@ function broadcastOld(a1, a2) {
                     //判断那方是1
                     if (arr1Item == 1) {
                         let shapeIndex = (arr1Shape.length - 1) - i;
-                        printArr2(arr1, [], shapeIndex, arr2Item);
+                        if (arr2Item == 0) {
+                            printArr3(arr1, [], shapeIndex);
+                        } else {
+                            printArr2(arr1, [], shapeIndex, arr2Item);
+                        }
                         break;
                     } else if (arr2Item == 1) {
                         let shapeIndex = (arr2Shape.length - 1) - i;
-                        printArr2(arr2, [], shapeIndex, arr1Item);
+                        if (arr1Item == 0) {
+                            printArr3(arr2, [], shapeIndex);
+                        } else {
+                            printArr2(arr2, [], shapeIndex, arr1Item);
+                        }
                         break;
                     }
                 }
@@ -183,7 +183,7 @@ function printArr3(arr, indexArr, shapeIndex) {
         let newIndexArr = JSON.parse(JSON.stringify(indexArr));
         newIndexArr.push(i);
         if (shapeIndex == newIndexArr.length - 1) {
-            arr.splice(arrLen-1-i, 1); //这个(arrLen-1-i)这样写，是因为，每删除一个数组元素，数组的长度就会减少。直接写(i)，数据删不干净。
+            arr.splice(arrLen - 1 - i, 1); //这个(arrLen-1-i)这样写，是因为，每删除一个数组元素，数组的长度就会减少。直接写(i)，数据删不干净。
         } else {
             if (Array.isArray(item)) {
                 printArr3(item, newIndexArr, shapeIndex);
@@ -471,6 +471,7 @@ exports.broadcast = broadcast;
 // let b1 = [1, 2, 3]
 // console.log('before：shape(a1)',shape(a1))
 // console.log('before：shape(b1)',shape(b1))
+// console.log(broadcastOld(a1,b1));
 // let res1 = broadcast([a1,b1])
 // console.log('after：a1',res1[0]);
 // console.log('after：b1',res1[1]);
@@ -506,6 +507,8 @@ exports.broadcast = broadcast;
 // ]
 // console.log('before：shape(a2)',shape(a2))
 // console.log('before：shape(b2)',shape(b2))
+// console.log(broadcastOld(a2,b2)[0]);
+// console.log(broadcastOld(a2,b2)[1]);
 // let res2 = broadcast([a2,b2])
 // console.log('after：a2',res2[0]);
 // console.log('after：b2',res2[1]);
@@ -546,6 +549,7 @@ exports.broadcast = broadcast;
 //         [16, 17, 18]
 //     ]
 // ]
+// broadcastOld(a3,b3) //抛错了，所以是正常的
 // broadcast([a3,b3]) //抛错了，所以是正常的
 
 // let a4 = [
@@ -578,6 +582,8 @@ exports.broadcast = broadcast;
 // ]
 // console.log('before：shape(a4)',shape(a4))
 // console.log('before：shape(b4)',shape(b4))
+// console.log(broadcastOld(a4,b4)[0]);
+// console.log(broadcastOld(a4,b4)[1]);
 // let res4 = broadcast([a4,b4])
 // console.log('after：a4',res4[0]);
 // console.log('after：b4',res4[1]);
@@ -592,6 +598,7 @@ exports.broadcast = broadcast;
 // let b5 = [0, 1, 2]
 // console.log('before：shape(a5)',shape(a5))
 // console.log('before：shape(b5)',shape(b5))
+// console.log(broadcastOld(a5,b5));
 // let res5 = broadcast([a5,b5])
 // console.log('after：a5',res5[0]);
 // console.log('after：b5',res5[1]);
@@ -602,6 +609,7 @@ exports.broadcast = broadcast;
 // let b6 = [1]
 // console.log('before：shape(a6)',shape(a6))
 // console.log('before：shape(b6)',shape(b6))
+// console.log(broadcastOld(a6,b6));
 // let res6 = broadcast([a6,b6])
 // console.log('after：a6',res6[0]);
 // console.log('after：b6',res6[1]);
@@ -623,6 +631,8 @@ exports.broadcast = broadcast;
 // ]
 // console.log('before：shape(a7)', shape(a7))
 // console.log('before：shape(b7)', shape(b7))
+// console.log(JSON.stringify(broadcastOld(a7,b7)[0]))
+// console.log(JSON.stringify(broadcastOld(a7,b7)[1]))
 // let res7 = broadcast([a7, b7])
 // console.log('after：a7', JSON.stringify(res7[0]));
 // console.log('after：b7', JSON.stringify(res7[1]));
@@ -672,6 +682,8 @@ exports.broadcast = broadcast;
 // ]
 // console.log('before：shape(a8)', shape(a8))
 // console.log('before：shape(b8)', shape(b8))
+// console.log(JSON.stringify(broadcastOld(a8,b8)[0]));
+// console.log(JSON.stringify(broadcastOld(a8,b8)[1]));
 // let res8 = broadcast([a8, b8])
 // console.log('after：a8', JSON.stringify(res8[0]));
 // console.log('after：b8', JSON.stringify(res8[1]));
@@ -712,10 +724,12 @@ exports.broadcast = broadcast;
 
 // let a9 = [1, 2, 3]
 // let b9 = [2, 2]
+// console.log(broadcastOld(a9,b9)) // 报错说明是正确的
 // console.log(broadcast([a9, b9])) // 报错说明是正确的
 
 // let a10 = [[1, 2, 3]]
 // let b10 = [1]
+// console.log(broadcastOld(a10, b10));
 // console.log(broadcast([a10, b10]))
 
 // let a11 = [1]
@@ -730,15 +744,20 @@ exports.broadcast = broadcast;
 
 //-------------------------------------
 
+// console.log(broadcastOld([],[1,1])) // 报错说明是正确的
 // console.log(broadcast([[],[1,1]])) // 报错说明是正确的
+
+// console.log(broadcastOld([],[[1]]))
 // console.log(broadcast([[],[[1]]]))
 // []      (0) => []      (0) => [[]]  (1,0)
 // [[1]] (1,1) => [[]]  (1,0) => [[]]  (1,0)
 
+// console.log(broadcastOld([],[[1],[1]]))
 // console.log(broadcast([[],[[1],[1]]]))
 // []          (0) => []         (0) => [[]]     (1,0) => [[],[]]  (2,0)
 // [[1],[1]] (2,1) => [[],[]]  (2,0) => [[],[]]  (2,0) => [[],[]]  (2,0)
 
+// console.log(broadcastOld([], [1]))
 // console.log(broadcast([[], [1]]))
 // [] (0) => [] (0)
 // [1](1) => [] (0)
