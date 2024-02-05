@@ -724,7 +724,7 @@ var a2 = reshape(arange(1, 7), [2, 3, 1]) //a2=np.arange(1,7).reshape(2,3,1)
 //indexing(a,[[True,False],None])
 //indexing(a,[[True,False,False],None]) // 报错了，但是正确的
 //indexing(a,[[[False,False,True],[True,False,False]],None,slice(None),[True,True,True,True]]) //报错了，但是正确的
-//indexing(a,[[[False,False,True],[True,False,False]],None,slice(None),[True,True,True,True,False]])
+//indexing(a,[[[False,False,True],[True,False,False]],None,slice(None),[True,True,True,True,False]]) //(符合索引元组规则，但广播时会报错)
 //indexing(a, [[[False, False, True], [True, False, False]], None, slice(None), [[[False]]]]) //报错了，但是正确的
 //indexing(a, [[[False, False, False], [False, False, False]], None, slice(None)])
 //indexing(a,[[[False,False,True],[True,False,False]],slice(None),[1,2],1])
@@ -739,6 +739,11 @@ var a2 = reshape(arange(1, 7), [2, 3, 1]) //a2=np.arange(1,7).reshape(2,3,1)
 //indexing(a,[slice(None),slice(None),[],slice(None),[]])
 //indexing(a,[[],slice(None),[],slice(None),[]])
 //indexing(a,[slice(None),slice(None),[],[],slice(None)])
+
+//indexing(a, [[]])
+//indexing(a, [slice(None),[[[]]],slice(None),[]])
+//indexing(a,[slice(None),[],[[0],[1]]])
+
 //如上这些没有报错的例子，可能也会报错，可能会报无法广播的错误。这里先不考虑广播报错，这里仅思考索引元组是否符合规则。
 
 
@@ -827,17 +832,30 @@ function integerArrayIndexing(arr, indexingTuple, value) {
     }
 
     //广播索引元组里的数组
-    let arrNum = 0;//数组数量
-    let arrIndexArr = [];//存放索引元素是数组的下标
+    let arrInArr = [];//存放索引元素的数组
     for (let index in shapeArrToItem) {
         let item = shapeArrToItem[index];
-        if(Array.isArray(item)){
-            arrNum++;
-            arrIndexArr.push(index);
+        if (Array.isArray(item)) {
+            arrInArr.push(item);
         }
     }
+    console.log('before-broadcast-shapeArrToItem：', shapeArrToItem);
+    if (arrInArr.length > 1) {
+        let broadcastResult = broadcast(arrInArr);
+        let arrCount = -1;
+        for (let index in shapeArrToItem) {
+            let item = shapeArrToItem[index];
+            if (Array.isArray(item)) {
+                arrCount++;
+                shapeArrToItem[index] = broadcastResult[arrCount];
+            }
+        }
+    }
+    console.log('after-broadcast-shapeArrToItem：', shapeArrToItem);
 
-    // 改造广播方法，现在广播方法只支持两数组的广播。要改造成支持多个数组一块广播的的功能。
+    //推算索引结果形状。。。。。
+
+
 
 
 
