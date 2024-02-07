@@ -938,7 +938,19 @@ function integerArrayIndexing(arr, indexingTuple, value) {
     }
     console.log(`isTranspose：${isTranspose} resultShapeArr：(${resultShapeArr.flat().join()}) => newResultShapeArr：(${newResultShapeArr.flat().join()})`);
 
-
+    //获取索引结果数据
+    let resultDataArr = [
+        // {
+        //     "originalIndex":[1,2,3,1,1,1], //数据原始的坐标
+        //     "index":[1,2,3,1,1,1],         //数据现在的坐标
+        //     "value":10                     //数据值
+        // },
+        // ...
+    ];
+    if(zeroInAfterBroadcastShape == false){
+        //索引结果 有数据，需要获取数据
+        
+    }
 
 
 
