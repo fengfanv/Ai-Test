@@ -17,7 +17,7 @@ var reshape = Reshape.reshape;
 /*
 索引和切片
 
-编写顺序：
+研究顺序：
 基本索引
 高级索引整数数组索引
 高级索引布尔数组索引
@@ -727,7 +727,7 @@ var a2 = reshape(arange(1, 7), [2, 3, 1]) //a2=np.arange(1,7).reshape(2,3,1)
 
 // ------------------------------------------
 
-indexing(a,[[[False,False,True],[True,False,False]],None])
+//indexing(a,[[[False,False,True],[True,False,False]],None])
 //indexing(a,[None,[[False,False,True],[True,False,False]],None])
 //indexing(a,[None,slice(None),[[False,False,True],[True,False,False]],None]) // 报错了，但是正确的
 //indexing(a,[[[False,False,True,True],[True,False,False,True]],None]) // 报错了，但是正确的
@@ -735,8 +735,8 @@ indexing(a,[[[False,False,True],[True,False,False]],None])
 //indexing(a,[[True,False,False],None]) // 报错了，但是正确的
 //indexing(a,[[[False,False,True],[True,False,False]],None,slice(None),[True,True,True,True]]) //报错了，但是正确的
 //indexing(a,[[[False,False,True],[True,False,False]],None,slice(None),[True,True,True,True,False]]) //(符合索引元组规则，但广播时会报错)
-//indexing(a, [[[False, False, True], [True, False, False]], None, slice(None), [[[False]]]]) //报错了，但是正确的
-//indexing(a, [[[False, False, False], [False, False, False]], None, slice(None)])
+//indexing(a,[[[False,False,True],[True,False,False]],None,slice(None),[[[False]]]]) //报错了，但是正确的
+//indexing(a,[[[False,False,False],[False,False,False]],None,slice(None)])
 //indexing(a,[[[False,False,True],[True,False,False]],slice(None),[1,2],1])
 
 //indexing(a,[[[False,False,True],[True,False,False]],slice(None),[1,2]])
@@ -751,9 +751,11 @@ indexing(a,[[[False,False,True],[True,False,False]],None])
 //indexing(a,[[],slice(None),[],slice(None),[]])
 //indexing(a,[slice(None),slice(None),[],[],slice(None)])
 
-//indexing(a, [[]])
-//indexing(a, [slice(None),[[[]]],slice(None),[]])
+//indexing(a,[[]])
+//indexing(a,[slice(None),[[[]]],slice(None),[]])
 //indexing(a,[slice(None),[],[[0],[1]]])
+//indexing(a1,[[]])
+//indexing(a1,[[1]])
 
 //如上这些没有报错的例子，可能也会报错，可能会报无法广播的错误。这里先不考虑广播报错，这里仅思考索引元组是否符合规则。
 
@@ -767,7 +769,7 @@ function integerArrayIndexing(arr, indexingTuple, value) {
     */
     /*
     整数数组索引处理的大概流程：
-    1、根据 arr和indexingTuple 推算出，索引结果的形状
+    1、根据 arr和indexingTuple 推算出，高级索引结果的形状
     2、获取索引结果里的数据(不用考虑形状)
     3、将获取的数据 转换成 索引结果的形状
     4、返回索引结果
@@ -776,9 +778,9 @@ function integerArrayIndexing(arr, indexingTuple, value) {
     let arrNdim = arrShape.length || 0;
     let indexingTupleArr = [].concat(indexingTuple);
     //因为索引元组已经被优化和补全过，所以这里，索引元组内，只存在 slice(None) 整数 数组 这三种类型的数据。
-    //因为索引元组已经被优化和补全过，所以这里，索引元组的长度和被索引数组维度一样长。（基本索引和高级索引相结合的情况除外）
+    //因为索引元组已经被优化和补全过，所以这里，索引元组的长度和被索引数组维度一样长。（基本索引和高级索引相结合的情况，会先将(原始被索引数组)，交给基本索引处理，基本索引结束后，再将基本索引的结果，交给高级索引处理。基本索引的结果交给高级索引时，基本索引结果的维度可能比(原始被索引数组)的维度多，这是正常的。基本索引结果的维度比(原始被索引数组)的维度多时，高级索引的索引元组的长度也是比(原始被索引数组)的维度多，这时高级索引的索引元组的长度和基本索引结果的维度一样长）
 
-    //预测结果形状
+    //预测高级索引结果的形状
     /*
     匹配形状数组里元素(被索引数组的每个维度) 所对应的索引元素 start
     */
@@ -805,14 +807,14 @@ function integerArrayIndexing(arr, indexingTuple, value) {
     */
 
     // printArr(arr, [], (res) => {
-    //     //打印矩阵里的每一个元素
+    //     //打印被索引数组里的每一个元素
     //     console.log(res.index, res.value)
     // })
     console.log('arrShape：', arrShape)
     console.log("shapeArrToItem：", shapeArrToItem);
 
-    let firstArrIndex = -1;//索引元组里，第一个数组的坐标
-    let isTranspose = false;//最终索引结果是否需要transpose
+    let firstArrIndex = -1;//索引元组里，第一个数组的坐标(或位置)
+    let isTranspose = false;//最终的索引结果是否需要transpose
     let isTransposeArr = [];
     for (let index in shapeArrToItem) {
         let item = shapeArrToItem[index];
@@ -846,7 +848,7 @@ function integerArrayIndexing(arr, indexingTuple, value) {
     }
 
     //广播索引元组里的数组
-    let needBroadcastArr = [];//存放需要被广播处理的索引元素 的数组
+    let needBroadcastArr = [];//存放 需要被广播处理的索引元素 的数组
     for (let index in shapeArrToItem) {
         let item = shapeArrToItem[index];
         if (Array.isArray(item)) {
@@ -872,9 +874,9 @@ function integerArrayIndexing(arr, indexingTuple, value) {
         afterBroadcastShape = shape(needBroadcastArr[0])
     }
     console.log("afterBroadcastShape：", afterBroadcastShape);
-    let zeroInArr = false;//是数组的索引元素，广播后的数组形状里，是否存在0
+    let zeroInAfterBroadcastShape = false;//是数组的索引元素，广播后的数组形状里，是否存在0
     if (afterBroadcastShape.indexOf(0) != -1) {
-        zeroInArr = true;
+        zeroInAfterBroadcastShape = true;
     }
     console.log('after-broadcast-shapeArrToItem：', shapeArrToItem);
 
@@ -888,10 +890,10 @@ function integerArrayIndexing(arr, indexingTuple, value) {
         }
     }
     console.log("resultFirstShape：", resultFirstShape);
-    //----
+
     let resultThirdShape = [];//索引结果形状，第三部分
-    if (zeroInArr) {
-        //索引结果形状里带有数字0
+    if (zeroInAfterBroadcastShape) {
+        //最终索引结果形状数组 里有数字0
         for (let index in shapeArrToItem) {
             let item = shapeArrToItem[index]
             if (item == "slice(None,None,None)" && index >= firstArrIndex) {
@@ -899,24 +901,21 @@ function integerArrayIndexing(arr, indexingTuple, value) {
             }
         }
     } else {
-        //索引结果形状里不带0
-        let getResultShapeIndexingTuple = []; // 获取 基本索引索引结果 的索引元组
+        //最终索引结果形状数组 里不带0
+        let getResultShapeIndexingTuple = []; // 获取 基本索引结果 的索引元组
         for (let index in shapeArrToItem) {
             let item = shapeArrToItem[index];
 
             if (index < firstArrIndex) {
                 getResultShapeIndexingTuple.push(0)
             } else if (Array.isArray(item)) {
-                let indexingTupleItemArr = item;
+                let indexingTupleItemArr = [];
                 if (shape(item).length > 1) {
                     indexingTupleItemArr = reshape(item, [-1])
+                }else{
+                    indexingTupleItemArr = item;
                 }
-                if (indexingTupleItemArr.length > 0) {
-                    getResultShapeIndexingTuple.push(indexingTupleItemArr[0])
-                } else {
-                    let itemShapeSize = arrShape[index]
-                    getResultShapeIndexingTuple.push(slice(itemShapeSize, itemShapeSize))
-                }
+                getResultShapeIndexingTuple.push(indexingTupleItemArr[0])
             } else if (item == "slice(None,None,None)") {
                 getResultShapeIndexingTuple.push(slice(None))
             }
@@ -929,7 +928,7 @@ function integerArrayIndexing(arr, indexingTuple, value) {
         }
     }
     console.log("resultThirdShape：", resultThirdShape);
-    //---
+    
     let resultShapeArr = [resultFirstShape, afterBroadcastShape, resultThirdShape]; //索引结果形状
     let newResultShapeArr = []; //索引结果形状2
     if (isTranspose) {
