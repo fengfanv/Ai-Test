@@ -619,10 +619,10 @@ function basicIndexing(arr, indexingTuple, value, debug) {
     /*将索引结果数据 整理成 索引结果形状 start*/
     if (debug) {
         console.log(`basicIndexing-resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
-        if(newResultShape.length == 0 && newResultDataArr.length==1){
+        if (newResultShape.length == 0 && newResultDataArr.length == 1) {
             //索引结果是一个 标量
             return newResultDataArr[0];
-        }else{
+        } else {
             //索引结果是一个 数组
             return reshape(newResultDataArr, newResultShape);
         }
@@ -912,7 +912,7 @@ function integerArrayIndexing(arr, indexingTuple, value) {
                 let indexingTupleItemArr = [];
                 if (shape(item).length > 1) {
                     indexingTupleItemArr = reshape(item, [-1])
-                }else{
+                } else {
                     indexingTupleItemArr = item;
                 }
                 getResultShapeIndexingTuple.push(indexingTupleItemArr[0])
@@ -921,14 +921,14 @@ function integerArrayIndexing(arr, indexingTuple, value) {
             }
         }
         let basicIndexingResultData = basicIndexing(arr, getResultShapeIndexingTuple, undefined, true)
-        if(Array.isArray(basicIndexingResultData)){
+        if (Array.isArray(basicIndexingResultData)) {
             resultThirdShape = shape(basicIndexingResultData)
-        }else{
+        } else {
             resultThirdShape = []
         }
     }
     console.log("resultThirdShape：", resultThirdShape);
-    
+
     let resultShapeArr = [resultFirstShape, afterBroadcastShape, resultThirdShape]; //索引结果形状
     let newResultShapeArr = []; //索引结果形状2
     if (isTranspose) {
@@ -947,12 +947,14 @@ function integerArrayIndexing(arr, indexingTuple, value) {
         // },
         // ...
     ];
-    if(zeroInAfterBroadcastShape == false){
+    if (zeroInAfterBroadcastShape == false) {
         //索引结果 有数据，需要获取数据
-        
+
+        if (firstArrIndex > 0) {
+            createArrList()
+        }
+
     }
-
-
 
 
 
@@ -1019,6 +1021,73 @@ function booleanArrayToIntegerArray(booleanArray) {
 // console.log(booleanArrayToIntegerArray([False,False,False])) // [ [] ]
 // console.log(booleanArrayToIntegerArray([True,False,False])) // [ [ 0 ] ]
 
+//如输入 shape=[2,3] => ([0,1],[0,1,2]) 可以生成如下这种数据 [[0,0],[0,1],[0,2],[1,0],[1,1],[1,2]]
+//编程思路参考了，二进制，逢二进一，八进制，逢八进一，十进制，逢十进一 的思路
+function createArrList(shape) {
+    if (typeof (shape) == 'undefined' || shape.indexOf(0) != -1 || shape.length == 0) {
+        return [];
+    }
+
+    let len = shape.length;
+    let list = [];
+    let index = [];
+    for (let i = 0; i < len; i++) {
+        index.push(0)
+    }
+
+    if (len > 1) {
+        shape[len - 1] = shape[len - 1] + 1;//注意这里
+    }
+
+    let isLoop = true;
+    while (isLoop) {
+        let item = [];
+        for (let i = 0; i < len; i++) {
+            item.push(index[i]);
+        }
+        list.push(item);
+
+        index[len - 1] = index[len - 1] + 1;
+
+        for (let i = 0; i < len; i++) {
+
+            let checkIndexArr = index.slice(i + 1, len);
+            let checkShapeArr = shape.slice(i + 1, len);
+            let checkStatusArr = [];
+            for (let j = 0; j < checkIndexArr.length; j++) {
+                if (checkIndexArr[j] >= checkShapeArr[j] - 1) {
+                    checkStatusArr.push(true)
+                }
+            }
+            if (checkIndexArr.length != 0 && checkIndexArr.length == checkStatusArr.length) {
+                index[i] = index[i] + 1;
+                for (let j = i + 1; j < len; j++) {
+                    index[j] = 0;
+                }
+            }
+        }
+        if (index[0] >= shape[0]) {
+            isLoop = false;
+            return list
+        }
+    }
+}
+// console.log(abc([2, 3]).length)
+// console.log(abc([2, 3]))
+// console.log(abc([2, 3, 4]).length)
+// console.log(abc([2, 3, 4]))
+// console.log(abc([2]).length)
+// console.log(abc([2]))
+// console.log(abc([1]).length)
+// console.log(abc([1]))
+// console.log(abc([0]).length)
+// console.log(abc([0]))
+// console.log(abc([0,1]).length)
+// console.log(abc([0,1]))
+// console.log(abc([]).length)
+// console.log(abc([]))
+// console.log(abc().length)
+// console.log(abc())
 
 
 
