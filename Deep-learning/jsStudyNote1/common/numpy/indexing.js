@@ -4,6 +4,7 @@ var arange = Main.arange;
 
 const Common = require('./common.js');
 var printArr = Common.printArr;
+var multiply = Common.multiply;
 
 const Broadcast = require('./broadcast.js')
 var broadcast = Broadcast.broadcast;
@@ -11,6 +12,8 @@ var broadcast = Broadcast.broadcast;
 const Reshape = require('./reshape.js');
 var reshape = Reshape.reshape;
 
+const Transpose = require('./transpose.js')
+var transpose = Transpose.transpose;
 
 
 
@@ -618,7 +621,7 @@ function basicIndexing(arr, indexingTuple, value, debug) {
 
     /*将索引结果数据 整理成 索引结果形状 start*/
     if (debug) {
-        console.log(`basicIndexing-resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
+        // console.log(`basicIndexing-resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
         if (newResultShape.length == 0 && newResultDataArr.length == 1) {
             //索引结果是一个 标量
             return newResultDataArr[0];
@@ -757,6 +760,9 @@ var a2 = reshape(arange(1, 7), [2, 3, 1]) //a2=np.arange(1,7).reshape(2,3,1)
 //indexing(a1,[[]])
 //indexing(a1,[[1]])
 
+//indexing(a,[None,None,None,[[1]],slice(None),[[1]]])
+//indexing(a,[None,slice(None),[[1,2]],slice(None),[[2,3]]])
+
 //如上这些没有报错的例子，可能也会报错，可能会报无法广播的错误。这里先不考虑广播报错，这里仅思考索引元组是否符合规则。
 
 
@@ -810,8 +816,8 @@ function integerArrayIndexing(arr, indexingTuple, value) {
     //     //打印被索引数组里的每一个元素
     //     console.log(res.index, res.value)
     // })
-    console.log('arrShape：', arrShape)
-    console.log("shapeArrToItem：", shapeArrToItem);
+    // console.log('arrShape：', arrShape)
+    // console.log("shapeArrToItem：", shapeArrToItem);
 
     let firstArrIndex = -1;//索引元组里，第一个数组的坐标(或位置)
     let isTranspose = false;//最终的索引结果是否需要transpose
@@ -855,7 +861,7 @@ function integerArrayIndexing(arr, indexingTuple, value) {
             needBroadcastArr.push(item);
         }
     }
-    console.log('before-broadcast-shapeArrToItem：', shapeArrToItem);
+    // console.log('before-broadcast-shapeArrToItem：', shapeArrToItem);
     let afterBroadcastShape = [];//是数组的索引元素，广播后的形状（兼职，索引结果形状，第二部分）
     if (needBroadcastArr.length > 1) {
         //索引元组里有，多个数组，需要广播处理
@@ -873,12 +879,12 @@ function integerArrayIndexing(arr, indexingTuple, value) {
         //索引元组里只有，一个数组，不需要广播
         afterBroadcastShape = shape(needBroadcastArr[0])
     }
-    console.log("afterBroadcastShape：", afterBroadcastShape);
+    // console.log("afterBroadcastShape：", afterBroadcastShape);
     let zeroInAfterBroadcastShape = false;//是数组的索引元素，广播后的数组形状里，是否存在0
     if (afterBroadcastShape.indexOf(0) != -1) {
         zeroInAfterBroadcastShape = true;
     }
-    console.log('after-broadcast-shapeArrToItem：', shapeArrToItem);
+    // console.log('after-broadcast-shapeArrToItem：', shapeArrToItem);
 
     let resultFirstShape = [];//索引结果形状，第一部分
     for (let index in shapeArrToItem) {
@@ -889,7 +895,7 @@ function integerArrayIndexing(arr, indexingTuple, value) {
             resultFirstShape.push(arrShape[index])
         }
     }
-    console.log("resultFirstShape：", resultFirstShape);
+    // console.log("resultFirstShape：", resultFirstShape);
 
     let resultThirdShape = [];//索引结果形状，第三部分
     if (zeroInAfterBroadcastShape) {
@@ -927,7 +933,7 @@ function integerArrayIndexing(arr, indexingTuple, value) {
             resultThirdShape = []
         }
     }
-    console.log("resultThirdShape：", resultThirdShape);
+    // console.log("resultThirdShape：", resultThirdShape);
 
     let resultShapeArr = [resultFirstShape, afterBroadcastShape, resultThirdShape]; //索引结果形状
     let newResultShapeArr = []; //索引结果形状2
@@ -936,26 +942,121 @@ function integerArrayIndexing(arr, indexingTuple, value) {
     } else {
         newResultShapeArr = resultShapeArr;
     }
-    console.log(`isTranspose：${isTranspose} resultShapeArr：(${resultShapeArr.flat().join()}) => newResultShapeArr：(${newResultShapeArr.flat().join()})`);
+    // console.log(`isTranspose：${isTranspose} resultShapeArr：(${resultShapeArr.flat().join()}) => newResultShapeArr：(${newResultShapeArr.flat().join()})`);
 
     //获取索引结果数据
     let resultDataArr = [
+        // 纯高级索引的情况，会出现如下结构的数据
         // {
         //     "originalIndex":[1,2,3,1,1,1], //数据原始的坐标
         //     "index":[1,2,3,1,1,1],         //数据现在的坐标
         //     "value":10                     //数据值
         // },
+        // or/or/or 基本索引和高级索引相结合的情况，会索引出如下结构的数据。
+        // {
+        //     "originalIndex":[0,1,2,3,3,5],
+        //     "index":[0,1,2,3,3,5],
+        //     "value":{
+        //         "originalIndex":[1,2,3,3,5],//数据原始的坐标
+        //         "index":[1,2,3,3,5],        //数据现在的坐标
+        //         "value":713                 //数据值
+        //     }
+        // },
         // ...
     ];
     if (zeroInAfterBroadcastShape == false) {
         //索引结果 有数据，需要获取数据
+        // console.log('索引结果 有数据，需要获取数据');
 
+        let resultIndexingTupleArr = [];
+        let len = 0;
+        // console.log('afterBroadcastShape', afterBroadcastShape)
+        if (afterBroadcastShape.length > 0) {
+            len = multiply(afterBroadcastShape[0], afterBroadcastShape, 1)
+        }
+        for (let i = 0; i < len; i++) {
+            let resultIndexingTupleItem = []; // 获取 基本索引结果 的索引元组
+            for (let index in shapeArrToItem) {
+                let item = shapeArrToItem[index];
+                if (Array.isArray(item)) {
+                    let indexingTupleItemArr = [];
+                    if (shape(item).length > 1) {
+                        indexingTupleItemArr = reshape(item, [-1])
+                    } else {
+                        indexingTupleItemArr = item;
+                    }
+                    resultIndexingTupleItem.push(indexingTupleItemArr[i])
+                } else if (item == "slice(None,None,None)") {
+                    resultIndexingTupleItem.push(slice(None))
+                }
+            }
+            resultIndexingTupleArr.push(resultIndexingTupleItem)
+        }
+        // console.log("resultIndexingTupleArr：", resultIndexingTupleArr)
+
+        let getResultIndexingTupleArrAll = [];
         if (firstArrIndex > 0) {
-            createArrList()
+            let indexingTupleFirst = [];
+            indexingTupleFirst = createArrList(arrShape.slice(0, firstArrIndex))
+            // console.log("indexingTupleFirst", indexingTupleFirst)
+            for (let i = 0; i < indexingTupleFirst.length; i++) {
+                let item = indexingTupleFirst[i];
+                for (let j = 0; j < resultIndexingTupleArr.length; j++) {
+                    let item2 = resultIndexingTupleArr[j].slice(item.length, resultIndexingTupleArr[j].length)
+                    let item3 = [].concat(item, item2)
+                    getResultIndexingTupleArrAll.push(item3)
+                }
+            }
+        } else {
+            getResultIndexingTupleArrAll = resultIndexingTupleArr;
+        }
+
+        // console.log("getResultIndexingTupleArrAll：")
+        // console.log(getResultIndexingTupleArrAll)
+        for (let i = 0; i < getResultIndexingTupleArrAll.length; i++) {
+            let basicIndexingResultData = basicIndexing(arr, getResultIndexingTupleArrAll[i], undefined, true)
+            if (Array.isArray(basicIndexingResultData)) {
+                //索引结果是数组
+                resultDataArr = resultDataArr.concat(reshape(basicIndexingResultData, [-1]))
+            } else {
+                //索引结果是 标量
+                resultDataArr.push(basicIndexingResultData);
+            }
+        }
+
+        if (isTranspose) {
+            let resultData = reshape(resultDataArr, resultShapeArr.flat())
+            let transposeAxes = [];
+            let resultFirstShape2 = JSON.parse(JSON.stringify(resultFirstShape));
+            let resultFirstShape2Len = resultFirstShape2.length;
+            let resultSecondShape2 = JSON.parse(JSON.stringify(afterBroadcastShape));
+            let resultSecondShape2Len = resultSecondShape2.length;
+            let resultThirdShape2 = JSON.parse(JSON.stringify(resultThirdShape));
+            let resultThirdShape2Len = resultThirdShape2.length;
+            resultFirstShape2 = []
+            for (let i = 0; i < resultFirstShape2Len; i++) {
+                resultFirstShape2.push(i);
+            }
+            resultSecondShape2 = []
+            for (let i = resultFirstShape2Len; i < resultFirstShape2Len + resultSecondShape2Len; i++) {
+                resultSecondShape2.push(i);
+            }
+            resultThirdShape2 = []
+            for (let i = resultFirstShape2Len + resultSecondShape2Len; i < resultFirstShape2Len + resultSecondShape2Len + resultThirdShape2Len; i++) {
+                resultThirdShape2.push(i);
+            }
+            transposeAxes = [resultSecondShape2, resultFirstShape2, resultThirdShape2]
+            resultData = transpose(resultData, transposeAxes.flat());
+            resultDataArr = reshape(resultData, [-1])
         }
 
     }
 
+    console.log(`isTranspose：${isTranspose} resultShapeArr：(${resultShapeArr.flat().join()}) => newResultShapeArr：(${newResultShapeArr.flat().join()})`);
+    console.log("resultDataArr.size", resultDataArr.length)
+    for (let i = 0; i < resultDataArr.length; i++) {
+        console.log(getSliceData(resultDataArr[i]).value)
+    }
 
 
 
@@ -1088,6 +1189,16 @@ function createArrList(shape) {
 // console.log(abc([]))
 // console.log(abc().length)
 // console.log(abc())
+// console.log(abc([2,1,3]).length)
+// console.log(abc([2,1,3]))
+// console.log(abc([2,3,1]).length)
+// console.log(abc([2,3,1]))
 
-
+function getSliceData(data) {
+    if (typeof (data.value) == 'object') {
+        return getSliceData(data.value)
+    } else {
+        return data
+    }
+}
 
