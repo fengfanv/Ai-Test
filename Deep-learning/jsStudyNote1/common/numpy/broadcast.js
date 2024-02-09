@@ -775,3 +775,11 @@ exports.broadcast = broadcast;
 //     }
 // }
 // console.log('哈哈哈');
+
+//广播到某个形状
+function broadcastToShape(arr,shape){
+    
+}
+exports.broadcastToShape = broadcastToShape;
+
+

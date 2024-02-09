@@ -593,4 +593,8 @@ c[:,:,[[1]],[[2]],[[3]]].shape                                                  
 e=np.arange(5*5).reshape(5,5)
 # e[slice(1,2),:] # [[5, 6, 7, 8, 9]] (1, 5)
 # e[slice(1,2),:] = [[30],[40],[50],[60],[70]] # 报错 ValueError: could not broadcast input array from shape (5,1) into shape (1,5)
-# np.array([[1],[1],[1],[1],[1]])+np.array([[2,2,2,2,2]]) => (5, 5) 注意赋值广播 和 运算广播 有点区别
+# (np.array([[1],[1],[1],[1],[1]])+np.array([[2,2,2,2,2]])) => (5, 5) 注意赋值广播 和 运算广播 有点区别
+# a[slice(None),[1,2],slice(None),[1]] = [[11111,22222,33333,44444]]
+
+
+
