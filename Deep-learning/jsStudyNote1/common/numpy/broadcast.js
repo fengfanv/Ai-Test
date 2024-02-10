@@ -776,10 +776,110 @@ exports.broadcast = broadcast;
 // }
 // console.log('哈哈哈');
 
-//广播到某个形状
-function broadcastToShape(arr,shape){
-    
+
+
+//将数组广播到某个形状
+function broadcastToShape(arr, targetShape) {
+
+    //第一步、检查数组是否支持广播机制
+    let arrShape = shape(arr);
+
+    let arrShapeReverse = JSON.parse(JSON.stringify(arrShape)).reverse();
+    let targetShapeReverse = JSON.parse(JSON.stringify(targetShape)).reverse();
+    if (arrShapeReverse.length > targetShapeReverse.length) {
+        throw new Error(`broadcast:error (${arrShape.join()}) 无法广播到 (${targetShape.join()}) ！`);
+    }
+
+    let len = targetShapeReverse.length;
+    for (let i = 0; i < len; i++) {
+        let arrItem = arrShapeReverse[i];
+        if (typeof (arrShapeReverse[i]) == "undefined") {
+            arrItem = 1;
+        }
+
+        let targetShapeItem = targetShapeReverse[i];
+
+        if (arrItem != targetShapeItem) {
+            if (arrItem != 1) {
+                throw new Error(`broadcast:error (${arrShape.join()}) 无法广播到 (${targetShape.join()}) ！`);
+            }
+        }
+    }
+
+    //第二步、处理两个数组
+
+    //是否可以循环
+    let isLoop = true;
+    while (isLoop) {
+        arrShape = shape(arr);
+
+        if (arrShape.join() == targetShape.join()) {
+            //数据处理完毕，关闭循环
+            isLoop = false;
+            //返回处理好的数据
+            return [arr]
+        } else {
+            let arrShapeReverse = JSON.parse(JSON.stringify(arrShape)).reverse();
+            let targetShapeReverse = JSON.parse(JSON.stringify(targetShape)).reverse();
+
+            let len = targetShapeReverse.length;
+
+            for (let i = 0; i < len; i++) {
+
+                let arrItem = arrShapeReverse[i];
+                if (typeof (arrItem) == 'undefined') {
+                    arrItem = -1;
+                }
+                let targetShapeItem = targetShapeReverse[i];
+
+                if (arrItem != targetShapeItem) {
+
+                    //判断是不是，维度维度缺失
+                    if (arrItem == -1) {
+                        arr = addDim(arr);
+                        break;
+                    }
+                    //判断那方是1
+                    if (arrItem == 1) {
+                        let shapeIndex = (arrShape.length - 1) - i;
+                        if (targetShapeItem == 0) {
+                            printArr3(arr, [], shapeIndex);
+                        } else {
+                            printArr2(arr, [], shapeIndex, targetShapeItem);
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 exports.broadcastToShape = broadcastToShape;
 
+// let k1 = [[30],[40],[50],[60],[70]] // (5,1)
+// console.log(broadcastToShape(k1,[1,5])) // 报错，说明是正确的。
+
+// let k2 = [[30]] // (1,1)
+// console.log(shape(broadcastToShape(k2,[1,5])[0])) // [ [ 30, 30, 30, 30, 30 ] ] (1,5)
+
+// let k3 = [[30],[40]] // (2,1)
+// console.log(shape(broadcastToShape(k3,[3,1,2])[0])) // 报错，说明是正常的
+
+// let k3 = [[30],[40]] // (2,1)
+// console.log(broadcastToShape(k3,[3,2,3])[0]) // (3,2,3)
+// [
+//     [ [ 30, 30, 30 ], [ 40, 40, 40 ] ],
+//     [ [ 30, 30, 30 ], [ 40, 40, 40 ] ],
+//     [ [ 30, 30, 30 ], [ 40, 40, 40 ] ]
+// ]
+
+// let k3 = [[30],[40]] // (2,1)
+// console.log(shape(broadcastToShape(k3,[3,2,0])[0])) // (3,2,0)
+// [ [ [], [] ], [ [], [] ], [ [], [] ] ]
+
+// let k3 = [[30]] // (1,1)
+// console.log(shape(broadcastToShape(k3,[3,0,2])[0])) // 死循环
+
+// let k3 = [[30],[30]] // (1,1)
+// console.log(shape(broadcastToShape(k3,[3])[0])) // 报错，说明是正常的
 
