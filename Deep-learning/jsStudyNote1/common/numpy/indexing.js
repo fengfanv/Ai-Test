@@ -8,6 +8,7 @@ var multiply = Common.multiply;
 
 const Broadcast = require('./broadcast.js')
 var broadcast = Broadcast.broadcast;
+var broadcastToShape = Broadcast.broadcastToShape;
 
 const Reshape = require('./reshape.js');
 var reshape = Reshape.reshape;
@@ -290,7 +291,7 @@ function indexing(arr, indexingTuple, value) {
         // console.log('基本索引和高级索引相结合-纯高级索引元组：',AI.length,AI);
         // return false;
         //先用 从原始索引元组里 分离出来的纯基本索引元组 执行基本索引，基本索引执行结束后，再用基本索引的执行结果和纯高级索引元组执行高级索引
-        return integerArrayIndexing(basicIndexing(arr, BI, undefined, true), AI, value)
+        return integerArrayIndexing(basicIndexing(arr, BI, undefined, true), AI, value, arr)
     }
 
     if (isBasicIndexing == false && isAdvancedIndexing == false) {
@@ -610,16 +611,16 @@ function basicIndexing(arr, indexingTuple, value, debug) {
     }
     /*调整索引结果数据的顺序(处理slice(i,j,k) k是负值的情况) end*/
 
-    //打印索引结果
-    if (!debug) {
-        console.log(`resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
-        console.log("newResultDataArr.size：", newResultDataArr.length)
-        for (let i = 0; i < newResultDataArr.length; i++) {
-            console.log(newResultDataArr[i].value)
-        }
-    }
+    //打印基本索引结果
+    // if (!debug) {
+    //     console.log(`resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
+    //     console.log("newResultDataArr.size：", newResultDataArr.length)
+    //     for (let i = 0; i < newResultDataArr.length; i++) {
+    //         console.log(newResultDataArr[i].value)
+    //     }
+    // }
 
-    /*将索引结果数据 整理成 索引结果形状 start*/
+    // 调试模式（或特殊模式），指 被 高级索引调用 的情况。
     if (debug) {
         // console.log(`basicIndexing-resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
         if (newResultShape.length == 0 && newResultDataArr.length == 1) {
@@ -630,21 +631,18 @@ function basicIndexing(arr, indexingTuple, value, debug) {
             return reshape(newResultDataArr, newResultShape);
         }
     }
-    /*将索引结果数据 整理成 索引结果形状 end*/
-
-    /* start
-    检查是否需要根据索引结果来为原始数据赋值。
-    1、如果需要根据索引结果为原始数据赋值，则为原始数据进行赋值，然后返回 被更改(赋值)完 的原始数据。
-    2、如果不需要根据索引结果为原始数据赋值，则根据索引结果形状，创建一个空数组，然后将索引结果数据导入进空数组，最后返回索引结果数组。
-    */
 
 
-    /* 
-    检查是否需要根据索引结果来为原始数据赋值。
-    1、如果需要根据索引结果为原始数据赋值，则为原始数据进行赋值，然后返回 被更改(赋值)完 的原始数据。
-    2、如果不需要根据索引结果为原始数据赋值，则根据索引结果形状，创建一个空数组，然后将索引结果数据导入进空数组，最后返回索引结果数组。
-    end */
+    // value有值，所以需要执行赋值操作，赋值结束后，返回被修改值后的原始数组
+    if (Array.isArray(value) || typeof value == 'number') {
+        if (typeof value == 'number') {
+            value = [value]
+        }
+        return assigningValues(arr, reshape(newResultDataArr, newResultShape), value);
+    }
 
+    // 返回索引结果
+    return getIndexingArrValue(reshape(newResultDataArr, newResultShape));
 }
 
 //获取被索引数组 某个维度 “整数” 会索引的 下标
@@ -697,6 +695,8 @@ function get_slice_index(d, i, j, k) {
 var a = reshape(arange(2 * 3 * 4 * 5 * 6), [2, 3, 4, 5, 6]) //a=np.arange(2*3*4*5*6).reshape(2,3,4,5,6)
 var a1 = arange(5) //a1=np.arange(5)
 var a2 = reshape(arange(1, 7), [2, 3, 1]) //a2=np.arange(1,7).reshape(2,3,1)
+var a3 = reshape(arange(2 * 3 * 4 * 5), [2, 3, 4, 5]) // a3=np.arange(2*3*4*5).reshape(2,3,4,5)
+var e = reshape(arange(5 * 5), [5, 5]) //e=np.arange(5*5).reshape(5,5)
 //indexing(a,[Ellipsis,1])
 //indexing(a,[Ellipsis,1,Ellipsis]) //=>Error: 基本索引 错误：索引元祖里最多只能有一个Ellipsis
 //indexing(a,[slice(1),Ellipsis,1])
@@ -763,15 +763,24 @@ var a2 = reshape(arange(1, 7), [2, 3, 1]) //a2=np.arange(1,7).reshape(2,3,1)
 //indexing(a,[None,None,None,[[1]],slice(None),[[1]]])
 //indexing(a,[None,slice(None),[[1,2]],slice(None),[[2,3]]])
 
-//如上这些没有报错的例子，可能也会报错，可能会报无法广播的错误。这里先不考虑广播报错，这里仅思考索引元组是否符合规则。
+// ------------------------------------------
 
+console.log(e)
+// console.log(indexing(e,[slice(1,2),slice(None)]))
+// console.log(indexing(e,[slice(1,2),slice(None)],[[100]]))
+// console.log(indexing(e,[slice(1,2),slice(None)],100))
+// console.log(indexing(e,[slice(1,2),[2,4]]))
+// console.log(indexing(e,[slice(1,2),[2,4]],100))
+// console.log(indexing(e,[slice(None),[2,4]],[100]))
+// console.log(indexing(e, [slice(1, 2), slice(None)], [[30], [40], [50], [60], [70]])) //报错，说明是正常的
 
 //处理高级索引-整数数组索引
-function integerArrayIndexing(arr, indexingTuple, value) {
+function integerArrayIndexing(arr, indexingTuple, value, arr2) {
     /*
     arr 被索引数据
     indexingTuple py里索引元祖，js这里用一个一维数组代替
     value 根据索引结果赋的值
+    arr2 原始被索引数组，用于弥补 基本索引和高级索引相结合时，arr是基本索引的结果，修复arr(是基本索引结果)与原始被索引数组可能不一样的问题。
     */
     /*
     整数数组索引处理的大概流程：
@@ -1052,18 +1061,29 @@ function integerArrayIndexing(arr, indexingTuple, value) {
 
     }
 
-    console.log(`isTranspose：${isTranspose} resultShapeArr：(${resultShapeArr.flat().join()}) => newResultShapeArr：(${newResultShapeArr.flat().join()})`);
-    console.log("resultDataArr.size", resultDataArr.length)
-    for (let i = 0; i < resultDataArr.length; i++) {
-        console.log(getSliceData(resultDataArr[i]).value)
+    // 打印高级索引结果
+    // console.log(`isTranspose：${isTranspose} resultShapeArr：(${resultShapeArr.flat().join()}) => newResultShapeArr：(${newResultShapeArr.flat().join()})`);
+    // console.log("resultDataArr.size", resultDataArr.length)
+    // for (let i = 0; i < resultDataArr.length; i++) {
+    //     console.log(getSliceData(resultDataArr[i]).value)
+    // }
+
+    // value有值，所以需要执行赋值操作，赋值结束后，返回被修改值后的原始数组
+    if (Array.isArray(value) || typeof value == 'number') {
+        let arr_arr = undefined;
+        if (typeof arr2 != 'undefined') {
+            arr_arr = arr2;
+        } else {
+            arr_arr = arr;
+        }
+        if (typeof value == 'number') {
+            value = [value]
+        }
+        return assigningValues(arr_arr, reshape(resultDataArr, newResultShapeArr.flat()), value);
     }
 
-
-
-
-
-
-
+    // 返回索引结果
+    return getIndexingArrValue(reshape(resultDataArr, newResultShapeArr.flat()))
 }
 
 //检测参数是否是布尔数组
@@ -1194,6 +1214,7 @@ function createArrList(shape) {
 // console.log(abc([2,3,1]).length)
 // console.log(abc([2,3,1]))
 
+//获取索引结果数据
 function getSliceData(data) {
     if (typeof (data.value) == 'object') {
         return getSliceData(data.value)
@@ -1202,3 +1223,39 @@ function getSliceData(data) {
     }
 }
 
+//根据索引结果 赋值
+function assigningValues(arr, indexingData, value) {
+    //arr 被赋值数组
+    //indexingData 索引结果
+    //value 赋值的数据
+    let targetShape = shape(indexingData || []);
+    value = broadcastToShape(value, targetShape);
+    let flatIndexingData = reshape(indexingData, [-1]);
+    let flatValue = reshape(value, [-1]);
+
+    if (flatIndexingData.length != flatValue.length) {
+        throw new Error('索引赋值错误：flatIndexingData 和 flatValue 长度不一样')
+    }
+
+    printArr(arr, [], (res) => {
+        for (let i = 0; i < flatIndexingData.length; i++) {
+            let item = getSliceData(flatIndexingData[i])
+            if (res.index.join() == item.index.join()) {
+                res.childArr[res.childIndex] = flatValue[i];
+            }
+        }
+    })
+
+    return arr;
+}
+
+//提取索引结果的数据值
+function getIndexingArrValue(arr) {
+    let arrShape = shape(arr);
+    let flatArrData = reshape(arr, [-1]);
+    let newArr = [];
+    for (let i = 0; i < flatArrData.length; i++) {
+        newArr.push(getSliceData(flatArrData[i]).value)
+    }
+    return reshape(newArr, arrShape)
+}

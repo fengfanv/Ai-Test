@@ -4,6 +4,7 @@ const Transpose = require('./transpose.js')
 const Broadcast = require('./broadcast.js')
 const Dot = require('./dot.js')
 const Axis = require('./axis.js')
+const Indexing = require('./indexing.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -29,11 +30,20 @@ exports.transpose = Transpose.transpose;
 //对数据应用广播机制（使用广播机制处理数据）（numpy.broadcast)
 exports.broadcast = Broadcast.broadcast;
 
+//将数据广播到指定形状（numpy.broadcastToShape)
+exports.broadcastToShape = Broadcast.broadcastToShape
+
 //数组点积运算（numpy.dot）
 exports.dot = Dot.dot;
 
 //获取数据的某个轴（numpy.get_axis）
 exports.get_axis = Axis.get_axis;
+
+//索引功能（numpy.indexing）
+exports.slice = Indexing.slice;
+exports.Ellipsis = Indexing.Ellipsis;
+exports.None = Indexing.None;
+exports.indexing = Indexing.indexing;
 
 
 // numpy a+b 加法（基于广播机制）
