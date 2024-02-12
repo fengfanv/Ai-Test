@@ -34,6 +34,10 @@ var transpose = Transpose.transpose;
 */
 //切片 slice（slice仅接受两种类型的参数 None 或 数值）
 function slice(start, stop, step) {
+    let startType = typeof start;
+    let stopType = typeof stop;
+    let stepType = typeof step;
+
     if (String(start) == 'undefined') {
         throw new Error('slice 错误：请至少传入一个参数')
     }
@@ -43,6 +47,7 @@ function slice(start, stop, step) {
     if (String(step) == 'undefined') {
         step = None;
     }
+    
     let dataType = [start, stop, step];
     for (let i = 0; i < dataType.length; i++) {
         let itemType = String(dataType[i]);
@@ -50,7 +55,7 @@ function slice(start, stop, step) {
             throw new Error('slice 错误：入参只接受 None 或 整数')
         }
     }
-    if (/^-?\d+$/.test(String(start)) && String(stop) == 'None' && String(step) == 'None') {
+    if (startType == 'number' && stopType == 'undefined' && stepType == 'undefined') {
         stop = start;
         start = None;
         step = None;
@@ -94,6 +99,8 @@ var True = {
         return "True"
     },
 }
+Object.freeze(True);
+exports.True = True;
 
 //False
 var False = {
@@ -102,6 +109,8 @@ var False = {
         return "False"
     },
 }
+Object.freeze(False);
+exports.False = False;
 
 /*
 索引元祖参数 end
@@ -635,14 +644,23 @@ function basicIndexing(arr, indexingTuple, value, debug) {
 
     // value有值，所以需要执行赋值操作，赋值结束后，返回被修改值后的原始数组
     if (Array.isArray(value) || typeof value == 'number') {
-        if (typeof value == 'number') {
-            value = [value]
+        if (newResultShape.length == 0 && newResultDataArr.length == 1) {
+            //索引结果是一个 标量
+            return assigningValues(arr, newResultDataArr[0], value);
+        } else {
+            //索引结果是一个 数组
+            return assigningValues(arr, reshape(newResultDataArr, newResultShape), value);
         }
-        return assigningValues(arr, reshape(newResultDataArr, newResultShape), value);
     }
 
     // 返回索引结果
-    return getIndexingArrValue(reshape(newResultDataArr, newResultShape));
+    if (newResultShape.length == 0 && newResultDataArr.length == 1) {
+        //索引结果是一个 标量
+        return newResultDataArr[0].value
+    } else {
+        //索引结果是一个 数组
+        return getIndexingArrValue(reshape(newResultDataArr, newResultShape));
+    }
 }
 
 //获取被索引数组 某个维度 “整数” 会索引的 下标
@@ -692,11 +710,11 @@ function get_slice_index(d, i, j, k) {
 
 
 
-var a = reshape(arange(2 * 3 * 4 * 5 * 6), [2, 3, 4, 5, 6]) //a=np.arange(2*3*4*5*6).reshape(2,3,4,5,6)
-var a1 = arange(5) //a1=np.arange(5)
-var a2 = reshape(arange(1, 7), [2, 3, 1]) //a2=np.arange(1,7).reshape(2,3,1)
-var a3 = reshape(arange(2 * 3 * 4 * 5), [2, 3, 4, 5]) // a3=np.arange(2*3*4*5).reshape(2,3,4,5)
-var e = reshape(arange(5 * 5), [5, 5]) //e=np.arange(5*5).reshape(5,5)
+// var a = reshape(arange(2 * 3 * 4 * 5 * 6), [2, 3, 4, 5, 6]) //a=np.arange(2*3*4*5*6).reshape(2,3,4,5,6)
+// var a1 = arange(5) //a1=np.arange(5)
+// var a2 = reshape(arange(1, 7), [2, 3, 1]) //a2=np.arange(1,7).reshape(2,3,1)
+// var a3 = reshape(arange(2 * 3 * 4 * 5), [2, 3, 4, 5]) // a3=np.arange(2*3*4*5).reshape(2,3,4,5)
+// var e = reshape(arange(5 * 5), [5, 5]) //e=np.arange(5*5).reshape(5,5)
 //indexing(a,[Ellipsis,1])
 //indexing(a,[Ellipsis,1,Ellipsis]) //=>Error: 基本索引 错误：索引元祖里最多只能有一个Ellipsis
 //indexing(a,[slice(1),Ellipsis,1])
@@ -765,7 +783,7 @@ var e = reshape(arange(5 * 5), [5, 5]) //e=np.arange(5*5).reshape(5,5)
 
 // ------------------------------------------
 
-console.log(e)
+// console.log(e)
 // console.log(indexing(e,[slice(1,2),slice(None)]))
 // console.log(indexing(e,[slice(1,2),slice(None)],[[100]]))
 // console.log(indexing(e,[slice(1,2),slice(None)],100))
@@ -1076,9 +1094,6 @@ function integerArrayIndexing(arr, indexingTuple, value, arr2) {
         } else {
             arr_arr = arr;
         }
-        if (typeof value == 'number') {
-            value = [value]
-        }
         return assigningValues(arr_arr, reshape(resultDataArr, newResultShapeArr.flat()), value);
     }
 
@@ -1226,27 +1241,45 @@ function getSliceData(data) {
 //根据索引结果 赋值
 function assigningValues(arr, indexingData, value) {
     //arr 被赋值数组
-    //indexingData 索引结果
+    //indexingData 索引结果（标量 或 数组）
     //value 赋值的数据
-    let targetShape = shape(indexingData || []);
-    value = broadcastToShape(value, targetShape);
-    let flatIndexingData = reshape(indexingData, [-1]);
-    let flatValue = reshape(value, [-1]);
 
-    if (flatIndexingData.length != flatValue.length) {
-        throw new Error('索引赋值错误：flatIndexingData 和 flatValue 长度不一样')
-    }
-
-    printArr(arr, [], (res) => {
-        for (let i = 0; i < flatIndexingData.length; i++) {
-            let item = getSliceData(flatIndexingData[i])
-            if (res.index.join() == item.index.join()) {
-                res.childArr[res.childIndex] = flatValue[i];
-            }
+    if (Array.isArray(indexingData)) {
+        //索引结果是数组
+        if (typeof value == 'number') {
+            value = [value]
         }
-    })
+        let targetShape = shape(indexingData || []);
+        value = broadcastToShape(value, targetShape);
+        let flatIndexingData = reshape(indexingData, [-1]);
+        let flatValue = reshape(value, [-1]);
 
-    return arr;
+        if (flatIndexingData.length != flatValue.length) {
+            throw new Error('索引赋值错误：flatIndexingData 和 flatValue 长度不一样')
+        }
+
+        printArr(arr, [], (res) => {
+            for (let i = 0; i < flatIndexingData.length; i++) {
+                let item = getSliceData(flatIndexingData[i])
+                if (res.index.join() == item.index.join()) {
+                    res.childArr[res.childIndex] = flatValue[i];
+                }
+            }
+        })
+
+        return arr;
+    } else {
+        //索引结果不是数组，是标量
+        indexingData = getSliceData(indexingData);
+        let targetShape = [];
+        value = broadcastToShape(value, targetShape)[0];
+        printArr(arr, [], (res) => {
+            if (res.index.join() == indexingData.index.join()) {
+                res.childArr[res.childIndex] = value;
+            }
+        })
+        return arr;
+    }
 }
 
 //提取索引结果的数据值

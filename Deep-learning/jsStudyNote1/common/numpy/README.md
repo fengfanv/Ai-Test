@@ -1,2 +1,2 @@
-# NumPy for JavaScript
+# NumPy by JavaScript
 

@@ -43,6 +43,8 @@ exports.get_axis = Axis.get_axis;
 exports.slice = Indexing.slice;
 exports.Ellipsis = Indexing.Ellipsis;
 exports.None = Indexing.None;
+exports.True = Indexing.True;
+exports.False = Indexing.False;
 exports.indexing = Indexing.indexing;
 
 

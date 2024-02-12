@@ -883,3 +883,10 @@ exports.broadcastToShape = broadcastToShape;
 // let k3 = [[30],[30]] // (1,1)
 // console.log(shape(broadcastToShape(k3,[3])[0])) // 报错，说明是正常的
 
+// let k4 = [10];
+// console.log(broadcastToShape(k4,[])) // 报错，说明是正常的，Error: broadcast:error (1) 无法广播到 () ！
+
+// let k5 = 10;
+// console.log(broadcastToShape(k5,[]))
+// console.log(shape(k5))
+
