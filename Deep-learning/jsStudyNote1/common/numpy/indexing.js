@@ -47,7 +47,7 @@ function slice(start, stop, step) {
     if (String(step) == 'undefined') {
         step = None;
     }
-    
+
     let dataType = [start, stop, step];
     for (let i = 0; i < dataType.length; i++) {
         let itemType = String(dataType[i]);
@@ -667,6 +667,7 @@ function basicIndexing(arr, indexingTuple, value, debug) {
 function get_number_index(d, i) {
     //1、如果i是numpy负索引，则转成正常索引
     i = i < 0 ? d + i : i;
+    if (i >= d) throw new Error(`get_number_index 错误：${i}超出 尺寸大小为${d}的维度`)
     if (i < 0 || i >= d) {
         //如果 该整数下标 不在该维度的有效范围内，则返回空数组
         return [];

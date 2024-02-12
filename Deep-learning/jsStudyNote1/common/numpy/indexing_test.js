@@ -210,3 +210,54 @@ const { printArr } = require('./common.js');
 // console.log(indexing(x,[[0,1,2]]))
 // console.log(indexing(x,[slice(0,3),[1,2,2]]))
 // console.log(indexing(x,[slice(0,3),[1,2,2]],[[1000,2000,3000]]))
+
+// --------------------------------------------------
+// --------------------------------------------------
+// --------------------------------------------------
+
+// arr1 = [1,2,3,4] //arr1 = np.array([1,2,3,4])
+// console.log(indexing(arr1,[[0,2]]))
+
+// arr2 = [[1,2],[3,4]] //arr2 = np.array([[1,2],[3,4]])
+// console.log(indexing(arr2,[[0,1],[1,0]]))
+// console.log(indexing(arr2,[[1,2],[3,4]])) //报错说明是正确的
+// console.log(indexing(arr2,[1,3])) //报错说明是正确的
+
+// arr3 = reshape(arange(10),[2,5]) //arr3 = np.arange(10).reshape(2,5)
+// console.log(indexing(arr3,[slice(None),slice(None,None,2)]))
+// console.log(indexing(arr3,[slice(None,None,2),[2,1,3,0]]))
+
+// arr5 = [[1,2,3],[4,5,6],[7,8,9]] //arr5 = np.array([[1,2,3],[4,5,6],[7,8,9]])
+// console.log(indexing(arr5,[0,1]))
+// console.log(indexing(arr5,[[0,2]]))
+// console.log(indexing(arr5,[[0],[1]]))
+// console.log(indexing(arr5,[[[0],[1]]]))
+// console.log(indexing(arr5,[[[0]]]))
+// console.log(shape(indexing(arr5,[[[0]]])))
+// console.log(indexing(arr5,[[0]]))
+// console.log(shape(indexing(arr5,[[0]])))
+// console.log(indexing(arr5,[[[[0]]]]))
+// printArr(indexing(arr5,[[[[0]]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(indexing(arr5,[[[[0]]]],1000))
+// console.log(shape(indexing(arr5,[[[[0]]]])))
+// console.log(indexing(arr5,[[[[0]]],[[[0]]]]))
+// printArr(indexing(arr5,[[[[0]]],[[[0]]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(indexing(arr5,[[[[0]]],[[[0]]]],[1000]))
+// console.log(shape(indexing(arr5,[[[[0]]],[[[0]]]])))
+// console.log(indexing(arr5,[[[[0],[0]]]]))
+// printArr(indexing(arr5,[[[[0],[0]]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(indexing(arr5,[[[[0],[0]]]],reshape(arange(1*2*1*3),[1,2,1,3])))
+// console.log(shape(indexing(arr5,[[[[0],[0]]]])))
+
+// --------------------------------------------------
+
+
+
+
+
