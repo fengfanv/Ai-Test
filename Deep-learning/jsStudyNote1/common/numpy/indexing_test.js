@@ -1,7 +1,15 @@
-const { slice, Ellipsis, None, True, False, indexing } = require('./index.js');
+const { slice, Ellipsis, None, True, False, indexing, size } = require('./index.js');
 const { shape, arange, reshape } = require('./index.js');
 const { printArr } = require('./common.js');
 
+/*
+切片和索引_1.jpeg
+切片和索引_2.jpeg
+切片和索引_3.jpeg
+切片和索引_4.jpeg
+切片和索引_5.jpeg
+切片和索引_6.jpeg
+*/
 // let ar = arange(10,30) // ar=np.arange(10,30)
 // console.log(ar)
 // console.log(indexing(ar,[3]))
@@ -215,6 +223,23 @@ const { printArr } = require('./common.js');
 // --------------------------------------------------
 // --------------------------------------------------
 
+/*
+chatGpt_check_indexType.py
+index.py
+numpy_slice.py
+numpy_slice1.py
+numpy_slice2.py
+numpy_slice3.py
+numpy_slice4.py
+numpy_slice5.py
+numpy_slice6.py
+numpy_slice7.py
+numpy_slice8.py
+numpy_slice9.py
+numpy_slice10.py
+numpy_slice11.py
+numpy_slice12.py
+*/
 // arr1 = [1,2,3,4] //arr1 = np.array([1,2,3,4])
 // console.log(indexing(arr1,[[0,2]]))
 
@@ -256,6 +281,719 @@ const { printArr } = require('./common.js');
 // console.log(shape(indexing(arr5,[[[[0],[0]]]])))
 
 // --------------------------------------------------
+
+// let a = reshape(arange(30),[3,2,5]) //a = np.arange(30).reshape(3,2,5)
+// console.log(a)
+// console.log(indexing(a,[slice(None),slice(1,2),slice(None)]))
+// console.log(indexing(a,[slice(None),1,slice(None)]))
+
+// let b = reshape(arange(40),[2,5,2,2]) //b = np.arange(40).reshape(2,5,2,2)
+// printArr(b,[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(b,[slice(None),slice(1,2),Ellipsis])))
+// printArr(indexing(b,[slice(None),slice(1,2),Ellipsis]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(indexing(b,[slice(None),1,Ellipsis]))
+
+// let c = reshape(arange(1,7),[2,3,1]) //c = np.arange(1,7).reshape(2,3,1)
+// console.log(c)
+// console.log(indexing(c,[slice(1,2),slice(0,2),0]))
+// console.log(indexing(indexing(indexing(c,[slice(1,2),Ellipsis]),[Ellipsis,slice(0,2),slice(None)]),[Ellipsis,0]))
+// console.log(indexing(indexing(indexing(c,[slice(1,2),Ellipsis]),[Ellipsis,slice(0,2),slice(None)]),[0]))
+// console.log(indexing(indexing(indexing(c,[slice(1,2)]),[slice(0,2)]),[0]))
+// console.log(indexing(c,[slice(0,1),Ellipsis,slice(1,2),slice(None)]))
+// console.log(shape(indexing(c,[slice(0,1),Ellipsis,slice(1,2),slice(None)])))
+// console.log(indexing(indexing(indexing(c,[slice(0,1),Ellipsis]),[Ellipsis,slice(1,2),slice(None)]),[Ellipsis,slice(None)]))
+// console.log(indexing(c,[slice(0,1),slice(1,2),slice(None)]))
+
+// --------------------------------------------------
+
+// let x = arange(5) //x = np.arange(5)
+// console.log(x)
+// console.log(indexing(x,[None,slice(None)]))
+// console.log(shape(indexing(x,[None,slice(None)])))
+// console.log(indexing(x,[slice(None),None]))
+// console.log(shape(indexing(x,[slice(None),None])))
+
+// --------------------------------------------------
+
+// let a = reshape(arange(10),[2,5]) //a = np.arange(10).reshape(2, 5)
+// console.log(a)
+// console.log(indexing(a,[[1],[1,2,3]]))
+// console.log(indexing(a,[[0]]))
+// console.log(indexing(a,[[0],[0,1,2]]))
+// console.log(indexing(a,[0]))
+// console.log(indexing(a,[[0]]))
+
+// --------------------------------------------------
+
+// let x = reshape(arange(18),[2,3,3]) //x = np.arange(18).reshape(2,3,3)
+// console.log(x)
+// console.log(indexing(x,[[1,0],slice(None),[1,2]]))
+// console.log(indexing(x,[1,slice(None),1]))
+// console.log(indexing(x,[0,slice(None),2]))
+// console.log(indexing(indexing(x,[[1,0]]),[Ellipsis,[1,2]]))
+
+// let x = reshape(arange(2*3*3*3),[2,3,3,3]) //x = np.arange(2*3*3*3).reshape(2,3,3,3)
+// printArr(x,[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(indexing(x,[[1,0],slice(None),slice(None),[1,2]]))
+// console.log('---')
+// printArr(indexing(indexing(x,[[1,0],Ellipsis]),[Ellipsis,[1,2]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(indexing(x,[1,Ellipsis,1]))
+// console.log(indexing(x,[0,Ellipsis,2]))
+
+// let x = reshape(arange(18),[2,3,3]) //x = np.arange(18).reshape(2,3,3)
+// console.log(x)
+// console.log(indexing(x,[[1,0],slice(None),1]))
+// console.log(indexing(indexing(x,[[1,0],Ellipsis]),[Ellipsis,1]))
+// console.log(indexing(indexing(x,[[1,0],Ellipsis]),[1]))
+
+// let x = reshape(arange(2*3*4*5),[2,3,4,5]) //x = np.arange(2*3*4*5).reshape(2,3,4,5)
+// printArr(x,[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(indexing(x,[[1,0],slice(None),1,1]))
+// console.log(indexing(indexing(x,[[1,0],slice(None),1]),[Ellipsis,1]))
+// console.log(indexing(indexing(x,[[1,0]]),[Ellipsis,1,1]))
+// console.log(indexing(indexing(indexing(x,[[1,0],Ellipsis]),[Ellipsis,1,slice(None)]),[Ellipsis,1]))
+// console.log(indexing(x,[1,slice(None),1,1]))
+// console.log(indexing(x,[0,slice(None),1,1]))
+// console.log(indexing(x,[[1,0],slice(None),slice(None),1]))
+// console.log(indexing(indexing(x,[[1,0]]),[Ellipsis,1]))
+// console.log(indexing(x,[1,slice(None),slice(None),1]))
+// console.log(indexing(x,[0,slice(None),slice(None),1]))
+// console.log(indexing(x,[[1,0],slice(None),[1,2]]))
+// console.log(shape(indexing(x,[[1,0],slice(None),[1,2]])))
+// console.log(indexing(x,[1,slice(None),1,slice(None)]))
+// console.log(indexing(x,[0,slice(None),2,slice(None)]))
+// console.log(shape(indexing(x,[[[1,0]],slice(None),[[1,2]]])))
+// printArr(indexing(x,[[[1,0]],slice(None),[[1,2]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(x,[[[1,0],[1,0]],slice(None),[[1,2],[1,2]]])))
+// printArr(indexing(x,[[[1,0],[1,0]],slice(None),[[1,2],[1,2]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(x,[[[1,0],[0,1]],slice(None),[[1,2],[1,2]]])))
+// printArr(indexing(x,[[[1,0],[0,1]],slice(None),[[1,2],[1,2]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(x,[[[[1,0],[0,1]]],slice(None),[[[1,2],[1,2]]]])))
+// printArr(indexing(x,[[[[1,0],[0,1]]],slice(None),[[[1,2],[1,2]]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(x,[[[[[1,0]],[[0,1]]]],slice(None),[[[[1,2]],[[1,2]]]]])))
+// printArr(indexing(x,[[[[[1,0]],[[0,1]]]],slice(None),[[[[1,2]],[[1,2]]]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(x,[1,slice(None),1])))
+// console.log(indexing(x,[1,slice(None),1]))
+
+// let a = reshape(arange(2*3*4*2),[2,3,4,2]) //a = np.arange(2*3*4*2).reshape(2,3,4,2)
+// printArr(a,[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(indexing(a,[Ellipsis,[1,0],[1,2],slice(None)]))
+// console.log(shape(indexing(a,[Ellipsis,[1,0],[1,2],slice(None)])))
+// console.log(indexing(indexing(indexing(a,[0]),[1]),[1]))
+// console.log(indexing(indexing(indexing(a,[0]),[0]),[2]))
+// console.log(indexing(indexing(indexing(a,[1]),[1]),[1]))
+// console.log(indexing(indexing(indexing(a,[1]),[0]),[2]))
+
+// let b = reshape(arange(2*4*6),[2,4,6]) //b = np.arange(2*4*6).reshape(2,4,6)
+// console.log(b)
+// console.log(shape(indexing(b,[Ellipsis,[[0,1],[2,3]],slice(None)])))
+// console.log(indexing(b,[Ellipsis,[[0,1],[2,3]],slice(None)]))
+// printArr(indexing(b,[Ellipsis,[[0,1],[2,3]],slice(None)]),[],(res)=>{
+//     console.log(res.value)
+// })
+
+// --------------------------------------------------
+
+// let x = reshape(arange(2*3*4),[2,3,4]) //x = np.arange(2*3*4).reshape(2,3,4)
+// console.log(x)
+// console.log(indexing(x,[1,Ellipsis]))
+// console.log(shape(indexing(x,[1,Ellipsis])))
+// console.log(indexing(x,[slice(None),1,slice(None)]))
+// console.log(shape(indexing(x,[slice(None),1,slice(None)])))
+// console.log(indexing(x,[Ellipsis,1]))
+// console.log(shape(indexing(x,[Ellipsis,1])))
+
+// let a = arange(10) //a = np.arange(10)
+// console.log(a)
+// console.log(indexing(a,[3]))
+
+// --------------------------------------------------
+
+// let x = reshape(arange(2*3*4),[2,3,4]) //x = np.arange(2*3*4).reshape(2,3,4)
+// console.log(x)
+// console.log(indexing(x,[[1],[0],[0,0]]))
+// console.log(indexing(x,[[1,1],[0,0],[0,0]]))
+// console.log(indexing(x,[[1],[0],[0,1]]))
+// console.log(indexing(x,[[1,1],[0,0],[0,1]]))
+// console.log(indexing(x,[[1],[0,1],[0]]))
+// console.log(indexing(x,[[1,1],[0,1],[0,0]]))
+// console.log(indexing(x,[[1,0],[1],[0]]))
+// console.log(indexing(x,[[1,0],[1,1],[0,0]]))
+
+// --------------------------------------------------
+
+// let c = reshape(arange(1,7),[2,3,1]) //c = np.arange(1,7).reshape(2,3,1)
+// console.log(c)
+// console.log(indexing(c,[slice(None)]))
+// console.log(indexing(c,[Ellipsis]))
+
+// --------------------------------------------------
+
+// let x = reshape(arange(2*3*4),[2,3,4]) //x = np.arange(2*3*4).reshape(2,3,4)
+// console.log(x)
+// console.log(indexing(x,[[0,1],[True,False,True],[0,2]]))
+// console.log(indexing(x,[[0,1],[0,2],[0,2]]))
+// console.log(indexing(x,[[0,1],[True,True,True],[0,2]])) //报错，说明是正确的
+// console.log(indexing(x,[[0,1],[False,False,True],[0,2]]))
+// console.log(indexing(x,[[True,False]]))
+// console.log(shape(indexing(x,[[True,False]])))
+// console.log(indexing(x,[[True,False],[True,True,True]]))
+// console.log(shape(indexing(x,[[True,False],[True,True,True]])))
+// console.log(indexing(x,[[0],[0,1,2]]))
+// console.log(indexing(x,[[True,True],[True,True,True]])) //报错，说明是正确的
+// console.log(indexing(x,[[True,False],[True,False,True]]))
+// console.log(indexing(x,[[0],[0,2]]))
+// console.log(shape(indexing(x,[[0],[0,2]])))
+// console.log(indexing(x,[slice(None),[True,False,True]]))
+// console.log(indexing(x,[slice(None),[0,2]]))
+// console.log(shape(indexing(x,[slice(None),[0,2]])))
+// console.log(indexing(x,[Ellipsis,[True,False,True,False]]))
+// console.log(indexing(x,[Ellipsis,[0,2]]))
+// console.log(shape(indexing(x,[Ellipsis,[0,2]])))
+
+// let x = reshape(arange(30),[2,3,5]) //x = np.arange(30).reshape(2,3,5)
+// console.log(x)
+// console.log(indexing(x,[[[True,False,True],[True,False,True]]]))
+// console.log(shape(indexing(x,[[[True,False,True],[True,False,True]]])))
+// console.log(indexing(x,[slice(None),[[True,True,True,True,False],[True,True,True,True,False],[True,True,True,True,False]]]))
+// console.log(shape(indexing(x,[slice(None),[[True,True,True,True,False],[True,True,True,True,False],[True,True,True,True,False]]])))
+// console.log(indexing(x,[slice(None),[[True,True,True,False,False],[True,True,True,True,False],[True,True,True,True,False]]]))
+// console.log(shape(indexing(x,[slice(None),[[True,True,True,False,False],[True,True,True,True,False],[True,True,True,True,False]]])))
+
+// --------------------------------------------------
+
+// let a = reshape(arange(3*4*5),[3,4,5]) //a = np.arange(3*4*5).reshape(3,4,5)
+// console.log(a)
+// console.log(indexing(a,[slice(None),[2,3],slice(None)]))
+// console.log(shape(indexing(a,[slice(None),[2,3],slice(None)])))
+// console.log(indexing(a,[slice(None),slice(None),[2,3]]))
+// console.log(shape(indexing(a,[slice(None),slice(None),[2,3]])))
+// console.log(shape(indexing(a,[slice(None),slice(None),[[2,3]]])))
+// printArr(indexing(a,[slice(None),slice(None),[[2,3]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[slice(None),[[1,2],[2,3]],slice(None)])))
+// printArr(indexing(a,[slice(None),[[1,2],[2,3]],slice(None)]),[],(res)=>{
+//     console.log(res.value)
+// })
+
+// --------------------------------------------------
+
+// let a = reshape(arange(2*3*4*5),[2,3,4,5]) //a=np.arange(2*3*4*5).reshape(2,3,4,5)
+// printArr(a,[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(indexing(a,[1,slice(10,10,1)]))
+// console.log(indexing(a,[1,slice(10,10,1)],1000))
+// console.log(indexing(a,[[]]))
+// console.log(indexing(a,[[]],1000))
+// console.log(indexing(a,[[],slice(10,10,1)]))
+// console.log(indexing(a,[[],slice(10,10,1)],1000))
+// console.log(indexing(a,[[[[]]],slice(10,10,1)]))
+// console.log(indexing(a,[[1,0],slice(10,10,1)]))
+// console.log(indexing(a,[[],slice(0,10)]))
+
+// --------------------------------------------------
+// --------------------------------------------------
+// --------------------------------------------------
+
+/*
+basicIndexing.py
+advancedIndexing_integerArrayIndexing.py
+advancedIndexing_booleanArrayIndexing.py
+*/
+
+// let a = reshape(arange(4*3*2),[4,3,2]) //a = np.arange(4*3*2).reshape(4,3,2)
+// console.log(a)
+// console.log(indexing(a,[1]))
+// console.log(indexing(a,[slice(None),1]))
+// console.log(indexing(a,[Ellipsis,1]))
+// console.log(indexing(a,[slice(1,None),slice(None),1]))
+// console.log(indexing(a,[slice(1,None),slice(None,1),1]))
+
+// let a = reshape(arange(2*3*4),[2,3,4]) //a=np.arange(2*3*4).reshape(2,3,4)
+// console.log(a)
+// console.log(indexing(a,[1,None,slice(1,3)]))
+// console.log(indexing(a,[1,slice(3,0,-1),slice(4,-11,-1)]))
+
+// --------------------------------------------------
+
+// let a = reshape(arange(2*3*4*5),[2,3,4,5]) //a=np.arange(2*3*4*5).reshape(2,3,4,5)
+// printArr(a,[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[[1,0,1,0]])))
+// printArr(indexing(a,[[1,0,1,0]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[[[1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]])))
+// printArr(indexing(a,[[[1,0,1,0],[0,1,0,1],[1,0,1,0],[0,1,0,1]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[slice(None),[1,0,1,0]])))
+// printArr(indexing(a,[slice(None),[1,0,1,0]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[slice(None),[[1,0],[0,1]]])))
+// printArr(indexing(a,[slice(None),[[1,0],[0,1]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[slice(None),[0,2,1],[1,2,3]])))
+// printArr(indexing(a,[slice(None),[0,2,1],[1,2,3]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[slice(None),[[1,2],[0,2]],[[3,2],[1,0]]])))
+// printArr(indexing(a,[slice(None),[[1,2],[0,2]],[[3,2],[1,0]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[[1,1,0,1],slice(None),[2,3,1,2]])))
+// printArr(indexing(a,[[1,1,0,1],slice(None),[2,3,1,2]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[slice(None),[1,2,0],slice(None),[4,3,1]])))
+// printArr(indexing(a,[slice(None),[1,2,0],slice(None),[4,3,1]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[slice(None),[[1]],slice(None),[[2]]])))
+// printArr(indexing(a,[slice(None),[[1]],slice(None),[[2]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[slice(None),[1,0],[1,0],[1,0]])))
+// printArr(indexing(a,[slice(None),[1,0],[1,0],[1,0]]),[],(res)=>{
+//     console.log(res.value)
+// })
+
+
+// let b = reshape(arange(2*3*4*5*6),[2,3,4,5,6]) //b=np.arange(2*3*4*5*6).reshape(2,3,4,5,6)
+// printArr(b,[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(b,[[0,1],[1,2],slice(None),[2,3]])))
+// printArr(indexing(b,[[0,1],[1,2],slice(None),[2,3]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(b,[slice(None),[0,2,1,1,0],slice(None),[1,2,0,3,1],[2,3,5,1,4]])))
+// printArr(indexing(b,[slice(None),[0,2,1,1,0],slice(None),[1,2,0,3,1],[2,3,5,1,4]]),[],(res)=>{
+//     console.log(res.value)
+// })
+
+// let c = reshape(arange(2*3*4*5*6*7),[2,3,4,5,6,7]) //c=np.arange(2*3*4*5*6*7).reshape(2,3,4,5,6,7)
+// printArr(c,[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(c,[slice(None),slice(None),[[1]],slice(None),[[2]],[[3]]])))
+// printArr(indexing(c,[slice(None),slice(None),[[1]],slice(None),[[2]],[[3]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(c,[slice(None),slice(None),[[1,3]],slice(None),[[2,4]],[[3,5]]])))
+// printArr(indexing(c,[slice(None),slice(None),[[1,3]],slice(None),[[2,4]],[[3,5]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(c,[slice(None),slice(None),[[1]],[[2]],[[3]]])))
+// printArr(indexing(c,[slice(None),slice(None),[[1]],[[2]],[[3]]]),[],(res)=>{
+//     console.log(res.value)
+// })
+
+// let a = reshape(arange(2*3*4*5),[2,3,4,5]) //a=np.arange(2*3*4*5).reshape(2,3,4,5)
+// printArr(a,[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[slice(None),[1,2],None,[1,2]])))
+// printArr(indexing(a,[slice(None),[1,2],None,[1,2]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(indexing(a,[slice(None),slice(None),None]),[slice(None),[1,2],slice(None),[1,2]])))
+// printArr(indexing(indexing(a,[slice(None),slice(None),None]),[slice(None),[1,2],slice(None),[1,2]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[None,[0,1],None,[1,2]])))
+// printArr(indexing(a,[None,[0,1],None,[1,2]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(indexing(a,[None,slice(None),None]),[slice(None),[0,1],slice(None),[1,2]])))
+// printArr(indexing(indexing(a,[None,slice(None),None]),[slice(None),[0,1],slice(None),[1,2]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[[0,1],None,None,[1,2],None])))
+// printArr(indexing(a,[[0,1],None,None,[1,2],None]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(indexing(a,[slice(None),None,None,slice(None),None]),[[0,1],slice(None),slice(None),[1,2],slice(None)])))
+// printArr(indexing(indexing(a,[slice(None),None,None,slice(None),None]),[[0,1],slice(None),slice(None),[1,2],slice(None)]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(a,[None,slice(None,None,-1),[1,2],slice(1,4,2),[1,2]])))
+// printArr(indexing(a,[None,slice(None,None,-1),[1,2],slice(1,4,2),[1,2]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// console.log(shape(indexing(indexing(a,[None,slice(None,None,-1),slice(None),slice(1,4,2),slice(None)]),[slice(None),slice(None),[1,2],slice(None),[1,2]])))
+// printArr(indexing(indexing(a,[None,slice(None,None,-1),slice(None),slice(1,4,2),slice(None)]),[slice(None),slice(None),[1,2],slice(None),[1,2]]),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[1,0],None,slice(None,None,-2),slice(2,3,1),[3,3]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [slice(None),None,slice(None,None,-2),slice(2,3,1),slice(None)]
+// let index2 = [[1,0],slice(None),slice(None),slice(None),[3,3]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None,None,-1),[1,2],None,slice(2,4,1),[2,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [slice(None,None,-1),slice(None),None,slice(2,4,1),slice(None)]
+// let index2 = [slice(None),[1,2],slice(None),slice(None),[2,2]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None,None,-1),None,[1,2],None,slice(2,4,1),[2,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [slice(None,None,-1),None,slice(None),None,slice(2,4,1),slice(None)]
+// let index2 = [slice(None),slice(None),[1,2],slice(None),slice(None),[2,2]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None,None,-1),None,slice(0,2,1),None,[1,2],None,[2,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [slice(None,None,-1),None,slice(0,2,1),None,slice(None),None,slice(None)]
+// let index2 = [slice(None),slice(None),slice(None),slice(None),[1,2],slice(None),[2,2]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None,None,-1),1,None,slice(2,4,1),[2,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [slice(None,None,-1),slice(None),None,slice(2,4,1),slice(None)]
+// let index2 = [slice(None),[1,1],slice(None),slice(None),[2,2]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,True,False],[True,True,False]],slice(1,3)]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [slice(None),slice(None),slice(1,3)]
+// let index2 = [[[True,True,False],[True,True,False]],slice(None)]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [slice(None),slice(None),slice(1,3)]
+// let index2 = [[0,0,1,1],[0,1,0,1]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [None,[[True,True,False],[True,True,False]],slice(1,3),None,[1,2,2,0]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [None,slice(None),slice(None),slice(1,3),None]
+// let index2 = [slice(None),[[True,True,False],[True,True,False]],slice(None),slice(None),[1,2,2,0]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [None,slice(None),slice(None),slice(1,3),None]
+// let index2 = [slice(None),[0,0,1,1],[0,1,0,1],slice(None),slice(None),[1,2,2,0]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[False,False,False],[False,False,False]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[],[]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[False,False,False,False],[False,False,False,False],[False,False,False,False]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[],[]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[False,False,False,False],[False,False,False,False],[False,False,False,False]],slice(1,2)]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[],[],slice(1,2)]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [None,[1,1],Ellipsis,slice(1,2),[1,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [None,slice(None),Ellipsis,slice(1,2),slice(None)]
+// let index2 = [slice(None),[1,1],Ellipsis,slice(None),[1,2]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [None,slice(None),slice(None),slice(1,2),slice(None)]
+// let index2 = [slice(None),[1,1],slice(None),slice(None),[1,2]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+
+// let c = reshape(arange(2*3*4*5*6*7),[2,3,4,5,6,7]) //c=np.arange(2*3*4*5*6*7).reshape(2,3,4,5,6,7)
+// printArr(c,[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [None,[1,1],Ellipsis,None,[1,1],slice(1,2)]
+// console.log(shape(indexing(c,index)))
+// printArr(indexing(c,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [None,slice(None),Ellipsis,None,slice(None),slice(1,2)]
+// let index2 = [slice(None),[1,1],Ellipsis,slice(None),[1,1],slice(None)]
+// console.log(shape(indexing(indexing(c,index1),index2)))
+// printArr(indexing(indexing(c,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [None,slice(None),slice(None),slice(None),slice(None),None,slice(None),slice(1,2)]
+// let index2 = [slice(None),[1,1],slice(None),slice(None),slice(None),slice(None),[1,1],slice(None)]
+// console.log(shape(indexing(indexing(c,index1),index2)))
+// printArr(indexing(indexing(c,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [None,[[True,True,False],[True,True,False]],slice(1,2),Ellipsis,None,[1,2,2,1]]
+// console.log(shape(indexing(c,index)))
+// printArr(indexing(c,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [None,slice(None),slice(None),slice(1,2),Ellipsis,None,slice(None)]
+// let index2 = [slice(None),[[True,True,False],[True,True,False]],slice(None),Ellipsis,slice(None),[1,2,2,1]]
+// console.log(shape(indexing(indexing(c,index1),index2)))
+// printArr(indexing(indexing(c,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [None,slice(None),slice(None),slice(1,2),slice(None),slice(None),None,slice(None)]
+// let index2 = [slice(None),[[True,True,False],[True,True,False]],slice(None),slice(None),slice(None),slice(None),[1,2,2,1]]
+// console.log(shape(indexing(indexing(c,index1),index2)))
+// printArr(indexing(indexing(c,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+
+// let a = reshape(arange(2*3*4*5),[2,3,4,5]) //a=np.arange(2*3*4*5).reshape(2,3,4,5)
+// printArr(a,[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[1,0,1],[1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[1,0,1],[1,1,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[1],[[1,1],[0,0]],[[1]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[1,1],[1,1]],[[1,1],[0,0]],[[1,1],[1,1]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[1],slice(None),[[1,1],[0,0]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[1,1],[1,1]],slice(None),[[1,1],[0,0]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[1,0,1],1]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[1,0,1],[1,1,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[1,2],None,1]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[1,2],None,[1,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [slice(None),slice(None),None,slice(None)]
+// let index2 = [slice(None),[1,2],slice(None),1]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index1 = [slice(None),slice(None),None,slice(None)]
+// let index2 = [slice(None),[1,2],slice(None),[1,1]]
+// console.log(shape(indexing(indexing(a,index1),index2)))
+// printArr(indexing(indexing(a,index1),index2),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[1,2],[2,0]],None,1]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[1,2],[2,0]],None,[[1,1],[1,1]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[]]
+// console.log(indexing(a,index))
+// let index = [[],[]]
+// console.log(indexing(a,index))
+// let index = [[],[],[]]
+// console.log(indexing(a,index))
+// let index = [[],[],[],[]]
+// console.log(indexing(a,index))
+// let index = [[[[]]]]
+// console.log(indexing(a,index))
+// let index = [[[[]]],[[[]]]]
+// console.log(indexing(a,index))
+// let index = [[[[]]],[[[]]],[]]
+// console.log(indexing(a,index))
+// let index = [[[[]]],[[[]]],[],[]]
+// console.log(indexing(a,index))
+// let index = [slice(None),[]]
+// console.log(indexing(a,index))
+// let index = [slice(None),[],[]]
+// console.log(indexing(a,index))
+// let index = [slice(None),[],[],[]]
+// console.log(indexing(a,index))
+// let index = [slice(None),[[[]]]]
+// console.log(indexing(a,index))
+// let index = [slice(None),[[[]]],[]]
+// console.log(indexing(a,index))
+// let index = [slice(None),[[[]]],[],[]]
+// console.log(indexing(a,index))
+// let index = [slice(None),[],slice(None),[]]
+// console.log(indexing(a,index))
+
+// let b = reshape(arange(2*3*4*5*6),[2,3,4,5,6]) //b=np.arange(2*3*4*5*6).reshape(2,3,4,5,6)
+// printArr(b,[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[],slice(None),[],slice(None)]
+// console.log(indexing(b,index))
+// let index = [slice(None),[],slice(None),[],[]]
+// console.log(indexing(b,index))
+// let index = [slice(None),[[[]]],slice(None),[]]
+// console.log(indexing(b,index))
+// let index = [slice(None),[[[]]],slice(None),[[1],[1]]]
+// console.log(indexing(b,index))
+
+// let a = reshape(arange(2*3*4*5),[2,3,4,5]) //a=np.arange(2*3*4*5).reshape(2,3,4,5)
+// printArr(a,[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[],[1]]
+// console.log(indexing(a,index))
+// let index = [slice(None),[],[1,2]]
+// console.log(indexing(a,index)) //报错，说明是正确的
+// let index = [slice(None),[],[1],[1,1]]
+// console.log(indexing(a,index)) //报错，说明是正确的
+// let index = [slice(None),[],[[1]]]
+// console.log(indexing(a,index))
+// let index = [slice(None),[],[[0],[1]]]
+// console.log(indexing(a,index))
+
+// let e = reshape(arange(5*5),[5,5]) //e=np.arange(5*5).reshape(5,5)
+// console.log(e)
+// console.log(indexing(e,[slice(1,2),slice(None)]))
+// console.log(indexing(e,[slice(1,2),slice(None)],[[30],[40],[50],[60],[70]])) // 报错，说明是正确的
+
+// let a = reshape(arange(2*3*4*5),[2,3,4,5]) //a=np.arange(2*3*4*5).reshape(2,3,4,5)
+// printArr(a,[],(res)=>{
+//     console.log(res.value)
+// })
+// printArr(indexing(a,[slice(None),[1,2],slice(None),[1]],[[11111,22222,33333,44444]]),[],(res)=>{
+//     console.log(res.value)
+// })
+
+// --------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

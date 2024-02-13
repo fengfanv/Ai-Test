@@ -26,6 +26,24 @@ var transpose = Transpose.transpose;
 高级索引整数数组索引
 高级索引布尔数组索引
 
+现存问题（2024年2月13日）：
+// 纯基本索引，索引结果是空时，索引结果形状 能推算出来
+// 纯高级索引，索引结果是空时，索引结果形状 能推算出来
+// 基本索引和高级索引相结合时，索引结果是空，索引结果形状 不能正常的推算出来
+问题原因1、基本索引和高级索引相结合时，会先执行索引元组里基本索引部分，然后再用基本索引结果和索引元组里高级索引部分，执行高级索引。
+问题原因2、目前这里的js版(numpy)还没有进行封装，没有python版里(numpy.ndarray)这个功能。导致基本索引是空数据时，无法将空数据的索引结果形状，传递给高级索引。
+// 如：基本索引和高级索引相结合时，索引元组里基本索引部分 能索引出数据，索引元组里高级索引部分 不能索引出数据，索引结果形状 能推算出来
+// 如：基本索引和高级索引相结合时，索引元组里基本索引部分 不能索引出数据，索引元组里高级索引部分 能索引出数据，索引结果形状 不能推算出来（会报错，会报如下这种错误（基本索引 错误：被索引数组是一个1维数组 但却有4个索引元素））
+// 如：基本索引和高级索引相结合时，索引元组里基本索引部分 不能索引出数据，索引元组里高级索引部分 不能索引出数据，索引结果形状 不能推算出来
+
+如：
+let a = reshape(arange(2*3*4*5),[2,3,4,5]) //a=np.arange(2*3*4*5).reshape(2,3,4,5)
+console.log(indexing(a,[1,slice(10,10,1)]))  // [0,4,5] 纯基本索引，能推算出空数据的，索引结果形状
+console.log(indexing(a,[[]])) // (0,3,4,5) 纯高级索引，能推算出空数据的，索引结果形状
+
+console.log(indexing(a,[[],slice(0,10)]))  //基本索引和高级索引相结合。这里，能推算出空数据的索引结果形状，原因是，索引元组里基本索引部分 能索引到数据，然后再将基本索引结果，交给高级索引。
+console.log(indexing(a,[[1,0],slice(100,100)])) // 基本索引和高级索引相结合。这里，不能推算出空数据的索引结果形状，原因是，由于索引元组里基本索引部分 不能索引到数据，所以 没有数据 能再交给高级索引去执行（或只能将空数组交给高级索引去执行）。而且会报（基本索引 错误：被索引数组是一个1维数组 但却有4个索引元素）
+console.log(indexing(a,[[],slice(100,100)])) // 基本索引和高级索引相结合。这里，不能推算出空数据的索引结果形状，原因是，类似上边的毛病。
 */
 
 
@@ -632,7 +650,10 @@ function basicIndexing(arr, indexingTuple, value, debug) {
     // 调试模式（或特殊模式），指 被 高级索引调用 的情况。
     if (debug) {
         // console.log(`basicIndexing-resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
-        if (newResultShape.length == 0 && newResultDataArr.length == 1) {
+        if(newResultDataArr.length == 0){
+            //索引结果，没有数据。这里，目前没有有效的解决方法，只能暂时将空数组传递给高级索引
+            return []
+        }else if (newResultShape.length == 0 && newResultDataArr.length == 1) {
             //索引结果是一个 标量
             return newResultDataArr[0];
         } else {
@@ -644,7 +665,10 @@ function basicIndexing(arr, indexingTuple, value, debug) {
 
     // value有值，所以需要执行赋值操作，赋值结束后，返回被修改值后的原始数组
     if (Array.isArray(value) || typeof value == 'number') {
-        if (newResultShape.length == 0 && newResultDataArr.length == 1) {
+        if (newResultDataArr.length == 0) {
+            //索引结果，没有数据。赋值功能，这里，直接返回原始被索引数组
+            return arr;
+        } else if (newResultShape.length == 0 && newResultDataArr.length == 1) {
             //索引结果是一个 标量
             return assigningValues(arr, newResultDataArr[0], value);
         } else {
@@ -654,7 +678,10 @@ function basicIndexing(arr, indexingTuple, value, debug) {
     }
 
     // 返回索引结果
-    if (newResultShape.length == 0 && newResultDataArr.length == 1) {
+    if (newResultDataArr.length == 0) {
+        //索引结果，没有数据。
+        return []
+    } else if (newResultShape.length == 0 && newResultDataArr.length == 1) {
         //索引结果是一个 标量
         return newResultDataArr[0].value
     } else {
@@ -1095,11 +1122,23 @@ function integerArrayIndexing(arr, indexingTuple, value, arr2) {
         } else {
             arr_arr = arr;
         }
-        return assigningValues(arr_arr, reshape(resultDataArr, newResultShapeArr.flat()), value);
+        if (resultDataArr.length == 0) {
+            //索引结果，没有数据。赋值功能，这里，直接返回原始被索引数组。
+            return arr_arr;
+        } else {
+            //索引结果，有数据。
+            return assigningValues(arr_arr, reshape(resultDataArr, newResultShapeArr.flat()), value);
+        }
     }
 
     // 返回索引结果
-    return getIndexingArrValue(reshape(resultDataArr, newResultShapeArr.flat()))
+    if (resultDataArr.length == 0) {
+        //索引结果，没有数据。
+        return []
+    }else{
+        //索引结果，有数据。
+        return getIndexingArrValue(reshape(resultDataArr, newResultShapeArr.flat()))
+    }
 }
 
 //检测参数是否是布尔数组
