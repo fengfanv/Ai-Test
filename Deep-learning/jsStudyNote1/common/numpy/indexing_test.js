@@ -978,6 +978,416 @@ advancedIndexing_booleanArrayIndexing.py
 
 // --------------------------------------------------
 
+// let a = reshape(arange(2*3*4*5),[2,3,4,5]) //a=np.arange(2*3*4*5).reshape(2,3,4,5)
+// printArr(a,[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[True,False]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[True,False,True]] // 报错，说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[True,False],[True,False,True]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0],[0,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[True,True],[True,False,True]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0,1],[0,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[True,True],[True,True,True]] // 报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0,1],[0,1,2]] // 报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[True,False],slice(None),[True,True,True,False]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0],slice(None),[0,1,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[True,True],slice(None),[True,True,True,False]] // 报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0,1],slice(None),[0,1,2]] // 报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[True,False,False],[True,True,True,False]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0],[0,1,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[True,False,True],[True,True,True,False]] //报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0,2],[0,1,2]] //报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[True,False,True],[True,True,False,False]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0,2],[0,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[True,False,False],slice(None),[True,True,False,False,False]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0],slice(None),[0,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[True,False,True],slice(None),[True,True,False,False,False]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0,2],slice(None),[0,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[True,False,True],slice(None),[True,True,True,False,False]] //报错，说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0,2],slice(None),[0,1,2]] //报错，说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0,0,1,1],[0,2,0,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,True,False]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0,0,1,1],[0,2,0,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,True,True]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0,0,1,1,1],[0,2,0,1,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True,False],[True,True,True,False]]] //报错，说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[True,True,False,False],[True,True,False,False],[True,True,False,False]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0,0,1,1,2,2],[0,1,0,1,0,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[True,True,False,False],[True,True,True,True],[True,True,False,False]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0,0,1,1,1,1,2,2],[0,1,0,1,2,3,0,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),slice(None),[[True,True,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),slice(None),[0,0,3],[0,1,4]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[[True,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True]]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0,2],[0,3],[0,4]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[True,True,False,False],[True,True,True,True],[True,True,False,False]],[True,True,True,True]] // 报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[True,True,False,False],[True,True,True,True],[True,True,False,False]],[0,1,2,3]] // 报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[True,True,False,False],[True,True,True,True],[True,True,False,False]],[True,True,True,True,True]] // 报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[True,True,False,False],[True,True,True,True],[True,True,False,False]],slice(None),[True,True,True,True,True]] // 报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],[True,True,True,True]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],[0,1,2,3]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],[True,True,True,True]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [0,0]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [0,2]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [1,2]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],[0,1,2,3]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],[True,True,True,False]] //报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],[0,1,2]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],[0,1,2,3]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],[0,1,2,3],[1,1,1,1]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],[0,1,2,3]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[True,False,False,False],[True,False,False,False],[True,False,False,True]],[0,1,2,3]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[True,False,True],[True,False,True]],slice(None),[0,1,2,3]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[0,1,2],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,True]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0,1],slice(None),[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[False,False,True],[True,False,False]],[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[False,False,True],[True,False,False]],slice(None),[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]] //报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[False,True,True],[True,False,False]],slice(None),[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]] //报错说明是正确的
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[False,False,True],[True,False,False]],[[1,2],[3,2]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[0,1],[2,0],[[1,2],[3,2]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[0,1],[1,0]],slice(None),[[False,False,False,False,False],[False,False,False,False,False],[False,False,False,False,True],[True,False,False,False,False]]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[0,1],[1,0]],slice(None),[2,3],[4,0]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [[[0,1],[1,0]],slice(None),[2,3],[4,0]]
+// console.log(shape(indexing(a,index)))
+// printArr(indexing(a,index),[],(res)=>{
+//     console.log(res.value)
+// })
+
+// let b = reshape(arange(2*3*4*5*6),[2,3,4,5,6]) //b=np.arange(2*3*4*5*6).reshape(2,3,4,5,6)
+// printArr(b,[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[2,1],[1,0]],slice(None),[[True,True,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False],[False,False,False,False,False,False]]]
+// console.log(shape(indexing(b,index)))
+// printArr(indexing(b,index),[],(res)=>{
+//     console.log(res.value)
+// })
+// let index = [slice(None),[[2,1],[1,0]],slice(None),[0,0],[0,1]]
+// console.log(shape(indexing(b,index)))
+// printArr(indexing(b,index),[],(res)=>{
+//     console.log(res.value)
+// })
+
+// --------------------------------------------------
+// --------------------------------------------------
+// --------------------------------------------------
+
+/*
+关于Ellipsis/numpy_slice.py
+关于切片slice/numpy_slice.py
+*/
+
+// let b = reshape(arange(1*2*3*4*5*6*7),[1,2,3,4,5,6,7]) //b = np.arange(1*2*3*4*5*6*7).reshape(1,2,3,4,5,6,7)
+// printArr(b,[],(res)=>{
+//     console.log(res.value)
+// })
+//console.log(indexing(b,[Ellipsis,[1,2],Ellipsis])) //报错说明是正确的
+//console.log(indexing(b,[Ellipsis,Ellipsis,[1,2]])) //报错说明是正确的
+
+// --------------------------------------------------
+
+// let x = arange(10) //x = np.arange(10)
+// console.log(x)
+// console.log(indexing(x,[slice(1,7,2)]))
+// console.log(indexing(x,[slice(1,7,3)]))
+// console.log(indexing(x,[slice(1,8,3)]))
+// console.log(indexing(x,[slice(0,8,3)]))
+// console.log(indexing(x,[slice(0,8,2)]))
+// console.log(indexing(x,[slice(7,1,-2)]))
+// console.log(indexing(x,[slice(7,1,-3)]))
+// console.log(indexing(x,[slice(8,1,-3)]))
+// console.log(indexing(x,[slice(8,0,-3)]))
+// console.log(indexing(x,[slice(8,0,-2)]))
+// console.log(indexing(x,[slice(8,-3,-2)]))
+// console.log(indexing(x,[slice(8,7,-2)]))
+// console.log(indexing(x,[slice(-10-2,100,3)]))
+// console.log(indexing(x,[slice(100,-10-2,-3)]))
+// console.log(indexing(x,[slice(100,-10-2,3)]))
+// console.log(indexing(x,[slice(-10-2,100,-3)]))
+// console.log(indexing(x,[slice(9,9,-3)]))
+// console.log(indexing(x,[slice(10,10,-3)]))
+// console.log(indexing(x,[slice(0,0,-3)]))
+// console.log(indexing(x,[slice(-11,-11,-3)]))
 
 
 
