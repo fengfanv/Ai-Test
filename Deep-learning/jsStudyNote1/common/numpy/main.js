@@ -3,6 +3,7 @@ var multiply = Common.multiply;
 
 //关于numpy的主要（main）方法
 
+//shape start
 /*
 
 [
@@ -110,6 +111,7 @@ var multiply = Common.multiply;
 数据形状的最后一位，代表数据有多少列。如：[2,3,2,3] 的最后一位 3 代表数据有3列
 
 */
+//shape end
 
 /*
 下面是关于获取数据形状(numpy.shape)的功能实现描述

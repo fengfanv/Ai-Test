@@ -1,5 +1,5 @@
-const { slice, Ellipsis, None, True, False, indexing, size } = require('./index.js');
-const { shape, arange, reshape } = require('./index.js');
+const { slice, Ellipsis, None, True, False, indexing } = require('./index.js');
+const { shape, arange, reshape, size } = require('./index.js');
 const { printArr } = require('./common.js');
 
 /*
@@ -1388,23 +1388,6 @@ advancedIndexing_booleanArrayIndexing.py
 // console.log(indexing(x,[slice(10,10,-3)]))
 // console.log(indexing(x,[slice(0,0,-3)]))
 // console.log(indexing(x,[slice(-11,-11,-3)]))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

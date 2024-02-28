@@ -57,7 +57,7 @@ a.shape = [2,3]，b.shape = [3]，dot(a,b).shape = [2]
 
 我是如何观察到上面的规律的？
 第一 得感谢讲dot的那本书，让我了解到了左行右列这种运算方式，
-第二 在dot.py文件里的，各种形状数据，进行dot运算和实验，从大量的例子中尝试发现规律
+第二 在dot.py文件里，通过对 各种形状的数据，进行大量的dot运算和实验，在一步一步试错和试验中，发现规律
 第三 感谢numpy官网文档，和菜鸟教程文档
 第四 感谢代码报错时，的报错提示信息
 
@@ -139,7 +139,7 @@ function dot(a, b) {
         //第二步，数组里的列变成行后，获取数组所有的行
         let bAllRowNum = multiply(bNewShape[0], bNewShape.slice(0, -1), 1);//计算数组一共有多少行
         let bNewArr2 = reshape(bNewArr, [bAllRowNum, bNewShape.slice(-1)[0]]);//获取新数组里所有的行
-        let aNewArr2 = broadcast(a, bNewArr2)[0];//根据b新数组形状，生成一个a新数组
+        let aNewArr2 = broadcast([a, bNewArr2])[0];//根据b新数组形状，生成一个a新数组
         //开始计算
         let resultValue = [];
         for (let i = 0; i < aNewArr2.length; i++) {
@@ -161,7 +161,7 @@ function dot(a, b) {
         //行乘列，提取a数组里所有的行
         let aAllRowNum = multiply(arrInfo.aShape[0], arrInfo.aShape.slice(0, -1), 1);//计算数组一共有多少行
         let aNewArr2 = reshape(a, [aAllRowNum, arrInfo.aShape.slice(-1)[0]]);//获取新数组里所有的行
-        let bNewArr2 = broadcast(aNewArr2, b)[1];//根据a新数组形状，生成一个b新数组
+        let bNewArr2 = broadcast([aNewArr2, b])[1];//根据a新数组形状，生成一个b新数组
         //开始计算
         let resultValue = [];
         for (let i = 0; i < aNewArr2.length; i++) {
@@ -357,6 +357,10 @@ function dot(a, b) {
 }
 exports.dot = dot;
 
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 
 // 测试1，测试是否符合dot运算，测试结果数组形状是否正确
 

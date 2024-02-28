@@ -319,7 +319,7 @@ a[1,1:3:1,:]
 
 # 注意：以上情况没有考虑 切片slice(i,j,k) i和j是负值的情况，如果i和j是负值，i和j应该先从numpy负索引，转成正常索引，然后再进行操作
 # 注意：以上情况没有考虑 切片slice(i,j,k) k是负值的情况
-# 关于slice问题的解决方法，请看 ‘关于切片slice/numpy_slice.py’ 和 ‘关于切片slice/slice_test.js’
+# 关于slice问题的解决方法，请看 "关于切片slice/numpy_slice.py" 和 "关于切片slice/slice_test.js"
 
 '''
 # 当索引切片获取数据时，切片slice(i,j,k) k是负值，获取到的数据顺序不对，解决方法。

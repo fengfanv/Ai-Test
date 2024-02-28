@@ -1,7 +1,7 @@
 import numpy as np
 
 #4
-arr1 = np.array([0,0,0,0]);
+arr1 = np.array([0,0,0,0])
 # print('arr1，正确结果，[4]')
 # print('numpy.shape，',arr1.shape)
 # print('----')
