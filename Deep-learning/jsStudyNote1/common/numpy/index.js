@@ -53,7 +53,7 @@ exports.indexing = Indexing.indexing;
 // numpy a*b 乘法（基于广播机制）
 // numpy a/b 除法（基于广播机制）
 
-// numpy a>10 a<10 这种操作
+//numpy a>10 a<10 这种操作
 
 //numpy.sum
 
@@ -85,12 +85,18 @@ exports.indexing = Indexing.indexing;
 // numpy.random.choice
 // numpy.random.permutation
 // numpy.random.uniform
+// numpy.random.rand
+
 
 // numpy.meshgrid
 
-//numpy.logspace
+// numpy.logspace
 
 // numpy.frombuffer
 // numpy.pad
 // numpy.kaiser
 // numpy.convolve
+
+// numpy.nditer
+// numpy.ceil
+
