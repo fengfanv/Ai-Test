@@ -57,10 +57,10 @@ exports.indexing = Indexing.indexing;
 
 //numpy.sum
 
+
 //numpy.zeros_like
 
 //numpy.zeros
-
 //numpy.ones
 
 //numpy.mean
@@ -73,6 +73,8 @@ exports.indexing = Indexing.indexing;
 // numpy.exp
 // numpy.log
 // numpy.sqrt
+
+// numpy.ceil
 
 // numpy.max
 // numpy.argmax
@@ -94,9 +96,9 @@ exports.indexing = Indexing.indexing;
 
 // numpy.frombuffer
 // numpy.pad
-// numpy.kaiser
-// numpy.convolve
 
 // numpy.nditer
-// numpy.ceil
 
+//可选
+// numpy.kaiser
+// numpy.convolve
