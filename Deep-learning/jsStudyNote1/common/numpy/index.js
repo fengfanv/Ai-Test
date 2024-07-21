@@ -5,6 +5,7 @@ const Broadcast = require('./broadcast.js')
 const Dot = require('./dot.js')
 const Axis = require('./axis.js')
 const Indexing = require('./indexing.js')
+const Math = require('./math.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -47,6 +48,13 @@ exports.True = Indexing.True;
 exports.False = Indexing.False;
 exports.indexing = Indexing.indexing;
 
+//numpy数学
+exports.sin = Math.sin;
+exports.cos = Math.cos;
+exports.tan = Math.tan;
+exports.exp = Math.exp;
+exports.log = Math.log;
+exports.sqrt = Math.sqrt;
 
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
@@ -57,7 +65,6 @@ exports.indexing = Indexing.indexing;
 
 //numpy.sum
 
-
 //numpy.zeros_like
 
 //numpy.zeros
@@ -66,13 +73,6 @@ exports.indexing = Indexing.indexing;
 //numpy.mean
 
 //numpy.flatten
-
-// numpy.sin
-// numpy.cos
-// numpy.tan
-// numpy.exp
-// numpy.log
-// numpy.sqrt
 
 // numpy.ceil
 
