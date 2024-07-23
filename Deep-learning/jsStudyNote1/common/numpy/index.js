@@ -63,22 +63,20 @@ exports.sqrt = Math.sqrt;
 
 //numpy a>10 a<10 这种操作
 
-//numpy.sum
+
+//numpy.sum  求数组所有项加起来的和
+//numpy.mean 求数组平均值
+
+// numpy.ceil 向上取整
 
 //numpy.zeros_like
-
 //numpy.zeros
 //numpy.ones
-
-//numpy.mean
-
 //numpy.flatten
 
-// numpy.ceil
-
 // numpy.max
-// numpy.argmax
 // numpy.min
+// numpy.argmax
 // numpy.argmin
 
 // numpy.maximum
@@ -89,15 +87,13 @@ exports.sqrt = Math.sqrt;
 // numpy.random.uniform
 // numpy.random.rand
 
-
-// numpy.meshgrid
-
-// numpy.logspace
-
-// numpy.frombuffer
 // numpy.pad
 
+// numpy.frombuffer
 // numpy.nditer
+
+// numpy.meshgrid
+// numpy.logspace
 
 //可选
 // numpy.kaiser
