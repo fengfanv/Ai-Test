@@ -44,3 +44,7 @@ exports.log = function (data) {
 exports.sqrt = function (data) {
     return workData(data, Math.sqrt)
 }
+
+exports.ceil = function (data) {
+    return workData(data, Math.ceil)
+}
