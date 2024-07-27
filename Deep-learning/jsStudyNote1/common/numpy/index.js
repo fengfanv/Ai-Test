@@ -57,6 +57,8 @@ exports.log = Math.log;
 exports.sqrt = Math.sqrt;
 exports.ceil = Math.ceil;
 
+exports.sum = Math.sum;
+
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
 // numpy a*b 乘法（基于广播机制）
@@ -64,8 +66,6 @@ exports.ceil = Math.ceil;
 
 //numpy a>10 a<10 这种操作
 
-
-//numpy.sum  求数组所有项加起来的和
 //numpy.mean 求数组平均值
 
 //numpy.zeros_like

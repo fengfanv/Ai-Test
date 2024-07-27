@@ -4,6 +4,12 @@ var shape = Main.shape;
 const Common = require('./common.js');
 var printArr = Common.printArr;
 
+const Axis = require('./axis.js');
+var get_axis = Axis.get_axis;
+
+const Reshape = require('./reshape.js');
+var reshape = Reshape.reshape;
+
 function workData(data, fun) {
     if (typeof data == 'number' || Array.isArray(data)) {
         if (typeof data == 'number') {
@@ -47,4 +53,35 @@ exports.sqrt = function (data) {
 
 exports.ceil = function (data) {
     return workData(data, Math.ceil)
+}
+
+
+
+exports.sum = function (data, axis) {
+    if (typeof data == 'undefined') {
+        throw new Error('错误：data不能为空')
+    }
+
+    if (Array.isArray(data) || typeof data == 'number') {
+        if (typeof data == 'number') data = [data]
+    } else {
+        throw new Error('错误：data数据类型不正确，sum仅支持Number Or Array')
+    }
+
+    if (typeof axis == 'undefined') {
+        let sumValue = 0
+        printArr(data, [], (res) => {
+            sumValue += res.childArr[res.childIndex]
+        })
+        return sumValue
+    } else {
+        let axisInfo = get_axis(data, axis)
+        let axisArr = axisInfo.axisArr
+        for (let i = 0; i < axisArr.length; i++) {
+            axisArr[i] = axisArr[i].reduce((prev, cur) => prev + cur)
+        }
+        let resultShape = axisInfo.resultShape
+        let resultData = resultShape.length == 0 ? Number(axisArr) : reshape(axisArr, resultShape)
+        return resultData
+    }
 }
