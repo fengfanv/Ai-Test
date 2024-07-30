@@ -57,11 +57,13 @@ exports.log = Math.log;
 exports.sqrt = Math.sqrt;
 exports.ceil = Math.ceil;
 
-
 //求和
 exports.sum = Math.sum;
 //求平均值
 exports.mean = Math.mean;
+
+exports.zeros = Main.zeros;
+exports.ones = Main.ones;
 
 
 // numpy a+b 加法（基于广播机制）
@@ -72,8 +74,6 @@ exports.mean = Math.mean;
 //numpy a>10 a<10 这种操作
 
 //numpy.zeros_like
-//numpy.zeros
-//numpy.ones
 //numpy.flatten
 
 // numpy.max

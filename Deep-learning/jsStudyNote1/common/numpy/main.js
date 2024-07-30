@@ -401,6 +401,37 @@ function arange(start, stop, step) {
 exports.arange = arange;
 
 
+function zeros(shape) {
+    if (Array.isArray(shape) || typeof shape == 'number') {
+        if (typeof shape == 'number') shape = [shape]
+    } else {
+        throw new Error('错误：shape数据类型不正确，shape仅支持Number Or Array')
+    }
+    for (let i = 0; i < shape.length; i++) {
+        if (shape[i] < 0) {
+            throw new Error('错误：不允许使用负维度')
+        }
+    }
+    return create_array(shape, 0)
+}
+exports.zeros = zeros;
+
+function ones(shape) {
+    if (Array.isArray(shape) || typeof shape == 'number') {
+        if (typeof shape == 'number') shape = [shape]
+    } else {
+        throw new Error('错误：shape数据类型不正确，shape仅支持Number Or Array')
+    }
+    for (let i = 0; i < shape.length; i++) {
+        if (shape[i] < 0) {
+            throw new Error('错误：不允许使用负维度')
+        }
+    }
+    return create_array(shape, 1)
+}
+exports.ones = ones;
+
+
 
 
 
