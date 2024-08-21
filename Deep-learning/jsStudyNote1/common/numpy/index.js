@@ -6,6 +6,7 @@ const Dot = require('./dot.js')
 const Axis = require('./axis.js')
 const Indexing = require('./indexing.js')
 const Math = require('./math.js')
+const Extra = require('./extra.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -64,7 +65,7 @@ exports.mean = Math.mean;
 
 exports.zeros = Main.zeros;
 exports.ones = Main.ones;
-
+exports.flatten = Extra.flatten;
 
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
@@ -74,7 +75,6 @@ exports.ones = Main.ones;
 //numpy a>10 a<10 这种操作
 
 //numpy.zeros_like
-//numpy.flatten
 
 // numpy.max
 // numpy.min
