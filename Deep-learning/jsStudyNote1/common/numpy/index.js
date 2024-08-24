@@ -66,6 +66,7 @@ exports.mean = Math.mean;
 exports.zeros = Main.zeros;
 exports.ones = Main.ones;
 exports.flatten = Extra.flatten;
+exports.zeros_like = Main.zeros_like;
 
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
@@ -73,8 +74,6 @@ exports.flatten = Extra.flatten;
 // numpy a/b 除法（基于广播机制）
 
 //numpy a>10 a<10 这种操作
-
-//numpy.zeros_like
 
 // numpy.max
 // numpy.min

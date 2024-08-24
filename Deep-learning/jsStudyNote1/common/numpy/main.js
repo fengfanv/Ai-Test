@@ -431,6 +431,13 @@ function ones(shape) {
 }
 exports.ones = ones;
 
+function zeros_like(arr) {
+    let shapeArr = [];
+    shapeArr = shape(arr);
+    return create_array(shapeArr, 0)
+}
+exports.zeros_like = zeros_like;
+
 
 
 
