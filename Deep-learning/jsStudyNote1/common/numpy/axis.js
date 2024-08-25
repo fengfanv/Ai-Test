@@ -41,6 +41,10 @@ function getAxis(arr, axis) {
         axisArr:[],//当前轴的数据
     }
 
+    if(axis < 0){
+      axis = axis + arrInfo.shape.length
+    }
+
     if (axis > arrInfo.shape.length - 1){
         throw new Error('getAxis:error 当前arr不存在轴（axis:'+axis+'）')
     }
@@ -102,6 +106,8 @@ exports.get_axis = getAxis;
 ]
 */
 // console.log(getAxis(a,0))
+// console.log('----')
+// console.log(getAxis(a,-3))
 /*
 {
   resultShape: [ 3, 2 ],
@@ -116,6 +122,8 @@ exports.get_axis = getAxis;
 }
 */
 // console.log(getAxis(a,1))
+// console.log('----')
+// console.log(getAxis(a,-2))
 /*
 {
   resultShape: [ 4, 2 ],
@@ -132,6 +140,8 @@ exports.get_axis = getAxis;
 }
 */
 // console.log(getAxis(a,2))
+// console.log('----')
+// console.log(getAxis(a,-1))
 /*
 {
   resultShape: [ 4, 3 ],
