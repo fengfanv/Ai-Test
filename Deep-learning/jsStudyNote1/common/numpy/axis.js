@@ -4,6 +4,7 @@ var arange = Main.arange;
 
 const Common = require('./common.js');
 var multiply = Common.multiply;
+var printArr = Common.printArr;
 
 const Reshape = require('./reshape.js')
 var reshape = Reshape.reshape;
@@ -39,7 +40,17 @@ function getAxis(arr, axis) {
         ravel:reshape(arr,[-1]),//数据展开成一维数组
         tagArr:arr.concat(),//标记数组，提取数据时，用于标记已被使用过的数据
         axisArr:[],//当前轴的数据
+        
+        ravel2:[],
+        axisArr2:[],
     }
+
+    printArr(arr,[],(res)=>{
+      arrInfo.ravel2.push({
+        index:res.index,
+        value:res.value
+      })
+    })
 
     if(axis < 0){
       axis = axis + arrInfo.shape.length
@@ -72,6 +83,7 @@ function getAxis(arr, axis) {
     //开始提取轴数据
     for(let i=0;i<arrInfo.axisLength;i++){
         let a_set_arr = [];//一组数据
+        let a_set_arr2 = [];
 
         let firstValueIndex = getUnusedNumberFromTagArr(arrInfo.tagArr);//在标记数组里，从左往右，寻找没有被标记的数据
         for(let j=0;j<arrInfo.shapeAxis;j++){
@@ -79,8 +91,12 @@ function getAxis(arr, axis) {
             let value = arrInfo.ravel.slice(index,index+1)[0];
             arrInfo.tagArr[index] = '*';//打上标记，表示数据已经被使用过
             a_set_arr.push(value)
+
+            let value2 = arrInfo.ravel2.slice(index,index+1)[0];
+            a_set_arr2.push(value2)
         }
         arrInfo.axisArr.push(a_set_arr)
+        arrInfo.axisArr2.push(a_set_arr2)
     }
     //提取 轴数据 完毕，返回提取结果
     return arrInfo;
@@ -108,6 +124,9 @@ exports.get_axis = getAxis;
 // console.log(getAxis(a,0))
 // console.log('----')
 // console.log(getAxis(a,-3))
+// console.log('----')
+// console.log(getAxis(a,0).axisArr)
+// console.log(getAxis(a,0).axisArr2)
 /*
 {
   resultShape: [ 3, 2 ],
@@ -124,6 +143,9 @@ exports.get_axis = getAxis;
 // console.log(getAxis(a,1))
 // console.log('----')
 // console.log(getAxis(a,-2))
+// console.log('----')
+// console.log(getAxis(a,1).axisArr)
+// console.log(getAxis(a,1).axisArr2)
 /*
 {
   resultShape: [ 4, 2 ],
@@ -142,6 +164,9 @@ exports.get_axis = getAxis;
 // console.log(getAxis(a,2))
 // console.log('----')
 // console.log(getAxis(a,-1))
+// console.log('----')
+// console.log(getAxis(a,2).axisArr)
+// console.log(getAxis(a,2).axisArr2)
 /*
 {
   resultShape: [ 4, 3 ],
