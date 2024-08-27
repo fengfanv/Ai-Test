@@ -11,7 +11,7 @@ var data = {
             {
                 "month": "06",
                 "approach_count": {},
-                "retreat_count": 0
+                "retreat_count": [2, { b: 2 }, 1]
             },
             {
                 "month": "07",
@@ -21,7 +21,7 @@ var data = {
             {
                 "month": "08",
                 "approach_count": [],
-                "retreat_count": 0
+                "retreat_count": [{ a: 1 }, 1]
             },
             {
                 "month": "09",
