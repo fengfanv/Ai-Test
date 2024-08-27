@@ -25,12 +25,16 @@ var data = {
             },
             {
                 "month": "09",
-                "approach_count": 0,
-                "retreat_count": 0
+                "approach_count": [1, 2, 3, 4, 5],
+                "retreat_count": [
+                    [0, 1, 2, 3],
+                    [4, 5, 6, 7],
+                    [8, 9, 10, 11]
+                ]
             },
             {
                 "month": "10",
-                "approach_count": 0,
+                "approach_count": [1, [[1, 2]]],
                 "retreat_count": 0
             }
         ],
@@ -94,13 +98,16 @@ function print(data, num, parentIsArr, isLast) {
     let content = '';
     if (isArr) {
         //是数组
+        let haveChild = false;
         for (let i = 0; i < data.length; i++) {
             let value = data[i];
             let last = i + 1 == data.length;
             if (Array.isArray(value) && value.length > 0) {
                 content += print(value, num + space, isArr, last)
+                haveChild = true
             } else if (Object.prototype.toString.call(value) == '[object Object]' && Object.keys(value).length > 0) {
                 content += print(value, num + space, isArr, last)
+                haveChild = true
             } else {
                 if (Array.isArray(value)) {
                     value = '[]'
@@ -118,6 +125,12 @@ function print(data, num, parentIsArr, isLast) {
                     content += ',' + lineBreak
                 }
             }
+        }
+        if (haveChild == false) {
+            start = start.replace(new RegExp(lineBreak, 'g'), '')
+            content = content.replace(new RegExp(lineBreak, 'g'), '')
+            content = content.replace(new RegExp(' ', 'g'), '')
+            end = end.replace(new RegExp(' ', 'g'), '')
         }
     } else {
         //是对象
@@ -141,7 +154,6 @@ function print(data, num, parentIsArr, isLast) {
                     value = String(value)
                 }
                 content += blankSpace + textSpace + key + ':' + value
-
                 if (last) {
                     content += lineBreak
                 } else {
@@ -157,24 +169,23 @@ function print(data, num, parentIsArr, isLast) {
 // console.log(JSON.stringify(data, null, 2))
 // console.log(print(data))
 
-var b = [[[[0, 1, 2, 3],
-[4, 5, 6, 7],
-[8, 9, 10, 11]],
-[[12, 13, 14, 15],
-[16, 17, 18, 19],
-[20, 21, 22, 23]]]]
+//-------------------------------------------------
 
-console.log(b)
-console.log(JSON.stringify(b, null, 2))
-console.log(print(b))
+// var b = [
+//     [
+//         [
+//             [0, 1, 2, 3],
+//             [4, 5, 6, 7],
+//             [8, 9, 10, 11]
+//         ],
+//         [
+//             [12, 13, 14, 15],
+//             [16, 17, 18, 19],
+//             [20, 21, 22, 23]
+//         ]
+//     ]
+// ]
 
-
-
-
-
-
-
-
-
-
-
+// console.log(b)
+// console.log(JSON.stringify(b, null, 2))
+// console.log(print(b))
