@@ -68,17 +68,17 @@ exports.ones = Main.ones;
 exports.flatten = Extra.flatten;
 exports.zeros_like = Main.zeros_like;
 
+exports.max = Extra.max;
+exports.argmax = Extra.argmax;
+exports.min = Extra.min;
+exports.argmin = Extra.argmin;
+
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
 // numpy a*b 乘法（基于广播机制）
 // numpy a/b 除法（基于广播机制）
 
 //numpy a>10 a<10 这种操作
-
-// numpy.max
-// numpy.min
-// numpy.argmax
-// numpy.argmin
 
 // numpy.maximum
 

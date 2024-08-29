@@ -125,12 +125,103 @@ function argmax(arr, axis) {
         return resultData
     }
 }
-exports.argmax = argmax
+exports.argmax = argmax;
+
+function min(arr, axis) {
+    if (typeof arr == 'undefined') {
+        throw new Error('错误：arr不能为空')
+    }
+
+    if (Array.isArray(arr) || typeof arr == 'number') {
+        if (typeof arr == 'number') arr = [arr]
+    } else {
+        throw new Error('错误：arr数据类型不正确，sum仅支持Number Or Array')
+    }
+
+    if (typeof axis == 'undefined') {
+        let f_arr = flatten(arr);
+        let index = 0;
+        for (let i = 0; i < f_arr.length; i++) {
+            if (f_arr[i] < f_arr[index]) {
+                index = i;
+            }
+        }
+        return f_arr[index]
+    } else {
+        let axisInfo = get_axis(arr, axis)
+        let axisArr = axisInfo.axisArr2
+        for (let i = 0; i < axisArr.length; i++) {
+            axisArr[i] = getMin(axisArr[i]).item.value
+        }
+        let resultShape = axisInfo.resultShape
+        let resultData = resultShape.length == 0 ? Number(axisArr) : reshape(axisArr, resultShape)
+        return resultData
+    }
+}
+exports.min = min;
+
+function argmin(arr, axis) {
+    if (typeof arr == 'undefined') {
+        throw new Error('错误：arr不能为空')
+    }
+
+    if (Array.isArray(arr) || typeof arr == 'number') {
+        if (typeof arr == 'number') arr = [arr]
+    } else {
+        throw new Error('错误：arr数据类型不正确，sum仅支持Number Or Array')
+    }
+
+    if (typeof axis == 'undefined') {
+        let f_arr = flatten(arr);
+        let index = 0;
+        for (let i = 0; i < f_arr.length; i++) {
+            if (f_arr[i] < f_arr[index]) {
+                index = i;
+            }
+        }
+        return index
+    } else {
+        let axisInfo = get_axis(arr, axis)
+        let axisArr = axisInfo.axisArr2
+        for (let i = 0; i < axisArr.length; i++) {
+            axisArr[i] = getMin(axisArr[i]).index
+        }
+        let resultShape = axisInfo.resultShape
+        let resultData = resultShape.length == 0 ? Number(axisArr) : reshape(axisArr, resultShape)
+        return resultData
+    }
+}
+exports.argmin = argmin;
 
 
 // var a = reshape(arange(1 * 2 * 3 * 4), [1, 2, 3, 4])
-// a[0][1][1][1] = 100
-
+// a[0][1][1][1] = -123
 // console.log(toStr(a))
 
-// console.log(toStr(argmax(a,0)))
+// var b = arange(1 * 2 * 3)
+// b[2] = -123
+// console.log(toStr(b))
+
+// console.log(toStr(argmin(a)))
+
+// console.log(toStr(argmin(a, 0)))
+
+// console.log(toStr(argmin(a, 1)))
+
+// console.log(toStr(argmin(a, 2)))
+
+// console.log(toStr(argmin(a, 3)))
+
+// console.log(toStr(argmin(a, 4)))
+
+// console.log(toStr(argmin(b)))
+
+// console.log(toStr(argmin(b, 0)))
+
+// console.log(toStr(argmin(b, 1)))
+
+// console.log(toStr(argmax(10)))
+
+// console.log(toStr(argmax(10, 0)))
+
+// console.log(toStr(argmax(10, 1)))
