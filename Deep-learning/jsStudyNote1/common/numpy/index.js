@@ -7,6 +7,8 @@ const Axis = require('./axis.js')
 const Indexing = require('./indexing.js')
 const Math = require('./math.js')
 const Extra = require('./extra.js')
+const PrintTest = require('./print_test.js')
+const Random = require('./random.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -75,6 +77,12 @@ exports.argmin = Extra.argmin;
 
 exports.maximum = Extra.maximum;
 
+exports.toStr = PrintTest.toStr;
+
+exports.random = {
+    randn: Random.randn
+};
+
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
 // numpy a*b 乘法（基于广播机制）
@@ -82,7 +90,6 @@ exports.maximum = Extra.maximum;
 
 //numpy a>10 a<10 这种操作
 
-// numpy.random.randn
 // numpy.random.choice
 // numpy.random.permutation
 // numpy.random.uniform
