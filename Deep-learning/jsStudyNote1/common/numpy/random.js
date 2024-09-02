@@ -4,6 +4,9 @@ var reshape = Reshape.reshape;
 const Common = require('./common.js');
 var multiply = Common.multiply;
 
+const Main = require('./main.js')
+var shape = Main.shape;
+
 
 function boxMullerTransform(u1, u2) {
     // 将[0,1)均匀分布的随机数转换为(-1,1)  
@@ -45,3 +48,119 @@ function randn() {
     }
 }
 exports.randn = randn;
+
+//获取指定范围内的随机(整)数    注意：返回值包含min,max
+function getRandomIntInRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function choice(a, size) {
+    /*
+    a可以是数字和数组
+    a如果是数字，a必须大于0
+    a如果是数组，a只能是一维数组，a不能是空数组
+    size可以是数字或数组
+    size可不填
+    size不填时，返回一个值
+    size填数字时，必须大于等于0，
+    size填数字0时，返回空数组
+    size填非0数字时，返回长度为size的一维数组
+    size填数组时，可以是空数组，
+    size填空数组时，返回一个值
+    size填非空数组时，结果根据(size数组/形状数组)返回一或多维数组
+    */
+    if (typeof a == 'undefined') {
+        throw new Error('a不能为空')
+    }
+    if (typeof a != 'number' && Array.isArray(a) == false) {
+        throw new Error('a只能是 数字 或 数组')
+    }
+    if (typeof a == 'number' && a <= 0) {
+        throw new Error('a是数字，a必须大于0')
+    }
+    if (Array.isArray(a)) {
+        let aShape = shape(a)
+        if (aShape.length != 1) {
+            throw new Error('a是数组，a必须是一维数组')
+        }
+        if (aShape.length == 1 && aShape == 0) {
+            throw new Error('a是数组，a不能是空数组')
+        }
+    }
+    if (typeof size != 'undefined') {
+        if (typeof size != 'number' && Array.isArray(size) == false) {
+            throw new Error('size只能是 数字 或 数组')
+        }
+    }
+
+    if (typeof size == 'undefined') {
+        if (Array.isArray(a)) {
+            let min = 0;
+            let max = a.length - 1;
+            return a[getRandomIntInRange(min, max)]
+        } else {
+            let min = 0;
+            let max = a - 1;
+            return getRandomIntInRange(min, max)
+        }
+    } else if (typeof size == 'number') {
+        if (size < 0) {
+            throw new Error('size不能是负值')
+        } else if (size == 0) {
+            return []
+        } else {
+            if (Array.isArray(a)) {
+                let min = 0;
+                let max = a.length - 1;
+                let resultData = [];
+                for (let i = 0; i < size; i++) {
+                    resultData.push(a[getRandomIntInRange(min, max)])
+                }
+                return resultData;
+            } else {
+                let min = 0;
+                let max = a - 1;
+                let resultData = [];
+                for (let i = 0; i < size; i++) {
+                    resultData.push(getRandomIntInRange(min, max))
+                }
+                return resultData;
+            }
+        }
+    } else if (Array.isArray(size)) {
+        if (size.length == 0) {
+            if (Array.isArray(a)) {
+                let min = 0;
+                let max = a.length - 1;
+                return a[getRandomIntInRange(min, max)]
+            } else {
+                let min = 0;
+                let max = a - 1;
+                return getRandomIntInRange(min, max)
+            }
+        } else {
+            if (Array.isArray(a)) {
+                let min = 0;
+                let max = a.length - 1;
+                let resultShape = size;
+                let resultData = [];
+                let resultLen = multiply(resultShape[0], resultShape, 1)
+                for (let i = 0; i < resultLen; i++) {
+                    resultData.push(a[getRandomIntInRange(min, max)])
+                }
+                return resultLen != 0 ? reshape(resultData, resultShape) : [];
+            } else {
+                let min = 0;
+                let max = a - 1;
+                let resultShape = size;
+                let resultData = [];
+                let resultLen = multiply(resultShape[0], resultShape, 1)
+                for (let i = 0; i < resultLen; i++) {
+                    resultData.push(getRandomIntInRange(min, max))
+                }
+                return resultLen != 0 ? reshape(resultData, resultShape) : [];
+            }
+        }
+    }
+}
+exports.choice = choice;

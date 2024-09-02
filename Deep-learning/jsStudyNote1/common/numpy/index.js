@@ -80,7 +80,8 @@ exports.maximum = Extra.maximum;
 exports.toStr = PrintTest.toStr;
 
 exports.random = {
-    randn: Random.randn
+    randn: Random.randn,
+    choice: Random.choice
 };
 
 // numpy a+b 加法（基于广播机制）
@@ -90,7 +91,6 @@ exports.random = {
 
 //numpy a>10 a<10 这种操作
 
-// numpy.random.choice
 // numpy.random.permutation
 // numpy.random.uniform
 // numpy.random.rand
