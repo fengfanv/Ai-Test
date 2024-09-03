@@ -165,3 +165,72 @@ function choice(a, size) {
     }
 }
 exports.choice = choice;
+
+//打乱顺序
+function permutation(x) {
+    if (typeof x == 'undefined') {
+        throw new Error('x不能为空')
+    }
+    if (typeof x != 'number' && Array.isArray(x) == false) {
+        throw new Error('x只能是 数字 或 数组')
+    }
+
+    let arr = []
+    if (typeof x == 'number') {
+        for (let i = 0; i < x; i++) {
+            arr.push(i)
+        }
+    } else {
+        arr = x;
+    }
+    let min = 0;
+    let max = arr.length - 1;
+    for (let i = 0; i < arr.length; i++) {
+        let randomIndex = getRandomIntInRange(min, max);
+        let temp = arr[randomIndex];
+        arr[randomIndex] = arr[i];
+        arr[i] = temp;
+    }
+    return arr;
+}
+exports.permutation = permutation;
+
+// console.log(permutation()) //报错，说明是正确的
+
+// console.log(permutation('a')) //报错，说明是正确的
+
+// console.log(permutation(0))
+
+// console.log(permutation(-1))
+
+// console.log(permutation([]))
+
+// console.log(permutation(1))
+
+// console.log(permutation(5))
+
+// console.log(permutation(10))
+
+// console.log(permutation(['a']))
+
+// console.log(permutation(['a', 'b', 'c']))
+
+// console.log(permutation([
+//     [1, 2, 3, 4],
+//     [5, 6, 7, 8],
+//     [9, 10, 11, 12]
+// ]))
+
+// console.log(permutation([
+//     [
+//         [1, 2, 3],
+//         [4, 5, 6],
+//         [7, 8, 9],
+//     ],
+//     [
+//         [10, 11, 12],
+//         [13, 14, 15],
+//         [16, 17, 18]
+//     ]
+// ]))
+// [[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ],[ [ 10, 11, 12 ], [ 13, 14, 15 ], [ 16, 17, 18 ] ]]

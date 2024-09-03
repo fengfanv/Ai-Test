@@ -81,7 +81,8 @@ exports.toStr = PrintTest.toStr;
 
 exports.random = {
     randn: Random.randn,
-    choice: Random.choice
+    choice: Random.choice,
+    permutation: Random.permutation
 };
 
 // numpy a+b 加法（基于广播机制）
@@ -91,7 +92,6 @@ exports.random = {
 
 //numpy a>10 a<10 这种操作
 
-// numpy.random.permutation
 // numpy.random.uniform
 // numpy.random.rand
 
