@@ -56,16 +56,17 @@ function getRandomIntInRange(min, max) {
 
 function choice(a, size) {
     /*
+    a必填
     a可以是数字和数组
     a如果是数字，a必须大于0
     a如果是数组，a只能是一维数组，a不能是空数组
-    size可以是数字或数组
     size可不填
     size不填时，返回一个值
-    size填数字时，必须大于等于0，
+    size填时，可以是数字或数组
+    size填数字时，必须大于等于0
     size填数字0时，返回空数组
     size填非0数字时，返回长度为size的一维数组
-    size填数组时，可以是空数组，
+    size填数组时，可以是空数组
     size填空数组时，返回一个值
     size填非空数组时，结果根据(size数组/形状数组)返回一或多维数组
     */
