@@ -7,6 +7,12 @@ var multiply = Common.multiply;
 const Main = require('./main.js')
 var shape = Main.shape;
 
+const Broadcast = require('./broadcast.js')
+var broadcast = Broadcast.broadcast;
+var broadcastToShape = Broadcast.broadcastToShape;
+
+const Extra = require('./extra.js')
+var flatten = Extra.flatten;
 
 function boxMullerTransform(u1, u2) {
     // 将[0,1)均匀分布的随机数转换为(-1,1)  
@@ -49,7 +55,7 @@ function randn() {
 }
 exports.randn = randn;
 
-//获取指定范围内的随机(整)数    注意：返回值包含min,max
+//获取指定范围内的随机(整)数    注意：[min,max]     返回值包含min,max
 function getRandomIntInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -234,3 +240,81 @@ exports.permutation = permutation;
 //     ]
 // ]))
 // [[ [ 1, 2, 3 ], [ 4, 5, 6 ], [ 7, 8, 9 ] ],[ [ 10, 11, 12 ], [ 13, 14, 15 ], [ 16, 17, 18 ] ]]
+
+//获取指定范围内的随机数[min,max)（包含min，不包含max）
+function getRandomInRange(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function uniform(low, high, size) {
+    /*
+    low可以是数字或数组
+    low默认为0
+    high可以是数字或数组
+    high默认为1
+    size可选
+    size可以是数字或数组
+    */
+    if (typeof low == 'undefined') {
+        low = 0;
+    }
+    if (typeof high == 'undefined') {
+        high = 1;
+    }
+    if (typeof low != 'number' && Array.isArray(low) == false) {
+        throw new Error('low只能是 数字 或 数组')
+    }
+    if (typeof high != 'number' && Array.isArray(high) == false) {
+        throw new Error('high只能是 数字 或 数组')
+    }
+    if (typeof size != 'undefined') {
+        if (typeof size != 'number' && Array.isArray(size) == false) {
+            throw new Error('size只能是 数字 或 数组')
+        }
+    }
+
+    if (typeof size == 'undefined') {
+        if (typeof low == 'number' && typeof high == 'number') {
+            return getRandomInRange(low, high)
+        } else {
+            let broadcastRes = broadcast([low, high]);
+            low = broadcastRes[0];
+            high = broadcastRes[1];
+            let resultShape = shape(low)
+            let resultData = []
+            low = flatten(low)
+            high = flatten(high)
+            for (let i = 0; i < low.length; i++) {
+                resultData.push(getRandomInRange(low[i], high[i]))
+            }
+            return low.length != 0 ? reshape(resultData, resultShape) : []
+        }
+    } else {
+        let resultShape = Array.isArray(size) ? size : [size];
+        if (typeof low == 'number' && typeof high == 'number') {
+            if (resultShape.length == 0) {
+                return getRandomInRange(low, high)
+            }
+            let resultData = [];
+            let resultLen = multiply(resultShape[0], resultShape, 1);
+            for (let i = 0; i < resultLen; i++) {
+                resultData.push(getRandomInRange(low, high))
+            }
+            return resultLen != 0 ? reshape(resultData, resultShape) : [];
+        } else {
+            let broadcastRes = broadcast([low, high]);
+            low = broadcastRes[0];
+            high = broadcastRes[1];
+            low = broadcastToShape(low, resultShape)
+            high = broadcastToShape(high, resultShape)
+            let resultData = []
+            low = flatten(low)
+            high = flatten(high)
+            for (let i = 0; i < low.length; i++) {
+                resultData.push(getRandomInRange(low[i], high[i]))
+            }
+            return low.length != 0 ? reshape(resultData, resultShape) : []
+        }
+    }
+}
+exports.uniform = uniform;
