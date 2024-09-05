@@ -83,7 +83,8 @@ exports.random = {
     randn: Random.randn,
     choice: Random.choice,
     permutation: Random.permutation,
-    uniform: Random.uniform
+    uniform: Random.uniform,
+    rand: Random.rand
 };
 
 // numpy a+b 加法（基于广播机制）
@@ -92,8 +93,6 @@ exports.random = {
 // numpy a/b 除法（基于广播机制）
 
 //numpy a>10 a<10 这种操作
-
-// numpy.random.rand
 
 // numpy.pad
 

@@ -55,6 +55,26 @@ function randn() {
 }
 exports.randn = randn;
 
+function rand() {
+    var resultShape = Array.from(arguments)
+    if (resultShape.length == 0) {
+        return getRandomInRange(0, 1)
+    } else {
+        for (let i = 0; i < resultShape.length; i++) {
+            if (typeof resultShape[i] != 'number' || resultShape[i] != parseInt(resultShape[i]) || resultShape[i] < 0) {
+                throw new Error('数据形状必须是由 非负整数 组成')
+            }
+        }
+        let resultLen = multiply(resultShape[0], resultShape, 1)
+        let resultData = []
+        for (let i = 0; i < resultLen; i++) {
+            resultData.push(getRandomInRange(0, 1))
+        }
+        return resultLen != 0 ? reshape(resultData, resultShape) : []
+    }
+}
+exports.rand = rand;
+
 //获取指定范围内的随机(整)数    注意：[min,max]     返回值包含min,max
 function getRandomIntInRange(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;

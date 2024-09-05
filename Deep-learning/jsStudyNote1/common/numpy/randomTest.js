@@ -83,3 +83,15 @@ const numpy = require('./index.js');
 // console.log(numpy.toStr(numpy.random.uniform([[1, 100, 200]], [2, 110, 210],[])))
 
 // console.log(numpy.toStr(numpy.random.uniform([[1, 100, 200]], [2, 110, 210], [4, 3])))
+
+//-----------------------------------------------
+
+// console.log(numpy.random.rand())
+
+// console.log(numpy.random.rand(0))
+
+// console.log(numpy.random.rand([]))
+
+// console.log(numpy.random.rand(1, 2, 3, 0))
+
+// console.log(numpy.toStr(numpy.random.rand(1, 2, 3, 4)))
