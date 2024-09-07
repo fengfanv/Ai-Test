@@ -9,6 +9,7 @@ const Math = require('./math.js')
 const Extra = require('./extra.js')
 const PrintTest = require('./print_test.js')
 const Random = require('./random.js')
+const Pad = require('./pad.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -87,14 +88,14 @@ exports.random = {
     rand: Random.rand
 };
 
+exports.pad = Pad.pad;
+
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
 // numpy a*b 乘法（基于广播机制）
 // numpy a/b 除法（基于广播机制）
 
 //numpy a>10 a<10 这种操作
-
-// numpy.pad
 
 // numpy.frombuffer
 // numpy.nditer
