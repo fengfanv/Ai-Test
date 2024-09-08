@@ -9,6 +9,7 @@ var get_axis = Axis.get_axis;
 
 const Broadcast = require('./broadcast.js')
 var broadcast = Broadcast.broadcast;
+var broadcastToShape = Broadcast.broadcastToShape;
 
 const Main = require('./main.js')
 var shape = Main.shape;
@@ -301,3 +302,65 @@ exports.maximum = maximum;
 // console.log(toStr(maximum([[23, 1, 3, 4, 20]], [10, 30, 20, 5, 10])))
 
 // console.log(toStr(maximum([[23, 1, 3, 4, 20]], [[10], [30], [20], [5], [10]])))
+
+//阉割版，最多只支持2维
+function meshgrid() {
+    var list = Array.from(arguments);
+    for (let i = 0; i < list.length; i++) {
+        if (Array.isArray(list[i]) == false) {
+            list[i] = [list[i]]
+        } else {
+            list[i] = flatten(list[i])
+        }
+    }
+    if (list.length == 0) {
+        return []
+    } else if (list.length == 1) {
+        return list
+    } else if (list.length == 2) {
+        let resultShape = []
+        for (let i = 0; i < list.length; i++) {
+            resultShape.push(list[i].length)
+        }
+        let temp = resultShape[0]
+        resultShape[0] = resultShape[1]
+        resultShape[1] = temp
+        for (let i = 0; i < list.length; i++) {
+            if (i == 0) {
+                list[i] = broadcastToShape(list[i], [].concat(resultShape.slice(0, 2)))[0]
+            } else if (i == 1) {
+                list[i] = reshape(list[i], [list[i].length, 1])
+                list[i] = broadcastToShape(list[i], [].concat(resultShape.slice(0, 2)))[0]
+            } else {
+                list[i] = broadcastToShape(list[i], resultShape)[0]
+            }
+            list[i] = reshape(list[i], resultShape)
+        }
+        return list
+    } else {
+
+    }
+}
+exports.meshgrid = meshgrid;
+
+// console.log(meshgrid())
+
+// console.log(meshgrid(1))
+
+// console.log(meshgrid([[[[1]]]]))
+
+//--------------------------------
+
+// console.log(toStr(meshgrid([6, 7], [1, 2])))
+
+// console.log(toStr(meshgrid([6], [1,2])))
+
+// console.log(meshgrid([1, 2], [1]))
+
+// console.log(toStr(meshgrid([6, 7, 8], [1, 2])))
+
+// console.log(toStr(meshgrid([1, 2], [6, 7, 8])))
+
+// console.log(toStr(meshgrid([[[1], [2]]], [[[6], [7], [8]]])))
+
+//--------------------------------
