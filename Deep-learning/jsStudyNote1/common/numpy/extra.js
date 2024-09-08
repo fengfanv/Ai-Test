@@ -364,3 +364,32 @@ exports.meshgrid = meshgrid;
 // console.log(toStr(meshgrid([[[1], [2]]], [[[6], [7], [8]]])))
 
 //--------------------------------
+
+function logspace(start, stop, num, base) {
+    if (typeof start == 'undefined' || typeof stop == 'undefined') {
+        throw new Error('start 和 stop 不能为空')
+    }
+    if (num == undefined) {
+        num = 50
+    }
+    if (base == undefined) {
+        base = 10
+    }
+    let resultData = []
+
+    const log_diff = (stop - start) / (num - 1);    //计算序列中每个数的对数值的差
+    for (let i = 0; i < num; i++) {
+        resultData.push(start + i * log_diff);  //生成对数序列
+        resultData[i] = Math.pow(base, resultData[i]);  //将对数序列转换回原始数
+    }
+    return resultData
+}
+exports.logspace = logspace;
+
+// console.log(logspace())
+
+// console.log(logspace(1))
+
+// console.log(logspace(0, 9, 10, 2))
+
+// console.log(logspace(2, 3, 4))

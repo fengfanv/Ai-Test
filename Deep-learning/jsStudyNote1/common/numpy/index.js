@@ -94,6 +94,7 @@ exports.pad = Pad.pad;
 exports.nditer = Common.nditer;
 
 exports.meshgrid = Extra.meshgrid;
+exports.logspace = Extra.logspace;
 
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
@@ -101,8 +102,6 @@ exports.meshgrid = Extra.meshgrid;
 // numpy a/b 除法（基于广播机制）
 
 //numpy a>10 a<10 这种操作
-
-// numpy.logspace
 
 //可选
 // numpy.kaiser
