@@ -5,7 +5,7 @@ console.log(numpy)
 // console.log('----')
 
 //4
-let arr1 = [0,0,0,0];
+let arr1 = [0, 0, 0, 0];
 // console.log('arr1，正确结果，[4]')
 // console.log('numpy.shape，',numpy.shape(arr1))
 // console.log('numpy.ndim',numpy.ndim(arr1))
@@ -13,7 +13,7 @@ let arr1 = [0,0,0,0];
 
 //1,2
 let arr2 = [
-    [0,0]
+    [0, 0]
 ]
 // console.log('arr2，正确结果，[1,2]')
 // console.log('numpy.shape，',numpy.shape(arr2))
@@ -21,8 +21,8 @@ let arr2 = [
 
 //2,2
 let arr3 = [
-    [0,0],
-    [0,0]
+    [0, 0],
+    [0, 0]
 ]
 // console.log('arr3，正确结果，[2,2]')
 // console.log('numpy.shape，',numpy.shape(arr3))
@@ -238,6 +238,12 @@ let arr6 = [
 // console.log("numpy.arange(0,10)，",numpy.arange(0,10));
 // console.log("numpy.arange(5,22)，",numpy.arange(5,22));
 // console.log("numpy.arange(1,6,0.5)，",numpy.arange(1,6,0.5));
+
+// let arr10 = numpy.arange(10)
+// numpy.nditer(arr10, (res) => {
+//     console.log(res)
+//     console.log('-----------')
+// })
 
 
 

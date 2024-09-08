@@ -31,6 +31,9 @@ function printArr(arr, indexArr, callback) {
     }
 }
 exports.printArr = printArr;
+exports.nditer = function (arr, callback) {
+    printArr(arr, [], callback)
+}
 // let a = [[0,0,0],[0,0,0]];
 // printArr(a, [], (res) => {
 //     //打印矩阵里的每一个元素

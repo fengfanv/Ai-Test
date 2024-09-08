@@ -35,6 +35,7 @@ function numpyRandomRandn() {
 //     console.log(numpyRandomRandn());
 // }
 
+//标准正态分布随机数(高斯分布随机数)
 function randn() {
     var resultShape = Array.from(arguments)
     if (resultShape.length == 0) {

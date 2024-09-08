@@ -10,6 +10,7 @@ const Extra = require('./extra.js')
 const PrintTest = require('./print_test.js')
 const Random = require('./random.js')
 const Pad = require('./pad.js')
+const Common = require('./common.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -90,6 +91,8 @@ exports.random = {
 
 exports.pad = Pad.pad;
 
+exports.nditer = Common.nditer;
+
 // numpy a+b 加法（基于广播机制）
 // numpy a-b 减法（基于广播机制）
 // numpy a*b 乘法（基于广播机制）
@@ -97,12 +100,10 @@ exports.pad = Pad.pad;
 
 //numpy a>10 a<10 这种操作
 
-// numpy.frombuffer
-// numpy.nditer
-
 // numpy.meshgrid
 // numpy.logspace
 
 //可选
 // numpy.kaiser
 // numpy.convolve
+// numpy.frombuffer
