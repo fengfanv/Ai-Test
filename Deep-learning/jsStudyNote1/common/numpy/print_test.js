@@ -105,6 +105,12 @@ function print(data, num, parentIsArr, isLast) {
         let haveChild = false;
         for (let i = 0; i < data.length; i++) {
             let value = data[i];
+            //---------------对numpy.array里True和False进行特殊优化--------start-------
+            let valueStr = String(value);
+            if (['True', 'False'].indexOf(valueStr) != -1) {
+                value = valueStr == 'True' ? true : false;
+            }
+            //---------------对numpy.array里True和False进行特殊优化--------end-------
             let last = i + 1 == data.length;
             if (Array.isArray(value) && value.length > 0) {
                 content += print(value, num + space, isArr, last)
