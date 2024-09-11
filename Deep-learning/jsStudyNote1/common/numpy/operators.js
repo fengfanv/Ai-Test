@@ -48,7 +48,8 @@ function A_R(a, operator, b) {
     }
     return reshape(resultData, resultShape)
 }
-exports.ar = A_R;
+//expression表达式
+exports.expr = A_R;
 
 // console.log(A_R(1, '<', 11))
 // console.log(A_R(11, '>', 10))

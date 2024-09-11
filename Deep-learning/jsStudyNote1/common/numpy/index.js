@@ -98,7 +98,7 @@ exports.meshgrid = Extra.meshgrid;
 exports.logspace = Extra.logspace;
 
 //算数运算符、关系运算符
-exports.ar = Operators.ar;
+exports.expr = Operators.expr;
 
 //可选
 // numpy.kaiser
