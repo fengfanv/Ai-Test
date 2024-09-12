@@ -16,10 +16,58 @@ var shape = Main.shape;
 const PrintTest = require('./print_test.js')
 var toStr = PrintTest.toStr;
 
-//算术运算符（Arithmetic Operators）（+ - * / %）
-//关系运算符(比较运算符)（Relational Operators）（== != > >= < <=）
+//算术运算符（Arithmetic Operators）
+//关系运算符(比较运算符)（Relational Operators）
 function compute(a, operator, b) {
-    var r = eval(String(a) + operator + String(b));
+    // var r = eval(String(a) + operator + String(b)); //危险
+
+    var r = undefined;
+    if (operator == '==') {
+        //等于 Equal (==)
+        r = a == b
+    } else if (operator == '!=') {
+        //不等于 Not equal (!=)
+        r = a != b
+    } else if (operator == '===') {
+        //全等 Strict equal (===)
+        r = a === b
+    } else if (operator == '!==') {
+        //不全等 Strict not equal (!==)
+        r = a !== b
+    } else if (operator == '>') {
+        //大于 Greater than (>)
+        r = a > b
+    } else if (operator == '>=') {
+        //大于等于 Greater than or equal (>=)
+        r = a >= b
+    } else if (operator == '<') {
+        //小于 Less than (<)
+        r = a < b
+    } else if (operator == '<=') {
+        //小于等于 Less than or equal (<=)
+        r = a <= b
+    } else if (operator == '+') {
+        //Addition
+        r = a + b
+    } else if (operator == '-') {
+        //Subtraction
+        r = a - b
+    } else if (operator == '*') {
+        //Multiplication
+        r = a * b
+    } else if (operator == '/') {
+        //Division
+        r = a / b
+    } else if (operator == '%') {
+        //Modulo
+        r = a % b
+    } else if (operator == '**') {
+        //to the power of
+        r = a ** b
+    } else {
+        throw new Error(`错误：暂不支持该种运算符 ${operator}`)
+    }
+
     if (typeof r == 'boolean') {
         r = r ? True : False;
     }
@@ -51,12 +99,29 @@ function A_R(a, operator, b) {
 //expression表达式
 exports.expr = A_R;
 
-// console.log(A_R(1, '<', 11))
+// console.log(A_R(1, '==', 11))
+// console.log(A_R(1, '!=', 11))
+// console.log(A_R('11', '===', 11))
+// console.log(A_R(1, '!==', 11))
+// console.log(A_R(1, '>', 11))
+// console.log(A_R(11, '>=', 11))
+// console.log(A_R(11, '<', 11))
+// console.log(A_R(11, '<=', 11))
+
+// console.log(A_R(11, '+', 11))
+// console.log(A_R(11, '-', 11))
+// console.log(A_R(11, '*', 11))
+// console.log(A_R(11, '/', 11))
+// console.log(A_R(4, '%', 2))
+// console.log(A_R(2, '**', 2))
+
+// console.log(A_R(2, '^', 2))
+
 // console.log(A_R(11, '>', 10))
 // console.log(A_R(11, '==', 10))
 // console.log(A_R(1, '+', 11))
 // console.log(A_R(11, '-', 10))
 // console.log(A_R(11, '/', 10))
-// console.log(A_R([1, 12, 4], '<', [11, 20, 3]))
+// console.log(A_R([1, 12, 4], '<', 10))
 // console.log(toStr(A_R([1, 12, 4], '>', [11, 20, 3])))
 // console.log(A_R([1.2222, 2, 3], '+', 10.1111))
