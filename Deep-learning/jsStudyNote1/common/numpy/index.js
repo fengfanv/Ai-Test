@@ -100,7 +100,22 @@ exports.logspace = Extra.logspace;
 //算数运算符、关系运算符
 exports.expr = Operators.expr;
 
+//numpy.append
+//numpy.concatenate
+
+//numpy.asarray
+//numpy.histogram
+//numpy.where
+
+//numpy.fliplr
+//numpy.flipud
+
+//numpy.minimum
+
 //可选
 // numpy.kaiser
 // numpy.convolve
 // numpy.frombuffer
+//------------
+//numpy.inf
+//numpy.uint8
