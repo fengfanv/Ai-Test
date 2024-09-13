@@ -18,13 +18,13 @@ function getPort(port, callback) {
 
     //检测端口号是否可用
     function checkPort(port) {
-        return new Promise((resolve, reject) => {
+        return new Promise(function (resolve, reject) {
             var server = net.createServer().listen(port)
-            server.on('listening', () => {
+            server.on('listening', function () {
                 server.close()
                 resolve(port)
             });
-            server.on('error', (err) => {
+            server.on('error', function (err) {
                 if (err.code == 'EADDRINUSE') {
                     resolve(err)
                 }
@@ -32,7 +32,7 @@ function getPort(port, callback) {
         })
     }
 
-    checkPort(port).then((res) => {
+    checkPort(port).then(function (res) {
         if (res instanceof Error) {
             console.log(`${port}已被占用`);
             port++;

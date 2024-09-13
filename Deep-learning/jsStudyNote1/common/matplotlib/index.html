@@ -5,19 +5,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>matplotlib</title>
+    <style>
+        #main {
+            margin: 0 auto;
+            width: 600px;
+            height: 400px;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="main" style="width:600px;height:400px;"></div>
+    <div id="main"></div>
+    <button onclick="close_page()">关闭页面</button>
     <script src="./echarts.min.js"></script>
     <script>
+        //关闭窗口
         function close_page() {
             window.opener = null;
             window.open('', '_self');
             window.close();
         }
-
-        
     </script>
     <script>
         // 基于准备好的dom，初始化echarts实例
@@ -26,7 +33,7 @@
         // 指定图表的配置项和数据
         var option = {
             title: {
-                text: 'ECharts 入门示例'
+                text: 'ECharts图表'
             },
             tooltip: {},
             legend: {
