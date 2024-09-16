@@ -18,6 +18,9 @@ var arange = Main.arange;
 const printTest = require('./print_test.js')
 var toStr = printTest.toStr;
 
+const Common = require('./common.js');
+var multiply = Common.multiply;
+
 function flatten(arr, order) {
     if (typeof order == 'undefined') {
         order = 'C'
@@ -303,7 +306,7 @@ exports.maximum = maximum;
 
 // console.log(toStr(maximum([[23, 1, 3, 4, 20]], [[10], [30], [20], [5], [10]])))
 
-//阉割版，最多只支持2维
+//阉割版，最多只支持3维
 function meshgrid() {
     var list = Array.from(arguments);
     for (let i = 0; i < list.length; i++) {
@@ -317,28 +320,81 @@ function meshgrid() {
         return []
     } else if (list.length == 1) {
         return list
-    } else if (list.length == 2) {
+    } else if (list.length >= 2) {
         let resultShape = []
+        let resultShape_original = []
         for (let i = 0; i < list.length; i++) {
             resultShape.push(list[i].length)
+            resultShape_original.push(list[i].length)
         }
         let temp = resultShape[0]
         resultShape[0] = resultShape[1]
         resultShape[1] = temp
+        // console.log("resultShape：", resultShape)
+        // console.log("resultShape_original：", resultShape_original)
         for (let i = 0; i < list.length; i++) {
-            if (i == 0) {
-                list[i] = broadcastToShape(list[i], [].concat(resultShape.slice(0, 2)))[0]
-            } else if (i == 1) {
+            // console.log("i：", i)
+
+            let resultShape2 = [].concat(resultShape);
+            if (resultShape2[resultShape2.length - 1] != list[i].length) {
                 list[i] = reshape(list[i], [list[i].length, 1])
-                list[i] = broadcastToShape(list[i], [].concat(resultShape.slice(0, 2)))[0]
             } else {
-                list[i] = broadcastToShape(list[i], resultShape)[0]
+                if (i == 1) {
+                    list[i] = reshape(list[i], [list[i].length, 1])
+                }
             }
+
+            if (list.length > 2 && resultShape2.indexOf(1) != -1 && resultShape2[resultShape2.length - 1] != 1) {
+                let last = resultShape2.splice(resultShape2.length - 1, 1);
+                let value = multiply(resultShape2[0], resultShape2, 1);
+                resultShape2 = [].concat(value, last);
+            } else if (list.length > 2 && resultShape2.indexOf(1) != -1 && resultShape2[resultShape2.length - 1] == 1) {
+
+                let oneArr = [];
+                for (let j = 0; j < i; j++) {
+                    oneArr.push(1)
+                }
+                if (i == list.length - 1) {
+                    oneArr = []
+                }
+                let toShape = [].concat(list[i].length, oneArr, 1);
+                list[i] = reshape(list[i], toShape)
+
+            } else if (list.length > 2 && resultShape2.indexOf(1) == -1) {
+                if (resultShape2[resultShape2.length - 1] != list[i].length) {
+
+                    let oneArr = [];
+                    for (let j = 0; j < i; j++) {
+                        oneArr.push(1)
+                    }
+                    if (i == list.length - 1) {
+                        oneArr = []
+                    }
+                    let toShape = [].concat(list[i].length, oneArr, 1);
+                    list[i] = reshape(list[i], toShape)
+
+                } else {
+
+                    if (i < list.length - 1) {
+                        let oneArr = [];
+                        for (let j = 0; j < i; j++) {
+                            oneArr.push(1)
+                        }
+                        if (i == list.length - 1) {
+                            oneArr = []
+                        }
+                        let toShape = [].concat(list[i].length, oneArr, 1);
+                        list[i] = reshape(list[i], toShape)
+                    }
+
+                }
+            }
+            list[i] = broadcastToShape(list[i], resultShape2)[0]
+
             list[i] = reshape(list[i], resultShape)
+            // console.log("i-结束：", i)
         }
         return list
-    } else {
-
     }
 }
 exports.meshgrid = meshgrid;
@@ -351,17 +407,35 @@ exports.meshgrid = meshgrid;
 
 //--------------------------------
 
-// console.log(toStr(meshgrid([6, 7], [1, 2])))
+// console.log(toStr(meshgrid([1, 2], [1, 2, 3])))
 
-// console.log(toStr(meshgrid([6], [1,2])))
+// console.log(toStr(meshgrid([1, 2, 3], [1, 2])))
 
-// console.log(meshgrid([1, 2], [1]))
+// console.log(toStr(meshgrid([1], [1, 2])))
 
-// console.log(toStr(meshgrid([6, 7, 8], [1, 2])))
+// console.log(toStr(meshgrid([1, 2], [1])))
 
-// console.log(toStr(meshgrid([1, 2], [6, 7, 8])))
+// console.log(toStr(meshgrid([1], [1])))
 
-// console.log(toStr(meshgrid([[[1], [2]]], [[[6], [7], [8]]])))
+// console.log(toStr(meshgrid([1, 2], [1, 2])))
+
+//--------------------------------
+
+// console.log(toStr(meshgrid([1], [1, 2], [1, 2, 3])))
+
+// console.log(toStr(meshgrid([1, 2], [1], [1, 2, 3])))
+
+// console.log(toStr(meshgrid([1, 2], [1, 2, 3], [1])))
+
+// console.log(toStr(meshgrid([1, 2], [1, 2, 3], [1, 2, 3, 4])))
+
+// console.log(toStr(meshgrid([1, 2], [1, 2], [1, 2])))
+
+// console.log(toStr(meshgrid([1], [1], [1])))
+
+//--------------------------------
+
+// console.log(toStr(meshgrid([1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 3, 4, 5])))
 
 //--------------------------------
 
