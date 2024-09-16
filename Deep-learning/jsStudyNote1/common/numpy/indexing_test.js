@@ -1,4 +1,4 @@
-const { slice, Ellipsis, None, True, False, indexing } = require('./index.js');
+const { slice, Ellipsis, None, newaxis, True, False, indexing } = require('./index.js');
 const { shape, arange, reshape, size } = require('./index.js');
 const { printArr } = require('./common.js');
 
@@ -19,7 +19,11 @@ const { printArr } = require('./common.js');
 // console.log(indexing(ar,[slice(3,15)],100))
 // console.log(indexing(ar,[slice(3,15)],[1000]))
 // console.log(indexing(ar,[slice(None,None,3)]))
+// console.log(indexing(ar,[slice(newaxis,newaxis,3)]))
 // console.log(indexing(ar,[slice(None,None,3)],1000))
+// console.log(indexing(ar,[slice(newaxis,newaxis,3)],1000))
+// console.log(indexing(ar,[slice(None,None,3),None]))
+// console.log(indexing(ar,[slice(newaxis,newaxis,3),newaxis]))
 
 // let ar = reshape(arange(16),[4,4]) //ar=np.arange(16).reshape(4,4)
 // console.log(ar)

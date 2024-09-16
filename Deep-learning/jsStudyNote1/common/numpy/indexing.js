@@ -109,6 +109,7 @@ var None = {
 }
 Object.freeze(None);
 exports.None = None;
+exports.newaxis = None;
 
 //True
 var True = {
@@ -650,10 +651,10 @@ function basicIndexing(arr, indexingTuple, value, debug) {
     // 调试模式（或特殊模式），指 被 高级索引调用 的情况。
     if (debug) {
         // console.log(`basicIndexing-resultShape：[${resultShape.join()}] => [${newResultShape.join()}]`);
-        if(newResultDataArr.length == 0){
+        if (newResultDataArr.length == 0) {
             //索引结果，没有数据。这里，目前没有有效的解决方法，只能暂时将空数组传递给高级索引
             return []
-        }else if (newResultShape.length == 0 && newResultDataArr.length == 1) {
+        } else if (newResultShape.length == 0 && newResultDataArr.length == 1) {
             //索引结果是一个 标量
             return newResultDataArr[0];
         } else {
@@ -1146,7 +1147,7 @@ function integerArrayIndexing(arr, indexingTuple, value, arr2) {
     if (resultDataArr.length == 0) {
         //索引结果，没有数据。
         return []
-    }else{
+    } else {
         //索引结果，有数据。
         return getIndexingArrValue(reshape(resultDataArr, newResultShapeArr.flat()))
     }

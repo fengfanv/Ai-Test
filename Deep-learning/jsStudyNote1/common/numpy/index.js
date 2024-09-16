@@ -50,6 +50,7 @@ exports.get_axis = Axis.get_axis;
 exports.slice = Indexing.slice;
 exports.Ellipsis = Indexing.Ellipsis;
 exports.None = Indexing.None;
+exports.newaxis = Indexing.newaxis;
 exports.True = Indexing.True;
 exports.False = Indexing.False;
 exports.indexing = Indexing.indexing;
@@ -134,7 +135,6 @@ exports.expr = Operators.expr;
 //numpy.array
 //numpy.asarray
 //-------------
-//numpy.newaxis
 //numpy.ndarray
 //numpy.inf
 //numpy.uint8
