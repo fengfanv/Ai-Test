@@ -391,6 +391,36 @@ function meshgrid() {
             }
             list[i] = broadcastToShape(list[i], resultShape2)[0]
 
+            //-------------------------------------------------------
+
+            // let resultShape2 = [].concat(resultShape);
+            // if (list.length == 2) {
+            //     if (i == 1) {
+            //         let oneArr = [];
+            //         for (let j = 0; j < i; j++) {
+            //             oneArr.push(1)
+            //         }
+            //         if (i == list.length - 1) {
+            //             oneArr = []
+            //         }
+            //         let toShape = [].concat(list[i].length, oneArr, 1);
+            //         list[i] = reshape(list[i], toShape)
+            //     }
+            // } else {
+            //     if (i < list.length - 1) {
+            //         let oneArr = [];
+            //         for (let j = 0; j < i; j++) {
+            //             oneArr.push(1)
+            //         }
+            //         if (i == list.length - 1) {
+            //             oneArr = []
+            //         }
+            //         let toShape = [].concat(list[i].length, oneArr, 1);
+            //         list[i] = reshape(list[i], toShape)
+            //     }
+            // }
+            // list[i] = broadcastToShape(list[i], resultShape2)[0]
+
             list[i] = reshape(list[i], resultShape)
             // console.log("i-结束：", i)
         }
@@ -434,6 +464,8 @@ exports.meshgrid = meshgrid;
 // console.log(toStr(meshgrid([1], [1], [1])))
 
 //--------------------------------
+
+// console.log(toStr(meshgrid([1, 2], [1, 2], [1, 2], [1, 2])))
 
 // console.log(toStr(meshgrid([1, 2], [1, 2, 3], [1, 2, 3, 4], [1, 2, 3, 4, 5])))
 
