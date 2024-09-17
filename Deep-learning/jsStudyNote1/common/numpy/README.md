@@ -752,3 +752,189 @@ print(numpy.logspace(2, 3, num=4, base=2))
 print(numpy.logspace(0, 9, num=10, base=2))
 # [  1.   2.   4.   8.  16.  32.  64. 128. 256. 512.]
 ```
+
+### numpy.indexing(arr, indexingTuple, value)
+```javascript
+const { slice, Ellipsis, None, newaxis, True, False, indexing } = require('./index.js');
+const numpy = require('./index.js');
+
+let ar = numpy.reshape(numpy.arange(4*4),[4,4])
+console.log(numpy.toStr(ar))
+// [
+//     [0,1,2,3],
+//     [4,5,6,7],
+//     [8,9,10,11],
+//     [12,13,14,15]
+// ]
+
+console.log(numpy.toStr(indexing(ar,[2])))
+// [8,9,10,11]
+console.log(numpy.toStr(indexing(ar,[-1])))
+// [12,13,14,15]
+console.log(numpy.toStr(indexing(ar,[slice(1,3)])))
+// [
+//     [4,5,6,7],
+//     [8,9,10,11]
+// ]
+console.log(numpy.toStr(indexing(ar,[slice(None,None,2)])))
+// [
+//     [0,1,2,3],
+//     [8,9,10,11]
+// ]
+console.log(numpy.toStr(indexing(ar,[slice(None,None,None),None])))
+// [
+//     [
+//       [0,1,2,3]
+//     ],
+//     [
+//       [4,5,6,7]
+//     ],
+//     [
+//       [8,9,10,11]
+//     ],
+//     [
+//       [12,13,14,15]
+//     ]
+// ]
+console.log(numpy.toStr(indexing(ar,[2,2])))
+// 10
+console.log(numpy.toStr(indexing(ar,[Ellipsis,0])))
+// [0,4,8,12]
+console.log(numpy.toStr(indexing(ar,[Ellipsis,slice(0,2)])))
+// [
+//     [0,1],
+//     [4,5],
+//     [8,9],
+//     [12,13]
+// ]
+//-------------------------------------
+console.log(numpy.toStr(indexing(ar,[[0,1,2],[0,1,2]])))
+// [0,5,10]
+console.log(numpy.toStr(indexing(ar,[[False,False,False,True]])))
+// [
+//     [12,13,14,15]
+// ]
+console.log(numpy.toStr(indexing(ar,[[1,0],[True,False,True,False]])))
+// [4,2]
+//-------------------------------------
+console.log(numpy.toStr(indexing(ar,[[1,1],slice(1,2),Ellipsis])))
+// [
+//     [5],
+//     [5]
+// ]
+//-------------------------------------
+indexing(ar,[[0,1,2],[0,1,2]],1000)
+console.log(numpy.toStr(ar))
+// [
+//     [1000,1,2,3],
+//     [4,1000,6,7],
+//     [8,9,1000,11],
+//     [12,13,14,15]
+// ]
+indexing(ar,[[0,1,2],[0,3,1]],[100])
+console.log(numpy.toStr(ar))
+// [
+//     [100,1,2,3],
+//     [4,1000,6,100],
+//     [8,100,1000,11],
+//     [12,13,14,15]
+// ]
+```
+```python
+import numpy
+
+ar = numpy.reshape(numpy.arange(4*4),[4,4])
+print(ar)
+# [[ 0  1  2  3]
+#  [ 4  5  6  7]
+#  [ 8  9 10 11]
+#  [12 13 14 15]]
+
+print(ar[2])
+# [ 8  9 10 11]
+print(ar[-1])
+# [12 13 14 15]
+print(ar[slice(1,3)])
+# [[ 4  5  6  7]
+#  [ 8  9 10 11]]
+print(ar[slice(None,None,2)])
+# [[ 0  1  2  3]
+#  [ 8  9 10 11]]
+print(ar[slice(None,None,None),None])
+# [[[ 0  1  2  3]]
+
+#  [[ 4  5  6  7]]
+
+#  [[ 8  9 10 11]]
+
+#  [[12 13 14 15]]]
+print(ar[2,2])
+# 10
+print(ar[Ellipsis,0])
+# [ 0  4  8 12]
+print(ar[Ellipsis,slice(0,2)])
+# [[ 0  1]
+#  [ 4  5]
+#  [ 8  9]
+#  [12 13]]
+#-------------------------------------
+print(ar[[0,1,2],[0,1,2]])
+# [ 0  5 10]
+print(ar[[False,False,False,True]])
+# [[12 13 14 15]]
+print(ar[[1,0],[True,False,True,False]])
+# [4 2]
+#-------------------------------------
+print(ar[[1,1],slice(1,2),Ellipsis])
+# [[5]
+#  [5]]
+#-------------------------------------
+ar[[0,1,2],[0,1,2]] = 1000
+print(ar)
+# [[1000    1    2    3]
+#  [   4 1000    6    7]
+#  [   8    9 1000   11]
+#  [  12   13   14   15]]
+ar[[0,1,2],[0,3,1]] = [100]
+print(ar)
+# [[ 100    1    2    3]
+#  [   4 1000    6  100]
+#  [   8  100 1000   11]
+#  [  12   13   14   15]]
+```
+
+### numpy.expr(a, operator, b)
+```javascript
+const numpy = require("./index.js");
+
+console.log(numpy.expr(1, ">", 11));
+// { name: 'False', toString: [Function: toString] }
+console.log(numpy.toStr(numpy.expr([1, 12, 4], "<", 10)));
+// [true,false,true]
+console.log(numpy.toStr(numpy.expr([1, 12, 4], ">", [11, 20, 3])));
+// [false,false,true]
+//---------------------------------------------------
+console.log(numpy.toStr(numpy.expr(11, "-", 10)));
+// 1
+console.log(numpy.toStr(numpy.expr([1.2222, 2, 3], "+", 10.1111)));
+// [11.333300000000001,12.1111,13.1111]
+console.log(numpy.toStr(numpy.expr([1, 12, 4], "+", [11, 20, 3])));
+// [12,32,7]
+```
+```python
+import numpy
+
+print(1 > 11)
+# False
+print(numpy.array([1, 12, 4]) < 10)
+# [ True False  True]
+print(numpy.array([1, 12, 4]) > numpy.array([11, 20, 3]))
+# [False False  True]
+#---------------------------------------------------
+print(11 - 10)
+# 1
+print(numpy.array([1.2222, 2, 3]) + 10.1111)
+# [11.3333 12.1111 13.1111]
+print(numpy.array([1, 12, 4]) + numpy.array([11, 20, 3]))
+# [12 32  7]
+```
