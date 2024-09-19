@@ -4,27 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>matplotlib</title>
+    <title>matplotlib-chart</title>
     <style>
         body {
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 98vh;
-        }
-
-        #main {
-            margin: 0 auto;
-            width: 600px;
-            height: 400px;
         }
     </style>
 </head>
 
 <body>
     <div id="main"></div>
-    <button onclick="close_page()">关闭页面</button>
+    <!-- <button onclick="close_page()">关闭页面</button> -->
     <script src="./echarts.min.js"></script>
     <script>
         //关闭窗口
@@ -35,8 +30,12 @@
         }
     </script>
     <script>
+        var main = document.getElementById('main');
+        main.style.width = window.innerWidth + 'px';
+        main.style.height = window.innerHeight + 'px';
+
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
+        var myChart = echarts.init(main);
 
         // 指定图表的配置项和数据
         var option = {
@@ -61,6 +60,14 @@
         };
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
+
+
+        window.addEventListener("resize", function () {
+            main.style.width = window.innerWidth + 'px';
+            main.style.height = window.innerHeight + 'px';
+
+            myChart.resize();
+        })
     </script>
 </body>
 
