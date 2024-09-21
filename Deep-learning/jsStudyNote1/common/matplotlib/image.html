@@ -1,14 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
 
-<body>
+      body {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
 
-</body>
+      #img {
+        /* cursor: crosshair; */
+        background-repeat: no-repeat !important;
+        position: relative;
+      }
 
+      #line {
+        position: absolute;
+        left: 0;
+        top: 0;
+        border: 2px solid black;
+        width: 0;
+        height: 0;
+        border-top: 0;
+        border-left: 0;
+        box-sizing: content-box;
+      }
+
+      #info {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--图片-->
+    <div id="img"></div>
+    <!--辅助线-->
+    <div id="line"></div>
+    <!--信息展示-->
+    <div id="info"></div>
+
+    <script>
+      var imagePath = "./abc3.png"; //横图
+      //var imagePath = "./abc2.png"; //竖图
+
+      var imgInfo = {
+        imgWidth: 0,
+        imgHeight: 0,
+        innerWidth: 0,
+        innerHeight: 0,
+        newWidth: 0,
+        newHeight: 0,
+      };
+
+      var img = new Image();
+      img.src = imagePath;
+      img.onload = function () {
+        var imgWidth = img.width;
+        var imgHeight = img.height;
+
+        var innerWidth = window.innerWidth;
+        var innerHeight = window.innerHeight;
+
+        var newWidth = 0;
+        var newHeight = 0;
+
+        if (innerWidth > innerHeight) {
+          //宽屏(pc)
+          if (imgWidth > imgHeight) {
+            //横图
+            newWidth = innerWidth;
+            newHeight = (newWidth / imgWidth) * imgHeight; //新高/旧高=新宽/旧宽
+          } else {
+            //竖图
+            newHeight = innerHeight;
+            newWidth = (newHeight / imgHeight) * imgWidth; //新宽/旧宽=新高/旧高
+          }
+        } else {
+          //窄屏(手机)
+          if (imgWidth > imgHeight) {
+            //横图
+            newWidth = innerWidth;
+            newHeight = (newWidth / imgWidth) * imgHeight; //新高/旧高=新宽/旧宽
+          } else {
+            //竖图
+            newHeight = innerHeight;
+            newWidth = (newHeight / imgHeight) * imgWidth; //新宽/旧宽=新高/旧高
+          }
+        }
+
+        if (newWidth > innerWidth) {
+          newWidth = innerWidth;
+          newHeight = (newWidth / imgWidth) * imgHeight; //新高/旧高=新宽/旧宽
+        }
+
+        if (newHeight > innerHeight) {
+          newHeight = innerHeight;
+          newWidth = (newHeight / imgHeight) * imgWidth; //新宽/旧宽=新高/旧高
+        }
+
+        document.getElementById("img").style.width = newWidth + "px";
+        document.getElementById("img").style.height = newHeight + "px";
+        document.getElementById("img").style.background = `url("${img.src}")`;
+        document.getElementById(
+          "img"
+        ).style.backgroundSize = `${newWidth}px ${newHeight}px`;
+
+        imgInfo = {
+          imgWidth,
+          imgHeight,
+          innerWidth,
+          innerHeight,
+          newWidth,
+          newHeight,
+        };
+      };
+
+      //--------------------------------------------------------------
+
+      //获取元素相较于body的位置
+      function getElementPositionRelativeToDocument(element) {
+        // 获取元素的边界矩形（相对于视口）
+        var rect = element.getBoundingClientRect();
+
+        // 获取当前页面的滚动偏移量
+        var scrollTop =
+          window.pageYOffset ||
+          document.documentElement.scrollTop ||
+          document.body.scrollTop ||
+          0;
+        var scrollLeft =
+          window.pageXOffset ||
+          document.documentElement.scrollLeft ||
+          document.body.scrollLeft ||
+          0;
+
+        // 计算元素相对于整个文档的位置
+        var top = rect.top + scrollTop;
+        var left = rect.left + scrollLeft;
+
+        return {
+          top: top,
+          left: left,
+        };
+      }
+
+      document.onmousemove = function (e) {
+        // console.log(e);
+        let img = document.getElementById("img");
+        let imgPosition = getElementPositionRelativeToDocument(img);
+        // console.log(imgPosition);
+
+        let line = document.getElementById("line");
+        line.style.width = e.pageX + "px";
+        line.style.height = e.pageY + "px";
+
+        let info = document.getElementById("info");
+        info.innerHTML = `
+        窗口尺寸：${imgInfo.innerWidth}*${imgInfo.innerHeight}；
+        <br>
+        图片原始尺寸：${imgInfo.imgWidth}*${imgInfo.imgHeight}；
+        <br>
+        图片显示尺寸：${Math.floor(imgInfo.newWidth)}*${Math.floor(
+          imgInfo.newHeight
+        )}；
+        <br>
+        位置：${Math.floor(e.pageX - imgPosition.left)}*${Math.floor(
+          e.pageY + imgPosition.top
+        )}；
+        <br>
+        图片位置：${Math.floor(
+          ((e.pageX - imgPosition.left) / imgInfo.newWidth) * imgInfo.imgWidth
+        )}*${Math.floor(
+          ((e.pageY - imgPosition.top) / imgInfo.newHeight) * imgInfo.imgHeight
+        )}
+        `;
+      };
+    </script>
+  </body>
 </html>
