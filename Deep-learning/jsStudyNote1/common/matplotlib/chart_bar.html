@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>matplotlib-chart</title>
+    <title>matplotlib-chart-bar</title>
     <style>
         body {
             margin: 0;
@@ -21,14 +21,7 @@
     <div id="main"></div>
     <!-- <button onclick="close_page()">关闭页面</button> -->
     <script src="./echarts.min.js"></script>
-    <script>
-        //关闭窗口
-        function close_page() {
-            window.opener = null;
-            window.open('', '_self');
-            window.close();
-        }
-    </script>
+    <script src="./page_script.js"></script>
     <script>
         var main = document.getElementById('main');
         main.style.width = window.innerWidth + 'px';
@@ -37,30 +30,41 @@
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(main);
 
+        var legend = 'start-legend-legend-legend-legend-legend-legend-end';
+        var xAxis = 'start-xAxis-xAxis-xAxis-xAxis-xAxis-xAxis-end';
+        var series = 'start-series-series-series-series-series-series-end';
+
         // 指定图表的配置项和数据
         var option = {
             title: {
                 text: 'ECharts图表'
             },
-            tooltip: {},
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
             legend: {
-                data: ['销量']
+                // data: ['销量']
+                data: legend
             },
             xAxis: {
-                data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+                // data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+                data: xAxis
             },
             yAxis: {},
-            series: [
-                {
-                    name: '销量',
-                    type: 'bar',
-                    data: [5, 20, 36, 10, 10, 20]
-                }
-            ]
+            // series: [
+            //     {
+            //         name: '销量',
+            //         type: 'bar',
+            //         data: [5, 20, 36, 10, 10, 20]
+            //     }
+            // ],
+            series: series
         };
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
-
 
         window.addEventListener("resize", function () {
             main.style.width = window.innerWidth + 'px';
