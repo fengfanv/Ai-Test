@@ -110,27 +110,27 @@ exports.expr = Operators.expr;
 
 
 //二期工程（rcnn、fast-rcnn）
-//numpy.where
+//numpy.round
+//numpy.abs
+//numpy.random.randint
+//numpy.minimum
 //numpy.append
 //numpy.concatenate
 //numpy.histogram
-//numpy.minimum
 //numpy.fliplr
 //numpy.flipud
 //numpy.get_include
 //numpy.hstack
 //numpy.vstack
 //numpy.sort
+//numpy.argsort
 //numpy.trapz
-//numpy.round
-//numpy.abs
 //numpy.unique
 //numpy.tile
-//numpy.argsort
 //numpy.random.seed
 //numpy.linalg.svd
 //numpy.allclose
-//numpy.random.randint
+//numpy.where
 //可选
 //numpy.array
 //numpy.asarray
