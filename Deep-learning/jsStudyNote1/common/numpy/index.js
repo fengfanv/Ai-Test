@@ -12,6 +12,7 @@ const Random = require('./random.js')
 const Pad = require('./pad.js')
 const Common = require('./common.js')
 const Operators = require('./operators.js')
+const Where = require('./where.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -101,6 +102,8 @@ exports.logspace = Extra.logspace;
 //算数运算符、关系运算符
 exports.expr = Operators.expr;
 
+exports.where = Where.where;
+
 
 //一期工程（cnn）
 //可选
@@ -130,7 +133,6 @@ exports.expr = Operators.expr;
 //numpy.random.seed
 //numpy.linalg.svd
 //numpy.allclose
-//numpy.where
 //可选
 //numpy.array
 //numpy.asarray
