@@ -161,6 +161,8 @@ exports.where = where;
 
 // console.log(where([0], 1, 2))
 
+// console.log(where(0, [1], 2))
+
 // console.log(where(1))
 
 // console.log(where(1,2,3))

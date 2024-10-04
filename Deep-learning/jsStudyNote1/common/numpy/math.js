@@ -122,3 +122,83 @@ exports.mean = function (data, axis) {
         return resultData
     }
 }
+
+exports.round = function (a, decimals) {
+    if (typeof a == 'undefined') {
+        throw new Error('a不能为空')
+    }
+    if (typeof decimals == 'undefined') {
+        decimals = 0
+    }
+
+    function roundWork(value, decimals) {
+        if (typeof value != 'number') {
+            throw new Error('value必须为数值类型')
+        }
+        if (decimals >= 0) {
+            return Number(value.toFixed(decimals))
+        } else {
+            let zeros = '';
+            for (let i = decimals; i < 0; i++) {
+                zeros += 0;
+            }
+            value = value.toFixed(0);
+            let sign = '';
+            if (/^[+|-]/.test(value)) {
+                sign = value.slice(0, 1)
+                value = value.slice(1)
+            }
+            value = value.slice(0, decimals);
+            return Number(sign + value + zeros)
+        }
+    }
+
+    if (Array.isArray(a)) {
+        printArr(a, [], (res) => {
+            res.childArr[res.childIndex] = roundWork(res.value, decimals)
+        })
+        return a;
+    } else {
+        return roundWork(a, decimals)
+    }
+}
+
+// console.log(exports.round())
+
+// console.log(exports.round(1))
+
+// console.log(exports.round(1.11))
+
+// console.log(exports.round(1.11,1))
+
+// console.log(exports.round(1.11,5))
+
+// console.log(exports.round(123.321,0))
+
+// console.log(exports.round(123.321,-1))
+
+// console.log(exports.round(123.321,-2))
+
+// console.log(exports.round(123.321,-3))
+
+// console.log(exports.round(123.321,-4))
+
+// console.log(exports.round(-123.321,-4))
+
+// console.log(exports.round(-123.321,-3))
+
+// console.log(exports.round(-123.321,-2))
+
+// console.log(exports.round(-123.321,-1))
+
+// console.log(exports.round(-0.321,-1))
+
+// console.log(exports.round(-0.321,1))
+
+// console.log(exports.round([[1.11,2.22,-3.33]],1))
+
+// console.log(exports.round([[1.11,2.22,-3.33]]))
+
+// console.log(exports.round([[1.11,2.22,-3.33]],-1))
+
+// console.log(exports.round([[11.11,22.22,-33.33]],-1))

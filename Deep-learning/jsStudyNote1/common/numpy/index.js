@@ -103,6 +103,7 @@ exports.logspace = Extra.logspace;
 exports.expr = Operators.expr;
 
 exports.where = Where.where;
+exports.round = Math.round;
 
 
 //一期工程（cnn）
@@ -113,7 +114,6 @@ exports.where = Where.where;
 
 
 //二期工程（rcnn、fast-rcnn）
-//numpy.round
 //numpy.abs
 //numpy.random.randint
 //numpy.minimum
