@@ -306,6 +306,77 @@ exports.maximum = maximum;
 
 // console.log(toStr(maximum([[23, 1, 3, 4, 20]], [[10], [30], [20], [5], [10]])))
 
+function minimum(a, b) {
+    if (typeof a == 'undefined' || typeof b == 'undefined') {
+        throw new Error('a或b不能为空')
+    }
+    if (Array.isArray(a) == false && typeof a != 'number') {
+        throw new Error('a只能是Number Or Array')
+    }
+    if (Array.isArray(b) == false && typeof b != 'number') {
+        throw new Error('b只能是Number Or Array')
+    }
+    if (typeof a == 'number' && typeof b == 'number') {
+        if (a < b) {
+            return a
+        } else {
+            return b
+        }
+    }
+    if (typeof a == 'number') {
+        a = [a]
+    }
+    if (typeof b == 'number') {
+        b = [b]
+    }
+    var broadcastRes = broadcast([a, b])
+    var resultShape = shape(broadcastRes[0])
+    a = broadcastRes[0]
+    b = broadcastRes[1]
+    a = flatten(a)
+    b = flatten(b)
+    var resultData = []
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] < b[i]) {
+            resultData[i] = a[i]
+        } else {
+            resultData[i] = b[i]
+        }
+    }
+    return reshape(resultData, resultShape)
+}
+exports.minimum = minimum;
+
+// console.log(minimum())
+
+// console.log(minimum(1))
+
+// console.log(minimum('1', 1))
+
+// console.log(minimum(1, '1'))
+
+// console.log(toStr(minimum(1, 1)))
+
+// console.log(toStr(minimum(1, 2)))
+
+// console.log(toStr(minimum(2, 1)))
+
+// console.log(toStr(minimum([2], 1)))
+
+// console.log(toStr(minimum(1, [2])))
+
+// console.log(toStr(minimum([23], [2])))
+
+// console.log(toStr(minimum([23,1,3,4,20], [10])))
+
+// console.log(toStr(minimum([23,1,3,4,20], 10)))
+
+// console.log(toStr(minimum([23,1,3,4,20], [10,30])))
+
+// console.log(toStr(minimum([[23, 1, 3, 4, 20]], [10, 30, 20, 5, 10])))
+
+// console.log(toStr(minimum([[23, 1, 3, 4, 20]], [[10], [30], [20], [5], [10]])))
+
 //阉割版，最多只支持3维
 function meshgrid() {
     var list = Array.from(arguments);

@@ -107,7 +107,7 @@ exports.where = Where.where;
 exports.round = Math.round;
 exports.absolute = Math.absolute;
 exports.abs = Math.abs;
-
+exports.minimum = Extra.minimum;
 
 //一期工程（cnn）
 //可选
@@ -117,8 +117,6 @@ exports.abs = Math.abs;
 
 
 //二期工程（rcnn、fast-rcnn）
-//numpy.random.randint
-//numpy.minimum
 //numpy.append
 //numpy.concatenate
 //numpy.histogram
