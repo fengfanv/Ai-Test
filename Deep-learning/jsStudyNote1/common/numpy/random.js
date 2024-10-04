@@ -3,6 +3,7 @@ var reshape = Reshape.reshape;
 
 const Common = require('./common.js');
 var multiply = Common.multiply;
+var printArr = Common.printArr;
 
 const Main = require('./main.js')
 var shape = Main.shape;
@@ -339,3 +340,50 @@ function uniform(low, high, size) {
     }
 }
 exports.uniform = uniform;
+
+function randint(low, high, size) {
+    if (typeof low == 'undefined' && typeof high == 'undefined' && typeof size == 'undefined') {
+        throw new Error('low 和 high 至少传一个，不能都不传')
+    }
+
+    if (typeof low != 'undefined' && typeof high == 'undefined' && typeof size == 'undefined') {
+        high = low;
+        low = 0;
+    }
+
+    if (high <= low) {
+        throw new Error('high 必须大于 low')
+    }
+
+    let resultData = uniform(low, high, size);
+
+    if (Array.isArray(resultData)) {
+        printArr(resultData, [], (res) => {
+            res.childArr[res.childIndex] = Math.floor(res.value);
+        })
+        return resultData
+    } else {
+        return Math.floor(resultData)
+    }
+}
+exports.randint = randint;
+
+// console.log(randint())
+
+// console.log(randint(0))
+
+// console.log(randint(5))
+
+// console.log(randint(-5, 0))
+
+// console.log(randint(0, -5))
+
+// console.log(randint(1, 5, [3, 2]))
+
+// console.log(randint(1, 5, 5))
+
+// console.log(randint([0,100,200], [10,110,210], 5))
+
+// console.log(randint([0,100,200], [10,110,210], 3))
+
+// console.log(randint([0,100,200], 300, [3]))

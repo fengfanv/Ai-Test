@@ -89,7 +89,8 @@ exports.random = {
     choice: Random.choice,
     permutation: Random.permutation,
     uniform: Random.uniform,
-    rand: Random.rand
+    rand: Random.rand,
+    randint: Random.randint,
 };
 
 exports.pad = Pad.pad;
