@@ -104,6 +104,8 @@ exports.expr = Operators.expr;
 
 exports.where = Where.where;
 exports.round = Math.round;
+exports.absolute = Math.absolute;
+exports.abs = Math.abs;
 
 
 //一期工程（cnn）
@@ -114,7 +116,6 @@ exports.round = Math.round;
 
 
 //二期工程（rcnn、fast-rcnn）
-//numpy.abs
 //numpy.random.randint
 //numpy.minimum
 //numpy.append

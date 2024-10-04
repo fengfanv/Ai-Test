@@ -202,3 +202,19 @@ exports.round = function (a, decimals) {
 // console.log(exports.round([[1.11,2.22,-3.33]],-1))
 
 // console.log(exports.round([[11.11,22.22,-33.33]],-1))
+
+function absolute(x) {
+    return workData(x, Math.abs)
+}
+exports.absolute = absolute;
+exports.abs = absolute;
+
+// console.log(absolute(-1))
+
+// console.log(absolute(-111.111))
+
+// console.log(absolute(111.111))
+
+// console.log(absolute([111.111,-0.111,-123,-0]))
+
+// console.log(absolute(+1111))
