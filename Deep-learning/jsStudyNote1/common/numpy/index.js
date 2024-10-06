@@ -13,6 +13,7 @@ const Pad = require('./pad.js')
 const Common = require('./common.js')
 const Operators = require('./operators.js')
 const Where = require('./where.js')
+const Append = require('./append.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -108,6 +109,7 @@ exports.round = Math.round;
 exports.absolute = Math.absolute;
 exports.abs = Math.abs;
 exports.minimum = Extra.minimum;
+exports.append = Append.append;
 
 //一期工程（cnn）
 //可选
@@ -117,7 +119,6 @@ exports.minimum = Extra.minimum;
 
 
 //二期工程（rcnn、fast-rcnn）
-//numpy.append
 //numpy.concatenate
 //numpy.histogram
 //numpy.fliplr
