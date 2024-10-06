@@ -110,6 +110,7 @@ exports.absolute = Math.absolute;
 exports.abs = Math.abs;
 exports.minimum = Extra.minimum;
 exports.append = Append.append;
+exports.concatenate = Append.concatenate;
 
 //一期工程（cnn）
 //可选
