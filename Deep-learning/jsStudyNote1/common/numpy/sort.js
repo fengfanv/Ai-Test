@@ -122,3 +122,123 @@ exports.sort = sort;
 // console.log(toStr(sort([])))
 
 // console.log(toStr(sort([],'None')))
+
+function argsort(a, axis, kind) {
+    if (typeof a == 'undefined') {
+        throw new Error('a不能为空')
+    }
+
+    if (typeof axis == 'undefined') {
+        axis = -1
+    }
+
+    if (typeof kind == 'undefined') {
+        kind = 'quicksort'
+    }
+
+    if (kind == 'quicksort') {
+
+        if (String(axis) == 'None') {
+
+            if (!Array.isArray(a)) {
+                a = [a]
+            }
+
+            let a_flatten = reshape(a, [-1])
+
+            for (let i = 0; i < a_flatten.length; i++) {
+                a_flatten[i] = {
+                    index: i,
+                    value: a_flatten[i],
+                    valueOf: function () {
+                        return this.value
+                    }
+                }
+            }
+
+            let sortData = quick_sort(a_flatten)
+
+            for (let i = 0; i < sortData.length; i++) {
+                sortData[i] = sortData[i].index;
+            }
+
+            return sortData
+
+        } else {
+            if (!Array.isArray(a)) {
+                a = [a]
+            }
+
+            if (a.length == 0) {
+                return []
+            }
+
+            let aShape = shape(a)
+
+            let axisInfo = get_axis(a, axis)
+
+            for (let i = 0; i < axisInfo.axisArr.length; i++) {
+
+                for (let j = 0; j < axisInfo.axisArr[i].length; j++) {
+                    axisInfo.axisArr[i][j] = {
+                        index: j,
+                        value: axisInfo.axisArr[i][j],
+                        valueOf: function () {
+                            return this.value
+                        }
+                    }
+                }
+
+                axisInfo.axisArr[i] = quick_sort(axisInfo.axisArr[i])
+
+                for (let j = 0; j < axisInfo.axisArr[i].length; j++) {
+                    axisInfo.axisArr[i][j] = axisInfo.axisArr[i][j].index;
+                }
+
+            }
+
+            return reshape(axisArrToOriginalArr(axisInfo.axisArr, axisInfo.strides), aShape)
+        }
+    }
+}
+exports.argsort = argsort;
+
+// console.log(toStr(argsort()))
+
+// console.log(toStr(argsort(1)))
+
+// console.log(toStr(argsort(1, 'None')))
+
+// console.log(toStr(argsort([[1, 4], [3, 1]])))
+
+// console.log(toStr(argsort([[1, 4], [3, 1]], 1)))
+
+// console.log(toStr(argsort([[1, 4], [3, 1]], -1)))
+
+// console.log(toStr(argsort([[1, 4], [3, 1]], 'None')))
+
+// console.log(toStr(argsort([[1, 4], [3, 1]], 0)))
+
+// console.log(toStr(argsort([[[3, 7], [9, 1], [4, 6]], [[1, 4], [3, 1], [7, 9]]],0)))
+
+// console.log(toStr(argsort([[[3, 7], [9, 1], [4, 6]], [[1, 4], [3, 1], [7, 9]]],1)))
+
+// console.log(toStr(argsort([[[3, 7], [9, 1], [4, 6]], [[1, 4], [3, 1], [7, 9]]],2)))
+
+// console.log(toStr(argsort([[[3, 7], [9, 1], [4, 6]], [[1, 4], [3, 1], [7, 9]]],3)))
+
+// console.log(toStr(argsort([[[3, 7], [9, 1], [4, 6]], [[1, 4], [3, 1], [7, 9]]])))
+
+// console.log(toStr(argsort([[[3, 7], [9, 1], [4, 6]], [[1, 4], [3, 1], [7, 9]]],'None')))
+
+// console.log(toStr(argsort([2,1],'None')))
+
+// console.log(toStr(argsort([2,1])))
+
+// console.log(toStr(argsort([2,1],-1)))
+
+// console.log(toStr(argsort([1])))
+
+// console.log(toStr(argsort([])))
+
+// console.log(toStr(argsort([],'None')))

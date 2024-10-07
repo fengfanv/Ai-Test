@@ -117,6 +117,8 @@ exports.concatenate = Append.concatenate;
 exports.fliplr = Fliplr.fliplr;
 exports.flipud = Fliplr.flipud;
 exports.sort = Sort.sort;
+exports.argsort = Sort.argsort;
+
 
 //一期工程（cnn）
 //可选
@@ -129,7 +131,6 @@ exports.sort = Sort.sort;
 //numpy.histogram
 //numpy.hstack
 //numpy.vstack
-//numpy.argsort
 //numpy.trapz
 //numpy.unique
 //numpy.tile
