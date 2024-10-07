@@ -1,6 +1,7 @@
 const Main = require('./main.js');
 var shape = Main.shape;
 var arange = Main.arange;
+var size = Main.size;
 
 const Common = require('./common.js');
 var multiply = Common.multiply;
@@ -17,89 +18,97 @@ var reshape = Reshape.reshape;
 */
 
 //从 标记数组 里，从左往右找，找没有被使用过的数据
-function getUnusedNumberFromTagArr(arr){
-    for(let i=0;i<arr.length;i++){
-        if(arr[i]!='*'){
-            return i;
-        }
+function getUnusedNumberFromTagArr(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] != '*') {
+      return i;
     }
+  }
+}
+
+function getUnusedStarFromTagArr(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] == '*') {
+      return i;
+    }
+  }
 }
 
 
 function getAxis(arr, axis) {
-    /*
-    arr 数组，array类型
-    axis 指定获取arr的哪一个轴，number类型
-    */
-    let arrInfo = {
-        shape: shape(arr),//数据的形状
-        shapeAxis:null,//形状数组里，与，当前轴，所对应，的那个形状值，纯数字
-        resultShape:null,//根据某个轴进行运算后，返回的结果的数组形状，如在numpy.sum，numpy.max里，根据某个轴运算后，的运算结果的数组形状；如果是空数组，说明结果是纯数字
-        axisLength:null,//当前轴有几组数据，纯数字
-        strides:null,//当前轴，在一维数组里提取数据时，数据与数据之间的间隔，纯数字
-        ravel:reshape(arr,[-1]),//数据展开成一维数组
-        tagArr:arr.concat(),//标记数组，提取数据时，用于标记已被使用过的数据
-        axisArr:[],//当前轴的数据
-        
-        ravel2:[],
-        axisArr2:[],
-    }
+  /*
+  arr 数组，array类型
+  axis 指定获取arr的哪一个轴，number类型
+  */
+  let arrInfo = {
+    shape: shape(arr),//数据的形状
+    shapeAxis: null,//形状数组里，与，当前轴，所对应，的那个形状值，纯数字
+    resultShape: null,//根据某个轴进行运算后，返回的结果的数组形状，如在numpy.sum，numpy.max里，根据某个轴运算后，的运算结果的数组形状；如果是空数组，说明结果是纯数字
+    axisLength: null,//当前轴有几组数据，纯数字
+    strides: null,//当前轴，在一维数组里提取数据时，数据与数据之间的间隔，纯数字
+    ravel: reshape(arr, [-1]),//数据展开成一维数组
+    tagArr: arr.concat(),//标记数组，提取数据时，用于标记已被使用过的数据
+    axisArr: [],//当前轴的数据
 
-    printArr(arr,[],(res)=>{
-      arrInfo.ravel2.push({
-        index:res.index,
-        value:res.value
-      })
+    ravel2: [],
+    axisArr2: [],
+  }
+
+  printArr(arr, [], (res) => {
+    arrInfo.ravel2.push({
+      index: res.index,
+      value: res.value
     })
+  })
 
-    if(axis < 0){
-      axis = axis + arrInfo.shape.length
+  if (axis < 0) {
+    axis = axis + arrInfo.shape.length
+  }
+
+  if (axis > arrInfo.shape.length - 1) {
+    throw new Error('getAxis:error 当前arr不存在轴（axis:' + axis + '）')
+  }
+
+  arrInfo.shapeAxis = arrInfo.shape[axis];
+
+  arrInfo.resultShape = arrInfo.shape.concat();//拷贝数组
+  arrInfo.resultShape.splice(axis, 1);
+
+  if (arrInfo.resultShape.length == 0) {
+    arrInfo.axisLength = 1;
+  } else {
+    arrInfo.axisLength = multiply(arrInfo.resultShape[0], arrInfo.resultShape, 1);
+  }
+
+  let stridesArr = arrInfo.shape.slice(axis + 1);
+  if (stridesArr.length == 0) {
+    arrInfo.strides = 1;
+  } else {
+    arrInfo.strides = multiply(stridesArr[0], stridesArr, 1);
+  }
+
+  arrInfo.tagArr = arrInfo.ravel.concat();//拷贝数组
+
+  //开始提取轴数据
+  for (let i = 0; i < arrInfo.axisLength; i++) {
+    let a_set_arr = [];//一组数据
+    let a_set_arr2 = [];
+
+    let firstValueIndex = getUnusedNumberFromTagArr(arrInfo.tagArr);//在标记数组里，从左往右，寻找没有被标记的数据
+    for (let j = 0; j < arrInfo.shapeAxis; j++) {
+      let index = firstValueIndex + (j * arrInfo.strides);
+      let value = arrInfo.ravel.slice(index, index + 1)[0];
+      arrInfo.tagArr[index] = '*';//打上标记，表示数据已经被使用过
+      a_set_arr.push(value)
+
+      let value2 = arrInfo.ravel2.slice(index, index + 1)[0];
+      a_set_arr2.push(value2)
     }
-
-    if (axis > arrInfo.shape.length - 1){
-        throw new Error('getAxis:error 当前arr不存在轴（axis:'+axis+'）')
-    }
-
-    arrInfo.shapeAxis = arrInfo.shape[axis];
-
-    arrInfo.resultShape = arrInfo.shape.concat();//拷贝数组
-    arrInfo.resultShape.splice(axis,1);
-
-    if(arrInfo.resultShape.length == 0){
-        arrInfo.axisLength = 1;
-    }else{
-        arrInfo.axisLength = multiply(arrInfo.resultShape[0],arrInfo.resultShape,1);
-    }
-
-    let stridesArr = arrInfo.shape.slice(axis+1);
-    if(stridesArr.length == 0){
-        arrInfo.strides = 1;
-    }else{
-        arrInfo.strides = multiply(stridesArr[0],stridesArr,1);
-    }
-
-    arrInfo.tagArr = arrInfo.ravel.concat();//拷贝数组
-
-    //开始提取轴数据
-    for(let i=0;i<arrInfo.axisLength;i++){
-        let a_set_arr = [];//一组数据
-        let a_set_arr2 = [];
-
-        let firstValueIndex = getUnusedNumberFromTagArr(arrInfo.tagArr);//在标记数组里，从左往右，寻找没有被标记的数据
-        for(let j=0;j<arrInfo.shapeAxis;j++){
-            let index = firstValueIndex+(j*arrInfo.strides);
-            let value = arrInfo.ravel.slice(index,index+1)[0];
-            arrInfo.tagArr[index] = '*';//打上标记，表示数据已经被使用过
-            a_set_arr.push(value)
-
-            let value2 = arrInfo.ravel2.slice(index,index+1)[0];
-            a_set_arr2.push(value2)
-        }
-        arrInfo.axisArr.push(a_set_arr)
-        arrInfo.axisArr2.push(a_set_arr2)
-    }
-    //提取 轴数据 完毕，返回提取结果
-    return arrInfo;
+    arrInfo.axisArr.push(a_set_arr)
+    arrInfo.axisArr2.push(a_set_arr2)
+  }
+  //提取 轴数据 完毕，返回提取结果
+  return arrInfo;
 }
 exports.get_axis = getAxis;
 
@@ -339,3 +348,21 @@ exports.get_axis = getAxis;
 }
 */
 // console.log(getAxis(a,1)) //报错，是正常的
+
+//提取的轴数据，(还原成)转换成，原始数组的顺序
+function axisArrToOriginalArr(axisArr, strides) {
+  let dataLen = size(axisArr);
+  let arr = [];
+  for (let i = 0; i < dataLen; i++) {
+    arr.push('*')
+  }
+  for (let i = 0; i < axisArr.length; i++) {
+    let firstValueIndex = getUnusedStarFromTagArr(arr);//在标记数组里，从左往右，寻找没有被标记的数据
+    for (let j = 0; j < axisArr[i].length; j++) {
+      let index = firstValueIndex + (j * strides);
+      arr[index] = axisArr[i][j];
+    }
+  }
+  return arr
+}
+exports.axisArrToOriginalArr = axisArrToOriginalArr;

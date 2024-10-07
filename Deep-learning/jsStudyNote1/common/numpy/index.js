@@ -48,6 +48,7 @@ exports.dot = Dot.dot;
 
 //获取数据的某个轴（numpy.get_axis）
 exports.get_axis = Axis.get_axis;
+exports.axisArrToOriginalArr = Axis.axisArrToOriginalArr;
 
 //索引功能（numpy.indexing）
 exports.slice = Indexing.slice;
