@@ -113,6 +113,8 @@ exports.minimum = Extra.minimum;
 exports.append = Append.append;
 exports.concatenate = Append.concatenate;
 exports.fliplr = Fliplr.fliplr;
+exports.flipud = Fliplr.flipud;
+
 
 //一期工程（cnn）
 //可选
@@ -123,7 +125,6 @@ exports.fliplr = Fliplr.fliplr;
 
 //二期工程（rcnn、fast-rcnn）
 //numpy.histogram
-//numpy.flipud
 //numpy.hstack
 //numpy.vstack
 //numpy.sort
