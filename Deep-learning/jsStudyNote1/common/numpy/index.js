@@ -15,6 +15,7 @@ const Operators = require('./operators.js')
 const Where = require('./where.js')
 const Append = require('./append.js')
 const Fliplr = require('./fliplr.js')
+const Sort = require('./sort.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -115,7 +116,7 @@ exports.append = Append.append;
 exports.concatenate = Append.concatenate;
 exports.fliplr = Fliplr.fliplr;
 exports.flipud = Fliplr.flipud;
-
+exports.sort = Sort.sort;
 
 //一期工程（cnn）
 //可选
@@ -128,7 +129,6 @@ exports.flipud = Fliplr.flipud;
 //numpy.histogram
 //numpy.hstack
 //numpy.vstack
-//numpy.sort
 //numpy.argsort
 //numpy.trapz
 //numpy.unique
