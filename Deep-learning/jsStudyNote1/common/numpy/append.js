@@ -348,3 +348,65 @@ exports.vstack = vstack;
 // console.log(toStr(vstack([[1, 2, 3],[4, 5, 6]])))
 
 // console.log(toStr(vstack([[[1], [2], [3]],[[4], [5], [6]]])))
+
+// console.log(toStr(vstack([[[[ 1,  2,  3,  4],[ 5,  6,  7,  8],[ 9, 10, 11, 12]],[[13, 14, 15, 16],[17, 18, 19, 20],[21, 22, 23, 24]]], [[[25, 26, 27, 28],[29, 30, 31, 32],[33, 34, 35, 36]],[[37, 38, 39, 40],[41, 42, 43, 44],[45, 46, 47, 48]]]])))
+
+//水平
+function hstack(tup_list) {
+    if (typeof tup_list == 'undefined') {
+        throw new Error('tup_list不能为空')
+    }
+
+    if (!Array.isArray(tup_list)) {
+        throw new Error('tup_list必须是数组类型')
+    }
+
+    if (tup_list.length <= 0) {
+        throw new Error('tup_list不能是空列表')
+    }
+
+    let axis = 1;
+
+    for (let i = 0; i < tup_list.length; i++) {
+        let itemShape = shape(tup_list[i])
+        if (itemShape.length < 1) {
+            for (let j = 1; j <= 1 - itemShape.length; j++) {
+                tup_list[i] = [tup_list[i]]
+            }
+        }
+        if (itemShape.length <= 1) {
+            axis = 0;
+        }
+    }
+
+    return concatenate(tup_list, axis)
+}
+exports.hstack = hstack;
+
+// console.log(toStr(hstack()))
+
+// console.log(toStr(hstack(1)))
+
+// console.log(toStr(hstack([1])))
+
+// console.log(toStr(hstack([1,2])))
+
+// console.log(toStr(hstack([1,[2]])))
+
+// console.log(toStr(hstack([1,[[2]]])))
+
+// console.log(toStr(hstack([1,[[[2]]]])))
+
+// console.log(toStr(hstack([1,[[2],[3]]])))
+
+// console.log(toStr(hstack([[[[0],[1]]],[[[2],[3]]]])))
+
+// console.log(toStr(hstack([[0,1],[2],[3]])))
+
+// console.log(toStr(hstack([[[0],[1]],[2],[3]])))
+
+// console.log(toStr(hstack([[1, 2, 3],[4, 5, 6]])))
+
+// console.log(toStr(hstack([[[1], [2], [3]],[[4], [5], [6]]])))
+
+// console.log(toStr(hstack([[[[ 1,  2,  3,  4],[ 5,  6,  7,  8],[ 9, 10, 11, 12]],[[13, 14, 15, 16],[17, 18, 19, 20],[21, 22, 23, 24]]], [[[25, 26, 27, 28],[29, 30, 31, 32],[33, 34, 35, 36]],[[37, 38, 39, 40],[41, 42, 43, 44],[45, 46, 47, 48]]]])))
