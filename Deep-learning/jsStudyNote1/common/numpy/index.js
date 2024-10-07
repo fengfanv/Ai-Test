@@ -118,6 +118,7 @@ exports.fliplr = Fliplr.fliplr;
 exports.flipud = Fliplr.flipud;
 exports.sort = Sort.sort;
 exports.argsort = Sort.argsort;
+exports.vstack = Append.vstack;
 
 
 //一期工程（cnn）
@@ -130,7 +131,6 @@ exports.argsort = Sort.argsort;
 //二期工程（rcnn、fast-rcnn）
 //numpy.histogram
 //numpy.hstack
-//numpy.vstack
 //numpy.trapz
 //numpy.unique
 //numpy.tile

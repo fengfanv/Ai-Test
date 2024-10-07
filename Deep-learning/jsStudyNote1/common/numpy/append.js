@@ -295,3 +295,56 @@ exports.concatenate = concatenate;
 // console.log(toStr(concatenate([1],'None')))
 
 // console.log(toStr(concatenate()))
+
+//垂直
+function vstack(tup_list) {
+    if (typeof tup_list == 'undefined') {
+        throw new Error('tup_list不能为空')
+    }
+
+    if (!Array.isArray(tup_list)) {
+        throw new Error('tup_list必须是数组类型')
+    }
+
+    if (tup_list.length <= 0) {
+        throw new Error('tup_list不能是空列表')
+    }
+
+    for (let i = 0; i < tup_list.length; i++) {
+        let itemShape = shape(tup_list[i])
+        if (itemShape.length < 2) {
+            for (let j = 1; j <= 2 - itemShape.length; j++) {
+                tup_list[i] = [tup_list[i]]
+            }
+        }
+    }
+
+    return concatenate(tup_list, 0)
+}
+exports.vstack = vstack;
+
+// console.log(toStr(vstack()))
+
+// console.log(toStr(vstack(1)))
+
+// console.log(toStr(vstack([1])))
+
+// console.log(toStr(vstack([1,2])))
+
+// console.log(toStr(vstack([1,[2]])))
+
+// console.log(toStr(vstack([1,[[2]]])))
+
+// console.log(toStr(vstack([1,[[[2]]]])))
+
+// console.log(toStr(vstack([1,[[2],[3]]])))
+
+// console.log(toStr(vstack([[[[0],[1]]],[[[2],[3]]]])))
+
+// console.log(toStr(vstack([[0,1],[2],[3]])))
+
+// console.log(toStr(vstack([[[0],[1]],[2],[3]])))
+
+// console.log(toStr(vstack([[1, 2, 3],[4, 5, 6]])))
+
+// console.log(toStr(vstack([[[1], [2], [3]],[[4], [5], [6]]])))
