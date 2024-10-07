@@ -14,6 +14,7 @@ const Common = require('./common.js')
 const Operators = require('./operators.js')
 const Where = require('./where.js')
 const Append = require('./append.js')
+const Fliplr = require('./fliplr.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -111,6 +112,7 @@ exports.abs = Math.abs;
 exports.minimum = Extra.minimum;
 exports.append = Append.append;
 exports.concatenate = Append.concatenate;
+exports.fliplr = Fliplr.fliplr;
 
 //一期工程（cnn）
 //可选
@@ -120,11 +122,8 @@ exports.concatenate = Append.concatenate;
 
 
 //二期工程（rcnn、fast-rcnn）
-//numpy.concatenate
 //numpy.histogram
-//numpy.fliplr
 //numpy.flipud
-//numpy.get_include
 //numpy.hstack
 //numpy.vstack
 //numpy.sort
@@ -138,6 +137,7 @@ exports.concatenate = Append.concatenate;
 //可选
 //numpy.array
 //numpy.asarray
+//numpy.get_include
 //-------------
 //numpy.ndarray
 //numpy.inf

@@ -80,7 +80,6 @@ function append(arr, values, axis) {
         resultShape[axis] = arrShape[axis] + valuesShape[axis];
 
         let arrData = [];
-
         printArr4(arr, [], (res) => {
             if (res.index.length == axis) {
                 arrData.push(res.value)
