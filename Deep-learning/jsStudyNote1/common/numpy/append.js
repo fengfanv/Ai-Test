@@ -410,3 +410,134 @@ exports.hstack = hstack;
 // console.log(toStr(hstack([[[1], [2], [3]],[[4], [5], [6]]])))
 
 // console.log(toStr(hstack([[[[ 1,  2,  3,  4],[ 5,  6,  7,  8],[ 9, 10, 11, 12]],[[13, 14, 15, 16],[17, 18, 19, 20],[21, 22, 23, 24]]], [[[25, 26, 27, 28],[29, 30, 31, 32],[33, 34, 35, 36]],[[37, 38, 39, 40],[41, 42, 43, 44],[45, 46, 47, 48]]]])))
+
+//和广播很像(但不完全一样)
+function tile(A, reps) {
+    //reps 重复次数
+    if (typeof A == 'undefined') {
+        throw new Error('A不能为空')
+    }
+
+    if (!Array.isArray(A)) {
+        A = [A]
+    }
+
+    if (typeof reps == 'undefined') {
+        throw new Error('reps不能为空')
+    }
+
+    if (!Array.isArray(reps)) {
+        reps = [reps]
+    }
+
+    if (shape(reps).length != 1) {
+        throw new Error('reps只能是1维数组(元组)')
+    }
+
+    let Ashape = shape(A);
+
+    if (Ashape.length > reps.length) {
+        let AshapeLen = Ashape.length;
+        let repsLen = reps.length;
+        let headReps = [];
+        for (let i = 0; i < AshapeLen - repsLen; i++) {
+            headReps.push(1)
+        }
+        reps = [].concat(headReps, reps)
+    }
+
+    if (reps.length > Ashape.length) {
+        let repsLen = reps.length;
+        let AshapeLen = Ashape.length
+        for (let i = 0; i < repsLen - AshapeLen; i++) {
+            // A = [A] //方式1
+            Ashape.unshift('*') //方式2
+        }
+    }
+
+    for (let i = 0; i < reps.length; i++) {
+        if (reps[i] == 0) {
+            return []
+        } else if (reps[i] < 0) {
+            throw new Error('不允许使用负尺寸')
+        }
+    }
+
+    // //方式1
+    // for (let i = reps.length - 1; i >= 0; i--) {
+    //     let concatenate_list = [];
+    //     for (let j = 1; j <= reps[i]; j++) {
+    //         concatenate_list.push(A)
+    //     }
+    //     A = concatenate(concatenate_list, i);
+    // }
+    // return A;
+
+    //方式2
+    for (let i = reps.length - 1; i >= 0; i--) {
+        if (Ashape[i] == '*') {
+            A = [A]
+        }
+        let concatenate_list = [];
+        for (let j = 1; j <= reps[i]; j++) {
+            concatenate_list.push(A)
+        }
+        if (concatenate_list.length > 1) {
+            A = concatenate(concatenate_list, i - reps.length);
+        }
+    }
+    return A;
+}
+exports.tile = tile;
+
+// console.log(toStr(tile()))
+
+// console.log(toStr(tile(1)))
+
+// console.log(toStr(tile(1, 1)))
+
+// console.log(toStr(tile(1, [[1]])))
+
+// console.log(toStr(tile(1, [2, 1])))
+
+// console.log(toStr(tile(1, 2)))
+
+// console.log(toStr(tile([0, 1, 2], 2)))
+
+// console.log(toStr(tile([0, 1, 2], [2, 2])))
+
+// console.log(toStr(tile([0, 1, 2], [2, 1, 2])))
+// console.log(toStr(shape(tile([0, 1, 2], [2, 1, 2]))))
+
+// console.log(toStr(tile([[1, 2], [3, 4]], 2)))
+
+// console.log(toStr(tile([[1, 2], [3, 4]], [2, 1])))
+
+// console.log(toStr(tile([1,2,3,4], [4,1])))
+
+// console.log(toStr(tile([1,2,3,4], [4,1,2])))
+// console.log(toStr(shape(tile([1,2,3,4], [4,1,2]))))
+
+// console.log(toStr(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], 2)))
+// console.log(toStr(shape(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], 2))))
+
+// console.log(toStr(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], 1)))
+// console.log(toStr(shape(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], 1))))
+
+// console.log(toStr(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [0, 1])))
+// console.log(toStr(shape(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [0, 1]))))
+
+// console.log(toStr(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [1, 1, 1])))
+// console.log(toStr(shape(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [1, 1, 1]))))
+
+// console.log(toStr(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [1, 2, 1])))
+// console.log(toStr(shape(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [1, 2, 1]))))
+
+// console.log(toStr(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [2, 2, 1])))
+// console.log(toStr(shape(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [2, 2, 1]))))
+
+// console.log(toStr(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [1, 1, 1, 1])))
+// console.log(toStr(shape(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [1, 1, 1, 1]))))
+
+// console.log(toStr(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [2, 1, 1, 1])))
+// console.log(toStr(shape(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [2, 1, 1, 1]))))

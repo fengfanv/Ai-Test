@@ -120,6 +120,7 @@ exports.sort = Sort.sort;
 exports.argsort = Sort.argsort;
 exports.vstack = Append.vstack;
 exports.hstack = Append.hstack;
+exports.tile = Append.tile;
 
 
 //一期工程（cnn）
@@ -133,7 +134,6 @@ exports.hstack = Append.hstack;
 //numpy.histogram
 //numpy.trapz
 //numpy.unique
-//numpy.tile
 //numpy.random.seed
 //numpy.linalg.svd
 //numpy.allclose
