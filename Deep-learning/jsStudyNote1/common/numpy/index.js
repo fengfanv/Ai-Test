@@ -132,11 +132,15 @@ exports.tile = Append.tile;
 
 //二期工程（rcnn、fast-rcnn）
 //numpy.histogram
-//numpy.trapz
 //numpy.unique
+//---
+//numpy.trapz
 //numpy.random.seed
 //numpy.linalg.svd
 //numpy.allclose
+//numpy.all
+//numpy.diag
+//numpy.delete
 //可选
 //numpy.array
 //numpy.asarray
@@ -167,9 +171,6 @@ exports.tile = Append.tile;
 //numpy.linspace
 //numpy.empty
 //numpy.ascontiguousarray
-//numpy.all
-//numpy.diag
-//numpy.delete
 //可选
 //------------
 //numpy.int32
