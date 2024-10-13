@@ -16,6 +16,7 @@ const Where = require('./where.js')
 const Append = require('./append.js')
 const Fliplr = require('./fliplr.js')
 const Sort = require('./sort.js')
+const Unique = require('./unique.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -121,6 +122,7 @@ exports.argsort = Sort.argsort;
 exports.vstack = Append.vstack;
 exports.hstack = Append.hstack;
 exports.tile = Append.tile;
+exports.unique = Unique.unique;
 
 
 //一期工程（cnn）
@@ -132,7 +134,6 @@ exports.tile = Append.tile;
 
 //二期工程（rcnn、fast-rcnn）
 //numpy.histogram
-//numpy.unique
 //---
 //numpy.trapz
 //numpy.random.seed
