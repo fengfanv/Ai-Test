@@ -6,6 +6,8 @@ var size = Main.size;
 const Common = require('./common.js');
 var multiply = Common.multiply;
 var printArr = Common.printArr;
+var generateArrayElementIndex = Common.generateArrayElementIndex;
+var setArrayValue = Common.setArrayValue;
 
 /*
 
@@ -150,11 +152,17 @@ function reshape_C(arr, newShape) {
     }
     //根据新形状创建一个新矩阵，然后往矩阵里放数据
     let newArr = create_array(newShape, 0);
+    //旧赋值方法（慢）（不怎么吃内存）
     let newArrIndex = 0;
     printArr(newArr, [], (res) => {
         res.childArr[res.childIndex] = arrInfo.ravel[newArrIndex];
         newArrIndex = newArrIndex + 1;
     })
+    // //新赋值方法（快一点点）（吃巨量内存）
+    // let newArrIndexingList = generateArrayElementIndex(newShape);
+    // for (let i = 0; i < newArrIndexingList.length; i++) {
+    //     setArrayValue(newArr, newArrIndexingList[i], arrInfo.ravel[i])
+    // }
     return newArr;
 }
 

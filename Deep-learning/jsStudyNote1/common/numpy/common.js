@@ -51,3 +51,81 @@ exports.nditer = function (arr, callback) {
 //     // }
 // })
 // console.log('shape(a)', shape(a))
+
+//根据“数组形状”生成数组元素索引
+//来源于indexing.js/createArrList方法
+//实现原理详见indexing.js/createArrList
+function generateArrayElementIndex(shape) {
+    if (typeof (shape) == 'undefined' || shape.indexOf(0) != -1 || shape.length == 0) {
+        return [];
+    }
+
+    let len = shape.length;
+    let list = [];
+    let index = [];
+    for (let i = 0; i < len; i++) {
+        index.push(0)
+    }
+
+    if (len > 1) {
+        shape[len - 1] = shape[len - 1] + 1;//注意这里
+    }
+
+    let isLoop = true;
+    while (isLoop) {
+        let item = [];
+        for (let i = 0; i < len; i++) {
+            item.push(index[i]);
+        }
+        list.push(item);
+
+        index[len - 1] = index[len - 1] + 1;
+
+        for (let i = 0; i < len; i++) {
+
+            let checkIndexArr = index.slice(i + 1, len);
+            let checkShapeArr = shape.slice(i + 1, len);
+            let checkStatusArr = [];
+            for (let j = 0; j < checkIndexArr.length; j++) {
+                if (checkIndexArr[j] >= checkShapeArr[j] - 1) {
+                    checkStatusArr.push(true)
+                }
+            }
+            if (checkIndexArr.length != 0 && checkIndexArr.length == checkStatusArr.length) {
+                index[i] = index[i] + 1;
+                for (let j = i + 1; j < len; j++) {
+                    index[j] = 0;
+                }
+            }
+        }
+        if (index[0] >= shape[0]) {
+            isLoop = false;
+            return list
+        }
+    }
+}
+exports.generateArrayElementIndex = generateArrayElementIndex;
+// console.time('耗时')
+// console.log(generateArrayElementIndex([2,3,4]))
+// console.timeEnd('耗时')
+
+//根据“索引”为数组元素赋值
+//使用该方法为数组元素重新赋值，速度比printArr快点
+function setArrayValue(arr, targetArr, value, i) {
+    if (typeof i == 'undefined') {
+        i = 0
+    }
+    if (i + 1 == targetArr.length) {
+        arr[targetArr[i]] = value;
+    } else {
+        setArrayValue(arr[targetArr[i]], targetArr, value, i + 1)
+    }
+}
+exports.setArrayValue = setArrayValue;
+// let a = [[0, 0, 0], [0, 0, 0]];
+// let aIndexingArr = generateArrayElementIndex([2,3])
+// let newData = [1, 2, 3, 4, 5, 6]
+// for (let i = 0; i < aIndexingArr.length; i++) {
+//     setArrayValue(a, aIndexingArr[i], newData[i])
+// }
+// console.log(a)
