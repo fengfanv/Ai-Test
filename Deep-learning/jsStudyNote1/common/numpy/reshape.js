@@ -8,6 +8,7 @@ var multiply = Common.multiply;
 var printArr = Common.printArr;
 var generateArrayElementIndex = Common.generateArrayElementIndex;
 var setArrayValue = Common.setArrayValue;
+var printArr4 = Common.printArr4;
 
 /*
 
@@ -152,12 +153,21 @@ function reshape_C(arr, newShape) {
     }
     //根据新形状创建一个新矩阵，然后往矩阵里放数据
     let newArr = create_array(newShape, 0);
-    //旧赋值方法（慢）（不怎么吃内存）
+    // //旧赋值方法（慢）（不怎么吃内存）
+    // let newArrIndex = 0;
+    // printArr(newArr, [], (res) => {
+    //     res.childArr[res.childIndex] = arrInfo.ravel[newArrIndex];
+    //     newArrIndex = newArrIndex + 1;
+    // })
+    //旧赋值方法升级版(能提升7秒多的速度，这里仅针对2维及以上的数组，赋值)
     let newArrIndex = 0;
-    printArr(newArr, [], (res) => {
-        res.childArr[res.childIndex] = arrInfo.ravel[newArrIndex];
-        newArrIndex = newArrIndex + 1;
+    printArr4(newArr, [], (res) => {
+        if (res.index.length == newShape.length - 1) {
+            res.childArr[res.childIndex] = arrInfo.ravel.slice(newArrIndex * newShape[newShape.length - 1], newArrIndex * newShape[newShape.length - 1] + newShape[newShape.length - 1])
+            newArrIndex++;
+        }
     })
+    // console.log(newArrIndex, multiply(newShape[0], newShape, 1) / newShape[newShape.length - 1])
     // //新赋值方法（快一点点）（吃巨量内存）
     // let newArrIndexingList = generateArrayElementIndex(newShape);
     // for (let i = 0; i < newArrIndexingList.length; i++) {

@@ -7,26 +7,8 @@ var shape = Main.shape;
 const printTest = require('./print_test.js')
 var toStr = printTest.toStr;
 
-//此方法由Common.printArr演变而来
-function printArr4(arr, indexArr, callback) {
-    if (Array.isArray(arr) == false || arr.length < 1) {
-        throw new Error('printArr4:error arr不能是空数组！');
-    }
-    if (typeof indexArr == 'undefined') {
-        indexArr = []
-    }
-    for (let i = 0; i < arr.length; i++) {
-        let item = arr[i];
-        let newIndexArr = JSON.parse(JSON.stringify(indexArr));
-        newIndexArr.push(i);
-        if (Array.isArray(item)) {
-            callback && callback({ index: newIndexArr, value: item, childArr: arr, childIndex: i })
-            printArr4(item, newIndexArr, callback);
-        } else {
-            // callback && callback({ index: newIndexArr, value: item, childArr: arr, childIndex: i })
-        }
-    }
-}
+const Common = require('./common.js');
+var printArr4 = Common.printArr4;
 
 function append(arr, values, axis) {
     if (typeof arr == 'undefined') {
