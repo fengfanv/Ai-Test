@@ -13,6 +13,7 @@ var train_num = 60000
 var test_num = 10000
 var img_dim = [1, 28, 28]
 var img_size = 784
+var num = 5000 //获取，训练5000条，测试5000条，合计10000条
 
 function _load_label(file_name) {
     try {
@@ -24,7 +25,7 @@ function _load_label(file_name) {
         let buf = Buffer.alloc(data.length - 8);
         data.copy(buf, 0, 8, data.length);
 
-        return Array.from(new Uint8Array(buf))
+        return Array.from(new Uint8Array(buf).slice(0, num))
     } catch (err) {
         console.error('读取或解压.gz文件时出错:', err);
     }
@@ -40,7 +41,7 @@ function _load_img(file_name) {
         let buf = Buffer.alloc(data.length - 16);
         data.copy(buf, 0, 16, data.length);
 
-        return np.reshape(Array.from(new Uint8Array(buf)), [-1, img_size])
+        return np.reshape(Array.from(new Uint8Array(buf).slice(0, num * 28 * 28)), [-1, img_size])
     } catch (err) {
         console.error('读取或解压.gz文件时出错:', err);
     }
@@ -93,6 +94,7 @@ function load_mnist(normalize, flatten, one_hot_label) {
 
     let dataset = _convert_numpy();
 
+    console.time('耗时')
     if (normalize) {
         let keyArr = ['train_img', 'test_img']
         for (let i in keyArr) {
@@ -113,9 +115,45 @@ function load_mnist(normalize, flatten, one_hot_label) {
         dataset['train_label'] = _change_one_hot_label(dataset['train_label'])
         dataset['test_label'] = _change_one_hot_label(dataset['test_label'])
     }
+    console.timeEnd('耗时')
 
     return [dataset['train_img'], dataset['train_label'], dataset['test_img'], dataset['test_label']]
 }
 
 let [train_img, train_label, test_img, test_label] = load_mnist(true, false, true);
 console.log(np.shape(train_img), np.shape(train_label), np.shape(test_img), np.shape(test_label))
+
+//使用console.log展示第一张图片
+let trainFirstImage = consoleShowImage(train_img[9])
+let trainFirstLabel = train_label[9]
+console.log(trainFirstImage)
+console.log(trainFirstLabel)
+
+console.log('-------------------')
+
+let testFirstImage = consoleShowImage(test_img[9])
+let testFirstLabel = test_label[9]
+console.log(testFirstImage)
+console.log(testFirstLabel)
+
+function consoleShowImage(arr) {
+    arr = np.reshape(arr, [-1])
+    let imageStr = ''
+    for (let i = 0; i < arr.length; i++) {
+        if (i % 28 == 0) {
+            imageStr += '\r\n'
+        }
+
+        // let value = String(arr[i]);
+        let value = String(arr[i] * 255);
+        if (value.length < 3) {
+            let gap = '';
+            for (let j = 0; j < 3 - value.length; j++) {
+                gap += '0'
+            }
+            value = gap + value;
+        }
+        imageStr += value;
+    }
+    return imageStr
+}
