@@ -110,7 +110,7 @@ exports.generateArrayElementIndex = generateArrayElementIndex;
 // console.timeEnd('耗时')
 
 //根据“索引”为数组元素赋值
-//使用该方法为数组元素重新赋值，速度比printArr快点
+//批量修改高维数组元素值时，因为是递归调用，会造成堆栈溢出(会炸内存)
 function setArrayValue(arr, targetArr, value, i) {
     if (typeof i == 'undefined') {
         i = 0
@@ -129,6 +129,22 @@ exports.setArrayValue = setArrayValue;
 //     setArrayValue(a, aIndexingArr[i], newData[i])
 // }
 // console.log(a)
+
+//使用for循环代替递归调用，避免函数调用堆栈的累积，降低内存使用
+function setArrayValue_v2(arr, targetArr, value) {
+    let current = arr;
+
+    for (let i = 0; i < targetArr.length; i++) {
+        if (i + 1 === targetArr.length) {
+            //到达目标索引，设置值
+            current[targetArr[i]] = value;
+        } else {
+            //移动到下一个嵌套的数组
+            current = current[targetArr[i]];
+        }
+    }
+}
+exports.setArrayValue_v2 = setArrayValue_v2;
 
 //此方法由Common.printArr演变而来
 function printArr4(arr, indexArr, callback) {

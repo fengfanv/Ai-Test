@@ -7,7 +7,7 @@ const Common = require('./common.js');
 var multiply = Common.multiply;
 var printArr = Common.printArr;
 var generateArrayElementIndex = Common.generateArrayElementIndex;
-var setArrayValue = Common.setArrayValue;
+var setArrayValue_v2 = Common.setArrayValue_v2;
 var printArr4 = Common.printArr4;
 
 /*
@@ -58,6 +58,26 @@ function ravel_C(arr) {
         }
     }
     return newArr;
+}
+
+//使用栈结构和迭代方式展平数组（数据量大的时候用不了，Maximum call stack size exceeded）
+function ravel_C_v2(arr) {
+    const result = [];
+    const stack = [];
+    stack.push.apply(stack, arr); //使用栈来存储待处理的元素
+
+    while (stack.length) {
+        const item = stack.pop();
+        if (Array.isArray(item)) {
+            //如果是数组，则将其元素推入栈中
+            stack.push.apply(stack, item);
+        } else {
+            //否则，将元素添加到结果数组中
+            result.unshift(item);
+        }
+    }
+
+    return result;
 }
 
 // let a = [
@@ -146,6 +166,8 @@ function reshape_C(arr, newShape) {
         newShape.splice(autoC[0], 0, autoC_value);
     } else if (autoC.length > 0 && newShape.length == 1) {
         return arrInfo.ravel;
+    } else if (newShape.length == 1 && newShape[0] == arrInfo.ravel.length) {
+        return arrInfo.ravel;
     }
     let newShapeSize = multiply(newShape[0], newShape, 1);
     if (newShapeSize != arrInfo.size) {
@@ -153,26 +175,29 @@ function reshape_C(arr, newShape) {
     }
     //根据新形状创建一个新矩阵，然后往矩阵里放数据
     let newArr = create_array(newShape, 0);
-    // //旧赋值方法（慢）（不怎么吃内存）
+    // //旧赋值方法
     // let newArrIndex = 0;
     // printArr(newArr, [], (res) => {
     //     res.childArr[res.childIndex] = arrInfo.ravel[newArrIndex];
     //     newArrIndex = newArrIndex + 1;
     // })
-    //旧赋值方法升级版(能提升7秒多的速度，这里仅针对2维及以上的数组，赋值)
-    let newArrIndex = 0;
-    printArr4(newArr, [], (res) => {
-        if (res.index.length == newShape.length - 1) {
-            res.childArr[res.childIndex] = arrInfo.ravel.slice(newArrIndex * newShape[newShape.length - 1], newArrIndex * newShape[newShape.length - 1] + newShape[newShape.length - 1])
-            newArrIndex++;
-        }
-    })
+    // //新赋值方法V1，能比上边快一点点(这里仅针对2维及以上的数组，赋值)
+    // let newArrIndex = 0;
+    // printArr4(newArr, [], (res) => {
+    //     if (res.index.length == newShape.length - 1) {
+    //         res.childArr[res.childIndex] = arrInfo.ravel.slice(newArrIndex * newShape[newShape.length - 1], newArrIndex * newShape[newShape.length - 1] + newShape[newShape.length - 1])
+    //         newArrIndex++;
+    //     }
+    // })
     // console.log(newArrIndex, multiply(newShape[0], newShape, 1) / newShape[newShape.length - 1])
-    // //新赋值方法（快一点点）（吃巨量内存）
-    // let newArrIndexingList = generateArrayElementIndex(newShape);
-    // for (let i = 0; i < newArrIndexingList.length; i++) {
-    //     setArrayValue(newArr, newArrIndexingList[i], arrInfo.ravel[i])
-    // }
+    //新赋值方法V2，能比上边快一点点(这里仅针对2维及以上的数组，赋值)
+    //如果被赋值数组最后一个维度是1，则三个赋值方法，一样快。如果最后一个维度不是1，则最后一个方法最快
+    const newArrIndexingList = generateArrayElementIndex(newShape.slice(0, newShape.length - 1));
+    let len = multiply(newShape[0], newShape, 1) / newShape[newShape.length - 1];
+    for (let i = 0; i < len; i++) {
+        setArrayValue_v2(newArr, newArrIndexingList[i], arrInfo.ravel.slice(i * newShape[newShape.length - 1], i * newShape[newShape.length - 1] + newShape[newShape.length - 1]))
+    }
+
     return newArr;
 }
 
@@ -290,6 +315,24 @@ exports.reshape = reshape;
 
 // let b = null;
 // b = reshape(a,[48]);
+// console.log('b.shape', shape(b));
+// console.log('b.size', size(b));
+// console.log('b：')
+// printArr(b, [], (res) => {
+//     console.log(res.index, res.value)
+// })
+
+// let b = null;
+// b = reshape(a, [48,1]);
+// console.log('b.shape', shape(b));
+// console.log('b.size', size(b));
+// console.log('b：')
+// printArr(b, [], (res) => {
+//     console.log(res.index, res.value)
+// })
+
+// let b = null;
+// b = reshape(a, [46]); //报错则说明是正确的
 // console.log('b.shape', shape(b));
 // console.log('b.size', size(b));
 // console.log('b：')
