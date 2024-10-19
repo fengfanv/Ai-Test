@@ -311,3 +311,60 @@ function image(path, other) {
 }
 
 exports.image = image;
+
+//imshow--------------------------------------------------
+
+//获取数组形状的方法
+//来自numpy.main.getArrShape
+function getArrShape(arr, shape) {
+    if (Array.isArray(arr)) {
+        shape.push(arr.length);
+        if (arr.length > 0) {
+            return getArrShape(arr[0], shape)
+        } else {
+            return shape
+        }
+    } else {
+        return shape
+    }
+}
+
+function imshow(X, cmap) {
+    if (X == undefined) {
+        throw new Error('X不能为空')
+    }
+
+    let X_shape = getArrShape(X, [])
+
+    if (X_shape.length < 2 || X_shape.length > 3) {
+        throw new Error(`图像数据的形状X.shape(${X_shape.join()})无效`)
+    }
+
+    if (X_shape.length == 3 && (X_shape[2] == 0 || X_shape[2] == 2 || X_shape[2] > 4)) {
+        throw new Error(`图像数据的形状X.shape(${X_shape.join()})无效`)
+    }
+
+    const fs = require('fs');
+    fs.readFile('./imshow.html', 'utf8', (err, data) => {
+        if (err) throw err;
+
+        data = data.replace(/'start-X-X-X-X-X-X-end'/, JSON.stringify(X))
+        data = data.replace(/'start-X_shape-X_shape-X_shape-X_shape-X_shape-X_shape-end'/, JSON.stringify(X_shape))
+        data = data.replace(/'start-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-end'/, `'${cmap}'`)
+        // console.log(data);
+
+        getPort(3000, (port) => {
+            openHttp(port, data, (type, server) => {
+                if (type == 'server_open_success') {
+                    openBrowser('http://localhost:' + port)
+                }
+                if (type == 'page_loading_completed') {
+                    server.close();
+                    process.exit(0);
+                }
+            })
+        })
+    });
+}
+exports.imshow = imshow;
+

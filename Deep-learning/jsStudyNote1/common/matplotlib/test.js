@@ -47,3 +47,44 @@ const matplotlib = require('./index')
 //         label: '上部'
 //     }
 // ])
+
+//imshow
+// matplotlib.imshow()
+
+// matplotlib.imshow([])
+
+// matplotlib.imshow([1])
+
+// matplotlib.imshow([[1]])
+
+// matplotlib.imshow([[300]])
+
+// matplotlib.imshow([[1,300]])
+
+// matplotlib.imshow([[1,300]],'gray')
+
+// matplotlib.imshow([[[1],[300]]],'gray')
+
+// matplotlib.imshow([[[1,1],[300,1]]],'gray')
+
+// matplotlib.imshow([[[1,1,1],[300,1,2]]])
+
+// matplotlib.imshow([[[1,1,1]]]) //python 认定这段代码是 0-255 int
+
+// matplotlib.imshow([[[1.0,1.0,1.0]]]) //python 认定这段代码是 0.0-1.0 float
+
+// matplotlib.imshow([[[1,155,1]]])
+
+// matplotlib.imshow([[[1,155,1,200]]])
+
+// matplotlib.imshow([[[0.5,0.1,0.2,0.9]]])
+
+// matplotlib.imshow([[[0.5,0.1,0.2,0.9,1]]])
+
+// matplotlib.imshow([[[[0.5,0.1,0.2,0.9]]]])
+
+// matplotlib.imshow([[0, 1], [2, 3]])
+
+// matplotlib.imshow([[1, 2], [3, 4]])
+
+// matplotlib.imshow([[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]])

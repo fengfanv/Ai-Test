@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>matplotlib-chart-imshow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        #canvas {
+            /* cursor: crosshair; */
+            background-repeat: no-repeat !important;
+            position: relative;
+        }
+
+        #line {
+            position: absolute;
+            left: 0;
+            top: 0;
+            border: 2px solid black;
+            width: 0;
+            height: 0;
+            border-top: 0;
+            border-left: 0;
+            box-sizing: content-box;
+        }
+
+        #info {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <!--辅助线-->
+    <div id="line"></div>
+    <!--信息展示-->
+    <div id="info"></div>
+    <script src="./page_script.js"></script>
+    <script>
+        //定义一个颜色映射函数，根据值返回颜色
+        function get_cmap_color(value, cmap) {
+            const min = Math.min(...cmap.map(c => c.value));
+            const max = Math.max(...cmap.map(c => c.value));
+            const range = max - min;
+            let normalizedValue = (value - min) / range;
+            normalizedValue = Math.max(0, Math.min(1, normalizedValue)); //确保值在0到1之间
+
+            //已知cmap是一个已经按值排序的数组
+            for (let i = 0; i < cmap.length - 1; i++) {
+                if (normalizedValue < cmap[i + 1].norm) {
+                    //线性插值来获取中间颜色
+                    const t = (normalizedValue - cmap[i].norm) / (cmap[i + 1].norm - cmap[i].norm);
+                    const r = cmap[i].color.r + t * (cmap[i + 1].color.r - cmap[i].color.r);
+                    const g = cmap[i].color.g + t * (cmap[i + 1].color.g - cmap[i].color.g);
+                    const b = cmap[i].color.b + t * (cmap[i + 1].color.b - cmap[i].color.b);
+                    return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+                }
+            }
+            //如果值超出了cmap的范围，则返回最后一个颜色
+            return `rgb(${cmap[cmap.length - 1].color.r * 255}, ${cmap[cmap.length - 1].color.g * 255}, ${cmap[cmap.length - 1].color.b * 255})`;
+        }
+
+        //定义一个颜色映射（cmap），线性渐变
+        const default_cmap = [
+            { value: 0, norm: 0, color: { r: 68 / 255, g: 1 / 255, b: 84 / 255 } },
+            { value: 0.33, norm: 0.33, color: { r: 48 / 255, g: 103 / 255, b: 141 / 255 } },
+            { value: 0.66, norm: 0.66, color: { r: 53 / 255, g: 183 / 255, b: 120 / 255 } },
+            { value: 1, norm: 1, color: { r: 253 / 255, g: 231 / 255, b: 36 / 255 } },
+        ];
+
+        const gray_cmap = [
+            { value: 0, norm: 0, color: { r: 0 / 255, g: 0 / 255, b: 0 / 255 } },
+            { value: 1, norm: 1, color: { r: 245 / 255, g: 245 / 255, b: 245 / 255 } },
+        ];
+
+        // const cmap = [
+        //     { value: 0, norm: 0, color: { r: 0, g: 0, b: 1 } }, //蓝色
+        //     { value: 0.33, norm: 0.33, color: { r: 1, g: 1, b: 1 } }, //白色
+        //     { value: 0.66, norm: 0.66, color: { r: 0, g: 1, b: 0 } }, //绿色
+        //     { value: 1, norm: 1, color: { r: 1, g: 0, b: 0 } } //红色
+        // ];
+
+        //-------------------------------------------------------------------
+        //-------------------------------------------------------------------
+        //-------------------------------------------------------------------
+
+        function ravel_C(arr) {
+            let newArr = [];
+            for (let i = 0; i < arr.length; i++) {
+                let item = arr[i];
+                if (Array.isArray(item)) {
+                    newArr = newArr.concat(ravel_C(item))
+                } else {
+                    newArr.push(item);
+                }
+            }
+            return newArr;
+        }
+
+        function value_map(X) {
+            let X_flatten = [];
+
+            let cmap = cmap_type == 'gray' ? gray_cmap : default_cmap;
+
+            let X_flatten_2 = ravel_C(X)
+            let max_value = X_flatten_2.reduce((a, b) => Math.max(a, b), -Infinity)
+            let min_value = X_flatten_2.reduce((a, b) => Math.min(a, b), Infinity)
+
+            for (let row = 0; row < X.length; row++) {
+                for (let col = 0; col < X[row].length; col++) {
+
+                    let value = Number(X[row][col]);
+
+                    X_flatten.push({
+                        x: col,
+                        y: row,
+                        color: get_cmap_color((value - min_value) / (max_value - min_value), cmap),
+                        value: value
+                    })
+                }
+            }
+
+            if (X_flatten_2.length == 1) {
+                X_flatten[0].color = get_cmap_color(0, cmap)
+            }
+
+            return X_flatten;
+        }
+
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+
+        function get_rgba_color(arr, isLessThan1) {
+            let opacity = 1;
+            if (typeof arr[3] != 'undefined') {
+                if (isLessThan1) {
+                    opacity = arr[3]
+                } else {
+                    opacity = arr[3] / 255
+                }
+            }
+
+            if (isLessThan1) {
+                return `rgba(${arr[0] * 255},${arr[1] * 255},${arr[2] * 255},${opacity})`;
+            } else {
+                return `rgba(${arr[0]},${arr[1]},${arr[2]},${opacity})`;
+            }
+        }
+
+        function rgba_map(X) {
+            let X_flatten = [];
+
+            let X_flatten_2 = ravel_C(X)
+            let max_value = X_flatten_2.reduce((a, b) => Math.max(a, b), -Infinity)
+            let isLessThan1 = true
+            if (max_value > 1) {
+                isLessThan1 = false
+            }
+
+            for (let row = 0; row < X.length; row++) {
+                for (let col = 0; col < X[row].length; col++) {
+
+                    let value = X[row][col];
+
+                    X_flatten.push({
+                        x: col,
+                        y: row,
+                        color: get_rgba_color(value, isLessThan1),
+                        value: value
+                    })
+
+                }
+            }
+
+            return X_flatten;
+        }
+
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+
+        function draw() {
+
+            const canvas = document.getElementById('canvas');
+            canvas_width = 500
+            if (canvas_width > window.innerWidth) {
+                canvas_width = window.innerWidth
+                pixel_block_size = canvas_width / X[0].length
+            }
+            if (pixel_block_size * X.length > window.innerHeight) {
+                pixel_block_size = window.innerHeight / X.length;
+                canvas_width = pixel_block_size * X[0].length
+            }
+            canvas.width = canvas_width;
+            canvas.height = pixel_block_size * X.length;
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < X_render_arr.length; i++) {
+                ctx.fillStyle = X_render_arr[i].color;
+                ctx.fillRect(X_render_arr[i].x * pixel_block_size, X_render_arr[i].y * pixel_block_size, pixel_block_size, pixel_block_size);
+            }
+        }
+
+        //获取元素相较于body的位置
+        function getElementPositionRelativeToDocument(element) {
+            // 获取元素的边界矩形（相对于视口）
+            var rect = element.getBoundingClientRect();
+
+            // 获取当前页面的滚动偏移量
+            var scrollTop =
+                window.pageYOffset ||
+                document.documentElement.scrollTop ||
+                document.body.scrollTop ||
+                0;
+            var scrollLeft =
+                window.pageXOffset ||
+                document.documentElement.scrollLeft ||
+                document.body.scrollLeft ||
+                0;
+
+            // 计算元素相对于整个文档的位置
+            var top = rect.top + scrollTop;
+            var left = rect.left + scrollLeft;
+
+            return {
+                top: top,
+                left: left,
+            };
+        }
+
+        document.onmousemove = function (e) {
+            // console.log(e);
+            let canvas = document.getElementById("canvas");
+            let canvasPosition = getElementPositionRelativeToDocument(canvas);
+            // console.log(canvasPosition);
+
+            let line = document.getElementById("line");
+            line.style.width = e.pageX + "px";
+            line.style.height = e.pageY + "px";
+
+            let showValue = '';
+            let mouse_x = Math.floor(e.pageX - canvasPosition.left);
+            let mouse_y = Math.floor(e.pageY - canvasPosition.top);
+            for (let i = 0; i < X_render_arr.length; i++) {
+                let item_x = X_render_arr[i].x;
+                let item_y = X_render_arr[i].y;
+                if (mouse_x > item_x * pixel_block_size && mouse_x < item_x * pixel_block_size + pixel_block_size && mouse_y > item_y * pixel_block_size && mouse_y < item_y * pixel_block_size + pixel_block_size) {
+                    showValue = X_render_arr[i].value;
+                }
+            }
+
+            let info = document.getElementById("info");
+            info.innerHTML = `
+                窗口尺寸：${window.innerWidth}*${window.innerHeight}；
+                <br>
+                画布尺寸：${Math.floor(canvas.width)}*${Math.floor(canvas.height)}；
+                <br>
+                位置：${mouse_x}*${mouse_y}；
+                <br>
+                信息：${showValue}`;
+        };
+
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+
+        let X = 'start-X-X-X-X-X-X-end';
+        let X_shape = 'start-X_shape-X_shape-X_shape-X_shape-X_shape-X_shape-end';
+        let cmap_type = 'start-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-end'; //default gray
+        let X_render_arr = [];
+
+        let canvas_width = 500;
+        let pixel_block_size = canvas_width / X[0].length;
+
+        if (X_shape.length == 3) {
+            if (X_shape[2] != 1) {
+                //是rgb
+                X_render_arr = rgba_map(X)
+            } else {
+                //是数据值
+                X_render_arr = value_map(X)
+            }
+        } else if (X_shape.length == 2) {
+            //是数据值
+            X_render_arr = value_map(X)
+        }
+        setTimeout(() => {
+            draw()
+        })
+        window.addEventListener("resize", function () {
+            draw()
+        })
+
+
+
+    </script>
+
+</body>
+
+</html>
