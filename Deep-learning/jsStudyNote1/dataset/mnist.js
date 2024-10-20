@@ -1,6 +1,7 @@
 const fs = require('fs');
 const zlib = require('zlib');
 const np = require('../common/numpy');
+const matplotlib = require('../common/matplotlib');
 
 var key_file = {
     'train_img': '../../studyNote1/dataset/train-images-idx3-ubyte.gz',
@@ -157,3 +158,5 @@ function consoleShowImage(arr) {
     }
     return imageStr
 }
+
+matplotlib.imshow(test_img[500][0])
