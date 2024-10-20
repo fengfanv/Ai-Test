@@ -157,7 +157,7 @@ function chartBar(data) {
     }
 
     const fs = require('fs');
-    fs.readFile('./chart_bar.html', 'utf8', (err, data) => {
+    fs.readFile(__dirname + '/chart_bar.html', 'utf8', (err, data) => {
         if (err) throw err;
 
         data = data.replace(/'start-legend-legend-legend-legend-legend-legend-end'/, JSON.stringify(legend))
@@ -225,7 +225,7 @@ function chartLine(data) {
     }
 
     const fs = require('fs');
-    fs.readFile('./chart_line.html', 'utf8', (err, data) => {
+    fs.readFile(__dirname + '/chart_line.html', 'utf8', (err, data) => {
         if (err) throw err;
 
         data = data.replace(/'start-legend-legend-legend-legend-legend-legend-end'/, JSON.stringify(legend))
@@ -289,7 +289,7 @@ function image(path, other) {
     let imageData = fs.readFileSync(path, { encoding: "binary" });
     imageData = 'data:' + MIME + ';base64,' + Buffer.from(imageData, 'binary').toString('base64');
 
-    fs.readFile('./image.html', 'utf8', (err, data) => {
+    fs.readFile(__dirname + '/image.html', 'utf8', (err, data) => {
         if (err) throw err;
 
         data = data.replace(/'start-path-path-path-path-path-path-end'/, '"' + imageData + '"')
@@ -345,7 +345,7 @@ function imshow(X, cmap) {
     }
 
     const fs = require('fs');
-    fs.readFile('./imshow.html', 'utf8', (err, data) => {
+    fs.readFile(__dirname + '/imshow.html', 'utf8', (err, data) => {
         if (err) throw err;
 
         data = data.replace(/'start-X-X-X-X-X-X-end'/, JSON.stringify(X))
