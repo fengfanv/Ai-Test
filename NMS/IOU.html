@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOU</title>
+    <style>
+        .box {
+            width: 280px;
+            height: 200px;
+            border: 1px solid black;
+            position: fixed;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .box::before {
+            content: "";
+            display: block;
+            border-radius: 50%;
+            background-color: rgb(71, 111, 192);
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            left: -6px;
+            top: -6px;
+        }
+
+        .box::after {
+            content: "";
+            display: block;
+            border-radius: 50%;
+            background-color: rgb(71, 111, 192);
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            right: -6px;
+            bottom: -6px;
+        }
+
+        .box p {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .box p:first-child {
+            position: absolute;
+            top: -50px;
+        }
+
+        .box p:last-child {
+            position: absolute;
+            bottom: -50px;
+            right: 0;
+        }
+
+        #box1 {
+            background-color: rgba(255, 165, 0, 0.5);
+            left: calc(50vw - 280px);
+            top: calc(50vh - 200px);
+        }
+
+        #box2 {
+            background-color: rgba(72, 255, 0, 0.5);
+            left: calc(50vw - 280px / 2);
+            top: calc(50vh - 200px / 2);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box1" class="box">
+        <p>(x11,y11)</p>
+        <p>(x12,y12)</p>
+    </div>
+    <div id="box2" class="box">
+        <p>(x21,y21)</p>
+        <p>(x22,y22)</p>
+    </div>
+
+
+    <script>
+        let activeBox = null;
+        let offsetX, offsetY;
+
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('mousedown', function (e) {
+                e.stopPropagation()
+                e.preventDefault()
+
+                activeBox = box;
+                offsetX = e.clientX - box.offsetLeft;
+                offsetY = e.clientY - box.offsetTop;
+                box.style.cursor = 'move';
+            });
+
+            box.addEventListener('mousemove', function (e) {
+                e.stopPropagation()
+                e.preventDefault()
+                if (activeBox) {
+                    activeBox.style.left = (e.clientX - offsetX) + 'px';
+                    activeBox.style.top = (e.clientY - offsetY) + 'px';
+                }
+            });
+
+            box.addEventListener('mouseup', function (e) {
+                e.stopPropagation()
+                e.preventDefault()
+
+                activeBox = null;
+                box.style.cursor = 'pointer';
+            });
+        });
+    </script>
+</body>
+
+</html>
