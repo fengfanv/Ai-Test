@@ -135,6 +135,9 @@ exports.histogram = Histogram.histogram;
 
 
 //二期工程（rcnn、fast-rcnn）
+//numpy.c_
+//numpy.stack
+//numpy.linspace
 //---
 //numpy.trapz
 //numpy.random.seed
@@ -146,6 +149,8 @@ exports.histogram = Histogram.histogram;
 //可选
 //numpy.array
 //numpy.asarray
+//numpy.asanyarray
+//numpy.ascontiguousarray
 //numpy.get_include
 //-------------
 //numpy.ndarray
@@ -170,9 +175,7 @@ exports.histogram = Histogram.histogram;
 //numpy.repeat
 //numpy.spacing
 //numpy.searchsorted
-//numpy.linspace
 //numpy.empty
-//numpy.ascontiguousarray
 //可选
 //------------
 //numpy.int32
