@@ -138,6 +138,7 @@ exports.histogram = Histogram.histogram;
 //numpy.c_
 //numpy.stack
 //numpy.linspace
+//numpy.square
 //---
 //numpy.trapz
 //numpy.random.seed
