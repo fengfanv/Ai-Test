@@ -56,6 +56,20 @@ exports.ceil = function (data) {
     return workData(data, Math.ceil)
 }
 
+exports.square = function (data) {
+    return workData(data, function (value) {
+        return value * value;
+    })
+}
+
+// console.log(exports.square(10))
+
+// console.log(exports.square(-10))
+
+// console.log(exports.square())
+
+// console.log(exports.square([1,2,3,4]))
+
 
 
 exports.sum = function (data, axis) {

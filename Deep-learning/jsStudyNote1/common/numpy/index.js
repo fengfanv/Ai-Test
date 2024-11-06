@@ -70,6 +70,7 @@ exports.exp = Math.exp;
 exports.log = Math.log;
 exports.sqrt = Math.sqrt;
 exports.ceil = Math.ceil;
+exports.square = Math.square;
 
 //求和
 exports.sum = Math.sum;
@@ -138,7 +139,6 @@ exports.histogram = Histogram.histogram;
 //numpy.c_
 //numpy.stack
 //numpy.linspace
-//numpy.square
 //---
 //numpy.trapz
 //numpy.random.seed
