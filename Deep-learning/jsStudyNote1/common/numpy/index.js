@@ -136,10 +136,12 @@ exports.histogram = Histogram.histogram;
 
 
 //二期工程（rcnn、fast-rcnn）
-//numpy.c_
+//numpy.column_stack
 //numpy.stack
 //numpy.linspace
 //---
+//numpy.r_
+//numpy.c_
 //numpy.trapz
 //numpy.random.seed
 //numpy.linalg.svd

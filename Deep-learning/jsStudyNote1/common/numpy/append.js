@@ -279,6 +279,7 @@ exports.concatenate = concatenate;
 // console.log(toStr(concatenate()))
 
 //垂直
+//numpy.row_stack == numpy.vstack
 function vstack(tup_list) {
     if (typeof tup_list == 'undefined') {
         throw new Error('tup_list不能为空')
@@ -324,6 +325,8 @@ exports.vstack = vstack;
 // console.log(toStr(vstack([[[[0],[1]]],[[[2],[3]]]])))
 
 // console.log(toStr(vstack([[0,1],[2],[3]])))
+
+// console.log(toStr(vstack([[0],[2],[3]])))
 
 // console.log(toStr(vstack([[[0],[1]],[2],[3]])))
 
@@ -384,6 +387,8 @@ exports.hstack = hstack;
 // console.log(toStr(hstack([[[[0],[1]]],[[[2],[3]]]])))
 
 // console.log(toStr(hstack([[0,1],[2],[3]])))
+
+// console.log(toStr(hstack([[0],[2],[3]])))
 
 // console.log(toStr(hstack([[[0],[1]],[2],[3]])))
 

@@ -106,10 +106,14 @@ def _felzenszwalb_cython(image, scale=1, sigma=0.8, kernel=3, min_size=20):
     # compute edges between pixels:
     height, width = image.shape[:2]
     segments = np.arange(width * height, dtype=np.intp).reshape(height, width)
-    down_edges = np.c_[segments[1:, :].ravel(), segments[:-1, :].ravel()]
-    right_edges = np.c_[segments[:, 1:].ravel(), segments[:, :-1].ravel()]
-    dright_edges = np.c_[segments[1:, 1:].ravel(), segments[:-1, :-1].ravel()]
-    uright_edges = np.c_[segments[:-1, 1:].ravel(), segments[1:, :-1].ravel()]
+    # down_edges = np.c_[segments[1:, :].ravel(), segments[:-1, :].ravel()]
+    # right_edges = np.c_[segments[:, 1:].ravel(), segments[:, :-1].ravel()]
+    # dright_edges = np.c_[segments[1:, 1:].ravel(), segments[:-1, :-1].ravel()]
+    # uright_edges = np.c_[segments[:-1, 1:].ravel(), segments[1:, :-1].ravel()]
+    down_edges = np.column_stack([segments[1:, :].ravel(), segments[:-1, :].ravel()])
+    right_edges = np.column_stack([segments[:, 1:].ravel(), segments[:, :-1].ravel()])
+    dright_edges = np.column_stack([segments[1:, 1:].ravel(), segments[:-1, :-1].ravel()])
+    uright_edges = np.column_stack([segments[:-1, 1:].ravel(), segments[1:, :-1].ravel()])
     edges = np.vstack([right_edges, down_edges, dright_edges, uright_edges])
 
     # initialize data structures for segment size
