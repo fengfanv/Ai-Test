@@ -397,8 +397,50 @@ function arange(start, stop, step) {
     }
     return arr;
 }
-
 exports.arange = arange;
+
+//阉割版，阉割了start和stop可能是数组的功能
+function linspace(start, stop, num, endpoint) {
+    if (typeof start == 'undefined' || typeof stop == 'undefined') {
+        throw new Error('start 和 stop 不能为空')
+    }
+    if (typeof num == 'undefined') {
+        num = 50
+    }
+    if (num < 0) {
+        throw new Error('num不能是负数')
+    }
+    if (typeof endpoint == 'undefined') {
+        endpoint = true;
+    }
+    var arr = []
+    var step = (stop - start) / num
+    if (endpoint) {
+        step = (stop - start) / (num - 1)
+    }
+    if (num == 1) {
+        return [start]
+    }
+    for (let i = 0; i < num; i++) {
+        let value = start + i * step
+        arr.push(value)
+    }
+    return arr
+}
+exports.linspace = linspace;
+
+// console.log(linspace())
+// console.log(linspace(1))
+// console.log(linspace(1,1))
+// console.log(linspace(1,1,0))
+// console.log(linspace(1, 1, -1))
+// console.log(linspace(20,15,2))
+// console.log(linspace(20, 15, 1))
+// console.log(linspace(20, 15, 4))
+// console.log(linspace(20, 15, 4, false))
+// console.log(linspace(20, 15, 0, false))
+// console.log(linspace(20, 15, 1, false))
+// console.log(linspace(15, 20, 6, false))
 
 
 function zeros(shape) {
