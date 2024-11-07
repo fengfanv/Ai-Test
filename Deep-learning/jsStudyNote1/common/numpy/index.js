@@ -139,7 +139,6 @@ exports.linspace = Main.linspace;
 //二期工程（rcnn、fast-rcnn）
 //numpy.column_stack
 //numpy.stack
-//numpy.pad(mode='edge')
 //---
 //numpy.r_
 //numpy.c_
