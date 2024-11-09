@@ -167,3 +167,25 @@ function printArr4(arr, indexArr, callback) {
     }
 }
 exports.printArr4 = printArr4;
+
+//此方法由Common.printArr演变而来
+function printArr5(arr, indexArr, callback) {
+    if (Array.isArray(arr) == false || arr.length < 1) {
+        throw new Error('printArr5:error arr不能是空数组！');
+    }
+    if (typeof indexArr == 'undefined') {
+        indexArr = []
+    }
+    for (let i = 0; i < arr.length; i++) {
+        let item = arr[i];
+        let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        newIndexArr.push(i);
+        if (Array.isArray(item)) {
+            callback && callback({ index: newIndexArr, value: item, childArr: arr, childIndex: i })
+            printArr5(item, newIndexArr, callback);
+        } else {
+            callback && callback({ index: newIndexArr, value: item, childArr: arr, childIndex: i })
+        }
+    }
+}
+exports.printArr5 = printArr5;

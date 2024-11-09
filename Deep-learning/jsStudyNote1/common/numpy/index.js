@@ -127,6 +127,7 @@ exports.tile = Append.tile;
 exports.unique = Unique.unique;
 exports.histogram = Histogram.histogram;
 exports.linspace = Main.linspace;
+exports.stack = Append.stack;
 
 
 //一期工程（cnn）
@@ -138,7 +139,6 @@ exports.linspace = Main.linspace;
 
 //二期工程（rcnn、fast-rcnn）
 //numpy.column_stack
-//numpy.stack
 //---
 //numpy.r_
 //numpy.c_

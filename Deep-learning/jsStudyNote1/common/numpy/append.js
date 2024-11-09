@@ -9,6 +9,7 @@ var toStr = printTest.toStr;
 
 const Common = require('./common.js');
 var printArr4 = Common.printArr4;
+var printArr5 = Common.printArr5;
 
 function append(arr, values, axis) {
     if (typeof arr == 'undefined') {
@@ -528,3 +529,120 @@ exports.tile = tile;
 
 // console.log(toStr(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [2, 1, 1, 1])))
 // console.log(toStr(shape(tile([[[0, 1], [2, 3], [4, 5]], [[6, 7], [8, 9], [10, 11]]], [2, 1, 1, 1]))))
+
+function stack(arrays, axis) {
+    if (typeof arrays == 'undefined') {
+        throw new Error('arrays不能为空')
+    }
+
+    if (!Array.isArray(arrays)) {
+        throw new Error('arrays必须是数组类型')
+    }
+
+    if (arrays.length == 0) {
+        throw new Error('arrays不能是空数组')
+    }
+
+    if (typeof axis == 'undefined') {
+        axis = 0
+    }
+
+    let arraysShape = []
+    for (let i = 0; i < arrays.length; i++) {
+        arraysShape.push(shape(arrays[i]))
+    }
+
+    let firstItemShape = arraysShape[0].join()
+    for (let i = 0; i < arraysShape.length; i++) {
+        if (firstItemShape != arraysShape[i].join()) {
+            throw new Error('所有输入数组必须具有相同的形状')
+        }
+    }
+
+    let arrays_shape = shape(arrays)
+    if (axis < 0) {
+        axis = axis + arrays_shape.length
+    }
+
+    if (axis > arrays_shape.length - 1) {
+        throw new Error('axis超出数组范围')
+    }
+
+    if (arrays.length == 1) {
+        return arrays
+    }
+
+    if (axis == 0) {
+        return arrays
+    }
+
+    let axisArr = [];
+    for (let i = 0; i < arrays.length; i++) {
+        let itemArr = []
+        printArr5(arrays[i], [], (res) => {
+            if (res.index.length == axis) {
+                itemArr.push(res.value)
+            }
+        })
+        axisArr.push(itemArr)
+    }
+
+    let resultData = []
+    for (let i = 0; i < axisArr[0].length; i++) {
+        for (let j = 0; j < axisArr.length; j++) {
+            resultData.push(axisArr[j][i])
+        }
+    }
+
+    let newArrShape = arraysShape[0]
+    newArrShape.splice(axis, 0, arrays.length)
+
+    return reshape(resultData, newArrShape)
+}
+exports.stack = stack;
+
+// console.log(toStr(stack()))
+
+// console.log(toStr(stack(1)))
+
+// console.log(toStr(stack([1])))
+
+// console.log(toStr(stack([1],0)))
+
+// console.log(toStr(stack([1],1)))
+
+// console.log(toStr(stack([[1], [2]], 0)))
+
+// console.log(toStr(stack([[1], [2]], 1)))
+
+// console.log(toStr(stack([[1, 2, 3], [4, 5, 6]], 1)))
+
+// console.log(toStr(stack([[1, 2, 3], [4, 5, 6]], 0)))
+
+// console.log(toStr(stack([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 0)))
+
+// console.log(toStr(stack([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 1)))
+
+// console.log(toStr(stack([[1, 2, 3], [4, 5, 6], [7, 8, 9]], 2)))
+
+// console.log(toStr(stack([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]], [[13, 14, 15], [16, 17, 18]]], 0)))
+
+// console.log(toStr(stack([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]], [[13, 14, 15], [16, 17, 18]]], 1)))
+
+// console.log(toStr(stack([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]], [[13, 14, 15], [16, 17, 18]]], 2)))
+
+// console.log(toStr(stack([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]], [[13, 14, 15], [16, 17, 18]]], 3)))
+
+// console.log(toStr(stack([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]], [[13, 14, 15, 200], [16, 17, 18, 100]]], 1)))
+
+// let a = reshape(require('./main.js').arange(1 * 2 * 3 * 4), [1, 2, 3, 4])
+// let b = reshape(require('./main.js').linspace(50, 50 * 1 * 2 * 3 * 4, 1 * 2 * 3 * 4), [1, 2, 3, 4])
+// let c = reshape(require('./main.js').linspace(100, 100 * 1 * 2 * 3 * 4, 1 * 2 * 3 * 4), [1, 2, 3, 4])
+// console.log(toStr(stack([a, b, c], 0)))
+// console.log(toStr(stack([a, b, c], 1)))
+// console.log(toStr(stack([a, b, c], 2)))
+// console.log(toStr(stack([a, b, c], 3)))
+// console.log(toStr(stack([a, b, c], 4)))
+// console.log(toStr(stack([a, b, c], 5)))
+// console.log(toStr(stack([a])))
+// console.log(toStr(stack([a],0)))
