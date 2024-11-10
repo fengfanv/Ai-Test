@@ -337,6 +337,8 @@ exports.vstack = vstack;
 
 // console.log(toStr(vstack([[[[ 1,  2,  3,  4],[ 5,  6,  7,  8],[ 9, 10, 11, 12]],[[13, 14, 15, 16],[17, 18, 19, 20],[21, 22, 23, 24]]], [[[25, 26, 27, 28],[29, 30, 31, 32],[33, 34, 35, 36]],[[37, 38, 39, 40],[41, 42, 43, 44],[45, 46, 47, 48]]]])))
 
+// console.log(toStr(vstack([[[1, 2], [3, 4]], [[5, 6]], [[7, 8], [9, 10], [11, 12]]])))
+
 //水平
 function hstack(tup_list) {
     if (typeof tup_list == 'undefined') {
@@ -646,3 +648,80 @@ exports.stack = stack;
 // console.log(toStr(stack([a, b, c], 5)))
 // console.log(toStr(stack([a])))
 // console.log(toStr(stack([a],0)))
+
+//hstack与column_stack的区别是，他们对于1维数组，有各自不同的处理方式，剩下都一样
+function column_stack(tup_list) {
+    if (typeof tup_list == 'undefined') {
+        throw new Error('tup_list不能为空')
+    }
+
+    if (!Array.isArray(tup_list)) {
+        throw new Error('tup_list必须是数组类型')
+    }
+
+    if (tup_list.length <= 0) {
+        throw new Error('tup_list不能是空列表')
+    }
+
+    let axis = 1;
+
+    for (let i = 0; i < tup_list.length; i++) {
+        let itemShape = shape(tup_list[i])
+        if (itemShape.length == 0) {
+            tup_list[i] = [tup_list[i]]
+            itemShape = shape(tup_list[i])
+        }
+        if (itemShape.length == 1) {
+            tup_list[i] = reshape(tup_list[i], [itemShape[0], 1])
+        }
+    }
+
+    return concatenate(tup_list, axis)
+
+}
+exports.column_stack = column_stack;
+
+// console.log(toStr(column_stack()))
+
+// console.log(toStr(column_stack(1)))
+
+// console.log(toStr(column_stack([])))
+
+// console.log(toStr(column_stack([1])))
+// console.log(toStr(hstack([1])))
+
+// console.log(toStr(column_stack([1,2])))
+// console.log(toStr(hstack([1,2])))
+
+// console.log(toStr(column_stack([1,[2]])))
+// console.log(toStr(hstack([1,[2]])))
+
+// console.log(toStr(column_stack([1,[[2]]])))
+// console.log(toStr(hstack([1,[[2]]])))
+
+// console.log(toStr(column_stack([[1],[[2]]])))
+// console.log(toStr(hstack([[1],[[2]]])))
+
+// console.log(toStr(column_stack([[1,2,3],[4,5,6]])))
+// console.log(toStr(hstack([[1,2,3],[4,5,6]])))
+
+// console.log(toStr(column_stack([[1,2,3],[[4,5,6]]])))
+// console.log(toStr(hstack([[1,2,3],[[4,5,6]]])))
+
+// console.log(toStr(column_stack([[[1,2,3]],[[4,5,6]]])))
+// console.log(toStr(hstack([[[1,2,3]],[[4,5,6]]])))
+
+// console.log(toStr(column_stack([[1,2,3],[[4],[5],[6]]])))
+// console.log(toStr(hstack([[1,2,3],[[4],[5],[6]]])))
+
+// console.log(toStr(column_stack([[[1], [2], [3]], [[4], [5], [6]]])))
+// console.log(toStr(hstack([[[1], [2], [3]], [[4], [5], [6]]])))
+
+// console.log(toStr(column_stack([[[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], [[13, 14, 15, 16], [17, 18, 19, 20], [21, 22, 23, 24]]], [[[25, 26, 27, 28], [29, 30, 31, 32], [33, 34, 35, 36]], [[37, 38, 39, 40], [41, 42, 43, 44], [45, 46, 47, 48]]]])))
+// console.log(toStr(hstack([[[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], [[13, 14, 15, 16], [17, 18, 19, 20], [21, 22, 23, 24]]], [[[25, 26, 27, 28], [29, 30, 31, 32], [33, 34, 35, 36]], [[37, 38, 39, 40], [41, 42, 43, 44], [45, 46, 47, 48]]]])))
+
+// console.log(toStr(column_stack([[[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], [[13, 14, 15, 16], [17, 18, 19, 20], [21, 22, 23, 24]]]])))
+// console.log(toStr(hstack([[[[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12]], [[13, 14, 15, 16], [17, 18, 19, 20], [21, 22, 23, 24]]]])))
+
+// console.log(toStr(column_stack([[[[1]]], [[[2]]], [[[3]]]])))
+// console.log(toStr(hstack([[[[1]]], [[[2]]], [[[3]]]])))
