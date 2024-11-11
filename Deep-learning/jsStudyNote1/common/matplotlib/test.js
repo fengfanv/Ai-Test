@@ -88,3 +88,20 @@ const matplotlib = require('./index')
 // matplotlib.imshow([[1, 2], [3, 4]])
 
 // matplotlib.imshow([[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]])
+
+// matplotlib.imshow([[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]], undefined, [
+//     {
+//         left: 1,
+//         top: 1,
+//         width: 1,
+//         height: 1,
+//         label: 'Label_a'
+//     },
+//     {
+//         left: 0,
+//         top: 2,
+//         width: 1,
+//         height: 3,
+//         label: 'Label_b'
+//     }
+// ])

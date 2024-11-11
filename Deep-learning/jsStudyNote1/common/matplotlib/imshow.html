@@ -218,6 +218,32 @@
                 ctx.fillStyle = X_render_arr[i].color;
                 ctx.fillRect(X_render_arr[i].x * pixel_block_size, X_render_arr[i].y * pixel_block_size, pixel_block_size, pixel_block_size);
             }
+
+            //--------------------------------------
+
+            if (Array.isArray(otherArr)) {
+                for (let i = 0; i < otherArr.length; i++) {
+
+                    let strokeRectWidth = 2
+
+                    // let x = otherArr[i].left * pixel_block_size + (strokeRectWidth)
+                    // let y = otherArr[i].top * pixel_block_size + (strokeRectWidth)
+                    let x = otherArr[i].left * pixel_block_size + pixel_block_size / 2 //这样做是为了和python里显示效果对其
+                    let y = otherArr[i].top * pixel_block_size + pixel_block_size / 2 //这样做是为了和python里显示效果对其
+                    let w = otherArr[i].width * pixel_block_size - (strokeRectWidth * 2)
+                    let h = otherArr[i].height * pixel_block_size - (strokeRectWidth * 2)
+
+                    //绘制矩形边框
+                    ctx.strokeStyle = "red";
+                    ctx.lineWidth = strokeRectWidth;
+                    ctx.strokeRect(x, y, w, h);
+
+                    //绘制文字
+                    ctx.fillStyle = "red";
+                    ctx.font = "16px sans-serif"
+                    ctx.fillText(otherArr[i].label || '', x + (strokeRectWidth * 2), y + (strokeRectWidth + 16));
+                }
+            }
         }
 
         //获取元素相较于body的位置
@@ -287,6 +313,8 @@
         let X_shape = 'start-X_shape-X_shape-X_shape-X_shape-X_shape-X_shape-end';
         let cmap_type = 'start-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-end'; //default gray
         let X_render_arr = [];
+
+        var otherArr = 'start-other-other-other-other-other-other-end';
 
         let canvas_width = 500;
         let pixel_block_size = canvas_width / X[0].length;

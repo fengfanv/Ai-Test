@@ -329,7 +329,7 @@ function getArrShape(arr, shape) {
     }
 }
 
-function imshow(X, cmap) {
+function imshow(X, cmap, other) {
     if (X == undefined) {
         throw new Error('X不能为空')
     }
@@ -344,6 +344,12 @@ function imshow(X, cmap) {
         throw new Error(`图像数据的形状X.shape(${X_shape.join()})无效`)
     }
 
+    if (other != undefined) {
+        if (Array.isArray(other) == false) {
+            throw new Error('other必须是array')
+        }
+    }
+
     const fs = require('fs');
     fs.readFile(__dirname + '/imshow.html', 'utf8', (err, data) => {
         if (err) throw err;
@@ -351,6 +357,7 @@ function imshow(X, cmap) {
         data = data.replace(/'start-X-X-X-X-X-X-end'/, JSON.stringify(X))
         data = data.replace(/'start-X_shape-X_shape-X_shape-X_shape-X_shape-X_shape-end'/, JSON.stringify(X_shape))
         data = data.replace(/'start-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-end'/, `'${cmap}'`)
+        data = data.replace(/'start-other-other-other-other-other-other-end'/, JSON.stringify(other))
         // console.log(data);
 
         getPort(3000, (port) => {
