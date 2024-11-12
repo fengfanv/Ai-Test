@@ -69,6 +69,16 @@ function openHttp(port, indexData, callback) {
                     callback && callback('page_loading_completed', server)
                     response.writeHead(200, { 'Content-Type': 'text/plain' })
                     response.end('success');
+                } else if (pathname == '/image_data') {
+                    let postData = '';
+                    request.on('data', function (chunk) {
+                        postData += chunk;
+                    });
+                    request.on('end', function () {
+                        callback && callback('image_data', server, JSON.parse(postData))
+                        response.writeHead(200, { 'Content-Type': 'text/plain' })
+                        response.end('success');
+                    })
                 } else {
                     response.writeHead(404, { 'Content-Type': 'text/html' })
                     response.end('状态：404，没有这样的文件或目录！');
@@ -375,3 +385,55 @@ function imshow(X, cmap, other) {
 }
 exports.imshow = imshow;
 
+//图片--------------------------------------------------
+
+function imread(path, callback) {
+    if (path == undefined) {
+        throw new Error('path不能为空')
+    }
+
+    let file_type = path.slice(path.lastIndexOf('.')).replace('.', '')
+    let MIME = ''
+    if (file_type == 'png') {
+        MIME = 'image/png'
+    } else if (file_type == 'jpg' || file_type == 'jpeg') {
+        MIME = 'image/jpeg'
+    } else if (file_type == 'gif') {
+        MIME = 'image/gif'
+    } else if (file_type == 'bmp') {
+        MIME = 'image/bmp'
+    } else if (file_type == 'ico') {
+        MIME = 'image/vnd.microsoft.icon'
+    } else if (file_type == 'svg') {
+        MIME = 'image/svg+xml'
+    } else if (file_type == 'webp') {
+        MIME = 'image/webp'
+    } else {
+        MIME = 'image/jpeg'
+    }
+
+    const fs = require('fs');
+    let imageData = fs.readFileSync(path, { encoding: "binary" });
+    imageData = 'data:' + MIME + ';base64,' + Buffer.from(imageData, 'binary').toString('base64');
+
+    fs.readFile(__dirname + '/getImageRGBA.html', 'utf8', (err, data) => {
+        if (err) throw err;
+
+        data = data.replace(/'start-path-path-path-path-path-path-end'/, '"' + imageData + '"')
+        // console.log(data);
+
+        getPort(3500, (port) => {
+            openHttp(port, data, (type, server, imageData) => {
+                if (type == 'server_open_success') {
+                    openBrowser('http://localhost:' + port)
+                }
+                if (type == 'image_data') {
+                    server.close();
+                    // process.exit(0);
+                    callback && callback(imageData)
+                }
+            })
+        })
+    });
+}
+exports.imread = imread;

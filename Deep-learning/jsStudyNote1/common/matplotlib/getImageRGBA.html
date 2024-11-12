@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>get-image-RGBA</title>
+</head>
+
+<body>
+    <button onclick="close_page()">关闭页面</button>
+    <input type="file" id="imageInput" accept="image/*" hidden>
+    <script>
+
+        var imagePath = 'start-path-path-path-path-path-path-end';
+
+        getImageRGBA(imagePath)
+
+        document.getElementById('imageInput').onchange = function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const base64String = e.target.result;
+
+                    getImageRGBA(base64String);
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function getImageRGBA(URI) {
+            var img = new Image();
+            img.crossOrigin = "*";
+            img.src = URI;
+            img.onload = function () {
+                console.log(img.width, img.height)
+
+                let canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                let ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+
+                const imgData = ctx.getImageData(0, 0, img.width, img.height);
+                console.log(imgData.data)
+                console.log(imgData.data.length / 4 == img.width * img.height)
+
+                // document.body.append(canvas)
+
+                //创建一个ajax实例
+                let xhr = new XMLHttpRequest()
+                //配置请求
+                xhr.open('POST', location.href + 'image_data', true)
+                //监听请求过程
+                xhr.onreadystatechange = () => {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        console.log(xhr.responseText)
+                        close_page()
+                    }
+                }
+                //告诉服务器，我传递的内容类型，是JSON字符串
+                xhr.setRequestHeader('Content-Type', 'application/json')
+                //发送请求
+                xhr.send(JSON.stringify({
+                    width: img.width,
+                    height: img.height,
+                    data: Array.from(imgData.data)
+                }))
+            }
+        }
+
+        //关闭窗口
+        function close_page() {
+            window.opener = null;
+            window.open('', '_self');
+            window.close();
+        }
+    </script>
+
+</body>
+
+</html>

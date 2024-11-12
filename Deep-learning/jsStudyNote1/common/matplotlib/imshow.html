@@ -47,6 +47,7 @@
 </head>
 
 <body>
+    <button style="position: fixed;right: 0;top: 0;" onclick="draw()">点击 或 按回车键 重新渲染</button>
     <canvas id="canvas"></canvas>
     <!--辅助线-->
     <div id="line"></div>
@@ -54,6 +55,15 @@
     <div id="info"></div>
     <script src="./page_script.js"></script>
     <script>
+        document.onkeydown = function (event) {
+            if (window.event) {
+                event = window.event;
+            }
+            var keyCode = event.charCode || event.keyCode;
+            if (keyCode == '13') {
+                draw()
+            }
+        }
         //定义一个颜色映射函数，根据值返回颜色
         function get_cmap_color(value, cmap) {
             const min = Math.min(...cmap.map(c => c.value));
@@ -198,6 +208,8 @@
         //--------------------------------------------------------------
 
         function draw() {
+
+            console.log('渲染')
 
             const canvas = document.getElementById('canvas');
             canvas_width = 500

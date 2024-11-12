@@ -105,3 +105,11 @@ const matplotlib = require('./index')
 //         label: 'Label_b'
 //     }
 // ])
+
+// matplotlib.imread('C:/Users/merka/Desktop/abc1.png', (imageData) => {
+//     console.log(imageData)
+
+//     const { width, height, data } = imageData
+
+//     matplotlib.imshow(require('../numpy/index.js').reshape(data, [height, width, 4]))
+// })
