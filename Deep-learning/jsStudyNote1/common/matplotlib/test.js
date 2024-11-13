@@ -106,7 +106,7 @@ const matplotlib = require('./index')
 //     }
 // ])
 
-// matplotlib.imread('C:/Users/merka/Desktop/abc1.png', (imageData) => {
+// matplotlib.imread('C:/Users/merka/Desktop/abc3.png', (imageData) => {
 //     console.log(imageData)
 
 //     const { width, height, data } = imageData

@@ -47,7 +47,6 @@
 </head>
 
 <body>
-    <button style="position: fixed;right: 0;top: 0;" onclick="draw()">点击 或 按回车键 重新渲染</button>
     <canvas id="canvas"></canvas>
     <!--辅助线-->
     <div id="line"></div>
@@ -55,15 +54,6 @@
     <div id="info"></div>
     <script src="./page_script.js"></script>
     <script>
-        document.onkeydown = function (event) {
-            if (window.event) {
-                event = window.event;
-            }
-            var keyCode = event.charCode || event.keyCode;
-            if (keyCode == '13') {
-                draw()
-            }
-        }
         //定义一个颜色映射函数，根据值返回颜色
         function get_cmap_color(value, cmap) {
             const min = Math.min(...cmap.map(c => c.value));
@@ -211,24 +201,35 @@
 
             console.log('渲染')
 
+            var imgWidth = X_shape[1];
+            var imgHeight = X_shape[0];
+
+            var innerWidth = window.innerWidth;
+            var innerHeight = window.innerHeight;
+
             const canvas = document.getElementById('canvas');
-            canvas_width = 500
-            if (canvas_width > window.innerWidth) {
-                canvas_width = window.innerWidth
-                pixel_block_size = canvas_width / X[0].length
-            }
-            if (pixel_block_size * X.length > window.innerHeight) {
-                pixel_block_size = window.innerHeight / X.length;
-                canvas_width = pixel_block_size * X[0].length
-            }
-            canvas.width = canvas_width;
-            canvas.height = pixel_block_size * X.length;
+            canvas.width = innerWidth;
+            canvas.height = innerHeight;
+
+            pixel_block_size = Math.min(canvas.width / imgWidth, canvas.height / imgHeight); //根据canvas大小和img大小，计算出一个合理的像素块大小
+
+            var newImgWidth = imgWidth * pixel_block_size;
+            var newImgHeight = imgHeight * pixel_block_size;
+
+            //让图像显示在屏canvas中间
+            _left = (canvas.width - newImgWidth) / 2
+            _top = (canvas.height - newImgHeight) / 2
+
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             for (let i = 0; i < X_render_arr.length; i++) {
                 ctx.fillStyle = X_render_arr[i].color;
-                ctx.fillRect(X_render_arr[i].x * pixel_block_size, X_render_arr[i].y * pixel_block_size, pixel_block_size, pixel_block_size);
+                let x = _left + X_render_arr[i].x * pixel_block_size
+                let y = _top + X_render_arr[i].y * pixel_block_size
+                let w = pixel_block_size
+                let h = pixel_block_size
+                ctx.fillRect(x, y, w, h);
             }
 
             //--------------------------------------
@@ -244,6 +245,9 @@
                     let y = otherArr[i].top * pixel_block_size + pixel_block_size / 2 //这样做是为了和python里显示效果对其
                     let w = otherArr[i].width * pixel_block_size - (strokeRectWidth * 2)
                     let h = otherArr[i].height * pixel_block_size - (strokeRectWidth * 2)
+
+                    x = x + _left
+                    y = y + _top
 
                     //绘制矩形边框
                     ctx.strokeStyle = "red";
@@ -301,7 +305,19 @@
             for (let i = 0; i < X_render_arr.length; i++) {
                 let item_x = X_render_arr[i].x;
                 let item_y = X_render_arr[i].y;
-                if (mouse_x > item_x * pixel_block_size && mouse_x < item_x * pixel_block_size + pixel_block_size && mouse_y > item_y * pixel_block_size && mouse_y < item_y * pixel_block_size + pixel_block_size) {
+
+                let x = item_x * pixel_block_size
+                let x_max = item_x * pixel_block_size + pixel_block_size
+                let y = item_y * pixel_block_size
+                let y_max = item_y * pixel_block_size + pixel_block_size
+
+                x = x + _left
+                x_max = x_max + _left
+
+                y = y + _top
+                y_max = y_max + _top
+
+                if (mouse_x > x && mouse_x < x_max && mouse_y > y && mouse_y < y_max) {
                     showValue = X_render_arr[i].value;
                 }
             }
@@ -328,8 +344,9 @@
 
         var otherArr = 'start-other-other-other-other-other-other-end';
 
-        let canvas_width = 500;
-        let pixel_block_size = canvas_width / X[0].length;
+        let pixel_block_size = 1;
+        let _left = 0;
+        let _top = 0;
 
         if (X_shape.length == 3) {
             if (X_shape[2] != 1) {
