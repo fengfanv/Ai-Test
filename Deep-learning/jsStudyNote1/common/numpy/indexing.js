@@ -633,6 +633,7 @@ function basicIndexing(arr, indexingTuple, value, debug) {
         for (let j = 0; j < resultDataArr.length; j++) {
             if (item.index.join() == resultDataArr[j].index.join()) {
                 newResultDataArr.push(resultDataArr[j]);
+                resultDataArr.splice(j, 1) //2024年11月13日22点47分，添加。处理完 相关元素 后，将 相关元素 删除，防止重复for循环和if判断
                 break;
             }
         }
