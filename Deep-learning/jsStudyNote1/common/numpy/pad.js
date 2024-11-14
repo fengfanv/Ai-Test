@@ -82,8 +82,11 @@ function pad(arr, pad_width, mode, constant_values) {
             let item_shape = arrShape[i];
             let result_shape = [].concat(arrShape);
             result_shape[i] = result_shape[i] + item_pad_width[0] + item_pad_width[1];
-            let item_axis = get_axis(arr, i).axisArr;
+
+            let itemAxis = get_axis(arr, i)
+            let item_axis = itemAxis.axisArr;
             // console.log(i, item_axis);
+
             let before_arr = [];
             let after_arr = [];
             for (let j = 0; j < item_pad_width[0]; j++) {
@@ -95,7 +98,7 @@ function pad(arr, pad_width, mode, constant_values) {
             for (let m = 0; m < item_axis.length; m++) {
                 item_axis[m] = before_arr.concat(item_axis[m], after_arr)
             }
-            arr = reshape(item_axis, result_shape)
+            arr = reshape(Axis.axisArrToOriginalArr(item_axis, itemAxis.strides), result_shape)
         }
         return arr;
     } else if (mode == 'edge') {
@@ -199,7 +202,7 @@ exports.pad = pad;
 
 // console.log(pad([[[1]]], 1, undefined, [1,2,3]))
 
-// console.log(pad([[[1]]], 1, undefined, [[1],[2],[3]]))
+// console.log(toStr(pad([[[1]]], 1, undefined, [[1],[2],[3]])))
 
 // console.log(pad([[[1]]], 1, undefined, [[1,2,3]]))
 
@@ -240,3 +243,7 @@ exports.pad = pad;
 // console.log(toStr(pad([[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [[1, 2]], 'edge')))
 
 // console.log(toStr(pad([[[1, 2], [3, 4]], [[5, 6], [7, 8]]], [[1, 2], [1, 2], [0, 0]], 'edge')))
+
+//---------------------------------
+
+// console.log(toStr(pad([[[2, 2, 2]]], [[0, 1], [0, 1], [0, 0]], 'constant')))
