@@ -18,14 +18,26 @@ def BiLinear_interpolation(img, dstH, dstW):
             y = math.floor(scry)
             u = scrx-x
             v = scry-y
-            retimg[i, j] = (1-u)*(1-v)*img[x, y]+u*(1-v) * \
-                img[x+1, y]+(1-u)*v*img[x, y+1]+u*v*img[x+1, y+1]
+            
+            # retimg[i,j]=(1-u)*(1-v)*img[x,y]+u*(1-v)*img[x+1,y]+(1-u)*v*img[x,y+1]+u*v*img[x+1,y+1]
+            
+            v1 = (1-u)*(1-v)
+            v2 = u*(1-v)
+            v3 = (1-u)*v
+            v4 = u*v
+
+            item1 = v1*img[x, y]    
+            item2 = v2*img[x+1, y]
+            item3 = v3*img[x, y+1]
+            item4 = v4*img[x+1, y+1]
+
+            retimg[i, j] = item1+item2+item3+item4
     return retimg
 
 
-image = imread('lena.png')
+image = imread('test.jpg')
 
-image = image*255
+# image = image*255 //.png需要乘255
 
 # image2 = BiLinear_interpolation(image, image.shape[0]*10, image.shape[1]*10)  # 放大
 
