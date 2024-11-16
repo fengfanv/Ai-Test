@@ -337,6 +337,26 @@
         //--------------------------------------------------------------
         //--------------------------------------------------------------
 
+        function printArr(arr, indexArr, callback) {
+            if (Array.isArray(arr) == false || arr.length < 1) {
+                throw new Error('printArr:error arr不能是空数组！');
+            }
+            if (typeof indexArr == 'undefined') {
+                indexArr = []
+            }
+            for (let i = 0; i < arr.length; i++) {
+                let item = arr[i];
+                // let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+                let newIndexArr = indexArr.concat()
+                newIndexArr.push(i);
+                if (Array.isArray(item)) {
+                    printArr(item, newIndexArr, callback);
+                } else {
+                    callback && callback({ index: newIndexArr, value: item, childArr: arr, childIndex: i })
+                }
+            }
+        }
+
         let X = 'start-X-X-X-X-X-X-end';
         let X_shape = 'start-X_shape-X_shape-X_shape-X_shape-X_shape-X_shape-end';
         let cmap_type = 'start-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-cmap_type-end'; //default gray
@@ -347,6 +367,16 @@
         let pixel_block_size = 1;
         let _left = 0;
         let _top = 0;
+
+        printArr(X, [], (res) => {
+            if (typeof res.value == 'object') {
+                if (res.value.name == 'True') {
+                    res.childArr[res.childIndex] = 1
+                } else if (res.value.name == 'False') {
+                    res.childArr[res.childIndex] = 0
+                }
+            }
+        })
 
         if (X_shape.length == 3) {
             if (X_shape[2] != 1) {
