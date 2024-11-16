@@ -370,53 +370,54 @@ function basicIndexing(arr, indexingTuple, value, debug) {
     //
     let arrShape = shape(arr);
     let arrNdim = arrShape.length || 0;
-    /*
-    为 索引元祖数组 补全 索引元素 start
-    什么时候需要补全？
-    1、索引元祖数组里抛除 None/np.newaxis 后，索引元祖数组长度不及被索引数组的维度数
-    2、索引元祖数组里有Ellipsis（索引元祖数组里最多只能有一个Ellipsis）
-    */
-    //首先 从索引元祖数组里 数(找)出 除了 None/np.newaxis/Ellipsis 以外，有几个有效(有用)的索引元素
-    //检查索引元祖数组里有几个有效(有用)的索引元素
-    let canNum = 0;//有效的索引元素数量
     let indexingTupleArr = [].concat(indexingTuple);
-    let EllipsisNum = 0;//Ellipsis数量
-    let EllipsisIndex = -1;//Ellipsis位置
-    for (let i = 0; i < indexingTupleArr.length; i++) {
-        let item = String(indexingTupleArr[i]);
-        if (item != 'None' && item != 'Ellipsis') {
-            canNum++;
-        }
-        if (item == 'Ellipsis') {
-            EllipsisNum++;
-            EllipsisIndex = i;
-        }
-    }
-    if (EllipsisNum > 1) {
-        throw new Error('基本索引 错误：索引元祖数组里最多只能有一个Ellipsis')
-    }
-    //数出索引元祖数组里有几个有效的索引元素后
-    //1、如果有效的索引元素数量不及被索引数组的维度数，则补充所需数量的slice(None,None,None)
-    //2、如果索引元祖数组里有Ellipsis，则将Ellipsis替换成所需数量的slice(None,None,None)
-    let needAddNum = 0;//索引元祖数组里，需要补充多少个slice(None,None,None)
-    needAddNum = arrNdim - canNum <= 0 ? 0 : arrNdim - canNum;
-    if (EllipsisNum != 0) {
-        //有Ellipsis时，在Ellipsis所处的位置，将Ellipsis替换成所需数量的slice(None,None,None)
-        indexingTupleArr.splice(EllipsisIndex, 1)//删除Ellipsis
-        for (let i = 0; i < needAddNum; i++) {
-            indexingTupleArr.splice(EllipsisIndex, 0, slice(None));//在Ellipsis的位置，插入所需数量的slice(None,None,None)
-        }
-    } else {
-        //没有Ellipsis时，在索引元祖数组末尾，插入所需数量的slice(None,None,None)
-        for (let i = 0; i < needAddNum; i++) {
-            indexingTupleArr.push(slice(None));//在数组末尾的位置，插入所需数量的slice(None,None,None)
-        }
-    }
-    if (arrNdim < canNum + needAddNum) {
-        throw new Error(`基本索引 错误：被索引数组是一个${arrNdim}维数组 但却有${canNum + needAddNum}个索引元素`)
-    }
-    // console.log('indexingTupleArr：',indexingTupleArr);
-    /*为 索引元祖数组 补全 索引元素 end*/
+    // /*
+    // 为 索引元祖数组 补全 索引元素 start
+    // 什么时候需要补全？
+    // 1、索引元祖数组里抛除 None/np.newaxis 后，索引元祖数组长度不及被索引数组的维度数
+    // 2、索引元祖数组里有Ellipsis（索引元祖数组里最多只能有一个Ellipsis）
+    // */
+    // //首先 从索引元祖数组里 数(找)出 除了 None/np.newaxis/Ellipsis 以外，有几个有效(有用)的索引元素
+    // //检查索引元祖数组里有几个有效(有用)的索引元素
+    // let canNum = 0;//有效的索引元素数量
+    // let indexingTupleArr = [].concat(indexingTuple);
+    // let EllipsisNum = 0;//Ellipsis数量
+    // let EllipsisIndex = -1;//Ellipsis位置
+    // for (let i = 0; i < indexingTupleArr.length; i++) {
+    //     let item = String(indexingTupleArr[i]);
+    //     if (item != 'None' && item != 'Ellipsis') {
+    //         canNum++;
+    //     }
+    //     if (item == 'Ellipsis') {
+    //         EllipsisNum++;
+    //         EllipsisIndex = i;
+    //     }
+    // }
+    // if (EllipsisNum > 1) {
+    //     throw new Error('基本索引 错误：索引元祖数组里最多只能有一个Ellipsis')
+    // }
+    // //数出索引元祖数组里有几个有效的索引元素后
+    // //1、如果有效的索引元素数量不及被索引数组的维度数，则补充所需数量的slice(None,None,None)
+    // //2、如果索引元祖数组里有Ellipsis，则将Ellipsis替换成所需数量的slice(None,None,None)
+    // let needAddNum = 0;//索引元祖数组里，需要补充多少个slice(None,None,None)
+    // needAddNum = arrNdim - canNum <= 0 ? 0 : arrNdim - canNum;
+    // if (EllipsisNum != 0) {
+    //     //有Ellipsis时，在Ellipsis所处的位置，将Ellipsis替换成所需数量的slice(None,None,None)
+    //     indexingTupleArr.splice(EllipsisIndex, 1)//删除Ellipsis
+    //     for (let i = 0; i < needAddNum; i++) {
+    //         indexingTupleArr.splice(EllipsisIndex, 0, slice(None));//在Ellipsis的位置，插入所需数量的slice(None,None,None)
+    //     }
+    // } else {
+    //     //没有Ellipsis时，在索引元祖数组末尾，插入所需数量的slice(None,None,None)
+    //     for (let i = 0; i < needAddNum; i++) {
+    //         indexingTupleArr.push(slice(None));//在数组末尾的位置，插入所需数量的slice(None,None,None)
+    //     }
+    // }
+    // if (arrNdim < canNum + needAddNum) {
+    //     throw new Error(`基本索引 错误：被索引数组是一个${arrNdim}维数组 但却有${canNum + needAddNum}个索引元素`)
+    // }
+    // // console.log('indexingTupleArr：',indexingTupleArr);
+    // /*为 索引元祖数组 补全 索引元素 end*/
     /*
     匹配形状数组里元素(被索引数组的每个维度) 所对应的索引元素 start
     */
