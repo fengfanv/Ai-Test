@@ -21,7 +21,8 @@ function printArr(arr, indexArr, callback) {
     }
     for (let i = 0; i < arr.length; i++) {
         let item = arr[i];
-        let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        // let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        let newIndexArr = indexArr.concat()
         newIndexArr.push(i);
         if (Array.isArray(item)) {
             printArr(item, newIndexArr, callback);

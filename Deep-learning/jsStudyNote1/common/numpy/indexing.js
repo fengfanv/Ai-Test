@@ -555,7 +555,8 @@ function basicIndexing(arr, indexingTuple, value, debug) {
         }
         if (v == res.index.length) {
             resultDataArr.push({
-                originalIndex: JSON.parse(JSON.stringify(res.index)),
+                // originalIndex: JSON.parse(JSON.stringify(res.index)),
+                originalIndex: res.index.concat(),
                 index: res.index,
                 value: res.value
             })

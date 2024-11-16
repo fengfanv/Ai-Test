@@ -48,16 +48,17 @@ let a = [
 Array.concat方法，连接数组，然后返回一个新数组
 */
 function ravel_C(arr) {
-    let newArr = [];
-    for (let i = 0; i < arr.length; i++) {
-        let item = arr[i];
-        if (Array.isArray(item)) {
-            newArr = newArr.concat(ravel_C(item))
-        } else {
-            newArr.push(item);
-        }
-    }
-    return newArr;
+    // let newArr = [];
+    // for (let i = 0; i < arr.length; i++) {
+    //     let item = arr[i];
+    //     if (Array.isArray(item)) {
+    //         newArr = newArr.concat(ravel_C(item))
+    //     } else {
+    //         newArr.push(item);
+    //     }
+    // }
+    // return newArr;
+    return arr.flat(Infinity)
 }
 
 //使用栈结构和迭代方式展平数组（数据量大的时候用不了，Maximum call stack size exceeded）
