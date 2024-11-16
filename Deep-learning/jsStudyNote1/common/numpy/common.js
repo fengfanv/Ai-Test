@@ -157,7 +157,8 @@ function printArr4(arr, indexArr, callback) {
     }
     for (let i = 0; i < arr.length; i++) {
         let item = arr[i];
-        let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        // let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        let newIndexArr = indexArr.concat()
         newIndexArr.push(i);
         if (Array.isArray(item)) {
             callback && callback({ index: newIndexArr, value: item, childArr: arr, childIndex: i })
@@ -179,7 +180,8 @@ function printArr5(arr, indexArr, callback) {
     }
     for (let i = 0; i < arr.length; i++) {
         let item = arr[i];
-        let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        // let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        let newIndexArr = indexArr.concat()
         newIndexArr.push(i);
         if (Array.isArray(item)) {
             callback && callback({ index: newIndexArr, value: item, childArr: arr, childIndex: i })

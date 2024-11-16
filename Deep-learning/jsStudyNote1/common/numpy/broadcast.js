@@ -151,7 +151,8 @@ function printArr2(arr, indexArr, shapeIndex, copyNum) {
     let arrLen = arr.length;
     for (let i = 0; i < arrLen; i++) {
         let item = arr[i];
-        let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        // let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        let newIndexArr = indexArr.concat()
         newIndexArr.push(i);
         if (shapeIndex == newIndexArr.length - 1) {
             if (arrLen != 1) {
@@ -180,7 +181,8 @@ function printArr3(arr, indexArr, shapeIndex) {
     let arrLen = arr.length;
     for (let i = 0; i < arrLen; i++) {
         let item = arr[i];
-        let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        // let newIndexArr = JSON.parse(JSON.stringify(indexArr));
+        let newIndexArr = indexArr.concat()
         newIndexArr.push(i);
         if (shapeIndex == newIndexArr.length - 1) {
             arr.splice(arrLen - 1 - i, 1); //这个(arrLen-1-i)这样写，是因为，每删除一个数组元素，数组的长度就会减少。直接写(i)，数据删不干净。
@@ -212,7 +214,8 @@ function broadcast(arr) {
 
     let arrShapeReverseList = [];
     for (let i = 0; i < arrShapeList.length; i++) {
-        let itemShape = JSON.parse(JSON.stringify(arrShapeList[i]))
+        // let itemShape = JSON.parse(JSON.stringify(arrShapeList[i]))
+        let itemShape = arrShapeList[i].concat()
         arrShapeReverseList.push(itemShape.reverse())
     }
 
@@ -271,7 +274,8 @@ function broadcast(arr) {
 
             arrShapeReverseList = [];
             for (let i = 0; i < arrShapeList.length; i++) {
-                let itemShape = JSON.parse(JSON.stringify(arrShapeList[i]))
+                // let itemShape = JSON.parse(JSON.stringify(arrShapeList[i]))
+                let itemShape = arrShapeList[i].concat()
                 arrShapeReverseList.push(itemShape.reverse())
             }
 
@@ -794,8 +798,12 @@ function broadcastToShape(arr, targetShape) {
     //第一步、检查数组是否支持广播机制
     let arrShape = shape(arr);
 
-    let arrShapeReverse = JSON.parse(JSON.stringify(arrShape)).reverse();
-    let targetShapeReverse = JSON.parse(JSON.stringify(targetShape)).reverse();
+    // let arrShapeReverse = JSON.parse(JSON.stringify(arrShape)).reverse();
+    // let targetShapeReverse = JSON.parse(JSON.stringify(targetShape)).reverse();
+    let arrShapeReverse = arrShape.concat()
+    let targetShapeReverse = targetShape.concat()
+    arrShapeReverse = arrShapeReverse.reverse()
+    targetShapeReverse = targetShapeReverse.reverse()
     if (arrShapeReverse.length > targetShapeReverse.length) {
         throw new Error(`broadcast:error (${arrShape.join()}) 无法广播到 (${targetShape.join()}) ！`);
     }
@@ -829,8 +837,12 @@ function broadcastToShape(arr, targetShape) {
             //返回处理好的数据
             return [arr]
         } else {
-            let arrShapeReverse = JSON.parse(JSON.stringify(arrShape)).reverse();
-            let targetShapeReverse = JSON.parse(JSON.stringify(targetShape)).reverse();
+            // let arrShapeReverse = JSON.parse(JSON.stringify(arrShape)).reverse();
+            // let targetShapeReverse = JSON.parse(JSON.stringify(targetShape)).reverse();
+            let arrShapeReverse = arrShape.concat();
+            let targetShapeReverse = targetShape.concat();
+            arrShapeReverse = arrShapeReverse.reverse();
+            targetShapeReverse = targetShapeReverse.reverse();
 
             let len = targetShapeReverse.length;
 
