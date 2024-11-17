@@ -60,7 +60,7 @@ function compute(a, operator, b) {
         r = a / b
     } else if (operator == '%') {
         //Modulo
-        r = a % b
+        r = pythonModulo(a, b)
     } else if (operator == '**') {
         //to the power of
         r = a ** b
@@ -72,6 +72,18 @@ function compute(a, operator, b) {
         r = r ? True : False;
     }
     return r
+}
+
+function pythonModulo(a, b) {
+    //计算余数
+    let result = a % b;
+
+    //如果余数是负数，调整它使其为正数
+    if (result < 0) {
+        result += b;
+    }
+
+    return result;
 }
 
 function A_R(a, operator, b) {
