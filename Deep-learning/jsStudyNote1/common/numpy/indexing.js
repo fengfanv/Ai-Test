@@ -5,6 +5,7 @@ var arange = Main.arange;
 const Common = require('./common.js');
 var printArr = Common.printArr;
 var multiply = Common.multiply;
+var arrIsEqual = Common.arrIsEqual;
 
 const Broadcast = require('./broadcast.js')
 var broadcast = Broadcast.broadcast;
@@ -241,7 +242,8 @@ function indexing(arr, indexingTuple, value) {
                     let end = shapeArrIndex + booleanArrayShape.length;
                     let booleanInShapeArr = arrShape.slice(start, end);
                     //校验 布尔数组的形状 与其对应的维度的形状 是否匹配
-                    if (booleanInShapeArr.join() != booleanArrayShape.join()) {
+                    // if (booleanInShapeArr.join() != booleanArrayShape.join()) {
+                    if (!arrIsEqual(booleanInShapeArr, booleanArrayShape)) {
                         throw new Error(`索引元组 错误：布尔数组的形状是${booleanArrayShape}，但其对应维度的形状是${booleanInShapeArr}`)
                     } else {
                         shapeArrIndex = end - 1;//减1，是为了，下次循环时上边shapeArrIndex++不出错
@@ -633,7 +635,8 @@ function basicIndexing(arr, indexingTuple, value, debug) {
     for (let i = 0; i < resultDataArr2.length; i++) {
         let item = resultDataArr2[i];
         for (let j = 0; j < resultDataArr.length; j++) {
-            if (item.index.join() == resultDataArr[j].index.join()) {
+            // if (item.index.join() == resultDataArr[j].index.join()) {
+            if (arrIsEqual(item.index, resultDataArr[j].index)) {
                 newResultDataArr.push(resultDataArr[j]);
                 resultDataArr.splice(j, 1) //2024年11月13日22点47分，添加。处理完 相关元素 后，将 相关元素 删除，防止重复for循环和if判断
                 break;
@@ -1316,7 +1319,8 @@ function assigningValues(arr, indexingData, value) {
         printArr(arr, [], (res) => {
             for (let i = 0; i < flatIndexingData.length; i++) {
                 let item = getSliceData(flatIndexingData[i])
-                if (res.index.join() == item.index.join()) {
+                // if (res.index.join() == item.index.join()) {
+                if (arrIsEqual(res.index, item.index)) {
                     res.childArr[res.childIndex] = flatValue[i];
                 }
             }
@@ -1329,7 +1333,8 @@ function assigningValues(arr, indexingData, value) {
         let targetShape = [];
         value = broadcastToShape(value, targetShape)[0];
         printArr(arr, [], (res) => {
-            if (res.index.join() == indexingData.index.join()) {
+            // if (res.index.join() == indexingData.index.join()) {
+            if (arrIsEqual(res.index, indexingData.index)) {
                 res.childArr[res.childIndex] = value;
             }
         })
