@@ -139,6 +139,8 @@ exports.column_stack = Append.column_stack;
 
 
 //二期工程（rcnn、fast-rcnn）
+//numpy.any
+//---
 //numpy.r_
 //numpy.c_
 //numpy.trapz
