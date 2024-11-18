@@ -147,6 +147,25 @@ function setArrayValue_v2(arr, targetArr, value) {
 }
 exports.setArrayValue_v2 = setArrayValue_v2;
 
+function getArrayValue_v2(arr, targetArr) {
+    let current = arr;
+
+    if (targetArr.length == 0) {
+        return current
+    }
+
+    for (let i = 0; i < targetArr.length; i++) {
+        if (i + 1 === targetArr.length) {
+            //到达目标索引
+            return current[targetArr[i]];
+        } else {
+            //移动到下一个嵌套的数组
+            current = current[targetArr[i]];
+        }
+    }
+}
+exports.getArrayValue_v2 = getArrayValue_v2;
+
 //此方法由Common.printArr演变而来
 function printArr4(arr, indexArr, callback) {
     if (Array.isArray(arr) == false || arr.length < 1) {

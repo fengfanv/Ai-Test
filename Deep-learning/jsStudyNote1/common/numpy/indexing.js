@@ -6,6 +6,7 @@ const Common = require('./common.js');
 var printArr = Common.printArr;
 var multiply = Common.multiply;
 var arrIsEqual = Common.arrIsEqual;
+var getArrayValue_v2 = Common.getArrayValue_v2;
 
 const Broadcast = require('./broadcast.js')
 var broadcast = Broadcast.broadcast;
@@ -546,24 +547,34 @@ function basicIndexing(arr, indexingTuple, value, debug) {
         // },
         // ...
     ];
-    printArr(arr, [], (res) => {
-        //打印矩阵里的每一个元素
-        // console.log(res.index,res.value)
-        let v = 0;
-        for (let i = 0; i < res.index.length; i++) {
-            if (dataIndex[i].indexOf(res.index[i]) != -1) {
-                v++;
-            }
-        }
-        if (v == res.index.length) {
-            resultDataArr.push({
-                // originalIndex: JSON.parse(JSON.stringify(res.index)),
-                originalIndex: res.index.concat(),
-                index: res.index,
-                value: res.value
-            })
-        }
-    })
+    let indexArr = createArrIndex(dataIndex);
+    for (let i = 0; i < indexArr.length; i++) {
+        let value = getArrayValue_v2(arr, indexArr[i])
+        resultDataArr.push({
+            // originalIndex: JSON.parse(JSON.stringify(res.index)),
+            originalIndex: indexArr[i].concat(),
+            index: indexArr[i].concat(),
+            value: value
+        })
+    }
+    // printArr(arr, [], (res) => {
+    //     //打印矩阵里的每一个元素
+    //     // console.log(res.index,res.value)
+    //     let v = 0;
+    //     for (let i = 0; i < res.index.length; i++) {
+    //         if (dataIndex[i].indexOf(res.index[i]) != -1) {
+    //             v++;
+    //         }
+    //     }
+    //     if (v == res.index.length) {
+    //         resultDataArr.push({
+    //             // originalIndex: JSON.parse(JSON.stringify(res.index)),
+    //             originalIndex: res.index.concat(),
+    //             index: res.index,
+    //             value: res.value
+    //         })
+    //     }
+    // })
     // console.log("size：", resultDataArr.length)
     // for (let i = 0; i < resultDataArr.length; i++) {
     //     console.log(resultDataArr[i])
@@ -1286,6 +1297,39 @@ function createArrList(shape) {
 // console.log(abc([2,1,3]))
 // console.log(abc([2,3,1]).length)
 // console.log(abc([2,3,1]))
+
+function createArrIndex(dataIndex) {
+    let list = [];
+    let index = [];
+    let size = 1;
+    let itemLen = 0;
+    let dataIndexLen = 0;
+    for (let axis in dataIndex) {
+        itemLen = dataIndex[axis].length;
+        size = size * itemLen;
+        index[axis] = 0;
+        dataIndexLen++;
+    }
+    //开始处理数据
+    if (size == 0) {
+        return list;
+    }
+    for (let i = 0; i < size; i++) {
+        let item = [];
+        for (let j = 0; j < dataIndexLen; j++) {
+            item.push(dataIndex[j][index[j]])
+        }
+        list.push(item)
+        index[dataIndexLen - 1]++;
+        for (let j = dataIndexLen - 1; j >= 0; j--) {
+            if (index[j] >= dataIndex[j].length) {
+                index[j] = 0;
+                index[j - 1] = index[j - 1] + 1;
+            }
+        }
+    }
+    return list;
+}
 
 //获取索引结果数据
 function getSliceData(data) {
