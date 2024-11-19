@@ -27,11 +27,12 @@ function getUnusedNumberFromTagArr(arr) {
 }
 
 function getUnusedStarFromTagArr(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    if (arr[i] == '*') {
-      return i;
-    }
-  }
+  // for (let i = 0; i < arr.length; i++) {
+  //   if (arr[i] == '*') {
+  //     return i;
+  //   }
+  // }
+  return arr.indexOf('*')
 }
 
 
