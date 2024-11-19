@@ -20,6 +20,7 @@ function gaussian_kernel(size, sigma) {
 
 //使用高斯核对图像进行模糊处理
 function gaussian_blur(img, kernel_size, sigma) {
+    console.time('耗时')
     console.log(1)
     //生成高斯核
     let kernel = gaussian_kernel(kernel_size, sigma)
@@ -46,7 +47,7 @@ function gaussian_blur(img, kernel_size, sigma) {
     for (let i = 0; i < h; i++) {
         for (let j = 0; j < w; j++) {
             for (let c = 0; c < channel; c++) {  //遍历每个通道
-                console.log(i, j, c)
+                // console.log(i, j, c)
                 // np.indexing(blurred_img, [i, j, c], np.sum(
                 //     np.expr(np.indexing(padded_img, [np.slice(i, i + kernel_size),
                 //     np.slice(j, j + kernel_size), c]), '*', kernel)
@@ -62,6 +63,7 @@ function gaussian_blur(img, kernel_size, sigma) {
             }
         }
     }
+    console.timeEnd('耗时')
     return blurred_img
 }
 
