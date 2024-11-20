@@ -18,6 +18,7 @@ const Fliplr = require('./fliplr.js')
 const Sort = require('./sort.js')
 const Unique = require('./unique.js')
 const Histogram = require('./histogram.js')
+const Any = require('./any.js')
 
 //获取数据形状(numpy.shape)
 exports.shape = Main.shape;
@@ -129,6 +130,7 @@ exports.histogram = Histogram.histogram;
 exports.linspace = Main.linspace;
 exports.stack = Append.stack;
 exports.column_stack = Append.column_stack;
+exports.any = Any.any;
 
 
 //一期工程（cnn）
@@ -139,8 +141,6 @@ exports.column_stack = Append.column_stack;
 
 
 //二期工程（rcnn、fast-rcnn）
-//numpy.any
-//---
 //numpy.r_
 //numpy.c_
 //numpy.trapz
