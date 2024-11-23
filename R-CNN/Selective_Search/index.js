@@ -66,20 +66,21 @@ function gaussian_blur(img, kernel_size, sigma) {
     console.timeEnd('耗时')
     return blurred_img
 }
+exports.gaussian_blur = gaussian_blur;
 
-imread('./lena.png', (imageData) => {
-    console.log(imageData)
+// imread('./lena.png', (imageData) => {
+//     console.log(imageData)
 
-    const { width, height, data } = imageData
+//     const { width, height, data } = imageData
 
-    image = np.reshape(data, [height, width, 4])
+//     image = np.reshape(data, [height, width, 4])
 
-    image = np.indexing(image, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)])
+//     image = np.indexing(image, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)])
 
-    let kernel_size = 15  //核大小
-    let sigma = 0  //根据核大小自动计算标准差
+//     let kernel_size = 15  //核大小
+//     let sigma = 0  //根据核大小自动计算标准差
 
-    let blurred_img = gaussian_blur(image, kernel_size, sigma)
+//     let blurred_img = gaussian_blur(image, kernel_size, sigma)
 
-    imshow(blurred_img)
-})
+//     imshow(blurred_img)
+// })
