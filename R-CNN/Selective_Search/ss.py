@@ -40,7 +40,13 @@ def _sim_colour(r1, r2):
     :param r2:区域 2
     :return: 颜色直方图交集和
     """
-    return sum([min(a, b) for a, b in zip(r1["hist_c"], r2["hist_c"])])
+    # return sum([min(a, b) for a, b in zip(r1["hist_c"], r2["hist_c"])])
+
+    intersection_sum = 0  # 初始化交集和
+    # 遍历每一对直方图值，计算交集
+    for a, b in zip(r1["hist_c"], r2["hist_c"]):
+        intersection_sum += min(a, b)  # 将最小值累加到交集和
+    return intersection_sum
 
 
 def _sim_texture(r1, r2):
@@ -50,7 +56,13 @@ def _sim_texture(r1, r2):
     :param r2:区域 2
     :return: 颜色直方图交集和
     """
-    return sum([min(a, b) for a, b in zip(r1["hist_t"], r2["hist_t"])])
+    # return sum([min(a, b) for a, b in zip(r1["hist_t"], r2["hist_t"])])
+
+    intersection_sum = 0  # 初始化纹理直方图交集和
+    # 遍历每一对纹理直方图值，计算交集
+    for a, b in zip(r1["hist_t"], r2["hist_t"]):
+        intersection_sum += min(a, b)  # 将最小值累加到交集和
+    return intersection_sum
 
 
 def _sim_size(r1, r2, imsize):
@@ -120,9 +132,6 @@ def _calc_texture_gradient(img):
     """
     ret = np.zeros((img.shape[0], img.shape[1], img.shape[2]))
     for colour_channel in (0, 1, 2):
-        print(colour_channel)
-        print(ret[:, :, colour_channel])
-        print('--------------------------')
         ret[:, :, colour_channel] = feature.local_binary_pattern(
             img[:, :, colour_channel], 8, 1.0)
     return ret
@@ -262,7 +271,9 @@ def selective_search(im_orig, scale=1.0, sigma=0.8, min_size=50):
     :param min_size: 分割的最小单元, 一般设置10-100间
     :return: img-带有区域标签的图像(r, g, b, region), regions-字典{”rect“:(left, top, width, height), "labels":[...]}
     """
-    assert im_orig.shape[2] == 3, "3ch image is expected"
+    # assert im_orig.shape[2] == 3, "3ch image is expected"
+    if im_orig.shape[2] != 3:
+        raise ValueError("3-channel image is expected")
 
     # 加载图像获取最小分割区域
     # 区域标签存储在每个像素的第四个通道 [r, g, b, region]
@@ -286,7 +297,17 @@ def selective_search(im_orig, scale=1.0, sigma=0.8, min_size=50):
     while S != {}:
 
         # 获取两最大相似度区域的下标(i, j)
-        i, j = sorted(list(S.items()), key=lambda a: a[1])[-1][0]
+        # i, j = sorted(list(S.items()), key=lambda a: a[1])[-1][0]
+        #---
+        # 自定义的排序函数
+        def get_value(item):
+            return item[1]
+        # 将字典 S 转换为列表
+        sorted_items = list(S.items())
+        # 按照值排序
+        sorted_items.sort(key=get_value)
+        # 获取排序后的最后一个元素并提取出第一个值（即键）
+        i, j = sorted_items[-1][0]
 
         # 将最大相似度区域合并为一个新的区域rt
         t = max(R.keys()) + 1.0
@@ -303,7 +324,10 @@ def selective_search(im_orig, scale=1.0, sigma=0.8, min_size=50):
             del S[k]
 
         # 计算与新区域rt与相邻区域的相似度并添加到集合S中
-        for k in filter(lambda a: a != (i, j), key_to_delete):
+        # for k in filter(lambda a: a != (i, j), key_to_delete):
+        def filter_fun(a):
+            return a != (i, j)
+        for k in filter(filter_fun, key_to_delete):
             n = k[1] if k[0] in (i, j) else k[0]
             S[(t, n)] = _calc_sim(R[t], R[n], imsize)
 
@@ -329,7 +353,7 @@ img_lbl, regions = selective_search(
     image, scale=K, sigma=sigma, min_size=min_size)
 
 # 计算利用Selective Search算法得到了多少个候选区域
-print(len(regions))
+# print(len(regions))
 
 
 # 创建一个集合 元素list(左上角x，左上角y,宽,高)
@@ -344,7 +368,7 @@ for r in regions:
     #     continue
     candidates.add(r['rect'])
 
-print(candidates)
+# print(candidates)
 
 # 创建一个图形和轴
 fig, ax = plt.subplots(1)
@@ -354,7 +378,7 @@ ax.imshow(image/255)
 
 # 显示图形
 for x, y, w, h in candidates:
-    print(x, y, w, h)
+    # print(x, y, w, h)
 
     rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
     ax.add_patch(rect)
