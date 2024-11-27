@@ -551,34 +551,34 @@ function basicIndexing(arr, indexingTuple, value, debug) {
         // },
         // ...
     ];
-    let indexArr = createArrIndex(dataIndex);
-    for (let i = 0; i < indexArr.length; i++) {
-        let value = getArrayValue_v2(arr, indexArr[i])
-        resultDataArr.push({
-            // originalIndex: JSON.parse(JSON.stringify(res.index)),
-            originalIndex: indexArr[i].concat(),
-            index: indexArr[i].concat(),
-            value: value
-        })
-    }
-    // printArr(arr, [], (res) => {
-    //     //打印矩阵里的每一个元素
-    //     // console.log(res.index,res.value)
-    //     let v = 0;
-    //     for (let i = 0; i < res.index.length; i++) {
-    //         if (dataIndex[i].indexOf(res.index[i]) != -1) {
-    //             v++;
-    //         }
-    //     }
-    //     if (v == res.index.length) {
-    //         resultDataArr.push({
-    //             // originalIndex: JSON.parse(JSON.stringify(res.index)),
-    //             originalIndex: res.index.concat(),
-    //             index: res.index,
-    //             value: res.value
-    //         })
-    //     }
-    // })
+    // let indexArr = createArrIndex(dataIndex);
+    // for (let i = 0; i < indexArr.length; i++) {
+    //     let value = getArrayValue_v2(arr, indexArr[i])
+    //     resultDataArr.push({
+    //         // originalIndex: JSON.parse(JSON.stringify(res.index)),
+    //         originalIndex: indexArr[i].concat(),
+    //         index: indexArr[i].concat(),
+    //         value: value
+    //     })
+    // }
+    printArr(arr, [], (res) => {
+        //打印矩阵里的每一个元素
+        // console.log(res.index,res.value)
+        let v = 0;
+        for (let i = 0; i < res.index.length; i++) {
+            if (dataIndex[i].indexOf(res.index[i]) != -1) {
+                v++;
+            }
+        }
+        if (v == res.index.length) {
+            resultDataArr.push({
+                // originalIndex: JSON.parse(JSON.stringify(res.index)),
+                originalIndex: res.index.concat(),
+                index: res.index,
+                value: res.value
+            })
+        }
+    })
     // console.log("size：", resultDataArr.length)
     // for (let i = 0; i < resultDataArr.length; i++) {
     //     console.log(resultDataArr[i])
