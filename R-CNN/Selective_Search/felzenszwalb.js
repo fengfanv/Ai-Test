@@ -117,7 +117,8 @@ function _felzenszwalb_cython(image, scale = 1, sigma = 0.8, kernel = 3, min_siz
 
     let flat = np.flatten(segments_p)
     let old = np.zeros_like(flat)
-    while (String(np.any(np.expr(old, '!=', flat))) == 'True') {
+    // while (String(np.any(np.expr(old, '!=', flat))) == 'True') {
+    while (np.any(np.expr(old, '!=', flat))) {
         old = flat
         flat = np.indexing(flat, [flat])
     }

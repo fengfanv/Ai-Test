@@ -41,7 +41,8 @@ exports.any = any;
 
 function checkAny(flatten_arr) {
     for (let i = 0; i < flatten_arr.length; i++) {
-        if (String(flatten_arr[i]) != 'False' && flatten_arr[i] != false && flatten_arr[i] != 0) {
+        // if (String(flatten_arr[i]) != 'False' && flatten_arr[i] != false && flatten_arr[i] != 0) {
+        if (String(flatten_arr[i]) != 'false' && flatten_arr[i] != false && flatten_arr[i] != 0) {
             return True
         }
     }

@@ -49,7 +49,8 @@ function where(condition, x, y) {
     }
 
     printArr(condition, [], (res) => {
-        if (String(res.value) != 'True' && String(res.value) != 'False') {
+        // if (String(res.value) != 'True' && String(res.value) != 'False') {
+        if (String(res.value) != 'true' && String(res.value) != 'false') {
             res.childArr[res.childIndex] = Boolean(res.value) ? True : False;
         }
     })
@@ -73,7 +74,8 @@ function where(condition, x, y) {
         var y_flatten = reshape(y, [-1]);
 
         for (let i = 0; i < condition_flatten.length; i++) {
-            if (String(condition_flatten[i]) == 'True') {
+            // if (String(condition_flatten[i]) == 'True') {
+            if (String(condition_flatten[i]) == 'true') {
                 resultData.push(x_flatten[i])
             } else {
                 resultData.push(y_flatten[i])
@@ -87,7 +89,8 @@ function where(condition, x, y) {
 
         var resultList = [];
         printArr(condition, [], (res) => {
-            if (String(res.value) == 'True') {
+            // if (String(res.value) == 'True') {
+            if (String(res.value) == 'true') {
                 resultList.push(res);
             }
         })

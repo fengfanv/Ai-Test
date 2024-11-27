@@ -113,24 +113,28 @@ Object.freeze(None);
 exports.None = None;
 exports.newaxis = None;
 
-//True
-var True = {
-    "name": "True",
-    "toString": () => {
-        return "True"
-    },
-}
-Object.freeze(True);
+// //True
+// var True = {
+//     "name": "True",
+//     "toString": () => {
+//         return "True"
+//     },
+// }
+// Object.freeze(True);
+// exports.True = True;
+var True = true;
 exports.True = True;
 
-//False
-var False = {
-    "name": "False",
-    "toString": () => {
-        return "False"
-    },
-}
-Object.freeze(False);
+// //False
+// var False = {
+//     "name": "False",
+//     "toString": () => {
+//         return "False"
+//     },
+// }
+// Object.freeze(False);
+// exports.False = False;
+var False = false;
 exports.False = False;
 
 /*
@@ -1171,7 +1175,7 @@ function integerArrayIndexing(arr, indexingTuple, value, arr2) {
 }
 
 //检测参数是否是布尔数组
-//条件：1、是数组 2、数组元素值是 True/False
+//条件：1、是数组 2、数组元素值是 True/False (true/false)
 function isBooleanArray(arr, parentIsArr) {
     if (Array.isArray(arr)) {
         if (arr.length > 0) {
@@ -1181,7 +1185,8 @@ function isBooleanArray(arr, parentIsArr) {
         }
     } else {
         let value = String(arr);
-        if (parentIsArr && value == "True" || parentIsArr && value == "False") {
+        // if (parentIsArr && value == "True" || parentIsArr && value == "False") {
+        if (parentIsArr && value == "true" || parentIsArr && value == "false") {
             return true
         } else {
             return false
@@ -1202,14 +1207,16 @@ function booleanArrayToIntegerArray(booleanArray) {
     let arr = [];
     printArr(booleanArray, [], (res) => {
         let item = String(res.value);
-        if (item == "True") {
+        // if (item == "True") {
+        if (item == "true") {
             arr.push({
                 index: res.index,
                 value: res.value
             })
         } else {
-            if (item != "False") {
-                throw new Error('booleanArrayToIntegerArray 错误：布尔数组的元素 有非True/False值')
+            // if (item != "False") {
+            if (item != "false") {
+                throw new Error('booleanArrayToIntegerArray 错误：布尔数组的元素 有非True/False(true/false)值')
             }
         }
     })
