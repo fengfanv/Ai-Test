@@ -1,18 +1,11 @@
 # SelectiveSearchCode.py
-# -*- coding: utf-8 -*-
+
 import matplotlib.pyplot as plt
 from matplotlib.image import imread
 import matplotlib.patches as patches
 
 from skimage import util, io, feature, color, transform, segmentation
 import numpy as np
-# --------------------------------------------
-import sys
-import os
-sys.path.append(os.pardir)  # 为了导入父目录的文件而进行的设定
-
-
-# "Selective Search for Object Recognition" by J.R.R. Uijlings et al.
 
 def _generate_segments(im_orig, scale, sigma, min_size):
     """
@@ -40,7 +33,6 @@ def _sim_colour(r1, r2):
     :param r2:区域 2
     :return: 颜色直方图交集和
     """
-    # return sum([min(a, b) for a, b in zip(r1["hist_c"], r2["hist_c"])])
 
     intersection_sum = 0  # 初始化交集和
     # 遍历每一对直方图值，计算交集
@@ -56,7 +48,6 @@ def _sim_texture(r1, r2):
     :param r2:区域 2
     :return: 颜色直方图交集和
     """
-    # return sum([min(a, b) for a, b in zip(r1["hist_t"], r2["hist_t"])])
 
     intersection_sum = 0  # 初始化纹理直方图交集和
     # 遍历每一对纹理直方图值，计算交集
@@ -271,7 +262,6 @@ def selective_search(im_orig, scale=1.0, sigma=0.8, min_size=50):
     :param min_size: 分割的最小单元, 一般设置10-100间
     :return: img-带有区域标签的图像(r, g, b, region), regions-字典{”rect“:(left, top, width, height), "labels":[...]}
     """
-    # assert im_orig.shape[2] == 3, "3ch image is expected"
     if im_orig.shape[2] != 3:
         raise ValueError("3-channel image is expected")
 
@@ -297,9 +287,6 @@ def selective_search(im_orig, scale=1.0, sigma=0.8, min_size=50):
     while S != {}:
 
         # 获取两最大相似度区域的下标(i, j)
-        # i, j = sorted(list(S.items()), key=lambda a: a[1])[-1][0]
-        #---
-        # 自定义的排序函数
         def get_value(item):
             return item[1]
         # 将字典 S 转换为列表
@@ -324,7 +311,6 @@ def selective_search(im_orig, scale=1.0, sigma=0.8, min_size=50):
             del S[k]
 
         # 计算与新区域rt与相邻区域的相似度并添加到集合S中
-        # for k in filter(lambda a: a != (i, j), key_to_delete):
         def filter_fun(a):
             return a != (i, j)
         for k in filter(filter_fun, key_to_delete):
@@ -359,13 +345,6 @@ img_lbl, regions = selective_search(
 # 创建一个集合 元素list(左上角x，左上角y,宽,高)
 candidates = set()
 for r in regions:
-    # if r['rect'] in candidates:  # 排除重复的候选区
-    #     continue
-    # if r['size'] < 500:  # 排除小于 2000 pixels的候选区域(并不是bounding box中的区域大小)
-    #     continue
-    # x, y, w, h = r['rect']
-    # if w / h > 2 or h / w > 2:  # 排除扭曲的候选区域边框  即只保留近似正方形的
-    #     continue
     candidates.add(r['rect'])
 
 # print(candidates)
