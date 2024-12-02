@@ -334,9 +334,9 @@ image = imread('lena.png')
 
 image = image*255
 
-
 img_lbl, regions = selective_search(
     image, scale=K, sigma=sigma, min_size=min_size)
+
 
 # 计算利用Selective Search算法得到了多少个候选区域
 # print(len(regions))
@@ -345,27 +345,153 @@ img_lbl, regions = selective_search(
 # 创建一个集合 元素list(左上角x，左上角y,宽,高)
 candidates = set()
 for r in regions:
+    if r['rect'] in candidates:  # 排除重复的候选区
+        continue
     candidates.add(r['rect'])
 
-# print(candidates)
+# 根据面积进行排序
+def sort_fun(item):
+    return item[2] * item[3]
+candidates = sorted(candidates,key=sort_fun)
 
-# 创建一个图形和轴
-fig, ax = plt.subplots(1)
 
-# 显示图像
-ax.imshow(image/255)
+# print(len(candidates))
 
-# 显示图形
-for x, y, w, h in candidates:
-    # print(x, y, w, h)
 
-    rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
-    ax.add_patch(rect)
+#------------------------------------------
 
-# 设置坐标轴的限制
-ax.set_xlim(0, image.shape[1])
-ax.set_ylim(image.shape[0], 0)  # Y轴方向反转，以便正确显示坐标系
+page_size = len(candidates)/9
+
+fig = plt.figure()
+
+a = fig.add_subplot(331)
+plt.imshow(image/255)
+start = 0*page_size
+end = start+page_size
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
+
+a = fig.add_subplot(332)
+plt.imshow(image/255)
+start = 1*page_size
+end = start+page_size
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
+
+a = fig.add_subplot(333)
+plt.imshow(image/255)
+start = 2*page_size
+end = start+page_size
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
+
+a = fig.add_subplot(334)
+plt.imshow(image/255)
+start = 3*page_size
+end = start+page_size
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
+
+a = fig.add_subplot(335)
+plt.imshow(image/255)
+start = 4*page_size
+end = start+page_size
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
+
+a = fig.add_subplot(336)
+plt.imshow(image/255)
+start = 5*page_size
+end = start+page_size
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
+
+a = fig.add_subplot(337)
+plt.imshow(image/255)
+start = 6*page_size
+end = start+page_size
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
+
+a = fig.add_subplot(338)
+plt.imshow(image/255)
+start = 7*page_size
+end = start+page_size
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
+
+a = fig.add_subplot(339)
+plt.imshow(image/255)
+start = 8*page_size
+end = len(candidates)
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
 
 plt.show()
+
+#------------------------------------------
+# # 创建一个图形和轴
+# fig, ax = plt.subplots(1)
+
+# # 显示图像
+# ax.imshow(image/255)
+
+# # 显示图形
+# for x, y, w, h in candidates:
+#     # print(x, y, w, h, w*h)
+
+#     rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+#     ax.add_patch(rect)
+
+# # 设置坐标轴的限制
+# ax.set_xlim(0, image.shape[1])
+# ax.set_ylim(image.shape[0], 0)  # Y轴方向反转，以便正确显示坐标系
+
+# plt.show()
 
 # https://www.cnblogs.com/Haitangr/p/17690028.html
