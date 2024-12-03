@@ -123,8 +123,8 @@ def _calc_texture_gradient(img):
     """
     ret = np.zeros((img.shape[0], img.shape[1], img.shape[2]))
     for colour_channel in (0, 1, 2):
-        ret[:, :, colour_channel] = feature.local_binary_pattern(
-            img[:, :, colour_channel], 8, 1.0)
+        channel_img = img[:, :, colour_channel].astype(np.int64)
+        ret[:, :, colour_channel] = feature.local_binary_pattern(channel_img, 8, 1.0)
     return ret
 
 
@@ -360,11 +360,11 @@ candidates = sorted(candidates,key=sort_fun)
 
 #------------------------------------------
 
-page_size = len(candidates)/9
+page_size = len(candidates)/10
 
 fig = plt.figure()
 
-a = fig.add_subplot(331)
+a = fig.add_subplot(2,5,1)
 plt.imshow(image/255)
 start = 0*page_size
 end = start+page_size
@@ -376,7 +376,7 @@ a.set_xlim(0, image.shape[1])
 a.set_ylim(image.shape[0], 0)
 a.set_title(str(int(start))+'_'+str(int(end)))
 
-a = fig.add_subplot(332)
+a = fig.add_subplot(2,5,2)
 plt.imshow(image/255)
 start = 1*page_size
 end = start+page_size
@@ -388,7 +388,7 @@ a.set_xlim(0, image.shape[1])
 a.set_ylim(image.shape[0], 0)
 a.set_title(str(int(start))+'_'+str(int(end)))
 
-a = fig.add_subplot(333)
+a = fig.add_subplot(2,5,3)
 plt.imshow(image/255)
 start = 2*page_size
 end = start+page_size
@@ -400,7 +400,7 @@ a.set_xlim(0, image.shape[1])
 a.set_ylim(image.shape[0], 0)
 a.set_title(str(int(start))+'_'+str(int(end)))
 
-a = fig.add_subplot(334)
+a = fig.add_subplot(2,5,4)
 plt.imshow(image/255)
 start = 3*page_size
 end = start+page_size
@@ -412,7 +412,7 @@ a.set_xlim(0, image.shape[1])
 a.set_ylim(image.shape[0], 0)
 a.set_title(str(int(start))+'_'+str(int(end)))
 
-a = fig.add_subplot(335)
+a = fig.add_subplot(2,5,5)
 plt.imshow(image/255)
 start = 4*page_size
 end = start+page_size
@@ -424,7 +424,7 @@ a.set_xlim(0, image.shape[1])
 a.set_ylim(image.shape[0], 0)
 a.set_title(str(int(start))+'_'+str(int(end)))
 
-a = fig.add_subplot(336)
+a = fig.add_subplot(2,5,6)
 plt.imshow(image/255)
 start = 5*page_size
 end = start+page_size
@@ -436,7 +436,7 @@ a.set_xlim(0, image.shape[1])
 a.set_ylim(image.shape[0], 0)
 a.set_title(str(int(start))+'_'+str(int(end)))
 
-a = fig.add_subplot(337)
+a = fig.add_subplot(2,5,7)
 plt.imshow(image/255)
 start = 6*page_size
 end = start+page_size
@@ -448,7 +448,7 @@ a.set_xlim(0, image.shape[1])
 a.set_ylim(image.shape[0], 0)
 a.set_title(str(int(start))+'_'+str(int(end)))
 
-a = fig.add_subplot(338)
+a = fig.add_subplot(2,5,8)
 plt.imshow(image/255)
 start = 7*page_size
 end = start+page_size
@@ -460,9 +460,21 @@ a.set_xlim(0, image.shape[1])
 a.set_ylim(image.shape[0], 0)
 a.set_title(str(int(start))+'_'+str(int(end)))
 
-a = fig.add_subplot(339)
+a = fig.add_subplot(2,5,9)
 plt.imshow(image/255)
 start = 8*page_size
+end = start+page_size
+for i,(x, y, w, h) in enumerate(candidates):
+    if i>=start and i<end:
+        rect = patches.Rectangle((x, y), w, h, linewidth=1, edgecolor='red', facecolor='none')
+        a.add_patch(rect)
+a.set_xlim(0, image.shape[1])
+a.set_ylim(image.shape[0], 0)
+a.set_title(str(int(start))+'_'+str(int(end)))
+
+a = fig.add_subplot(2,5,10)
+plt.imshow(image/255)
+start = 9*page_size
 end = len(candidates)
 for i,(x, y, w, h) in enumerate(candidates):
     if i>=start and i<end:
