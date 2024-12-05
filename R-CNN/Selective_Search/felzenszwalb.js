@@ -125,22 +125,24 @@ function _felzenszwalb_cython(image, scale = 1, sigma = 0.8, kernel = 3, min_siz
     flat = np.unique(flat, undefined, true)[1]
     return np.reshape(flat, [height, width])
 }
+exports._felzenszwalb_cython = _felzenszwalb_cython;
 
-imread('./lena.png', (imageData) => {
-    console.log(imageData)
 
-    const { width, height, data } = imageData
+// imread('./lena.png', (imageData) => {
+//     console.log(imageData)
 
-    image = np.reshape(data, [height, width, 4])
+//     const { width, height, data } = imageData
 
-    image = np.indexing(image, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)])
+//     image = np.reshape(data, [height, width, 4])
 
-    sigma = 0.5
-    kernel = 3
-    K = 250
-    min_size = 25
+//     image = np.indexing(image, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)])
 
-    let seg1 = _felzenszwalb_cython(image, K, sigma, kernel, min_size)
+//     sigma = 0.5
+//     kernel = 3
+//     K = 250
+//     min_size = 25
 
-    imshow(seg1)
-})
+//     let seg1 = _felzenszwalb_cython(image, K, sigma, kernel, min_size)
+
+//     imshow(seg1)
+// })

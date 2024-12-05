@@ -45,25 +45,26 @@ function local_binary_pattern(image, P = 8, R = 1) {
     }
     return lbp_image
 }
+exports.local_binary_pattern = local_binary_pattern;
 
-imread('./lena.png', (imageData) => {
-    console.log(imageData)
+// imread('./lena.png', (imageData) => {
+//     console.log(imageData)
 
-    const { width, height, data } = imageData
+//     const { width, height, data } = imageData
 
-    image = np.reshape(data, [height, width, 4])
+//     image = np.reshape(data, [height, width, 4])
 
-    image = np.indexing(image, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)])
+//     image = np.indexing(image, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)])
 
-    colour_channel_0 = np.indexing(image, [np.slice(np.None), np.slice(np.None), 0])
-    colour_channel_1 = np.indexing(image, [np.slice(np.None), np.slice(np.None), 1])
-    colour_channel_2 = np.indexing(image, [np.slice(np.None), np.slice(np.None), 2])
+//     colour_channel_0 = np.indexing(image, [np.slice(np.None), np.slice(np.None), 0])
+//     colour_channel_1 = np.indexing(image, [np.slice(np.None), np.slice(np.None), 1])
+//     colour_channel_2 = np.indexing(image, [np.slice(np.None), np.slice(np.None), 2])
 
-    colour_channel_0_res = local_binary_pattern(colour_channel_0, 8, 1.0)
-    colour_channel_1_res = local_binary_pattern(colour_channel_1, 8, 1.0)
-    colour_channel_2_res = local_binary_pattern(colour_channel_2, 8, 1.0)
+//     colour_channel_0_res = local_binary_pattern(colour_channel_0, 8, 1.0)
+//     colour_channel_1_res = local_binary_pattern(colour_channel_1, 8, 1.0)
+//     colour_channel_2_res = local_binary_pattern(colour_channel_2, 8, 1.0)
 
-    show_image = np.concatenate([colour_channel_0_res, colour_channel_1_res, colour_channel_2_res])
+//     show_image = np.concatenate([colour_channel_0_res, colour_channel_1_res, colour_channel_2_res])
 
-    imshow(show_image)
-})
+//     imshow(show_image)
+// })

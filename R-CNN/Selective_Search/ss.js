@@ -8,12 +8,12 @@ const { rgb2hsv } = require('./hsv.js')
 
 function _generate_segments(im_orig, scale, sigma, min_size) {
 
-    im_mask = _felzenszwalb_cython(im_orig, scale, sigma, undefined, min_size)
+    let im_mask = _felzenszwalb_cython(im_orig, scale, sigma, undefined, min_size)
 
-    im_orig_shape = np.shape(im_mask)
+    let im_orig_shape = np.shape(im_mask)
 
     im_orig = np.append(im_orig,
-        np.indexing(np.zeros(im_orig_shape.slice(0, 2)), [np.slice(np.None), np.slice(np.None), np.newaxis])
+        np.zeros(im_orig_shape.slice(0, 2).push(1))
         , 2)
 
     np.indexing(im_orig, [np.slice(np.None), np.slice(np.None), 3], im_mask)
@@ -67,10 +67,10 @@ function _calc_sim(r1, r2, imsize) {
 }
 
 function _calc_colour_hist(img) {
-    BINS = 25
-    hist = []
+    let BINS = 25
+    let hist = []
 
-    for (let colour_channel in [0, 1, 2]) {
+    for (let colour_channel = 0; colour_channel < 3; colour_channel++) {
 
         let c = np.indexing(img, [np.slice(np.None), colour_channel])
 
@@ -82,9 +82,9 @@ function _calc_colour_hist(img) {
 }
 
 function _calc_texture_gradient(img) {
-    img_shape = np.shape(img)
-    ret = np.zeros([img_shape[0], img_shape[1], img_shape[2]])
-    for (let colour_channel in [0, 1, 2]) {
+    let img_shape = np.shape(img)
+    let ret = np.zeros([img_shape[0], img_shape[1], img_shape[2]])
+    for (let colour_channel = 0; colour_channel < 3; colour_channel++) {
         np.indexing(ret,
             [np.slice(np.None), np.slice(np.None), colour_channel],
             local_binary_pattern(np.indexing(img, [np.slice(np.None), np.slice(np.None), colour_channel]), 8, 1.0))
@@ -93,10 +93,10 @@ function _calc_texture_gradient(img) {
 }
 
 function _calc_texture_hist(img) {
-    BINS = 10
-    hist = []
+    let BINS = 10
+    let hist = []
 
-    for (let colour_channel in [0, 1, 2]) {
+    for (let colour_channel = 0; colour_channel < 3; colour_channel++) {
         let fd = np.indexing(img, [np.slice(np.None), colour_channel])
         hist = np.concatenate([hist, np.histogram(fd, BINS, [0.0, 1.0])[0]])
     }
@@ -105,12 +105,13 @@ function _calc_texture_hist(img) {
 }
 
 function _extract_regions(img) {
-    R = {}
-    hsv = rgb2hsv(np.indexing(img, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)]))
 
-    for (let y in img) {
+    let R = {}
+    let hsv = rgb2hsv(np.indexing(img, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)]))
+
+    for (let y = 0; y < img.length; y++) {
         let i = img[y];
-        for (let x in i) {
+        for (let x = 0; x < i.length; x++) {
             let [r, g, b, l] = i[x]
             if (!R[l]) {
                 R[l] = {
@@ -135,18 +136,18 @@ function _extract_regions(img) {
         }
     }
 
-    tex_grad = _calc_texture_gradient(img)
+    let tex_grad = _calc_texture_gradient(img)
 
     let img_3 = np.indexing(img, [np.slice(np.None), np.slice(np.None), 3])
 
     for (let k in R) {
-        let v = R[key]
+        let v = R[k]
 
         let masked_pixels = np.indexing(hsv, [np.expr(img_3, '==', k)])
-        R[k]["size"] = np.expr(masked_pixels, '/', 4).length
+        R[k]["size"] = masked_pixels.length
         R[k]["hist_c"] = _calc_colour_hist(masked_pixels)
 
-        R[k]["hist_t"] = _calc_texture_hist(tex_grad, [np.expr(img_3, '==', k)])
+        R[k]["hist_t"] = _calc_texture_hist(np.indexing(tex_grad, [np.expr(img_3, '==', k)]))
 
     }
     return R
@@ -208,3 +209,22 @@ function _merge_regions(r1, r2) {
     return rt
 }
 
+function selective_search(im_orig, scale = 1.0, sigma = 0.8, min_size = 50) {
+    let im_orig_shape = np.shape(im_orig)
+
+    if (im_orig_shape[2] != 3) {
+        throw new Error('需要3通道图像')
+    }
+
+    let img = _generate_segments(im_orig, scale, sigma, min_size)
+
+    if (!img) {
+        return [undefined, {}]
+    }
+
+    let img_shape = np.shape(img)
+    let imsize = img_shape[0] * img_shape[1]
+    let R = _extract_regions(img)
+
+
+}

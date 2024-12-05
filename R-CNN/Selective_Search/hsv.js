@@ -53,17 +53,18 @@ function rgb2hsv(rgb) {
     console.timeEnd('耗时')
     return hsv
 }
+exports.rgb2hsv = rgb2hsv;
 
-imread('./lena.png', (imageData) => {
-    console.log(imageData)
+// imread('./lena.png', (imageData) => {
+//     console.log(imageData)
 
-    const { width, height, data } = imageData
+//     const { width, height, data } = imageData
 
-    image = np.reshape(data, [height, width, 4])
+//     image = np.reshape(data, [height, width, 4])
 
-    image = np.indexing(image, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)])
+//     image = np.indexing(image, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)])
 
-    let hsvImage = rgb2hsv(image)
+//     let hsvImage = rgb2hsv(image)
 
-    imshow(hsvImage)
-})
+//     imshow(hsvImage)
+// })
