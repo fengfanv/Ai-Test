@@ -156,7 +156,8 @@ function argsort(a, axis, kind) {
                 }
             }
 
-            let sortData = quick_sort(a_flatten)
+            // let sortData = quick_sort(a_flatten)
+            let sortData = a_flatten.toSorted((a, b) => a.value - b.value)
 
             for (let i = 0; i < sortData.length; i++) {
                 sortData[i] = sortData[i].index;
@@ -189,7 +190,8 @@ function argsort(a, axis, kind) {
                     }
                 }
 
-                axisInfo.axisArr[i] = quick_sort(axisInfo.axisArr[i])
+                // axisInfo.axisArr[i] = quick_sort(axisInfo.axisArr[i])
+                axisInfo.axisArr[i] = axisInfo.axisArr[i].toSorted((a, b) => a.value - b.value)
 
                 for (let j = 0; j < axisInfo.axisArr[i].length; j++) {
                     axisInfo.axisArr[i][j] = axisInfo.axisArr[i][j].index;

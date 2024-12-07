@@ -205,11 +205,13 @@ function concatenate(a_list, axis) {
         let a_list_data = [];
         for (let i = 0; i < a_list.length; i++) {
             a_list_data[i] = []
-            printArr4(a_list[i], [], (res) => {
-                if (res.index.length == axis) {
-                    a_list_data[i].push(res.value)
-                }
-            })
+            if (a_list[i].length != 0) {
+                printArr4(a_list[i], [], (res) => {
+                    if (res.index.length == axis) {
+                        a_list_data[i].push(res.value)
+                    }
+                })
+            }
         }
 
         if (axis == 0) {
@@ -266,6 +268,10 @@ exports.concatenate = concatenate;
 // console.log(toStr(concatenate([[[1]], [[1,1]]], 1)))
 
 //console.log(toStr(concatenate([[[1]]])))
+
+//console.log(toStr(concatenate([[],[1,2,3]])))
+
+//console.log(toStr(concatenate([[],[1,2,3]],0)))
 
 //-------------------
 
