@@ -12,8 +12,10 @@ function _generate_segments(im_orig, scale, sigma, min_size) {
 
     let im_orig_shape = np.shape(im_mask)
 
+    let zeros_shape = im_orig_shape.slice(0, 2)
+    zeros_shape.push(1)
     im_orig = np.append(im_orig,
-        np.zeros(im_orig_shape.slice(0, 2).push(1))
+        np.zeros(zeros_shape)
         , 2)
 
     np.indexing(im_orig, [np.slice(np.None), np.slice(np.None), 3], im_mask)
@@ -22,7 +24,7 @@ function _generate_segments(im_orig, scale, sigma, min_size) {
 }
 
 function _sim_colour(r1, r2) {
-    intersection_sum = 0
+    let intersection_sum = 0
 
     for (let i = 0; i < r2["hist_c"].length; i++) {
         let a = r1["hist_c"][i]
@@ -35,7 +37,7 @@ function _sim_colour(r1, r2) {
 
 
 function _sim_texture(r1, r2) {
-    intersection_sum = 0
+    let intersection_sum = 0
 
     for (let i = 0; i < r2["hist_t"].length; i++) {
         let a = r1["hist_t"][i]
@@ -50,7 +52,7 @@ function _sim_size(r1, r2, imsize) {
 }
 
 function _sim_fill(r1, r2, imsize) {
-    bbsize = (
+    let bbsize = (
         (Math.max(r1["max_x"], r2["max_x"]) - Math.min(r1["min_x"], r2["min_x"]))
         * (Math.max(r1["max_y"], r2["max_y"]) - Math.min(r1["min_y"], r2["min_y"]))
     )
@@ -156,31 +158,24 @@ function _extract_regions(img) {
 function _extract_neighbours(regions) {
     function intersect(a, b) {
 
-        if (
-            (a["min_x"] < b["min_x"] && b["min_x"] < a["max_x"]
-                && a["min_y"] < b["min_y"] && b["min_y"] < a["max_y"]) ||
+        let judge_1 = (b["min_x"] > a["min_x"] && b["min_x"] < a["max_x"]) && (b["min_y"] > a["min_y"] && b["min_y"] < a["max_y"])
+        let judge_2 = (b["max_x"] > a["min_x"] && b["max_x"] < a["max_x"]) && (b["max_y"] > a["min_y"] && b["max_y"] < a["max_y"])
+        let judge_3 = (b["min_x"] > a["min_x"] && b["min_x"] < a["max_x"]) && (b["max_y"] > a["min_y"] && b["max_y"] < a["max_y"])
+        let judge_4 = (b["max_x"] > a["min_x"] && b["max_x"] < a["max_x"]) && (b["min_y"] > a["min_y"] && b["min_y"] < a["max_y"])
 
-            (a["min_x"] < b["max_x"] && b["max_x"] < a["max_x"]
-                && a["min_y"] < b["max_y"] && b["max_y"] < a["max_y"]) ||
-
-            (a["min_x"] < b["min_x"] && b["min_x"] < a["max_x"]
-                && a["min_y"] < b["max_y"] && b["max_y"] < a["max_y"]) ||
-
-            (a["min_x"] < b["max_x"] && b["max_x"] < a["max_x"]
-                && a["min_y"] < b["min_y"] && b["min_y"] < a["max_y"])
-        ) {
+        if (judge_1 || judge_2 || judge_3 || judge_4) {
             return true
         }
         return false
     }
 
-    R = []
+    let R = []
     for (let key in regions) {
         let item = regions[key]
         R.push([key, item])
     }
 
-    neighbours = []
+    let neighbours = []
     for (let cur = 0; cur < R.length - 1; cur++) {
         for (let j = cur + 1; j < R.length; j++) {
             let a = R[cur]
@@ -195,8 +190,8 @@ function _extract_neighbours(regions) {
 }
 
 function _merge_regions(r1, r2) {
-    new_size = r1["size"] + r2["size"]
-    rt = {
+    let new_size = r1["size"] + r2["size"]
+    let rt = {
         "min_x": Math.min(r1["min_x"], r2["min_x"]),
         "min_y": Math.min(r1["min_y"], r2["min_y"]),
         "max_x": Math.max(r1["max_x"], r2["max_x"]),
@@ -204,7 +199,7 @@ function _merge_regions(r1, r2) {
         "size": new_size,
         "hist_c": np.expr(np.expr(np.expr(r1["hist_c"], '*', r1["size"]), '+', np.expr(r2["hist_c"], '*', r2["size"])), '/', new_size),
         "hist_t": np.expr(np.expr(np.expr(r1["hist_t"], '*', r1["size"]), '+', np.expr(r2["hist_t"], '*', r2["size"])), '/', new_size),
-        "labels": np.expr(r1["labels"], '+', r2["labels"])
+        "labels": [].concat(r1["labels"], r2["labels"]),
     }
     return rt
 }
@@ -219,12 +214,113 @@ function selective_search(im_orig, scale = 1.0, sigma = 0.8, min_size = 50) {
     let img = _generate_segments(im_orig, scale, sigma, min_size)
 
     if (!img) {
-        return [undefined, {}]
+        return [undefined, []]
     }
 
     let img_shape = np.shape(img)
     let imsize = img_shape[0] * img_shape[1]
     let R = _extract_regions(img)
 
+    let neighbours = _extract_neighbours(R)
 
+    let S = {}
+    for (let i = 0; i < neighbours.length; i++) {
+        let [ai, ar] = neighbours[i][0];
+        let [bi, br] = neighbours[i][1];
+        S[[ai, bi].join()] = _calc_sim(ar, br, imsize)
+    }
+
+    while (Object.keys(S).length != 0) {
+        let sorted_items = [];
+        let S_key_arr = Object.keys(S);
+        for (let i = 0; i < S_key_arr.length; i++) {
+            let k = S_key_arr[i];
+            let value = S[k]
+            sorted_items.push([k, value])
+        }
+        sorted_items = sorted_items.toSorted((a, b) => a[1] - b[1])
+
+        let [i, j] = sorted_items.slice(-1)[0][0].split(',')
+
+        let t = Math.max(...Object.keys(R)) + 1.0
+
+        R[t] = _merge_regions(R[i], R[j])
+
+        let key_to_delete = [];
+        let new_S_arr = Object.keys(S);
+        for (let p = 0; p < new_S_arr.length; p++) {
+            let k = new_S_arr[p];
+            let v = S[k];
+
+            let item_key = k.split(',');
+
+            if (item_key.indexOf(i) != -1 || item_key.indexOf(j) != -1) {
+                key_to_delete.push(k)
+            }
+        }
+
+        for (let k in S) {
+            if (key_to_delete.indexOf(k) != -1) {
+                delete S[k]
+            }
+        }
+
+        key_to_delete = key_to_delete.filter((item) => {
+            return item != [i, j].join()
+        })
+
+        for (let w = 0; w < key_to_delete.length; w++) {
+            let item = key_to_delete[w];
+            let k = item.split(',')
+            let n = undefined;
+            if ([i, j].indexOf(k[0]) != -1) {
+                n = k[1]
+            } else {
+                n = k[0]
+            }
+
+            S[[t, n].join()] = _calc_sim(R[t], R[n], imsize)
+        }
+
+    }
+
+    let regions = []
+    for (let k in R) {
+        let r = R[k]
+
+        regions.push({
+            'rect': [r['min_x'], r['min_y'], r['max_x'] - r['min_x'], r['max_y'] - r['min_y']],
+            'size': r['size'],
+            'labels': r['labels']
+        })
+    }
+
+    return [img, regions]
 }
+
+imread('./lena.png', (imageData) => {
+    console.log(imageData)
+
+    const { width, height, data } = imageData
+
+    let image = np.reshape(data, [height, width, 4])
+
+    image = np.indexing(image, [np.slice(np.None), np.slice(np.None), np.slice(0, 3)])
+
+    let [_, regions] = selective_search(image, 250, 0.5, 100)
+
+    console.log('regions.length', regions.length)
+
+    let rect = [];
+    for (let i = 0; i < regions.length; i++) {
+        rect.push({
+            left: regions[i].rect[0],
+            top: regions[i].rect[1],
+            width: regions[i].rect[2],
+            height: regions[i].rect[3],
+            label: ''
+        })
+    }
+
+    imshow(image, undefined, rect)
+})
