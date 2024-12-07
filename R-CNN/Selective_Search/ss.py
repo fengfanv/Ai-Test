@@ -7,6 +7,8 @@ import matplotlib.patches as patches
 from skimage import util, io, feature, color, transform, segmentation
 import numpy as np
 
+from felzenszwalb import _felzenszwalb_cython
+
 def _generate_segments(im_orig, scale, sigma, min_size):
     """
     根据Felzenswalb-Huttenlocher方法将图像分割为小区域图像
@@ -17,8 +19,8 @@ def _generate_segments(im_orig, scale, sigma, min_size):
     :return: 带分割类别的4通道图
     """
     # 获取分割后每个小区域所属的类别
-    im_mask = segmentation.felzenszwalb(util.img_as_float(
-        im_orig), scale=scale, sigma=sigma, min_size=min_size)
+    im_mask = _felzenszwalb_cython(
+        im_orig, scale=scale, sigma=sigma, min_size=min_size)
     # 把类别合并到最后一个通道上, 维度为[w, h, 4]
     im_orig = np.append(im_orig, np.zeros(
         im_orig.shape[:2])[:, :, np.newaxis], axis=2)

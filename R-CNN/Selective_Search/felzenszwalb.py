@@ -168,17 +168,17 @@ def _felzenszwalb_cython(image, scale=1, sigma=0.8, kernel=3, min_size=20):
 
 # https://www.cnblogs.com/qw12/p/9465538.html
 
-sigma = 0.5
-kernel = 3
-K, min_size = 250, 25
+# sigma = 0.5
+# kernel = 3
+# K, min_size = 250, 25
 
-image = imread('lena.png')
+# image = imread('lena.png')
 
-image = image*255
+# image = image*255
 
-# skimage自带的felzenszwalb算法
-seg1 = _felzenszwalb_cython(
-    image, scale=K, sigma=sigma, kernel=kernel, min_size=min_size)
+# # skimage自带的felzenszwalb算法
+# seg1 = _felzenszwalb_cython(
+#     image, scale=K, sigma=sigma, kernel=kernel, min_size=min_size)
 
-plt.imshow(seg1)
-plt.show()
+# plt.imshow(seg1)
+# plt.show()
