@@ -18,6 +18,7 @@ function readArrByShape(arr, shape, shapeIndex = 0) {
   }
   return result;
 }
+exports.readArrByShape = readArrByShape;
 
 // console.log(readArrByShape(a, aShape).length)
 // console.log(readArrByShape(a, aShape))

@@ -10,6 +10,8 @@ var generateArrayElementIndex = Common.generateArrayElementIndex;
 var setArrayValue_v2 = Common.setArrayValue_v2;
 var printArr4 = Common.printArr4;
 
+const SingleMultipleRelation = require('./single_multiple_relation.js');
+
 /*
 
 实现numpy.reshape方法
@@ -174,8 +176,8 @@ function reshape_C(arr, newShape) {
     if (newShapeSize != arrInfo.size) {
         throw new Error('reshape_C:error 数据无法变成新形状，请重新设置形状！')
     }
-    //根据新形状创建一个新矩阵，然后往矩阵里放数据
-    let newArr = create_array(newShape, 0);
+    // //根据新形状创建一个新矩阵，然后往矩阵里放数据
+    // let newArr = create_array(newShape, 0);
     // //旧赋值方法
     // let newArrIndex = 0;
     // printArr(newArr, [], (res) => {
@@ -191,15 +193,16 @@ function reshape_C(arr, newShape) {
     //     }
     // })
     // console.log(newArrIndex, multiply(newShape[0], newShape, 1) / newShape[newShape.length - 1])
-    //新赋值方法V2，能比上边快一点点(这里仅针对2维及以上的数组，赋值)
-    //如果被赋值数组最后一个维度是1，则三个赋值方法，一样快。如果最后一个维度不是1，则最后一个方法最快
-    const newArrIndexingList = generateArrayElementIndex(newShape.slice(0, newShape.length - 1));
-    let len = multiply(newShape[0], newShape, 1) / newShape[newShape.length - 1];
-    for (let i = 0; i < len; i++) {
-        setArrayValue_v2(newArr, newArrIndexingList[i], arrInfo.ravel.slice(i * newShape[newShape.length - 1], i * newShape[newShape.length - 1] + newShape[newShape.length - 1]))
-    }
+    // //新赋值方法V2，能比上边快一点点(这里仅针对2维及以上的数组，赋值)
+    // //如果被赋值数组最后一个维度是1，则三个赋值方法，一样快。如果最后一个维度不是1，则最后一个方法最快
+    // const newArrIndexingList = generateArrayElementIndex(newShape.slice(0, newShape.length - 1));
+    // let len = multiply(newShape[0], newShape, 1) / newShape[newShape.length - 1];
+    // for (let i = 0; i < len; i++) {
+    //     setArrayValue_v2(newArr, newArrIndexingList[i], arrInfo.ravel.slice(i * newShape[newShape.length - 1], i * newShape[newShape.length - 1] + newShape[newShape.length - 1]))
+    // }
 
-    return newArr;
+    // return newArr;
+    return SingleMultipleRelation.readArrByShape(arrInfo.ravel, newShape)
 }
 
 
