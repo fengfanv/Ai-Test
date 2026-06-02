@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <script>
+        //轮盘赌选择算法
+        function rouletteSelection(weights) {
+            //计算总权重
+            const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+
+            //生成0~totalWeight之间的随机数
+            const randomNum = Math.random() * totalWeight;
+
+            let currentSum = 0;
+            for (let i = 0; i < weights.length; i++) {
+                currentSum += weights[i];
+                if (randomNum < currentSum) {
+                    return i; //返回被选中的索引
+                }
+            }
+            return weights.length - 1; //默认返回最后一个（防止浮点数精度问题）
+        }
+
+        //----------------------------------------------
+
+        //测试用例
+        const testItems = [
+            { name: "A", weight: 20 }, // A 权重值20 区间[0,20) 长度是20 所以选中这个区间的概率是20%
+            { name: "B", weight: 10 }, // B 权重值10 区间[20,30) 长度是10 所以选中这个区间的概率是10%
+            { name: "C", weight: 70 }, // C 权重值70 区间[30,100) 长度是70 所以选中这个区间的概率是70%，权重值越大，被选中的概率就越高
+        ];
+
+        //统计选择结果
+        const stats = { A: 0, B: 0, C: 0 };
+        const totalTests = 10000;
+
+        for (let i = 0; i < totalTests; i++) {
+            const selectedIndex = rouletteSelection(testItems.map(item => item.weight));
+            const selectedKey = testItems[selectedIndex].name;
+            stats[selectedKey]++;
+        }
+
+        //输出统计结果
+        console.log("权重分布：", testItems);
+        console.log(`经过${totalTests}次测试后的选择概率：`);
+        console.log(`A：${(stats.A / totalTests * 100).toFixed(2)}%`);
+        console.log(`B：${(stats.B / totalTests * 100).toFixed(2)}%`);
+        console.log(`C：${(stats.C / totalTests * 100).toFixed(2)}%`);
+
+        // 实际概率应接近：
+        // A：20% (20/100)
+        // B：10% (10/100)
+        // C：70% (70/100)
+    </script>
+</body>
+
+</html>

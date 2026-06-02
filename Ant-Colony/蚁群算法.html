@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蚁群算法</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #world {
+            position: absolute;
+        }
+
+        .worldChild {
+            position: absolute;
+            border: 1px solid #ccc;
+        }
+
+        .worldChild:hover {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="world"></div>
+
+    <script>
+        //世界生成
+        const numberOfChildren = 50;
+        const worldSize = 900; //单位px
+        const worldChildSize = worldSize / numberOfChildren; //单位px
+        const worldEl = document.getElementById('world');
+        worldEl.style.width = `${worldSize}px`;
+        worldEl.style.height = `${worldSize}px`;
+        for (let x = 0; x < numberOfChildren; x++) {
+            for (let y = 0; y < numberOfChildren; y++) {
+                const childEl = document.createElement('div');
+                childEl.classList.add("worldChild");
+                childEl.setAttribute('position', `${x},${y}`);
+                childEl.setAttribute('title', `位置：${x},${y}`);
+                childEl.style.width = `${worldChildSize}px`;
+                childEl.style.height = `${worldChildSize}px`;
+                childEl.style.left = `${x * worldChildSize}px`;
+                childEl.style.top = `${y * worldChildSize}px`;
+                worldEl.appendChild(childEl);
+            }
+        }
+
+        //--------------------------------------------------
+
+        const antNest = [25, 25] //蚁穴位置
+        const food = [36, 37] //食物位置
+
+        const pheromone = {}; //位置路径信息素浓度矩阵
+        const heuristic = {}; //启发式引导信息矩阵
+
+        for (let x = 0; x < numberOfChildren; x++) {
+            for (let y = 0; y < numberOfChildren; y++) {
+                heuristic[[x, y].join(',')] = {};
+                pheromone[[x, y].join(',')] = {};
+                let [x2, y2] = food;
+                let up = y - 1 < 0 ? null : [x, y - 1];
+                let down = y + 1 >= numberOfChildren ? null : [x, y + 1];
+                let left = x - 1 < 0 ? null : [x - 1, y];
+                let right = x + 1 >= numberOfChildren ? null : [x + 1, y];
+                let direction = [up, down, left, right];
+                for (let i = 0; i < direction.length; i++) {
+                    if (direction[i]) {
+                        let [x1, y1] = direction[i];
+                        // let distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)); //8个方向都能走，用欧氏距离
+                        let distance = Math.abs(x1 - x2) + Math.abs(y1 - y2); //只能走上下左右，用曼哈顿距离
+                        let eta = 1 / (distance + 1e-6); // 距离倒数 η=1/distance 这里distance额外加1e-6是为了防止除以0，1e-6是极小非零数
+                        heuristic[[x, y].join(',')][direction[i].join(',')] = eta;
+                        //--------------------------------------------------
+                        pheromone[[x, y].join(',')][direction[i].join(',')] = 1e-6; //信息素可以初始化为0，但不建议，这主要是为了防止后面计算转移概率时，可能出现分母为0的情况
+                    }
+                }
+            }
+        }
+
+        //--------------------------------------------------
+
+        const alpha = 1; // α 控制信息素对选择的权重
+        const beta = 2; // β 控制启发式信息对选择的权重
+
+        //转移概率公式，计算蚂蚁从当前节点转移到相邻节点的概率
+        function transitionProbability(currentNode) {
+            const currentKey = currentNode.join(',');
+
+            //计算所有可行路径的总吸引力
+            let denominator = 0;
+            Object.keys(pheromone[currentKey]).forEach((key) => {
+                const tau = pheromone[currentKey]?.[key] || 0;
+                const eta = heuristic[currentKey]?.[key] || 0;
+                denominator += Math.pow(tau, alpha) * Math.pow(eta, beta) + 1e-12; //加1e-12，是为了防止分母为0的情况出现
+            })
+
+            //计算每个相邻节点的转移概率
+            const probabilities = {};
+            Object.keys(pheromone[currentKey]).forEach((key) => {
+                const tau = pheromone[currentKey]?.[key] || 0;
+                const eta = heuristic[currentKey]?.[key] || 0;
+                const numerator = Math.pow(tau, alpha) * Math.pow(eta, beta);
+                const probability = numerator / denominator;
+                probabilities[key] = probability
+            })
+
+            return probabilities
+        }
+
+        //轮盘赌选择算法
+        function rouletteSelection(options) {
+            let totalWeight = 0; //总权重值
+            for (let key in options) {
+                totalWeight += options[key]
+            }
+
+            //生成0~totalWeight之间的随机数
+            const randomNum = Math.random() * totalWeight;
+
+            let currentSum = 0;
+            for (let key in options) {
+                currentSum += options[key]
+                if (randomNum < currentSum) {
+                    return key;
+                }
+            }
+
+            return Object.keys(options).slice(-1)[0]; //默认返回最后一个（防止浮点数精度问题）
+        }
+
+        //测试-----------------------------------------------
+
+        // let a = transitionProbability([12, 23]);
+        // let totalWeight_a = 0; //总权重
+        // let expected_a = {}; //预期值
+        // let stats_a = {}; //统计值
+        // let result_a = {}; //结果值
+        // for (let key in a) {
+        //     totalWeight_a += a[key]
+        //     stats_a[key] = 0
+        // }
+        // for (let key in a) {
+        //     expected_a[key] = (a[key] / totalWeight_a * 100).toFixed(2) + '%'
+        // }
+        // const totalTests = 10000;
+        // for (let i = 0; i < totalTests; i++) {
+        //     const key = rouletteSelection(a);
+        //     stats_a[key]++;
+        // }
+        // for (let key in a) {
+        //     result_a[key] = (stats_a[key] / totalTests * 100).toFixed(2) + '%'
+        // }
+
+        // console.log(a);
+        // console.log(expected_a);
+        // console.log(stats_a);
+        // console.log(result_a);
+
+        //--------------------------------------------------
+
+        //展示路线
+        function displayRoute(routeArr = [], name = '', color = 'black', size = 1) {
+            if (routeArr.length < 2) {
+                console.error('至少两个点，因为，两点一线')
+                return false;
+            }
+            let el_world = document.getElementById('world');
+            for (let i = 0; i < routeArr.length - 1; i++) {
+                let a = routeArr[i];
+                let b = routeArr[i + 1];
+                let el_a = document.querySelector(`#world>.worldChild[position="${a.join(',')}"]`)
+                let el_b = document.querySelector(`#world>.worldChild[position="${b.join(',')}"]`)
+                let rp_a = getRelativePosition(el_a, el_world)
+                let rp_b = getRelativePosition(el_b, el_world)
+                let rect_a = el_a.getBoundingClientRect()
+                let rect_b = el_b.getBoundingClientRect()
+                let center_position_a = [rp_a.left + rect_a.width / 2, rp_a.top + rect_a.height / 2]
+                let center_position_b = [rp_b.left + rect_b.width / 2, rp_b.top + rect_b.height / 2]
+                let [x_a, y_a] = center_position_a;
+                let [x_b, y_b] = center_position_b;
+
+                let deg = 0;
+                let quadrant = getQuadrant({ x: x_b, y: y_b }, { x: x_a, y: y_a })
+                //特殊角
+                if (quadrant == '0') {
+                    deg = 0; //原点
+                } else if (quadrant == 'y+') {
+                    deg = 90; //90度
+                } else if (quadrant == 'y-') {
+                    deg = 270; //270度
+                } else if (quadrant == 'x+') {
+                    deg = 0; //0度
+                } else if (quadrant == 'x-') {
+                    deg = 180; //180度
+                }
+                //象限角（普通角）
+                let tan = (y_b - y_a) / (x_b - x_a); //tanθ=对边/邻边
+                let rad = Math.atan(tan); //atan反正切
+                let angle = Math.abs(rad * (180 / Math.PI)); //rad*(180/Math.PI)=弧度转角度
+                if (quadrant == 1) {
+                    deg = angle;
+                } else if (quadrant == 2) {
+                    deg = 180 - angle;
+                } else if (quadrant == 3) {
+                    deg = 270 - 90 + angle;
+                } else if (quadrant == 4) {
+                    deg = 360 - angle;
+                }
+
+                let r = Math.sqrt(Math.pow(x_a - x_b, 2) + Math.pow(y_a - y_b, 2))
+                let el_line = document.createElement('div');
+                if (i % 2 == 0) {
+                    el_line.innerText = name;
+                } else {
+                    el_line.innerText = '→';
+                }
+                el_line.style.color = color;
+                el_line.style.textAlign = 'center';
+                el_line.style.width = `${r}px`;
+                el_line.style.height = `${size}px`;
+                el_line.style.backgroundColor = color;
+                el_line.style.position = `absolute`;
+                el_line.style.left = `${x_a}px`;
+                el_line.style.top = `${y_a}px`;
+                el_line.style.transformOrigin = `0% 50%`;
+                el_line.style.transform = `rotate(${deg}deg)`;
+                worldEl.appendChild(el_line);
+            }
+        }
+
+        //获取子元素相对于父级元素的位置
+        function getRelativePosition(child, parent) {
+            const childRect = child.getBoundingClientRect();
+            const parentRect = parent.getBoundingClientRect();
+            return {
+                left: childRect.left - parentRect.left,
+                top: childRect.top - parentRect.top
+            };
+        }
+
+        //根据圆心点，获取坐标在第几象限
+        /*
+            二 | 一
+            三 | 四
+        */
+        /*
+            三 | 四
+            二 | 一
+        */
+        function getQuadrant({ x, y }, centerPosition) {
+            let { x: centerX, y: centerY } = centerPosition ?? { x: 0, y: 0 };
+
+            //处理坐标轴和原点
+            if (x == centerX && y == centerY) {
+                //原点
+                return '0';
+            }
+            if (x == centerX) {
+                //y轴上
+                if (y > centerY) {
+                    return 'y+';
+                } else {
+                    return 'y-';
+                }
+            }
+            if (y == centerY) {
+                //x轴上
+                if (x > centerX) {
+                    return 'x+';
+                } else {
+                    return 'x-';
+                }
+            }
+
+            //判断象限
+            if (x > centerX && y > centerY) {
+                //第一象限
+                return '1';
+            }
+            if (x < centerX && y > centerY) {
+                //第二象限
+                return '2';
+            }
+            if (x < centerX && y < centerY) {
+                //第三象限
+                return '3';
+            }
+            if (x > centerX && y < centerY) {
+                //第四象限
+                return '4';
+            }
+        }
+
+        document.getElementById('world').addEventListener('click', (e) => {
+            displayRoute([[25, 25], e.target.getAttribute('position').split(',')])
+        }, true)
+
+    </script>
+</body>
+
+</html>
